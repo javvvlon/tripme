@@ -36,7 +36,7 @@
     .dp--input {
         border: 0;
         background: none;
-        padding: 0 0 0 26px;
+        padding: 0 0 0 30px;
         text-overflow: ellipsis;
         font-size: size(15);
         font-weight: 600;
@@ -47,7 +47,14 @@
         &:hover { border: 0; }
     }
 
-    .dp--input-icon { left: 0; color: var(--tm-ink-4); }
+    .dp--input-icon {
+        left: 0;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        color: var(--tm-ink-4);
+    }
+
     .dp--clear-icon { display: none; }
 
     &--bar {
