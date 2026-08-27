@@ -1,0 +1,74 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-hero {
+    position: relative;
+    min-height: max(65vh, 560px);
+    display: flex;
+    align-items: center;
+    color: var(--tm-common-white);
+    background: var(--tm-brand-secondary);
+    overflow: visible;
+    margin-top: -76px;
+    padding: 76px 0 116px;
+
+    &__image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+
+    &__scrim {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg,
+                rgba(6, 30, 78, .30) 0%,
+                rgba(6, 30, 78, .16) 38%,
+                rgba(6, 30, 78, .34) 100%);
+    }
+
+    &__inner {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        text-align: center;
+    }
+
+    &__title {
+        max-width: 16ch;
+        margin: 0 auto;
+        color: var(--tm-common-white);
+        text-shadow: 0 2px 24px rgba(7, 26, 66, .45);
+    }
+
+    &__subtitle {
+        max-width: 52ch;
+        margin: 16px auto 0;
+        font-size: clamp(#{size(15)}, 1.6vw, #{size(17)});
+        color: rgba(255, 255, 255, .92);
+        text-shadow: 0 1px 16px rgba(7, 26, 66, .5);
+    }
+
+    &__widget {
+        max-width: 1060px;
+        margin: 38px auto 0;
+        text-align: left;
+    }
+
+    &__quick {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    @media #{$until-sm} {
+        min-height: max(65vh, 520px);
+        margin-top: -64px;
+        padding: 64px 0 96px;
+    }
+}

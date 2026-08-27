@@ -1,0 +1,37 @@
+@use '../../styles/utils' as *;
+
+.tm-breadcrumbs {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &__list {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: size(13);
+    }
+
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    &__link {
+        color: var(--tm-ink-3);
+
+        &:hover { color: var(--tm-brand-secondary); }
+    }
+
+    &__separator { color: var(--tm-ink-4); }
+
+    &__current {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-secondary-soft);
+        color: var(--tm-brand-secondary-dark);
+        font-weight: 600;
+    }
+}

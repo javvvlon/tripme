@@ -1,0 +1,31 @@
+@use '../../styles/utils' as *;
+
+.tm-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    &__value {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 26px;
+        padding: 0 7px;
+        border-radius: radius('xs') radius('xs') radius('xs') 2px;
+        background: var(--tm-status-success);
+        color: var(--tm-common-white);
+        font-size: size(13);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+    }
+
+    &__label { font-size: size(12); font-weight: 600; color: var(--tm-ink-2); }
+    &__source { font-size: size(11); color: var(--tm-ink-3); }
+}

@@ -1,57 +1,124 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath } from 'node:url'
+import { AppBootstrap } from './src/shared/bootstrap/service'
+import { modules as appModules } from './src/modules'
+
+const bootstrap = new AppBootstrap(appModules).bootSync()
+
+const srcDir = fileURLToPath(new URL('./src', import.meta.url))
+
+const LOCALES = ['ru', 'uz', 'en'] as const
+
+const routeRules: Record<string, Record<string, unknown>> = {}
+
+for (const route of bootstrap.routes) {
+  const suffix = route.path === '/' ? '' : route.path
+
+  if (route.prerender) {
+    for (const locale of LOCALES) routeRules[`/${locale}${suffix}`] = { prerender: true }
+  }
+
+  if (route.swr) {
+    for (const locale of LOCALES) routeRules[`/${locale}${suffix}`] = { swr: route.swr }
+  }
+
+  if (route.ssr === false) {
+    for (const locale of LOCALES) routeRules[`/${locale}${suffix}/**`] = { ssr: false }
+  }
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-01',
   devtools: { enabled: false },
 
-  // ── §3.4 hybrid rendering ──────────────────────────────────────────
-  // The landing and the CRM want opposite things, so they get opposite
-  // rendering modes from one codebase.
-  ssr: true,
-  routeRules: {
-    '/':          { prerender: true },   // static HTML at build time, no server in the request path
-    '/agents/**': { prerender: true },   // marketing sub-pages
-    '/app/**':    { ssr: false },        // CRM behind login — pure SPA, nothing to index
+  srcDir: 'src/',
 
-    // When the landing starts showing live prices, this one line becomes
-    //   '/': { swr: 600 }
-    // and nothing else in the project changes. That is the whole point of
-    // keeping the data behind a composable (see app/composables/useHotOffers.ts).
-  },
+  pages: true,
+
+  ssr: true,
+  routeRules,
 
   nitro: {
-    // §3.3 — the API must run on a long-lived Node process, never an edge
-    // or serverless runtime, because an SSE search holds a connection for ~20s.
     preset: 'node-server',
+    prerender: {
+      crawlLinks: false,
+    },
   },
 
-  // Self-hosted rather than Google Fonts: one less third-party request,
-  // faster first paint on Uzbek connections, and no external dependency
-  // for a page that must work when fonts.googleapis.com is slow or blocked.
+  modules: ['@nuxtjs/i18n'],
+
+  i18n: {
+    restructureDir: 'src/shared/i18n',
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://tripme.uz',
+    langDir: 'locales',
+    defaultLocale: 'ru',
+    strategy: 'prefix',
+    locales: [
+      { code: 'ru', language: 'ru-RU', name: 'Русский', file: 'ru.json' },
+      { code: 'uz', language: 'uz-UZ', name: 'O‘zbekcha', file: 'uz.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'tm_locale',
+      redirectOn: 'root',
+    },
+  },
+
+  components: [
+    { path: '~/shared/components', pathPrefix: false, priority: 10 },
+  ],
+
+  imports: {
+    dirs: ['shared/composables', 'shared/utils', 'shared/helpers', 'shared/config'],
+  },
+
   css: [
     '@fontsource/inter/400.css',
     '@fontsource/inter/500.css',
     '@fontsource/inter/600.css',
     '@fontsource/inter/700.css',
     '@fontsource/inter/800.css',
-    '~/assets/css/main.css',
+    '~/shared/styles/main.scss',
   ],
 
   app: {
     head: {
-      htmlAttrs: { lang: 'ru' },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#0E1116' },
+        { name: 'theme-color', content: '#0B4FD4' },
       ],
     },
   },
 
   runtimeConfig: {
+    revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
+
     public: {
-      // tripme_api lives on a sibling subdomain so session cookies can be
-      // scoped to .tripme.uz — see §3.5.
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.tripme.uz/api/v1',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://tripme.uz',
+    },
+  },
+
+  hooks: {
+    'pages:extend': (pages) => {
+      const build = (route: typeof bootstrap.routes[number]): NuxtPage => ({
+        name: route.name,
+        path: route.path,
+        file: `${srcDir}/${route.file}`,
+        meta: { ...(route.meta ?? {}), ...(route.layout !== undefined ? { layout: route.layout } : {}) },
+        children: route.children?.map(build),
+      })
+
+      pages.push(...bootstrap.routes.map(build))
     },
   },
 })
+
+type NuxtPage = {
+  name?: string
+  path: string
+  file?: string
+  meta?: Record<string, unknown>
+  children?: NuxtPage[]
+}

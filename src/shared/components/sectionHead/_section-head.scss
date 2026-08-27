@@ -1,0 +1,28 @@
+@use '../../styles/utils' as *;
+
+.tm-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+
+    &__title {
+        font-size: clamp(#{size(21)}, 2.6vw, #{size(28)});
+        font-weight: 800;
+        letter-spacing: -.025em;
+    }
+
+    &__sub {
+        margin-top: 6px;
+        color: var(--tm-ink-3);
+        font-size: size(15);
+    }
+
+    &__aside { margin-left: auto; }
+
+    @media #{$until-sm} {
+        &__aside { margin-left: 0; width: 100%; overflow-x: auto; }
+    }
+}

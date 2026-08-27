@@ -1,0 +1,30 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-cms-banner {
+    &__langs {
+        display: flex;
+        margin: 24px 0 4px;
+    }
+
+    &__form {
+        border-top: 1px solid var(--tm-border-1);
+    }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 18px;
+        padding-top: 24px;
+    }
+
+    &__error { color: var(--tm-status-danger); }
+    &__saved { color: var(--tm-status-success); }
+
+    &__error,
+    &__saved {
+        margin: 0;
+        font-size: size(15);
+        font-weight: 600;
+    }
+}

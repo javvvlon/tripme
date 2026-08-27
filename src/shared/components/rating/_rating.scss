@@ -1,0 +1,21 @@
+@use '../../styles/utils' as *;
+
+.tm-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    &__stars {
+        display: inline-flex;
+        gap: 1px;
+        color: var(--tm-status-warning);
+    }
+
+    &__star--off { color: var(--tm-border-1); }
+
+    &__reviews {
+        font-size: size(12);
+        color: var(--tm-ink-3);
+    }
+}

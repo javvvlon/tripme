@@ -1,0 +1,45 @@
+@use '../../styles/utils' as *;
+
+.tm-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    cursor: pointer;
+    font-size: size(14);
+
+    &__box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid var(--tm-ink-4);
+        border-radius: 5px;
+        background: var(--tm-surface-1);
+        color: transparent;
+        transition: background .12s, border-color .12s, color .12s;
+    }
+
+    input:checked + &__box {
+        background: var(--tm-brand-primary);
+        border-color: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+    }
+
+    input:focus-visible + &__box {
+        outline: 3px solid var(--tm-brand-primary);
+        outline-offset: 2px;
+    }
+
+    &__label { color: var(--tm-ink-2); }
+    &:hover &__label { color: var(--tm-ink-1); }
+
+    &__count {
+        margin-left: auto;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+        font-variant-numeric: tabular-nums;
+    }
+}

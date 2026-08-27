@@ -1,0 +1,33 @@
+@use '../../styles/utils' as *;
+
+.tm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: radius('pill');
+    font-size: size(13);
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+
+    &--hot { background: var(--tm-status-danger); color: var(--tm-common-white); }
+    &--deal { background: var(--tm-brand-primary); color: var(--tm-common-white); }
+
+    &--primary { background: var(--tm-brand-secondary); color: var(--tm-common-white); }
+    &--secondary { background: var(--tm-surface-3); color: var(--tm-ink-2); }
+    &--sale { background: var(--tm-status-danger); color: var(--tm-common-white); }
+
+    // Over a photograph: white, so it reads against anything underneath.
+    &--onPhoto {
+        background: var(--tm-common-white);
+        color: var(--tm-ink-1);
+        box-shadow: shadow('sm');
+    }
+
+    &--glass {
+        background: rgba(14, 17, 22, .55);
+        color: var(--tm-common-white);
+        backdrop-filter: blur(6px);
+    }
+}

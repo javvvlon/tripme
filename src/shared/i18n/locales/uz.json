@@ -1,0 +1,344 @@
+{
+  "common": {
+    "language": "Interfeys tili",
+    "breadcrumbs": "Navigatsiya yo‘li",
+    "rating": "{max} dan {value}",
+    "ratingWithReviews": "{max} dan {value}, {reviews} ta sharh",
+    "reviews": "sharhlar yo‘q | {n} ta sharh | {n} ta sharh | {n} ta sharh",
+    "priceFrom": "{price} dan",
+    "showOnMap": "Xaritada ko‘rsatish",
+    "readMore": "Batafsil",
+    "showPassword": "Parolni ko‘rsatish",
+    "hidePassword": "Parolni yashirish",
+    "account": "Profil",
+    "logout": "Chiqish",
+    "workspace": "Ish o‘rni",
+    "loading": "Yuklanmoqda…",
+    "seeAll": "Barchasini ko‘rish"
+  },
+  "nav": {
+    "home": "TripMe — bosh sahifa",
+    "main": "Asosiy navigatsiya",
+    "menu": "Menyu",
+    "account": "Shaxsiy kabinet",
+    "about": "Biz haqimizda",
+    "calendar": "Arzon narxlar taqvimi",
+    "news": "Yangiliklar",
+    "faq": "Savollar",
+    "contacts": "Aloqa",
+    "sitemap": "Sayt xaritasi",
+    "homeShort": "Bosh sahifa"
+  },
+  "search": {
+    "modeLabel": "Nimani qidirmoqchisiz",
+    "mode": {
+      "tours": "Turlar",
+      "flights": "Aviachiptalar",
+      "hotels": "Mehmonxonalar"
+    },
+    "from": "Qayerdan",
+    "fromPlaceholder": "Uchish shahri",
+    "to": "Qayerga",
+    "toPlaceholder": "Davlat, shahar",
+    "date": "Uchish sanasi",
+    "datePlaceholder": "Sanani tanlang",
+    "duration": "Muddat",
+    "who": "Kim boradi",
+    "submit": "Turlarni qidirish",
+    "clearField": "Tozalash: {field}",
+    "nights": "0 kecha | {n} kecha | {n} kecha | {n} kecha",
+    "adults": "0 katta yosh | {n} katta yosh | {n} katta yosh | {n} katta yosh",
+    "kids": "0 bola | {n} bola | {n} bola | {n} bola",
+    "noMatches": "Hech narsa topilmadi",
+    "referencesUnavailable": "Ma’lumotnoma mavjud emas — qidiruv xizmati javob bermayapti"
+  },
+  "home": {
+    "hero": {
+      "title": "Orzuingizdagi sayohatni yutib oling",
+      "subtitle": "Toshkentdan 40 davlatga turlar — barcha operatorlar narxini bir joyda taqqoslaymiz"
+    },
+    "benefits": {
+      "price": "Eng yaxshi narx kafolati",
+      "support": "24/7 qo‘llab-quvvatlash",
+      "years": "Turizmda 19 yildan ortiq tajriba",
+      "docs": "Hujjatlar tez rasmiylashtiriladi"
+    },
+    "quick": {
+      "beach": "Okean va plyajlar",
+      "history": "Tarixiy joylar",
+      "kids": "Bolalarga yoqadi",
+      "sale": "Chegirmada"
+    },
+    "popular": {
+      "title": "Ommabop turlar va maxsus takliflar",
+      "all": "Barcha yo‘nalishlar"
+    },
+    "seo": {
+      "title": "TripMe — Toshkentdan turlar: barcha operatorlar narxi",
+      "description": "O‘zbekistondan turlar: Turkiya, Misr, BAA, Tailand, Maldiv orollari. Barcha operatorlar takliflarini bitta qidiruvda taqqoslaymiz va to‘liq paket narxini ko‘rsatamiz.",
+      "ogTitle": "TripMe — Toshkentdan turlar",
+      "ogDescription": "Bitta qidiruv — barcha operatorlar. Parvoz, mehmonxona va transfer bitta narxda."
+    }
+  },
+  "footer": {
+    "countries": "Davlatlar",
+    "directions": "Yo‘nalishlar",
+    "social": "Ijtimoiy tarmoqlar",
+    "legal": "Huquqiy ma’lumot",
+    "copyright": "© {year} TripMe. Barcha huquqlar himoyalangan.",
+    "sitemap": "Sayt xaritasi",
+    "allCountries": "Barcha davlatlar",
+    "allDirections": "Barcha yo‘nalishlar",
+    "city": "Toshkent"
+  },
+  "country": {
+    "turkey": "Turkiya",
+    "egypt": "Misr",
+    "uae": "BAA",
+    "thailand": "Tailand",
+    "maldives": "Maldiv orollari",
+    "georgia": "Gruziya",
+    "vietnam": "Vyetnam",
+    "azerbaijan": "Ozarbayjon",
+    "india": "Hindiston",
+    "indonesia": "Indoneziya",
+    "kazakhstan": "Qozog‘iston",
+    "china": "Xitoy",
+    "russia": "Rossiya",
+    "uzbekistan": "O‘zbekiston"
+  },
+  "city": {
+    "tashkent": "Toshkent",
+    "almaty": "Almati",
+    "shymkent": "Chimkent",
+    "samarkand": "Samarqand",
+    "male": "Male",
+    "hurghada": "Xurg‘ada",
+    "sharm": "Sharm ash-Shayx",
+    "phuket": "Phuket",
+    "bangkok": "Bangkok",
+    "antalya": "Antaliya",
+    "alanya": "Alaniya",
+    "istanbul": "Istanbul",
+    "dubai": "Dubay",
+    "sharjah": "Sharja",
+    "nhatrang": "Nyachang",
+    "batumi": "Batumi",
+    "tbilisi": "Tbilisi",
+    "baku": "Boku"
+  },
+  "route": {
+    "tashkentAntalya": "Toshkent — Antaliya",
+    "tashkentDubai": "Toshkent — Dubay",
+    "tashkentHurghada": "Toshkent — Xurg‘ada",
+    "tashkentIstanbul": "Toshkent → Istanbul",
+    "tashkentPhuket": "Toshkent — Phuket",
+    "tashkentMoscow": "Toshkent → Moskva",
+    "tashkentKazan": "Toshkent → Qozon"
+  },
+  "legal": {
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
+    "offer": "Ommaviy oferta"
+  },
+  "filters": {
+    "title": "Filtrlar",
+    "hotelName": "Mehmonxona nomi bo‘yicha qidirish",
+    "stars": "Mehmonxona yulduzlari",
+    "price": "Bir kecha narxi",
+    "rating": "Mehmonxona reytingi",
+    "meals": "Ovqatlanish",
+    "countries": "Kurortlar",
+    "forKids": "Bolalar uchun",
+    "any": "Har qanday",
+    "priceFrom": "dan",
+    "priceTo": "gacha",
+    "reset": "Filtrlarni tozalash ({count})",
+    "districts": "Tuman",
+    "suppliers": "Turoperator",
+    "suppliersNote": "Belgi olib tashlansa, operatorga umuman murojaat qilinmaydi."
+  },
+  "results": {
+    "headline": "Turlar {destination}, {dates}, {price} dan",
+    "route": "{from} dan {to} ga",
+    "allTours": "Barcha turlar",
+    "anywhere": "barcha yo‘nalishlar",
+    "sort": "Saralash",
+    "sortPopular": "Avval ommabop",
+    "sortPriceAsc": "Avval arzon",
+    "sortPriceDesc": "Avval qimmat",
+    "sortRating": "Avval yuqori reytingli",
+    "priceFor": "{nights} va {rooms} xona uchun narx",
+    "loading": "Barcha operatorlarda qidirilmoqda…",
+    "empty": "Hech narsa topilmadi. Sanalarni o‘zgartiring yoki filtrlarni kamaytiring.",
+    "seoTitle": "Turlar — {destination} · TripMe",
+    "seoDescription": "TripMe tur qidiruvi natijalari: barcha operatorlar narxi bitta ro‘yxatda.",
+    "nonRefundable": "Qaytarilmaydigan",
+    "prompt": "Qayerga uchamiz?",
+    "chooseRoute": "Uchish shahri, yo‘nalish va sanani tanlang — barcha operatorlardan so‘raymiz.",
+    "loadMore": "Yana ko‘rsatish",
+    "loadingMore": "Yana yuklanmoqda…",
+    "end": "So‘rovingiz bo‘yicha barchasi {total} ta taklif",
+    "loadMoreFailed": "Yana yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+    "bookAtOperator": "Bronlashga",
+    "aboutHotel": "Mehmonxona haqida",
+    "programme": "Dastur",
+    "fare": "Tarif"
+  },
+  "auth": {
+    "mode": "Kirish yoki ro‘yxatdan o‘tish",
+    "login": "Kirish",
+    "signup": "Ro‘yxatdan o‘tish",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "phone": "Telefon",
+    "email": "Elektron pochta",
+    "password": "Parol",
+    "sending": "Tekshirilmoqda…",
+    "backHome": "Saytga qaytish",
+    "errorCredentials": "Pochta va parolni tekshiring — parol kamida {min} ta belgidan iborat bo‘lsin.",
+    "errorFailed": "Kirib bo‘lmadi. Yana urinib ko‘ring.",
+    "seoTitle": "Kirish — TripMe",
+    "welcome": "TripMe’ga xush kelibsiz",
+    "lead": "Ish o‘rniga kirish. Hisobni rahbar beradi — bu yerda ro‘yxatdan o‘tish yo‘q.",
+    "emailPlaceholder": "Pochtani kiriting",
+    "passwordPlaceholder": "Parolni kiriting",
+    "errors": {
+      "invalidCredentials": "Pochta yoki parol noto‘g‘ri",
+      "failed": "Kirib bo‘lmadi. Yana urinib ko‘ring."
+    }
+  },
+  "dashboard": {
+    "title": "Agent kabineti",
+    "text": "Bo‘lim ishlab chiqilmoqda. Bu yerda mijoz kartalari, qidiruv tarixi va tayyor takliflar bo‘ladi."
+  },
+  "availability": {
+    "available": "Bron qilish mumkin",
+    "on_request": "So‘rov bo‘yicha",
+    "stopped": "Sotuv to‘xtatilgan",
+    "unknown": "Aniqlanmoqda"
+  },
+  "validation": {
+    "required": "Ushbu maydonni to'ldiring",
+    "email": "To'g'ri elektron pochta manzilini kiriting",
+    "phone": "To'g'ri telefon raqamini kiriting",
+    "minLength": "Kamida {n} ta belgi",
+    "maxLength": "Ko'pi bilan {n} ta belgi",
+    "sameAs": "Qiymatlar mos kelmadi",
+    "pattern": "Format noto'g'ri",
+    "fileType": "Faqat {kinds} mumkin",
+    "fileSize": "Fayl {max} MB dan katta",
+    "fileDimensions": "{maxWidth}×{maxHeight}px dan katta bo‘lmasin — bu {width}×{height}px"
+  },
+  "cms": {
+    "nav": {
+      "label": "Sayt bo‘limlari",
+      "collapse": "Menyuni yig‘ish",
+      "dashboard": "Boshqaruv paneli",
+      "home": "Bosh sahifa",
+      "banner": "Banner",
+      "sections": "Bo‘limlar",
+      "lists": "Ro‘yxatlar"
+    },
+    "roles": {
+      "CLIENT": "Mijoz",
+      "AGENT": "Agent",
+      "FREELANCER": "Erkin agent",
+      "MANAGER": "Rahbar",
+      "ADMIN": "Bosh administrator"
+    },
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda…",
+    "saved": "Saqlandi",
+    "errors": {
+      "load": "Kontentni yuklab bo‘lmadi. Sahifani yangilang.",
+      "save": "Saqlab bo‘lmadi. Qayta urinib ko‘ring."
+    },
+    "upload": {
+      "choose": "Yuklash uchun bosing",
+      "orDrop": "yoki faylni tashlang",
+      "replace": "Almashtirish",
+      "remove": "O‘chirish"
+    },
+    "banner": {
+      "title": "Banner",
+      "lead": "Banner bosh sahifaning yuqori qismida ko‘rsatiladi.",
+      "languageTabs": "Kontent tili",
+      "fields": {
+        "title": "Sarlavha",
+        "titlePlaceholder": "Sarlavhani kiriting",
+        "image": "Rasm",
+        "imageHint": "PNG yoki JPG (maks. {width}×{height}px), hajmi {size} MB gacha",
+        "subtitle": "Qo‘shimcha sarlavha",
+        "subtitlePlaceholder": "Sarlavha ostidagi matn",
+        "subtitleHint": "Bo‘sh — dizayndagi matn ko‘rinadi."
+      }
+    },
+    "dashboard": {
+      "title": "Salom, {name}",
+      "lead": "Sayt mazmuni shu yerdan o‘zgartiriladi.",
+      "editable": "Nimalarni o‘zgartirish mumkin",
+      "soon": "Tez orada"
+    },
+    "loading": "Yuklanmoqda…",
+    "back": "Orqaga",
+    "lists": {
+      "title": "Ro‘yxatlar",
+      "lead": "Bo‘limlar ko‘rsatadigan kartochkalar to‘plami.",
+      "create": "Yangi ro‘yxat",
+      "untitled": "Nomsiz",
+      "empty": "Hozircha ro‘yxatlar yo‘q.",
+      "items": "elementlar: {count}",
+      "delete": "Ro‘yxatni o‘chirish",
+      "editorLead": "Elementlar shu tartibda ko‘rsatiladi.",
+      "name": "Ro‘yxat nomi",
+      "namePlaceholder": "Masalan, Pre-Sale",
+      "nameHint": "Faqat muharrirlarga ko‘rinadi — mehmon bo‘lim sarlavhasini o‘qiydi.",
+      "nameRequired": "Ro‘yxat nomini kiriting",
+      "titleRequired": "Har bir elementda kamida bitta tilda sarlavha bo‘lishi kerak",
+      "addItem": "Element qo‘shish",
+      "removeItem": "Elementni o‘chirish",
+      "moveUp": "Yuqoriga",
+      "moveDown": "Pastga",
+      "itemTitle": "Sarlavha",
+      "itemTitlePlaceholder": "Sarlavhani kiriting",
+      "itemDescription": "Tavsif",
+      "itemDescriptionPlaceholder": "Qisqa izoh",
+      "itemLink": "Havola",
+      "itemLinkHint": "Sayt ichidagi yo‘l. Bo‘sh — kartochka bosilmaydi.",
+      "itemImage": "Rasm",
+      "itemImageHint": "PNG, JPG yoki WebP, 8 MB gacha. Bo‘sh — placeholder ko‘rinadi.",
+      "badgeLabel": "Beyj",
+      "badgeType": "Beyj turi",
+      "badgePlaceholder": "Masalan, Hit",
+      "badgeHint": "Kartochkadagi matn. Bo‘sh — beyj bo‘lmaydi.",
+      "badgeNone": "Beyjsiz",
+      "badgeNeedsLabel": "Beyj turi tanlangan, lekin matn yo‘q — bu tilda beyj ko‘rinmaydi.",
+      "badgeTypes": {
+        "primary": "Asosiy",
+        "secondary": "Ikkilamchi",
+        "sale": "Chegirma"
+      },
+      "uploading": "Rasm yuklanmoqda…",
+      "uploadFailed": "Rasmni yuklab bo‘lmadi"
+    },
+    "sections": {
+      "title": "Bosh sahifa bo‘limlari",
+      "lead": "Qidiruv ostida nima va qanday tartibda ko‘rinadi.",
+      "add": "Bo‘lim qo‘shish",
+      "remove": "Bo‘limni o‘chirish",
+      "published": "Chop etilgan",
+      "heading": "Sarlavha",
+      "headingPlaceholder": "Masalan, Yonayotgan yo‘nalishlar",
+      "link": "«Barchasini ko‘rish» havolasi",
+      "linkHint": "Bo‘sh — havola bo‘lmaydi.",
+      "list": "Ro‘yxat",
+      "listPlaceholder": "Ro‘yxatni tanlang",
+      "layout": "Joylashuv",
+      "layoutPlaceholder": "Joylashuvni tanlang",
+      "overflow": "Ro‘yxatda {items} element, joylashuv {capacity} tasini sig‘diradi — qolgani ko‘rinmaydi.",
+      "pickRequired": "Har bir bo‘limda ro‘yxat va joylashuvni tanlang",
+      "titleRequired": "Har bir bo‘limda kamida bitta tilda sarlavha bo‘lishi kerak"
+    }
+  }
+}

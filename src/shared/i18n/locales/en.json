@@ -1,0 +1,344 @@
+{
+  "common": {
+    "language": "Interface language",
+    "breadcrumbs": "Breadcrumbs",
+    "rating": "{value} out of {max}",
+    "ratingWithReviews": "{value} out of {max}, {reviews} reviews",
+    "reviews": "no reviews | {n} review | {n} reviews | {n} reviews",
+    "priceFrom": "from {price}",
+    "showOnMap": "Show on map",
+    "readMore": "Read more",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "account": "Profile",
+    "logout": "Sign out",
+    "workspace": "Workspace",
+    "loading": "Loading…",
+    "seeAll": "See all"
+  },
+  "nav": {
+    "home": "TripMe — home",
+    "main": "Main navigation",
+    "menu": "Menu",
+    "account": "Account",
+    "about": "About us",
+    "calendar": "Low price calendar",
+    "news": "News",
+    "faq": "FAQ",
+    "contacts": "Contact us",
+    "sitemap": "Site map",
+    "homeShort": "Home"
+  },
+  "search": {
+    "modeLabel": "What to search",
+    "mode": {
+      "tours": "Tours",
+      "flights": "Flights",
+      "hotels": "Hotels"
+    },
+    "from": "Departure",
+    "fromPlaceholder": "Departure city",
+    "to": "Where",
+    "toPlaceholder": "Country, city",
+    "date": "Tour start date",
+    "datePlaceholder": "Choose date",
+    "duration": "Duration",
+    "who": "Who",
+    "submit": "Search tours",
+    "clearField": "Clear: {field}",
+    "nights": "0 nights | {n} night | {n} nights | {n} nights",
+    "adults": "0 adults | {n} adult | {n} adults | {n} adults",
+    "kids": "0 children | {n} child | {n} children | {n} children",
+    "noMatches": "Nothing found",
+    "referencesUnavailable": "Catalogue unavailable — the search service is not responding"
+  },
+  "home": {
+    "hero": {
+      "title": "Win the trip of your dreams",
+      "subtitle": "Tours from Tashkent to 40 countries — every operator's price, compared at once"
+    },
+    "benefits": {
+      "price": "Best price guarantee",
+      "support": "24/7 customer support",
+      "years": "Over 19 years in tourism",
+      "docs": "Fast issuance of documents"
+    },
+    "quick": {
+      "beach": "Ocean and beaches",
+      "history": "Historical places",
+      "kids": "Kids will love it",
+      "sale": "On sale"
+    },
+    "popular": {
+      "title": "Popular tours and special offers",
+      "all": "All destinations"
+    },
+    "seo": {
+      "title": "TripMe — tours from Tashkent, every operator compared",
+      "description": "Tour packages from Uzbekistan: Turkey, Egypt, UAE, Thailand, the Maldives. One search across every operator, with the full package price up front.",
+      "ogTitle": "TripMe — tours from Tashkent",
+      "ogDescription": "One search, every operator. Flight, hotel and transfer in a single price."
+    }
+  },
+  "footer": {
+    "countries": "Countries",
+    "directions": "Directions",
+    "social": "Social",
+    "legal": "Legal",
+    "copyright": "© {year} TripMe. All rights reserved.",
+    "sitemap": "Site map",
+    "allCountries": "All countries",
+    "allDirections": "All directions",
+    "city": "Tashkent"
+  },
+  "country": {
+    "turkey": "Turkey",
+    "egypt": "Egypt",
+    "uae": "UAE",
+    "thailand": "Thailand",
+    "maldives": "Maldives",
+    "georgia": "Georgia",
+    "vietnam": "Vietnam",
+    "azerbaijan": "Azerbaijan",
+    "india": "India",
+    "indonesia": "Indonesia",
+    "kazakhstan": "Kazakhstan",
+    "china": "China",
+    "russia": "Russia",
+    "uzbekistan": "Uzbekistan"
+  },
+  "city": {
+    "tashkent": "Tashkent",
+    "almaty": "Almaty",
+    "shymkent": "Shymkent",
+    "samarkand": "Samarkand",
+    "male": "Malé",
+    "hurghada": "Hurghada",
+    "sharm": "Sharm el-Sheikh",
+    "phuket": "Phuket",
+    "bangkok": "Bangkok",
+    "antalya": "Antalya",
+    "alanya": "Alanya",
+    "istanbul": "Istanbul",
+    "dubai": "Dubai",
+    "sharjah": "Sharjah",
+    "nhatrang": "Nha Trang",
+    "batumi": "Batumi",
+    "tbilisi": "Tbilisi",
+    "baku": "Baku"
+  },
+  "route": {
+    "tashkentAntalya": "Tashkent — Antalya",
+    "tashkentDubai": "Tashkent — Dubai",
+    "tashkentHurghada": "Tashkent — Hurghada",
+    "tashkentIstanbul": "Tashkent → Istanbul",
+    "tashkentPhuket": "Tashkent — Phuket",
+    "tashkentMoscow": "Tashkent → Moscow",
+    "tashkentKazan": "Tashkent → Kazan"
+  },
+  "legal": {
+    "terms": "Terms of use",
+    "privacy": "Privacy Policy",
+    "offer": "Public offer"
+  },
+  "filters": {
+    "title": "Filters",
+    "hotelName": "Search by hotel name",
+    "stars": "Star rating of the hotel",
+    "price": "Price for night",
+    "rating": "Hotel rating",
+    "meals": "Nutrition",
+    "countries": "Resorts",
+    "forKids": "For kids",
+    "any": "Any",
+    "priceFrom": "from",
+    "priceTo": "till",
+    "reset": "Clear all filters ({count})",
+    "districts": "District",
+    "suppliers": "Tour operator",
+    "suppliersNote": "Unticking one stops us asking that operator at all."
+  },
+  "results": {
+    "headline": "Tours {destination}, {dates}, from {price}",
+    "route": "from {from} to {to}",
+    "allTours": "All tours",
+    "anywhere": "anywhere",
+    "sort": "Sort",
+    "sortPopular": "Most popular",
+    "sortPriceAsc": "Cheapest first",
+    "sortPriceDesc": "Most expensive first",
+    "sortRating": "Highest rated first",
+    "priceFor": "price for {nights} and {rooms} room",
+    "loading": "Searching every operator…",
+    "empty": "Nothing found. Try different dates or remove some filters.",
+    "seoTitle": "Tours — {destination} · TripMe",
+    "seoDescription": "TripMe tour search results: every operator’s price in one list.",
+    "nonRefundable": "Non-refundable",
+    "prompt": "Where to?",
+    "chooseRoute": "Pick a departure city, a destination and a date — we will ask every operator.",
+    "loadMore": "Show more",
+    "loadingMore": "Loading more…",
+    "end": "That is all {total} offers for this search",
+    "loadMoreFailed": "Could not load more. Please try again.",
+    "bookAtOperator": "To booking",
+    "aboutHotel": "About the hotel",
+    "programme": "Programme",
+    "fare": "Fare code"
+  },
+  "auth": {
+    "mode": "Sign in or sign up",
+    "login": "Sign In",
+    "signup": "Sign up",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "email": "Email",
+    "password": "Password",
+    "sending": "Checking…",
+    "backHome": "Back to the site",
+    "errorCredentials": "Check your email and password — the password must be at least {min} characters.",
+    "errorFailed": "Could not sign in. Please try again.",
+    "seoTitle": "Sign in — TripMe",
+    "welcome": "Welcome to TripMe",
+    "lead": "Sign in to your workspace. Accounts are issued by a manager — there is no self sign-up.",
+    "emailPlaceholder": "Enter email",
+    "passwordPlaceholder": "Enter password",
+    "errors": {
+      "invalidCredentials": "Wrong email or password",
+      "failed": "Could not sign in. Please try again."
+    }
+  },
+  "dashboard": {
+    "title": "Agent workspace",
+    "text": "Under construction. Client cards, search history and ready-made proposals will live here."
+  },
+  "availability": {
+    "available": "Bookable",
+    "on_request": "On request",
+    "stopped": "Stop sale",
+    "unknown": "To be confirmed"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email address",
+    "phone": "Enter a valid phone number",
+    "minLength": "At least {n} characters",
+    "maxLength": "No more than {n} characters",
+    "sameAs": "The values do not match",
+    "pattern": "That format is not valid",
+    "fileType": "Only {kinds} are allowed",
+    "fileSize": "That file is over {max}mb",
+    "fileDimensions": "No larger than {maxWidth}×{maxHeight}px — this one is {width}×{height}px"
+  },
+  "cms": {
+    "nav": {
+      "label": "Site sections",
+      "collapse": "Collapse the menu",
+      "dashboard": "Dashboard",
+      "home": "Home page",
+      "banner": "Banner",
+      "sections": "Sections",
+      "lists": "Lists"
+    },
+    "roles": {
+      "CLIENT": "Client",
+      "AGENT": "Agent",
+      "FREELANCER": "Freelance agent",
+      "MANAGER": "Manager",
+      "ADMIN": "Main Admin"
+    },
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "errors": {
+      "load": "Could not load this content. Reload the page.",
+      "save": "Could not save. Try again."
+    },
+    "upload": {
+      "choose": "Click to upload",
+      "orDrop": "or drag and drop",
+      "replace": "Replace",
+      "remove": "Remove"
+    },
+    "banner": {
+      "title": "Banner",
+      "lead": "This banner will be displayed on the top of home page.",
+      "languageTabs": "Content language",
+      "fields": {
+        "title": "Title",
+        "titlePlaceholder": "Enter title",
+        "image": "Image",
+        "imageHint": "PNG or JPG (max. {width}×{height}px with size of max. {size}mb)",
+        "subtitle": "Subtitle",
+        "subtitlePlaceholder": "The line under the headline",
+        "subtitleHint": "Empty falls back to the copy built into the design."
+      }
+    },
+    "dashboard": {
+      "title": "Hello, {name}",
+      "lead": "This is where the site’s content is edited.",
+      "editable": "What you can edit",
+      "soon": "Soon"
+    },
+    "loading": "Loading…",
+    "back": "Back",
+    "lists": {
+      "title": "Lists",
+      "lead": "The sets of cards that sections display.",
+      "create": "New list",
+      "untitled": "Untitled",
+      "empty": "No lists yet.",
+      "items": "{count} items",
+      "delete": "Delete list",
+      "editorLead": "Items appear in this order.",
+      "name": "List name",
+      "namePlaceholder": "For example, Pre-Sale",
+      "nameHint": "Editors only — a visitor reads the section heading.",
+      "nameRequired": "Give the list a name",
+      "titleRequired": "Every item needs a title in at least one language",
+      "addItem": "Add item",
+      "removeItem": "Remove item",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "itemTitle": "Title",
+      "itemTitlePlaceholder": "Enter a title",
+      "itemDescription": "Description",
+      "itemDescriptionPlaceholder": "A short caption",
+      "itemLink": "Link",
+      "itemLinkHint": "A path inside the site. Empty means the card is not a link.",
+      "itemImage": "Image",
+      "itemImageHint": "PNG, JPG or WebP, up to 8MB. Empty shows a placeholder.",
+      "badgeLabel": "Badge",
+      "badgeType": "Badge type",
+      "badgePlaceholder": "For example, Hit",
+      "badgeHint": "The text on the card. Empty means no badge.",
+      "badgeNone": "No badge",
+      "badgeNeedsLabel": "A badge type is chosen but the text is empty — no badge will show in this language.",
+      "badgeTypes": {
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "sale": "Sale"
+      },
+      "uploading": "Uploading the image…",
+      "uploadFailed": "Could not upload the image"
+    },
+    "sections": {
+      "title": "Home sections",
+      "lead": "What appears below the search, and in what order.",
+      "add": "Add section",
+      "remove": "Remove section",
+      "published": "Published",
+      "heading": "Heading",
+      "headingPlaceholder": "For example, Hot destinations",
+      "link": "“See all” link",
+      "linkHint": "Empty means no link.",
+      "list": "List",
+      "listPlaceholder": "Choose a list",
+      "layout": "Layout",
+      "layoutPlaceholder": "Choose a layout",
+      "overflow": "The list holds {items} items and the layout fits {capacity} — the rest will not show.",
+      "pickRequired": "Choose a list and a layout for every section",
+      "titleRequired": "Every section needs a heading in at least one language"
+    }
+  }
+}

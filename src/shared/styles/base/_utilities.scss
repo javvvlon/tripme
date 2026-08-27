@@ -1,0 +1,38 @@
+@use '../utils' as *;
+
+.container { @include container('default'); }
+.container-wide { @include container('wide'); }
+
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.ph {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--tm-surface-3), #DDE3EA);
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, .55), transparent 60%);
+    }
+
+    &--a { background: linear-gradient(135deg, #B9D4F2, #7FA9D9); }
+    &--b { background: linear-gradient(135deg, #F6D9BC, #E0A574); }
+    &--c { background: linear-gradient(135deg, #BFE3D6, #7EBFA8); }
+    &--d { background: linear-gradient(135deg, #D6CDF0, #A392D8); }
+}
+
+.scrim {
+    position: absolute;
+    inset: 0;
+    @include photo-scrim;
+}

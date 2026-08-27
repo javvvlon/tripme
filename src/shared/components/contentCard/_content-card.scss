@@ -1,0 +1,183 @@
+@use '../../styles/utils' as *;
+
+.tm-content-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    min-height: 240px;
+    padding: 24px;
+    border-radius: radius('lg');
+    overflow: hidden;
+    box-shadow: shadow('md');
+    transition: transform .18s ease, box-shadow .18s ease;
+    color: var(--tm-common-white);
+    text-decoration: none;
+    isolation: isolate;
+
+    /**
+     * Hover is for links only — a card with nowhere to go should not invite a
+     * click. Three things move together, none of them the box itself: the
+     * photograph pushes in, the scrim deepens so the words stay readable
+     * against it, and the copy lifts to meet the eye.
+     *
+     * The card is `overflow: hidden`, so scaling the image inside it reads as
+     * the picture coming closer rather than the card growing.
+     */
+    &.is-link:hover,
+    &.is-link:focus-visible {
+        box-shadow: shadow('lg');
+
+        .tm-content-card__media img { transform: scale(1.06); }
+
+        .tm-content-card__body { transform: translateY(-4px); }
+
+        &::after { opacity: 1; }
+
+        .tm-content-card__go {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /**
+     * Where the height comes from.
+     *
+     * A row of equal cards has nothing else to set one, so each holds a square
+     * — which is the proportion the design uses for a three-up row. A wide
+     * card sets its row's height and the narrow one beside it simply fills,
+     * so the two always finish level.
+     */
+    &.is-square { aspect-ratio: 1 / 1; }
+
+    &.is-wide { aspect-ratio: 5 / 2; }
+
+    &.is-fill { height: 100%; }
+
+    &__frame {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+    }
+
+    &__media {
+        width: 100%;
+
+        img { transition: transform .5s cubic-bezier(.22, .61, .36, 1); }
+        height: 100%;
+        aspect-ratio: auto !important;
+    }
+
+    // The copy sits on the photograph, so it needs its own ground: a scrim
+    // that is opaque where the text is and gone by the middle of the card.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(
+            to top,
+            rgba(20, 23, 28, .82) 0%,
+            rgba(20, 23, 28, .5) 30%,
+            rgba(20, 23, 28, .06) 62%,
+            rgba(20, 23, 28, 0) 100%
+        );
+        opacity: .9;
+        transition: opacity .3s ease;
+    }
+
+    &__badge {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 1;
+    }
+
+    &__body {
+        position: relative;
+        transition: transform .3s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    /**
+     * The arrow that appears on hover, bottom-right. Not a button: the whole
+     * card is the link, and this only says so.
+     */
+    &__go {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--tm-common-white);
+        color: var(--tm-ink-1);
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity .25s ease, transform .25s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    &__title {
+        margin: 0;
+        font-size: size(21);
+        font-weight: 700;
+        line-height: 1.25;
+        text-shadow: 0 1px 12px rgba(20, 23, 28, .5);
+    }
+
+    &__text {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, .88);
+        font-size: size(15);
+        line-height: 1.5;
+        text-shadow: 0 1px 12px rgba(20, 23, 28, .5);
+        @include line-clamp(2);
+    }
+
+    // Cards that share a row with a wide one are shorter, so the copy has to
+    // give way before the image does.
+    &.is-compact {
+        min-height: 200px;
+        padding: 18px;
+
+        .tm-content-card__go {
+            right: 16px;
+            bottom: 16px;
+            width: 34px;
+            height: 34px;
+        }
+
+        .tm-content-card__badge {
+            top: 14px;
+            left: 14px;
+        }
+
+        .tm-content-card__title { font-size: size(17); }
+
+        .tm-content-card__text {
+            font-size: size(14);
+            @include line-clamp(1);
+        }
+    }
+}
+
+@media #{$until-md} {
+    .tm-content-card { min-height: 260px; }
+}
+
+// A card that lifts and zooms on hover is motion someone may have asked not to
+// see; the shadow alone still says it is interactive.
+@media (prefers-reduced-motion: reduce) {
+    .tm-content-card {
+        &__media img,
+        &__body,
+        &__go { transition: none; }
+
+        &.is-link:hover {
+            .tm-content-card__media img { transform: none; }
+            .tm-content-card__body { transform: none; }
+        }
+    }
+}

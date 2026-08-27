@@ -1,0 +1,42 @@
+@use '../../styles/utils' as *;
+
+.tm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: radius('pill');
+    font-size: size(14);
+    font-weight: 500;
+    transition: background .15s, border-color .15s, color .15s;
+
+    &--onLight {
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-2);
+        border: 1px solid var(--tm-border-1);
+
+        &:hover { border-color: var(--tm-ink-4); color: var(--tm-ink-1); }
+
+        &.tm-chip--active {
+            background: var(--tm-brand-primary-soft);
+            border-color: var(--tm-brand-primary);
+            color: var(--tm-brand-primary-dark);
+            font-weight: 600;
+        }
+    }
+
+    &--onDark {
+        background: rgba(255, 255, 255, .13);
+        color: var(--tm-common-white);
+        border: 1px solid rgba(255, 255, 255, .24);
+
+        &:hover { background: rgba(255, 255, 255, .22); }
+
+        &.tm-chip--active {
+            background: var(--tm-common-white);
+            color: var(--tm-brand-secondary-dark);
+            border-color: var(--tm-common-white);
+            font-weight: 600;
+        }
+    }
+}

@@ -1,0 +1,45 @@
+@use '../../styles/utils' as *;
+
+.tm-form-row {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--tm-border-1);
+
+    &:last-child { border-bottom: 0; }
+
+    &__label {
+        display: block;
+        color: var(--tm-ink-1);
+        font-size: size(17);
+        font-weight: 700;
+    }
+
+    &__required { color: var(--tm-brand-primary); }
+
+    &__hint {
+        margin: 6px 0 0;
+        color: var(--tm-ink-3);
+        font-size: size(15);
+        line-height: 1.45;
+    }
+
+    &__control {
+        min-width: 0;
+    }
+
+    &__error {
+        margin: 8px 0 0;
+        color: var(--tm-status-danger);
+        font-size: size(14);
+    }
+}
+
+@media #{$until-md} {
+    .tm-form-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        padding: 20px 0;
+    }
+}

@@ -1,0 +1,41 @@
+@use '../../styles/utils' as *;
+
+.tm-skeleton {
+    display: block;
+    background: var(--tm-surface-3);
+    border-radius: radius('sm');
+    position: relative;
+    overflow: hidden;
+
+    &--md { border-radius: radius('md'); }
+    &--lg { border-radius: radius('lg'); }
+    &--pill { border-radius: radius('pill'); }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, .65),
+            transparent
+        );
+        animation: tm-skeleton-sweep 1.4s infinite;
+    }
+
+    &__lines {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@keyframes tm-skeleton-sweep {
+    100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-skeleton::after { animation: none; }
+}

@@ -1,0 +1,43 @@
+@use '../../styles/utils' as *;
+
+.tm-content-section {
+    @include container();
+    margin-block: 64px;
+
+    &__head { margin-bottom: 24px; }
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--tm-brand-secondary);
+        font-size: size(15);
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+
+    &__grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+
+        // Cards share the column's height so a stack lines up with the tall
+        // cell beside it. No `min-height: 0` here — that would override the
+        // floor the card sets for itself and collapse a single-cell row.
+        > * { flex: 1; }
+    }
+}
+
+@media #{$until-md} {
+    .tm-content-section__column {
+        grid-column: span 12 !important;
+    }
+}

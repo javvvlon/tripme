@@ -1,0 +1,33 @@
+@use 'colors' as *;
+@use 'typography' as *;
+@use 'layout' as *;
+
+:root {
+    @each $ff, $shades in $font-family {
+        @each $shade, $value in $shades {
+            --tm-font-#{$ff}-#{$shade}: #{$value};
+        }
+    }
+
+    @each $group, $shades in $colors {
+        @each $shade, $value in $shades {
+            --tm-#{$group}-#{$shade}: #{$value};
+        }
+    }
+
+    @each $key, $value in $size {
+        --tm-size-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $radius {
+        --tm-radius-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $shadow {
+        --tm-shadow-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $container {
+        --tm-container-#{$key}: #{$value};
+    }
+}

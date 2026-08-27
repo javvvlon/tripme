@@ -1,0 +1,80 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-editor-skeleton {
+    &__tabs {
+        display: flex;
+        gap: 8px;
+        width: fit-content;
+        padding: 6px;
+        margin: 24px 0 4px;
+        border-radius: radius('md');
+        background: var(--tm-surface-2);
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 32px;
+        padding: 28px 0;
+        border-top: 1px solid var(--tm-border-1);
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__card {
+        margin-top: 16px;
+        padding: 16px 18px 20px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+
+        &:first-of-type { margin-top: 24px; }
+    }
+
+    &__card-head {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 14px;
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    &__rows {
+        list-style: none;
+        margin: 26px 0 0;
+        padding: 0;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        overflow: hidden;
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px;
+            border-bottom: 1px solid var(--tm-border-1);
+
+            &:last-child { border-bottom: 0; }
+        }
+    }
+}
+
+@media #{$until-md} {
+    .tm-editor-skeleton {
+        &__row {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        &__fields { grid-template-columns: minmax(0, 1fr); }
+    }
+}

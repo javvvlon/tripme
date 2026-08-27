@@ -1,0 +1,104 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-site-header {
+    position: relative;
+    z-index: 40;
+    color: var(--tm-common-white);
+
+    &--over { background: transparent; }
+    &--solid { background: var(--tm-brand-secondary); }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        height: 76px;
+    }
+
+    &__logo img { width: 120px; height: auto; }
+
+    &__nav {
+        display: flex;
+        gap: 24px;
+        margin-left: auto;
+        font-size: size(14);
+        font-weight: 500;
+        color: rgba(255, 255, 255, .9);
+
+        a:hover {
+            color: var(--tm-common-white);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        a.router-link-active { color: var(--tm-common-white); font-weight: 600; }
+    }
+
+    &__tools {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: 24px;
+    }
+
+    &__account {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: radius('pill');
+        background: rgba(255, 255, 255, .14);
+        border: 1px solid rgba(255, 255, 255, .26);
+
+        &:hover { background: rgba(255, 255, 255, .24); }
+
+        &--user {
+            font-size: size(13);
+            font-weight: 700;
+            letter-spacing: .02em;
+        }
+    }
+
+    &__burger {
+        display: none;
+        margin-left: auto;
+        padding: 8px;
+        color: var(--tm-common-white);
+    }
+
+    &__search { padding-bottom: 22px; }
+
+    @media #{$until-lg} {
+        &__nav {
+            position: absolute;
+            top: 76px;
+            left: 0;
+            right: 0;
+            flex-direction: column;
+            gap: 0;
+            margin-left: 0;
+            padding: 0 24px;
+            background: var(--tm-brand-secondary-dark);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .25s;
+
+            &.is-open { max-height: 340px; padding: 6px 24px 18px; }
+
+            a { padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, .12); }
+        }
+
+        &__tools { margin-left: auto; }
+        &__burger { display: inline-flex; margin-left: 0; }
+    }
+
+    @media #{$until-sm} {
+        &__row { height: 64px; gap: 12px; }
+    }
+}
+
+.is-planned {
+    cursor: default;
+    opacity: .55;
+}

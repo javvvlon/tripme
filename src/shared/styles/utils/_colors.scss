@@ -1,0 +1,49 @@
+$colors: (
+    'common': (
+        'white': #ffffff,
+        'black': #14171C,
+        'night': #0E1116,
+    ),
+    'brand': (
+        'primary': #F68634,
+        'primary-dark': #D9701E,
+        'primary-soft': #FFF3E9,
+        'secondary': #0B4FD4,
+        'secondary-light': #1A62EE,
+        'secondary-dark': #0940AC,
+        'secondary-soft': #EEF3FF,
+    ),
+    'ink': (
+        '1': #14171C,
+        '2': #3C434E,
+        '3': #6B7482,
+        '4': #98A0AC,
+    ),
+    'surface': (
+        '1': #ffffff,
+        '2': #F2F4F7,
+        '3': #EDF0F4,
+    ),
+    'border': (
+        '1': #E3E6EA,
+        '2': #F0F2F5,
+    ),
+    'cms': (
+        'panel': #0F172A,
+        'panel-hover': #1B2537,
+        'panel-active': #1E293B,
+        'panel-line': #232E42,
+        'panel-ink': #E7EAF0,
+        'panel-ink-dim': #94A3B8,
+        'accent': #7F56D9,
+        'accent-soft': #F4F0FF,
+    ),
+    'status': (
+        'success': #2E6B3C,
+        'success-soft': #EFF8F1,
+        'success-line': #B9D9C0,
+        'danger': #E5484D,
+        'danger-soft': #FDECEC,
+        'warning': #F5B324,
+    ),
+);

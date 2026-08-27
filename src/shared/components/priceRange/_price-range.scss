@@ -1,0 +1,50 @@
+@use '../../styles/utils' as *;
+
+.tm-price-range {
+    &__histogram {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 56px;
+        margin-bottom: 12px;
+    }
+
+    &__bar {
+        flex: 1;
+        min-height: 4px;
+        border-radius: 3px 3px 0 0;
+        background: var(--tm-surface-3);
+        transition: background .15s;
+
+        &.is-active { background: var(--tm-brand-secondary-soft); }
+        &.is-active.is-tall { background: #C6D8FA; }
+    }
+
+    &__inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        padding: 8px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+
+        &:focus-within { border-color: var(--tm-brand-primary); }
+
+        label { font-size: size(11); color: var(--tm-ink-3); }
+
+        input {
+            border: 0;
+            background: none;
+            outline: none;
+            font-size: size(14);
+            font-weight: 600;
+            width: 100%;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+}

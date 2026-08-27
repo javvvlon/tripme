@@ -1,0 +1,64 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-trust-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    margin-top: -72px;
+    padding: 32px 28px 38px;
+    background: var(--tm-surface-1);
+    border-radius: radius('lg');
+    box-shadow: var(--tm-shadow-lg);
+    position: relative;
+    z-index: 5;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    &__icon {
+        width: auto;
+        height: 112px;
+    }
+
+    &__title {
+        font-size: size(17);
+        font-weight: 600;
+        color: var(--tm-ink-1);
+        line-height: 1.4;
+        max-width: 19ch;
+    }
+
+    @media #{$until-lg} {
+        gap: 22px;
+
+        &__icon { height: 92px; }
+        &__title { font-size: size(16); }
+    }
+
+    @media #{$until-md} {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px 20px;
+        padding: 30px 24px 34px;
+    }
+
+    @media #{$until-xs} {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        margin-top: -52px;
+        padding: 26px 22px;
+
+        &__item {
+            flex-direction: row;
+            text-align: left;
+            gap: 18px;
+        }
+
+        &__icon { height: 64px; flex: none; }
+        &__title { max-width: none; }
+    }
+}

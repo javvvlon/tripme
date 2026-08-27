@@ -1,0 +1,42 @@
+@use '../../styles/utils' as *;
+
+.tm-lang-switcher {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: radius('pill');
+    font-size: size(14);
+    font-weight: 500;
+
+    select {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    &:focus-within {
+        outline: 3px solid var(--tm-brand-primary);
+        outline-offset: 2px;
+    }
+
+    &--onDark {
+        background: rgba(255, 255, 255, .14);
+        border: 1px solid rgba(255, 255, 255, .26);
+        color: var(--tm-common-white);
+
+        &:hover { background: rgba(255, 255, 255, .22); }
+    }
+
+    &--onLight {
+        background: var(--tm-surface-1);
+        border: 1px solid var(--tm-border-1);
+        color: var(--tm-ink-2);
+
+        &:hover { border-color: var(--tm-ink-4); }
+    }
+}
