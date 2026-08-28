@@ -12,6 +12,12 @@ export interface IPostTranslationRaw {
   badge_label: string | null
 }
 
+export interface IPostAuthorRaw {
+  uuid: string
+  first_name: string
+  last_name: string
+}
+
 export interface IPostRaw {
   uuid: string
   slug: string
@@ -19,6 +25,7 @@ export interface IPostRaw {
   badge_type: BadgeType | null
   link: string | null
   published_at: string | null
+  author: IPostAuthorRaw | null
   translations: IPostTranslationRaw[]
 }
 

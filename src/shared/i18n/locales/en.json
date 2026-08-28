@@ -349,7 +349,9 @@
         "list": "List",
         "posts": "Blog articles"
       },
-      "postsHint": "The section shows the latest published articles on its own."
+      "postsHint": "Nothing selected — the latest articles are shown.",
+      "articles": "Articles",
+      "articlesLatest": "Latest published"
     },
     "posts": {
       "title": "Articles",
@@ -388,7 +390,13 @@
         "badgeNone": "No badge",
         "badgeLabel": "Badge text",
         "link": "External link",
-        "linkHint": "Optional: a link to the original source."
+        "linkHint": "Optional: a link to the original source.",
+        "author": "Author"
+      },
+      "view": {
+        "label": "List view",
+        "tile": "List",
+        "card": "Cards"
       }
     }
   },

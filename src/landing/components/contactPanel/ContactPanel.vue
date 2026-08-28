@@ -24,50 +24,52 @@
 
                 <form class="tm-contact__form" novalidate @submit.prevent="submit">
                     <div class="tm-contact__names">
-                        <FormRow
-                            :label="t('contact.fields.firstName')" :for="firstNameId" required
-                            :error="touched.firstName ? errors.firstName : undefined"
-                        >
-                            <Input
-                                :id="firstNameId" v-model="form.firstName"
-                                :placeholder="t('contact.fields.firstName')"
-                                autocomplete="given-name"
-                                @blur="validation.touch('firstName')"
-                            />
-                        </FormRow>
+                        <Input
+                            v-model="form.firstName"
+                            :label="t('contact.fields.firstName')"
+                            :placeholder="t('contact.fields.firstName')"
+                            :error="touched.firstName ? errors.firstName : ''"
+                            autocomplete="given-name"
+                            required
+                            @blur="validation.touch('firstName')"
+                        />
 
-                        <FormRow :label="t('contact.fields.lastName')" :for="lastNameId">
-                            <Input
-                                :id="lastNameId" v-model="form.lastName"
-                                :placeholder="t('contact.fields.lastName')"
-                                autocomplete="family-name"
-                            />
-                        </FormRow>
+                        <Input
+                            v-model="form.lastName"
+                            :label="t('contact.fields.lastName')"
+                            :placeholder="t('contact.fields.lastName')"
+                            autocomplete="family-name"
+                        />
                     </div>
 
-                    <FormRow
-                        :label="t('contact.fields.phone')" :for="phoneId" required
-                        :error="touched.phone ? errors.phone : undefined"
-                    >
+                    <div class="tm-contact__field">
+                        <label :for="phoneId" class="tm-contact__label">
+                            {{ t('contact.fields.phone') }}<span aria-hidden="true"> *</span>
+                        </label>
+
                         <div class="tm-contact__phone">
                             <span class="tm-contact__prefix">{{ PHONE_PREFIX }}</span>
+
                             <Input
                                 :id="phoneId" v-model="form.phone" type="tel"
                                 :placeholder="t('contact.fields.phonePlaceholder')"
+                                :error="touched.phone ? errors.phone : ''"
                                 autocomplete="tel-national"
                                 @blur="validation.touch('phone')"
                             />
                         </div>
-                    </FormRow>
+                    </div>
 
-                    <FormRow :label="t('contact.fields.message')" :for="messageId">
+                    <div class="tm-contact__field">
+                        <label :for="messageId" class="tm-contact__label">{{ t('contact.fields.message') }}</label>
+
                         <textarea
                             :id="messageId" v-model="form.message"
                             class="tm-contact__textarea" rows="5"
                             :maxlength="MESSAGE_MAX"
                             :placeholder="t('contact.fields.messagePlaceholder')"
                         />
-                    </FormRow>
+                    </div>
 
                     <p v-if="error" class="tm-contact__error" role="alert">{{ error }}</p>
                     <p v-else-if="sent" class="tm-contact__sent" role="status">{{ t('contact.sent') }}</p>
@@ -90,8 +92,6 @@ const { t } = useI18n()
 const { form, validation, sending, sent, error, submit } = useContactForm()
 const { errors, touched } = validation
 
-const firstNameId = useId()
-const lastNameId = useId()
 const phoneId = useId()
 const messageId = useId()
 </script>

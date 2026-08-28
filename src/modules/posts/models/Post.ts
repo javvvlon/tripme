@@ -16,7 +16,16 @@ export interface IPostAttributes {
   imageUrl: string | null
   link: string | null
   badge: { label: string, type: BadgeType } | null
+  author: string | null
   publishedAt: string | null
+}
+
+const authorName = (raw: IPostRaw): string | null => {
+  if (!raw.author) return null
+
+  const name = `${raw.author.first_name} ${raw.author.last_name}`.trim()
+
+  return name || null
 }
 
 const emptyTranslation = (): IPostTranslationDraft => ({
@@ -43,6 +52,7 @@ export class Post extends Model<IPostAttributes> {
       imageUrl: raw.image_url,
       link: raw.link,
       badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
+      author: authorName(raw),
       publishedAt: raw.published_at,
     })
   }

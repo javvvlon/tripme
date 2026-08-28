@@ -349,7 +349,9 @@
         "list": "Ro'yxat",
         "posts": "Blog maqolalari"
       },
-      "postsHint": "Boʻlim oxirgi chop etilgan maqolalarni oʻzi koʻrsatadi."
+      "postsHint": "Hech nima tanlanmagan — oxirgi maqolalarni koʻrsatamiz.",
+      "articles": "Maqolalar",
+      "articlesLatest": "Oxirgi chop etilganlar"
     },
     "posts": {
       "title": "Maqolalar",
@@ -388,7 +390,13 @@
         "badgeNone": "Badgesiz",
         "badgeLabel": "Badge matni",
         "link": "Tashqi havola",
-        "linkHint": "Ixtiyoriy: asl manbaga havola."
+        "linkHint": "Ixtiyoriy: asl manbaga havola.",
+        "author": "Muallif"
+      },
+      "view": {
+        "label": "Roʻyxat koʻrinishi",
+        "tile": "Roʻyxat",
+        "card": "Kartalar"
       }
     }
   },

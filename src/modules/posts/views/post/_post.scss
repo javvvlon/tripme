@@ -38,9 +38,23 @@
         color: var(--tm-ink-3);
     }
 
-    &__date {
+    &__by {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
         color: var(--tm-ink-4);
         font-size: size(14);
+
+        > * + *::before {
+            content: '\2022';
+            margin-right: 10px;
+        }
+    }
+
+    &__author {
+        color: var(--tm-ink-2);
+        font-weight: 600;
     }
 
     &__cover {

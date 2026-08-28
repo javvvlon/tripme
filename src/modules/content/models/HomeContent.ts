@@ -45,9 +45,13 @@ export interface IHomeContent {
 
 export class HomeContent extends Model<IHomeContent> {
   public static forLocale(raw: IHomeContentRaw, locale: ContentLocale): HomeContent {
-    const posts = (raw?.posts ?? [])
-      .map(post => postAsItem(post, locale))
-      .filter((item): item is IContentItem => item !== null)
+    const postItems = new Map(
+      (raw?.posts ?? [])
+        .map(post => [post.uuid, postAsItem(post, locale)] as const)
+        .filter((entry): entry is [string, IContentItem] => entry[1] !== null),
+    )
+
+    const latest = [...postItems.values()]
 
     const lists = new Map((raw?.lists ?? []).map(list => [list.uuid, list]))
     const layouts = new Map((raw?.layouts ?? []).map(layout => [layout.uuid, layout]))
@@ -65,7 +69,11 @@ export class HomeContent extends Model<IHomeContent> {
         if (!fromPosts && !list) return null
 
         const items = (fromPosts
-          ? posts
+          ? (section.post_ids?.length
+              ? section.post_ids
+                  .map(id => postItems.get(id))
+                  .filter((item): item is IContentItem => Boolean(item))
+              : latest)
           : list!.items
               .slice()
               .sort((a, b) => a.position - b.position)

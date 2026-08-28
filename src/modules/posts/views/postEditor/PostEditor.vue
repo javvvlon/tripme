@@ -17,53 +17,55 @@
             <form class="tm-post-editor__form" novalidate @submit.prevent="submit">
                 <div class="tm-post-editor__grid">
                     <div class="tm-post-editor__main">
-                        <FormRow
-                            :label="t('cms.posts.fields.title')" :for="titleId" required
-                            :error="touched.title ? errors.title : undefined"
-                        >
-                            <Input
-                                :id="titleId"
-                                v-model="draft.translations[locale].title"
-                                :placeholder="t('cms.posts.fields.titlePlaceholder')"
-                                @blur="validation.touch('title')"
-                            />
-                        </FormRow>
+                        <Input
+                            v-model="draft.translations[locale].title"
+                            :label="t('cms.posts.fields.title')"
+                            :placeholder="t('cms.posts.fields.titlePlaceholder')"
+                            :error="touched.title ? errors.title : ''"
+                            required
+                            @blur="validation.touch('title')"
+                        />
 
-                        <FormRow
-                            :label="t('cms.posts.fields.excerpt')" :for="excerptId"
+                        <Input
+                            v-model="draft.translations[locale].excerpt"
+                            :label="t('cms.posts.fields.excerpt')"
+                            :placeholder="t('cms.posts.fields.excerptPlaceholder')"
                             :hint="t('cms.posts.fields.excerptHint')"
-                            :error="touched.excerpt ? errors.excerpt : undefined"
-                        >
-                            <Input
-                                :id="excerptId"
-                                v-model="draft.translations[locale].excerpt"
-                                :placeholder="t('cms.posts.fields.excerptPlaceholder')"
-                                @blur="validation.touch('excerpt')"
-                            />
-                        </FormRow>
+                            :error="touched.excerpt ? errors.excerpt : ''"
+                            @blur="validation.touch('excerpt')"
+                        />
 
-                        <FormRow :label="t('cms.posts.fields.body')">
+                        <div class="tm-post-editor__field">
+                            <span class="tm-post-editor__label">{{ t('cms.posts.fields.body') }}</span>
+
                             <MarkdownEditor
                                 v-model="draft.translations[locale].body"
                                 :placeholder="t('cms.posts.fields.bodyPlaceholder')"
                                 :hint="t('cms.posts.fields.bodyHint')"
                             />
-                        </FormRow>
+                        </div>
                     </div>
 
                     <aside class="tm-post-editor__side">
-                        <FormRow :label="t('cms.posts.fields.state')">
+                        <div class="tm-post-editor__field">
+                            <span class="tm-post-editor__label">{{ t('cms.posts.fields.state') }}</span>
                             <Checkbox v-model="draft.isPublished" :label="t('cms.posts.publishedLabel')" />
-                        </FormRow>
 
-                        <FormRow
-                            :label="t('cms.posts.fields.slug')" :for="slugId"
-                            :hint="t('cms.posts.fields.slugHint')" required
-                        >
-                            <Input :id="slugId" v-model="draft.slug" />
-                        </FormRow>
+                            <p v-if="author" class="tm-post-editor__meta">
+                                {{ t('cms.posts.fields.author') }}: <strong>{{ author }}</strong>
+                            </p>
+                        </div>
 
-                        <FormRow :label="t('cms.posts.fields.image')" :error="imageError || undefined">
+                        <Input
+                            v-model="draft.slug"
+                            :label="t('cms.posts.fields.slug')"
+                            :hint="t('cms.posts.fields.slugHint')"
+                            required
+                        />
+
+                        <div class="tm-post-editor__field">
+                            <span class="tm-post-editor__label">{{ t('cms.posts.fields.image') }}</span>
+
                             <FileUpload
                                 v-model:error="imageError"
                                 :accept="[...POST_IMAGE.accept]"
@@ -78,27 +80,33 @@
                                 @clear="clearImage"
                                 @discard="discardImage"
                             />
-                        </FormRow>
+                        </div>
 
-                        <FormRow :label="t('cms.posts.fields.badgeType')">
-                            <select v-model="draft.badgeType" class="tm-post-editor__select">
+                        <div class="tm-post-editor__field">
+                            <label :for="badgeTypeId" class="tm-post-editor__label">
+                                {{ t('cms.posts.fields.badgeType') }}
+                            </label>
+
+                            <select :id="badgeTypeId" v-model="draft.badgeType" class="tm-post-editor__select">
                                 <option :value="null">{{ t('cms.posts.fields.badgeNone') }}</option>
                                 <option v-for="type in BADGE_TYPES" :key="type" :value="type">
                                     {{ t(`cms.lists.badgeTypes.${type}`) }}
                                 </option>
                             </select>
-                        </FormRow>
+                        </div>
 
-                        <FormRow
+                        <Input
                             v-if="draft.badgeType"
-                            :label="t('cms.posts.fields.badgeLabel')" :for="badgeId"
-                        >
-                            <Input :id="badgeId" v-model="draft.translations[locale].badgeLabel" />
-                        </FormRow>
+                            v-model="draft.translations[locale].badgeLabel"
+                            :label="t('cms.posts.fields.badgeLabel')"
+                        />
 
-                        <FormRow :label="t('cms.posts.fields.link')" :for="linkId" :hint="t('cms.posts.fields.linkHint')">
-                            <Input :id="linkId" v-model="draft.link" placeholder="https://" />
-                        </FormRow>
+                        <Input
+                            v-model="draft.link"
+                            :label="t('cms.posts.fields.link')"
+                            :hint="t('cms.posts.fields.linkHint')"
+                            placeholder="https://"
+                        />
                     </aside>
                 </div>
 
@@ -131,16 +139,12 @@ import { usePostEditor } from './PostEditor.hooks'
 const { t, locales } = useI18n()
 
 const {
-    locale, draft, validation, status, saving, saved, error,
+    locale, draft, author, validation, status, saving, saved, error,
     uploading, imageError, submit, remove, pickImage, clearImage, discardImage,
 } = usePostEditor()
 const { errors, touched } = validation
 
-const titleId = useId()
-const excerptId = useId()
-const slugId = useId()
-const badgeId = useId()
-const linkId = useId()
+const badgeTypeId = useId()
 
 const localeTabs = computed(() => CONTENT_LOCALES.map(code => ({
     value: code,

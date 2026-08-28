@@ -1,4 +1,5 @@
 import { useContentRepository } from '~/modules/content/repositories'
+import { usePostsRepository } from '~/modules/posts/repositories'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
 import type { ContentLocale } from '~/modules/content/contracts/content'
@@ -12,6 +13,7 @@ export interface IDraftSection {
   key: string
   link: string
   variant: SectionVariant
+  postIds: string[]
   listId: string
   layoutId: string
   isPublished: boolean
@@ -28,6 +30,7 @@ const nextKey = () => `section-${++counter}`
 export const useSections = () => {
   const { t } = useI18n()
   const { sections, lists, layouts, saveSections } = useContentRepository()
+  const { all: allPosts } = usePostsRepository()
 
   const locale = ref<ContentLocale>('en')
   const draft = ref<IDraftSection[]>([])
@@ -39,9 +42,9 @@ export const useSections = () => {
   const loaded = ref(false)
 
   const { data, status } = useAsyncData('cms:sections', async () => {
-    const [current, allLists, allLayouts] = await Promise.all([sections(), lists(), layouts()])
+    const [current, allLists, allLayouts, posts] = await Promise.all([sections(), lists(), layouts(), allPosts()])
 
-    if (loaded.value) return { lists: allLists, layouts: allLayouts }
+    if (loaded.value) return { lists: allLists, layouts: allLayouts, posts }
 
     loaded.value = true
 
@@ -49,6 +52,7 @@ export const useSections = () => {
       key: section.uuid,
       link: section.link ?? '',
       variant: section.variant ?? 'list',
+      postIds: [...(section.post_ids ?? [])],
       listId: section.list_id ?? '',
       layoutId: section.layout_id,
       isPublished: section.is_published,
@@ -58,12 +62,18 @@ export const useSections = () => {
       },
     }))
 
-    return { lists: allLists, layouts: allLayouts }
-  }, { default: () => ({ lists: [], layouts: [] }) })
+    return { lists: allLists, layouts: allLayouts, posts }
+  }, { default: () => ({ lists: [], layouts: [], posts: [] }) })
 
   const variantOptions = computed(() => SECTION_VARIANTS.map(value => ({
     value,
     label: t(`cms.sections.variants.${value}`),
+  })))
+
+  const postOptions = computed(() => (data.value?.posts ?? []).map(post => ({
+    value: post.uuid,
+    label: post.translations.find(item => item.title)?.title ?? post.slug,
+    hint: post.is_published ? undefined : t('cms.posts.draft'),
   })))
 
   const listOptions = computed(() => (data.value?.lists ?? []).map(list => ({
@@ -92,6 +102,7 @@ export const useSections = () => {
       key: nextKey(),
       link: '',
       variant: 'list',
+      postIds: [],
       listId: data.value?.lists[0]?.uuid ?? '',
       layoutId: data.value?.layouts[0]?.uuid ?? '',
       isPublished: true,
@@ -138,6 +149,7 @@ export const useSections = () => {
       await saveSections(draft.value.map(section => ({
         link: section.link.trim() || null,
         variant: section.variant,
+        post_ids: section.variant === 'posts' ? section.postIds : [],
         list_id: section.variant === 'posts' ? null : section.listId,
         layout_id: section.layoutId,
         is_published: section.isPublished,
@@ -156,7 +168,7 @@ export const useSections = () => {
 
   return {
     locale, draft, status, saving, saved, error,
-    variantOptions, listOptions, layoutOptions, capacityOf, itemsIn,
+    variantOptions, postOptions, listOptions, layoutOptions, capacityOf, itemsIn,
     add, remove, move, submit,
   }
 }

@@ -46,6 +46,7 @@ export interface IContentSectionRaw {
   translations: Array<{ locale: ContentLocale, title: string }>
   link: string | null
   variant: SectionVariant
+  post_ids: string[]
   list_id: string | null
   layout_id: string
   position: number

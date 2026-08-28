@@ -21,9 +21,11 @@
 
                     <p v-if="post.excerpt" class="tm-post__lead">{{ post.excerpt }}</p>
 
-                    <time v-if="published" class="tm-post__date" :datetime="post.publishedAt!">
-                        {{ published }}
-                    </time>
+                    <p v-if="post.author || published" class="tm-post__by">
+                        <span v-if="post.author" class="tm-post__author">{{ post.author }}</span>
+
+                        <time v-if="published" :datetime="post.publishedAt!">{{ published }}</time>
+                    </p>
                 </div>
             </header>
 

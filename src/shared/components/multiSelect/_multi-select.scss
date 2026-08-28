@@ -1,0 +1,115 @@
+@use '../../styles/utils' as *;
+
+.tm-multi-select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+
+    &__label {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover { border-color: var(--tm-ink-4); }
+
+        &:disabled { opacity: .6; cursor: default; }
+    }
+
+    &__value {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.is-empty {
+            color: var(--tm-ink-4);
+            font-weight: 500;
+        }
+    }
+
+    &__caret {
+        flex-shrink: 0;
+        color: var(--tm-ink-4);
+    }
+
+    &__note {
+        margin: 0;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 20;
+        list-style: none;
+        max-height: 280px;
+        margin: 0;
+        padding: 6px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        box-shadow: shadow('md');
+        overflow-y: auto;
+    }
+
+    &__option {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: radius('xs');
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); }
+    }
+
+    &__box {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        accent-color: var(--tm-brand-primary);
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        color: var(--tm-ink-1);
+        font-size: size(14);
+    }
+
+    &__hint {
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+
+    &__empty {
+        padding: 10px;
+        color: var(--tm-ink-4);
+        font-size: size(14);
+    }
+}

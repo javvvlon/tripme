@@ -21,6 +21,10 @@ const TRANSLITERATION: Record<string, string> = {
   ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya', ў: 'o', қ: 'q', ғ: 'g', ҳ: 'h',
 }
 
+const VIEW_KEY = 'tm:cms:posts:view'
+
+export type PostsView = 'tile' | 'card'
+
 export const usePosts = () => {
   const { t } = useI18n()
   const localePath = useLocalePath()
@@ -28,6 +32,16 @@ export const usePosts = () => {
 
   const error = ref('')
   const busy = ref(false)
+
+  const view = ref<PostsView>('tile')
+
+  onMounted(() => {
+    const stored = localStorage.getItem(VIEW_KEY)
+
+    if (stored === 'tile' || stored === 'card') view.value = stored
+  })
+
+  watch(view, next => localStorage.setItem(VIEW_KEY, next))
 
   const creating = ref(false)
   const draft = reactive({ title: '', slug: '', touched: false })
@@ -84,5 +98,5 @@ export const usePosts = () => {
     }
   }
 
-  return { posts: data, status, error, busy, creating, draft, canCreate, slugIsValid, open, submit, remove, refresh }
+  return { posts: data, status, error, busy, view, creating, draft, canCreate, slugIsValid, open, submit, remove, refresh }
 }

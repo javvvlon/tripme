@@ -22,6 +22,8 @@ export const usePostEditor = () => {
   const locale = ref<ContentLocale>('ru')
   const draft = reactive<IPostDraft>(Post.emptyDraft())
 
+  const author = ref<string | null>(null)
+
   const saving = ref(false)
   const saved = ref(false)
   const error = ref('')
@@ -36,6 +38,10 @@ export const usePostEditor = () => {
     draft.badgeType = next.badgeType
     draft.link = next.link
     draft.isPublished = next.isPublished
+
+    author.value = raw.author
+      ? `${raw.author.first_name} ${raw.author.last_name}`.trim() || null
+      : null
 
     for (const code of CONTENT_LOCALES) draft.translations[code] = next.translations[code]
   }
@@ -138,7 +144,7 @@ export const usePostEditor = () => {
   }
 
   return {
-    id, locale, draft, validation, status, saving, saved, error,
+    id, locale, draft, author, validation, status, saving, saved, error,
     uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage,
   }
 }
