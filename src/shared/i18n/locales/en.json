@@ -14,7 +14,11 @@
     "logout": "Sign out",
     "workspace": "Workspace",
     "loading": "Loading…",
-    "seeAll": "See all"
+    "seeAll": "See all",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…"
   },
   "nav": {
     "home": "TripMe — home",
@@ -238,7 +242,8 @@
       "home": "Home page",
       "banner": "Banner",
       "sections": "Sections",
-      "lists": "Lists"
+      "lists": "Lists",
+      "posts": "Articles"
     },
     "roles": {
       "CLIENT": "Client",
@@ -338,7 +343,101 @@
       "layoutPlaceholder": "Choose a layout",
       "overflow": "The list holds {items} items and the layout fits {capacity} — the rest will not show.",
       "pickRequired": "Choose a list and a layout for every section",
-      "titleRequired": "Every section needs a heading in at least one language"
+      "titleRequired": "Every section needs a heading in at least one language",
+      "variant": "Source",
+      "variants": {
+        "list": "List",
+        "posts": "Blog articles"
+      },
+      "postsHint": "The section shows the latest published articles on its own."
+    },
+    "posts": {
+      "title": "Articles",
+      "lead": "Blog content: create, edit and publish.",
+      "create": "New article",
+      "createConfirm": "Create",
+      "newTitle": "New article",
+      "newLead": "The title and address can be changed later.",
+      "editLead": "A draft stays inside the CMS until it is published.",
+      "languageTabs": "Content language",
+      "untitled": "Untitled",
+      "empty": "No articles yet.",
+      "published": "Published",
+      "draft": "Draft",
+      "publishedLabel": "Publish this article",
+      "delete": "Delete article",
+      "errors": {
+        "needsRussian": "A Russian title is required before publishing."
+      },
+      "fields": {
+        "title": "Title",
+        "titlePlaceholder": "What is this article about?",
+        "slug": "Address",
+        "slugPlaceholder": "kaliningrad-with-valentina",
+        "slugHint": "Latin letters, digits and hyphens. The article lives at /blog/address.",
+        "slugInvalid": "Lowercase latin letters, digits and hyphens only.",
+        "excerpt": "Summary",
+        "excerptPlaceholder": "One or two sentences for the card and search",
+        "excerptHint": "Shown on the card in a list and in search results.",
+        "body": "Body",
+        "bodyPlaceholder": "## Subheading\n\nThe article body in Markdown…",
+        "bodyHint": "Markdown: **bold**, _italic_, ## headings, - lists, [links](https://).",
+        "state": "State",
+        "image": "Cover",
+        "badgeType": "Badge type",
+        "badgeNone": "No badge",
+        "badgeLabel": "Badge text",
+        "link": "External link",
+        "linkHint": "Optional: a link to the original source."
+      }
+    }
+  },
+  "markdown": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "heading": "Heading",
+    "quote": "Quote",
+    "bullet": "List",
+    "link": "Link",
+    "write": "Write",
+    "preview": "Preview"
+  },
+  "post": {
+    "readMore": "Read at the source",
+    "missing": {
+      "title": "Article not found",
+      "lead": "It may have been removed, or the link is out of date.",
+      "home": "Back home"
+    }
+  },
+  "contact": {
+    "title": "Chat to our friendly team",
+    "lead": "We'd love to hear from you. Please fill out this form or reach us another way.",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "sent": "Thank you! We'll be in touch shortly.",
+    "error": "The message could not be sent. Please try again.",
+    "channels": {
+      "email": "Email",
+      "emailValue": "hi{'@'}tripme.uz",
+      "chat": "Live chat",
+      "chatValue": "Start new chat",
+      "office": "Office",
+      "officeValue": "15 Amir Temur Street, Tashkent",
+      "phone": "Phone",
+      "phoneValue": "+998 (77) 000-00-00"
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone number",
+      "phonePlaceholder": "(77) 000-00-00",
+      "message": "Message",
+      "messagePlaceholder": "Leave us a message…"
+    },
+    "seo": {
+      "title": "Contact — TripMe",
+      "description": "Reach the TripMe team: email, phone, our Tashkent office, and a contact form."
     }
   }
 }

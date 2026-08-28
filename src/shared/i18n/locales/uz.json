@@ -14,7 +14,11 @@
     "logout": "Chiqish",
     "workspace": "Ish o‘rni",
     "loading": "Yuklanmoqda…",
-    "seeAll": "Barchasini ko‘rish"
+    "seeAll": "Barchasini ko‘rish",
+    "close": "Yopish",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda…"
   },
   "nav": {
     "home": "TripMe — bosh sahifa",
@@ -238,7 +242,8 @@
       "home": "Bosh sahifa",
       "banner": "Banner",
       "sections": "Bo‘limlar",
-      "lists": "Ro‘yxatlar"
+      "lists": "Ro‘yxatlar",
+      "posts": "Maqolalar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -338,7 +343,101 @@
       "layoutPlaceholder": "Joylashuvni tanlang",
       "overflow": "Ro‘yxatda {items} element, joylashuv {capacity} tasini sig‘diradi — qolgani ko‘rinmaydi.",
       "pickRequired": "Har bir bo‘limda ro‘yxat va joylashuvni tanlang",
-      "titleRequired": "Har bir bo‘limda kamida bitta tilda sarlavha bo‘lishi kerak"
+      "titleRequired": "Har bir bo‘limda kamida bitta tilda sarlavha bo‘lishi kerak",
+      "variant": "Manba",
+      "variants": {
+        "list": "Ro'yxat",
+        "posts": "Blog maqolalari"
+      },
+      "postsHint": "Boʻlim oxirgi chop etilgan maqolalarni oʻzi koʻrsatadi."
+    },
+    "posts": {
+      "title": "Maqolalar",
+      "lead": "Blog materiallari: yaratish, tahrirlash va chop etish.",
+      "create": "Yangi maqola",
+      "createConfirm": "Yaratish",
+      "newTitle": "Yangi maqola",
+      "newLead": "Sarlavha va manzilni keyinroq oʻzgartirish mumkin.",
+      "editLead": "Qoralama chop etilmaguncha faqat CMSda koʻrinadi.",
+      "languageTabs": "Kontent tili",
+      "untitled": "Sarlavhasiz",
+      "empty": "Hozircha maqolalar yoʻq.",
+      "published": "Chop etilgan",
+      "draft": "Qoralama",
+      "publishedLabel": "Maqolani chop etish",
+      "delete": "Maqolani o'chirish",
+      "errors": {
+        "needsRussian": "Chop etish uchun ruscha sarlavha kerak."
+      },
+      "fields": {
+        "title": "Sarlavha",
+        "titlePlaceholder": "Maqola nima haqida?",
+        "slug": "Manzil",
+        "slugPlaceholder": "kaliningrad-s-valentinoy",
+        "slugHint": "Lotin harflari, raqamlar va defis. Maqola /blog/manzil boʻyicha ochiladi.",
+        "slugInvalid": "Faqat kichik lotin harflari, raqamlar va defis.",
+        "excerpt": "Qisqacha tavsif",
+        "excerptPlaceholder": "Karta va qidiruv uchun bir-ikki jumla",
+        "excerptHint": "Roʻyxatdagi kartada va qidiruv natijalarida koʻrinadi.",
+        "body": "Matn",
+        "bodyPlaceholder": "## Kichik sarlavha\n\nMaqola matni Markdown formatida…",
+        "bodyHint": "Markdown: **qalin**, _kursiv_, ## sarlavhalar, - roʻyxatlar, [havolalar](https://).",
+        "state": "Holat",
+        "image": "Muqova",
+        "badgeType": "Badge turi",
+        "badgeNone": "Badgesiz",
+        "badgeLabel": "Badge matni",
+        "link": "Tashqi havola",
+        "linkHint": "Ixtiyoriy: asl manbaga havola."
+      }
+    }
+  },
+  "markdown": {
+    "bold": "Qalin",
+    "italic": "Kursiv",
+    "heading": "Sarlavha",
+    "quote": "Iqtibos",
+    "bullet": "Ro'yxat",
+    "link": "Havola",
+    "write": "Tahrirlash",
+    "preview": "Ko'rib chiqish"
+  },
+  "post": {
+    "readMore": "Manbada oʻqish",
+    "missing": {
+      "title": "Maqola topilmadi",
+      "lead": "Ehtimol u o'chirilgan yoki havola eskirgan.",
+      "home": "Bosh sahifaga"
+    }
+  },
+  "contact": {
+    "title": "Jamoamizga yozing",
+    "lead": "Yordam berishdan mamnunmiz. Shaklni toʻldiring yoki qulay usulda bogʻlaning.",
+    "submit": "Xabar yuborish",
+    "sending": "Yuborilmoqda…",
+    "sent": "Rahmat! Tez orada siz bilan bogʻlanamiz.",
+    "error": "Xabarni yuborib boʻlmadi. Yana urinib koʻring.",
+    "channels": {
+      "email": "Pochta",
+      "emailValue": "hi{'@'}tripme.uz",
+      "chat": "Onlayn chat",
+      "chatValue": "Yangi chat boshlash",
+      "office": "Ofis",
+      "officeValue": "Toshkent, Amir Temur koʻchasi, 15",
+      "phone": "Telefon",
+      "phoneValue": "+998 (77) 000-00-00"
+    },
+    "fields": {
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "phone": "Telefon",
+      "phonePlaceholder": "(77) 000-00-00",
+      "message": "Xabar",
+      "messagePlaceholder": "Qanday yordam kerakligini yozing…"
+    },
+    "seo": {
+      "title": "Aloqa — TripMe",
+      "description": "TripMe jamoasi bilan bogʻlaning: pochta, telefon, Toshkentdagi ofis va aloqa shakli."
     }
   }
 }

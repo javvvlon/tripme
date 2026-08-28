@@ -1,0 +1,106 @@
+@use '../../styles/utils' as *;
+
+.tm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(20, 23, 28, .45);
+    backdrop-filter: blur(2px);
+
+    &__panel {
+        width: 100%;
+        max-height: calc(100vh - 48px);
+        display: flex;
+        flex-direction: column;
+        background: var(--tm-surface-1);
+        border-radius: radius('lg');
+        box-shadow: shadow('lg');
+        overflow: hidden;
+
+        &--sm { max-width: 460px; }
+        &--md { max-width: 720px; }
+    }
+
+    &__head {
+        position: relative;
+        padding: 24px 56px 0 24px;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: size(19);
+        font-weight: 700;
+        color: var(--tm-ink-1);
+    }
+
+    &__lead {
+        margin: 6px 0 0;
+        font-size: size(14);
+        color: var(--tm-ink-3);
+    }
+
+    &__close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-3);
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); }
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px 24px 24px;
+        overflow-y: auto;
+    }
+
+    &__error {
+        margin: 0;
+        color: var(--tm-status-danger);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 4px;
+    }
+}
+
+.tm-modal-enter-active,
+.tm-modal-leave-active {
+    transition: opacity .18s ease;
+
+    .tm-modal__panel { transition: transform .18s cubic-bezier(.22, .61, .36, 1); }
+}
+
+.tm-modal-enter-from,
+.tm-modal-leave-to {
+    opacity: 0;
+
+    .tm-modal__panel { transform: translateY(8px) scale(.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-modal-enter-active,
+    .tm-modal-leave-active {
+        transition: none;
+
+        .tm-modal__panel { transition: none; }
+    }
+}

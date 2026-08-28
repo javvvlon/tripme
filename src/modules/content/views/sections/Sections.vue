@@ -64,11 +64,20 @@
                         />
 
                         <Combobox
+                            v-model="section.variant"
+                            :label="t('cms.sections.variant')"
+                            :options="variantOptions"
+                        />
+
+                        <Combobox
+                            v-if="section.variant === 'list'"
                             v-model="section.listId"
                             :label="t('cms.sections.list')"
                             :options="listOptions"
                             :placeholder="t('cms.sections.listPlaceholder')"
                         />
+
+                        <p v-else class="tm-cms-sections__auto">{{ t('cms.sections.postsHint') }}</p>
 
                         <Combobox
                             v-model="section.layoutId"
@@ -112,7 +121,7 @@ const { t, locales } = useI18n()
 
 const {
   locale, draft, status, saving, saved, error,
-  listOptions, layoutOptions, capacityOf, itemsIn,
+  variantOptions, listOptions, layoutOptions, capacityOf, itemsIn,
   add, remove, move, submit,
 } = useSections()
 
@@ -122,6 +131,8 @@ const localeTabs = computed(() => CONTENT_LOCALES.map(code => ({
 })))
 
 function overflow(section: IDraftSection): { items: number, capacity: number } | null {
+  if (section.variant === 'posts') return null
+
   const capacity = capacityOf(section.layoutId)
   const items = itemsIn(section.listId)
 

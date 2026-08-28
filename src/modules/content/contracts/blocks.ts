@@ -1,10 +1,15 @@
 import type { ContentLocale } from './content'
+import type { IPostRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 
 export const BADGE_TYPES = ['primary', 'secondary', 'sale'] as const
+
+export const SECTION_VARIANTS = ['list', 'posts'] as const
+
+export type SectionVariant = typeof SECTION_VARIANTS[number]
 
 export type BadgeType = typeof BADGE_TYPES[number]
 
@@ -40,7 +45,8 @@ export interface IContentSectionRaw {
   uuid: string
   translations: Array<{ locale: ContentLocale, title: string }>
   link: string | null
-  list_id: string
+  variant: SectionVariant
+  list_id: string | null
   layout_id: string
   position: number
 }
@@ -59,6 +65,7 @@ export interface IHomeContentRaw {
   sections: IContentSectionRaw[]
   layouts: IContentLayoutRaw[]
   lists: IContentListRaw[]
+  posts: IPostRaw[]
 }
 
 export interface IListSummaryRaw {

@@ -8,12 +8,14 @@
             :section="section" :eager="i === 0"
         />
 
+        <ContactPanel />
     </div>
 </template>
 
 <script setup lang="ts">
 import Hero from '~/landing/components/hero/Hero.vue'
 import TrustBar from '~/landing/components/trustBar/TrustBar.vue'
+import ContactPanel from '~/landing/components/contactPanel/ContactPanel.vue'
 import { useHome } from './Home.hooks'
 
 const { t, locale } = useI18n()

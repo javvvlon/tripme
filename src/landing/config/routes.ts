@@ -17,4 +17,10 @@ export const routes: IModuleRoute[] = [
     file: 'landing/views/search/Search.vue',
     meta: { header: 'solid', headerSearch: true },
   },
+  {
+    name: 'landing-contact',
+    path: '/contact',
+    file: 'landing/views/contact/Contact.vue',
+    meta: { header: 'solid' },
+  },
 ]

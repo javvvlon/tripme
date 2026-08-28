@@ -2,6 +2,8 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
 import type { ContentLocale } from '~/modules/content/contracts/content'
+import { SECTION_VARIANTS } from '~/modules/content/contracts/blocks'
+import type { SectionVariant } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -9,6 +11,7 @@ import type { ContentLocale } from '~/modules/content/contracts/content'
 export interface IDraftSection {
   key: string
   link: string
+  variant: SectionVariant
   listId: string
   layoutId: string
   isPublished: boolean
@@ -45,7 +48,8 @@ export const useSections = () => {
     draft.value = current.map(section => ({
       key: section.uuid,
       link: section.link ?? '',
-      listId: section.list_id,
+      variant: section.variant ?? 'list',
+      listId: section.list_id ?? '',
       layoutId: section.layout_id,
       isPublished: section.is_published,
       titles: {
@@ -56,6 +60,11 @@ export const useSections = () => {
 
     return { lists: allLists, layouts: allLayouts }
   }, { default: () => ({ lists: [], layouts: [] }) })
+
+  const variantOptions = computed(() => SECTION_VARIANTS.map(value => ({
+    value,
+    label: t(`cms.sections.variants.${value}`),
+  })))
 
   const listOptions = computed(() => (data.value?.lists ?? []).map(list => ({
     value: list.uuid,
@@ -82,6 +91,7 @@ export const useSections = () => {
     draft.value = [...draft.value, {
       key: nextKey(),
       link: '',
+      variant: 'list',
       listId: data.value?.lists[0]?.uuid ?? '',
       layoutId: data.value?.layouts[0]?.uuid ?? '',
       isPublished: true,
@@ -106,7 +116,8 @@ export const useSections = () => {
     error.value = ''
     saved.value = false
 
-    const incomplete = draft.value.find(section => !section.listId || !section.layoutId)
+    const incomplete = draft.value.find(section =>
+      !section.layoutId || (section.variant === 'list' && !section.listId))
 
     if (incomplete) {
       error.value = t('cms.sections.pickRequired')
@@ -126,7 +137,8 @@ export const useSections = () => {
     try {
       await saveSections(draft.value.map(section => ({
         link: section.link.trim() || null,
-        list_id: section.listId,
+        variant: section.variant,
+        list_id: section.variant === 'posts' ? null : section.listId,
         layout_id: section.layoutId,
         is_published: section.isPublished,
         translations: CONTENT_LOCALES.map(code => ({ locale: code, title: section.titles[code] })),
@@ -144,7 +156,7 @@ export const useSections = () => {
 
   return {
     locale, draft, status, saving, saved, error,
-    listOptions, layoutOptions, capacityOf, itemsIn,
+    variantOptions, listOptions, layoutOptions, capacityOf, itemsIn,
     add, remove, move, submit,
   }
 }

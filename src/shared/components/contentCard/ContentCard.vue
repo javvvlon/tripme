@@ -1,7 +1,7 @@
 <template>
     <component
         :is="linkable ? NuxtLink : 'article'"
-        v-bind="linkable ? { to: localePath(item.link!) } : {}"
+        v-bind="linkable ? { to: localePath(item.href!) } : {}"
         class="tm-content-card" :class="[`is-${props.shape ?? 'fill'}`, { 'is-compact': props.compact, 'is-link': linkable }]"
     >
         <div class="tm-content-card__frame">
@@ -38,7 +38,7 @@ const props = defineProps<IContentCardProps>()
 const localePath = useLocalePath()
 const routeExists = useRouteExists()
 
-const linkable = computed(() => Boolean(props.item.link) && routeExists(props.item.link!))
+const linkable = computed(() => Boolean(props.item.href) && routeExists(props.item.href!))
 </script>
 
 <style lang="scss">
