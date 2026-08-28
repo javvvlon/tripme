@@ -38,7 +38,6 @@ export default defineNuxtConfig({
   routeRules,
 
   nitro: {
-    preset: 'node-server',
     prerender: {
       crawlLinks: false,
     },
