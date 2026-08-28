@@ -408,7 +408,14 @@
     "bullet": "List",
     "link": "Link",
     "write": "Write",
-    "preview": "Preview"
+    "preview": "Preview",
+    "image": "Insert image",
+    "video": "Insert video",
+    "videoPlaceholder": "A YouTube, Vimeo or .mp4 link",
+    "insert": "Insert",
+    "uploading": "Uploading the image…",
+    "uploadFailed": "The image could not be uploaded.",
+    "alignHint": "Wrap text around it: ![caption](url \"left\"), \"right\", or \"full\" for full width."
   },
   "post": {
     "readMore": "Read at the source",

@@ -7,6 +7,7 @@ export interface IMarkdownEditorProps {
   placeholder?: string
   rows?: number
   disabled?: boolean
+  uploader?: (file: File) => Promise<string>
 }
 
 export interface IMarkdownAction {

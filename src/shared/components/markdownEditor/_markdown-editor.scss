@@ -15,7 +15,15 @@
 
     &__tools {
         display: flex;
+        align-items: center;
         gap: 2px;
+    }
+
+    &__divider {
+        width: 1px;
+        height: 18px;
+        margin: 0 6px;
+        background: var(--tm-border-1);
     }
 
     &__tool {
@@ -32,6 +40,11 @@
 
         &:hover:not(:disabled) { background: var(--tm-surface-1); }
         &:disabled { opacity: .4; cursor: default; }
+
+        &.is-active {
+            background: var(--tm-surface-1);
+            color: var(--tm-brand-secondary);
+        }
     }
 
     &__toggle {
@@ -41,6 +54,50 @@
         font-size: size(13);
         font-weight: 600;
         cursor: pointer;
+    }
+
+    &__ask {
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid var(--tm-border-1);
+        border-bottom: 0;
+        background: var(--tm-surface-2);
+    }
+
+    &__ask-field {
+        flex: 1;
+        min-width: 0;
+        padding: 7px 11px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius(xs);
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-size: size(14);
+
+        &:focus {
+            outline: none;
+            border-color: var(--tm-brand-primary);
+        }
+    }
+
+    &__align {
+        margin: 0;
+        padding: 7px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-bottom: 0;
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-3);
+        font-size: size(12);
+    }
+
+    &__file { display: none; }
+
+    &__error {
+        margin: 6px 0 0;
+        color: var(--tm-status-danger);
+        font-size: size(13);
+        font-weight: 600;
     }
 
     &__field {
@@ -94,6 +151,32 @@
         ol { list-style: decimal; padding-left: 22px; }
 
         img { max-width: 100%; }
+
+        .tm-md-figure {
+            margin: 16px 0;
+
+            img {
+                display: block;
+                width: 100%;
+                border-radius: radius(sm);
+            }
+        }
+
+        .tm-md-embed {
+            position: relative;
+            margin: 16px 0;
+            aspect-ratio: 16 / 9;
+
+            iframe,
+            video {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+                border-radius: radius(sm);
+            }
+        }
     }
 
     &__hint {

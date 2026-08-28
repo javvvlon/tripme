@@ -86,14 +86,12 @@
         padding-top: 12px;
         border-top: 1px solid var(--tm-border-1);
 
-        .tm-combobox__label,
         .tm-input__label {
             color: var(--tm-ink-3);
             font-size: size(13);
             font-weight: 600;
         }
 
-        .tm-combobox__input,
         .tm-input__field {
             padding: 8px 11px;
             font-size: size(14);

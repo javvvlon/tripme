@@ -91,6 +91,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import { usePosts } from './Posts.hooks'
+import { preferredTranslation } from '~/modules/content/contracts/content'
 import type { IPostAdminRaw } from '~/modules/posts/contracts/posts'
 
 const { t } = useI18n()
@@ -107,10 +108,11 @@ const VIEW_MODES = [
 ]
 
 const titleOf = (post: IPostAdminRaw): string =>
-    post.translations.find(translation => translation.title)?.title ?? t('cms.posts.untitled')
+    preferredTranslation(post.translations, translation => Boolean(translation.title))?.title
+    ?? t('cms.posts.untitled')
 
 const excerptOf = (post: IPostAdminRaw): string =>
-    post.translations.find(translation => translation.excerpt)?.excerpt ?? ''
+    preferredTranslation(post.translations, translation => Boolean(translation.excerpt))?.excerpt ?? ''
 
 const authorOf = (post: IPostAdminRaw): string =>
     `${post.author?.first_name ?? ''} ${post.author?.last_name ?? ''}`.trim()

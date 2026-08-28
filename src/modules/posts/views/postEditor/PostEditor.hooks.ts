@@ -1,6 +1,6 @@
 import { usePostsRepository } from '~/modules/posts/repositories'
 import { useContentRepository } from '~/modules/content/repositories'
-import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { Post } from '~/modules/posts/models/Post'
 import { POST_EXCERPT_MAX, POST_TITLE_MAX } from './PostEditor.config'
 import type { ContentLocale } from '~/modules/content/contracts/content'
@@ -19,7 +19,7 @@ export const usePostEditor = () => {
 
   const id = computed(() => String(route.params.id ?? ''))
 
-  const locale = ref<ContentLocale>('ru')
+  const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = reactive<IPostDraft>(Post.emptyDraft())
 
   const author = ref<string | null>(null)
@@ -88,6 +88,8 @@ export const usePostEditor = () => {
     }
   }
 
+  const uploadInline = async (chosen: File): Promise<string> => upload(chosen)
+
   const clearImage = () => {
     draft.imageUrl = null
   }
@@ -145,6 +147,6 @@ export const usePostEditor = () => {
 
   return {
     id, locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage,
+    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline,
   }
 }

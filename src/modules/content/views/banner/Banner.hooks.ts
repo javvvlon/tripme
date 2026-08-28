@@ -1,5 +1,5 @@
 import { useContentRepository } from '~/modules/content/repositories'
-import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { BANNER_TITLE_MAX } from './Banner.config'
 import type { Banner } from '~/modules/content/models/Banner'
 import type { BannerDraft, ContentLocale } from '~/modules/content/contracts/content'
@@ -15,7 +15,7 @@ export const useBanner = () => {
   const { t } = useI18n()
   const { banner, saveBanner, upload, removeUpload } = useContentRepository()
 
-  const locale = ref<ContentLocale>('en')
+  const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = reactive<BannerDraft>(blank())
 
   const uploading = ref(false)

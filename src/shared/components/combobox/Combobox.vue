@@ -27,6 +27,11 @@
                 @keydown.enter.prevent="choose(filtered[active])"
                 @keydown.esc="close"
             >
+            <Icon
+                v-if="variant === 'field'"
+                name="chevron" :size="16" class="tm-combobox__caret"
+            />
+
             <button
                 v-if="clearable && model"
                 type="button" class="tm-combobox__clear"

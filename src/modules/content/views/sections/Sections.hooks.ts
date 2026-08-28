@@ -1,6 +1,6 @@
 import { useContentRepository } from '~/modules/content/repositories'
 import { usePostsRepository } from '~/modules/posts/repositories'
-import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import { SECTION_VARIANTS } from '~/modules/content/contracts/blocks'
@@ -32,7 +32,7 @@ export const useSections = () => {
   const { sections, lists, layouts, saveSections } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
 
-  const locale = ref<ContentLocale>('en')
+  const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = ref<IDraftSection[]>([])
 
   const saving = ref(false)
@@ -72,7 +72,7 @@ export const useSections = () => {
 
   const postOptions = computed(() => (data.value?.posts ?? []).map(post => ({
     value: post.uuid,
-    label: post.translations.find(item => item.title)?.title ?? post.slug,
+    label: preferredTranslation(post.translations, item => Boolean(item.title))?.title ?? post.slug,
     hint: post.is_published ? undefined : t('cms.posts.draft'),
   })))
 

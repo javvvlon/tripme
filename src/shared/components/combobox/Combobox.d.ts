@@ -15,7 +15,7 @@ export interface IComboboxProps {
   clearable?: boolean
   disabled?: boolean
   loading?: boolean
-  variant?: 'panel' | 'bar'
+  variant?: 'panel' | 'bar' | 'field'
   note?: string
   unavailable?: boolean
 }

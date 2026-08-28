@@ -5,6 +5,8 @@ export type ContentLocale = 'ru' | 'uz' | 'en'
 
 export const CONTENT_LOCALES: ContentLocale[] = ['ru', 'uz', 'en']
 
+export const CMS_DEFAULT_LOCALE: ContentLocale = 'ru'
+
 export interface IBannerTranslationRaw {
   locale: ContentLocale
   title: string
@@ -24,3 +26,18 @@ export interface IBannerTranslation {
 }
 
 export type BannerDraft = Record<ContentLocale, IBannerTranslation>
+
+export const preferredTranslation = <T extends { locale: ContentLocale }>(
+  translations: T[] | null | undefined,
+  matches: (translation: T) => boolean = () => true,
+): T | null => {
+  const found = translations?.filter(matches) ?? []
+
+  for (const locale of [CMS_DEFAULT_LOCALE, ...CONTENT_LOCALES]) {
+    const match = found.find(translation => translation.locale === locale)
+
+    if (match) return match
+  }
+
+  return found[0] ?? null
+}

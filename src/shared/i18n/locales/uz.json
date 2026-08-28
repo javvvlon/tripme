@@ -408,7 +408,14 @@
     "bullet": "Ro'yxat",
     "link": "Havola",
     "write": "Tahrirlash",
-    "preview": "Ko'rib chiqish"
+    "preview": "Ko'rib chiqish",
+    "image": "Rasm qoʻshish",
+    "video": "Video qoʻshish",
+    "videoPlaceholder": "YouTube, Vimeo yoki .mp4 havolasi",
+    "insert": "Qoʻshish",
+    "uploading": "Rasm yuklanmoqda…",
+    "uploadFailed": "Rasmni yuklab boʻlmadi.",
+    "alignHint": "Matn bilan yonma-yon: ![izoh](havola \"left\"), \"right\" yoki \"full\"."
   },
   "post": {
     "readMore": "Manbada oʻqish",

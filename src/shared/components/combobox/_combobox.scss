@@ -111,6 +111,37 @@
         text-align: center;
     }
 
+    &--field {
+        gap: 6px;
+        padding: 0;
+
+        &:hover,
+        &:focus-within { background: none; }
+
+        .tm-combobox__label { margin-bottom: 0; }
+
+        .tm-combobox__control {
+            padding: 9px 12px;
+            border: 1px solid var(--tm-border-1);
+            border-radius: radius('sm');
+            background: var(--tm-surface-1);
+            cursor: pointer;
+
+            &:hover { border-color: var(--tm-ink-4); }
+        }
+
+        &:focus-within .tm-combobox__control { border-color: var(--tm-brand-primary); }
+
+        .tm-combobox__input {
+            font-size: size(14);
+            cursor: pointer;
+        }
+
+        .tm-combobox__caret { flex: none; color: var(--tm-ink-4); }
+
+        .tm-combobox__menu { left: 0; right: 0; }
+    }
+
     &--bar {
         padding: 8px 14px;
 

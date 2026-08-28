@@ -1,5 +1,5 @@
 import { useContentRepository } from '~/modules/content/repositories'
-import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { BadgeType } from '~/modules/content/contracts/blocks'
 
@@ -26,7 +26,7 @@ export const useListEditor = (id: string) => {
   const localePath = useLocalePath()
   const { list, updateList, upload, removeUpload } = useContentRepository()
 
-  const locale = ref<ContentLocale>('en')
+  const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const name = ref('')
   const items = ref<IDraftItem[]>([])
 

@@ -54,12 +54,14 @@
 
                         <div class="tm-cms-sections__fields">
                             <Combobox
+                                variant="field"
                                 v-model="section.variant"
                                 :label="t('cms.sections.variant')"
                                 :options="variantOptions"
                             />
 
                             <Combobox
+                                variant="field"
                                 v-if="section.variant === 'list'"
                                 v-model="section.listId"
                                 :label="t('cms.sections.list')"
@@ -78,6 +80,7 @@
                             />
 
                             <Combobox
+                                variant="field"
                                 v-model="section.layoutId"
                                 :label="t('cms.sections.layout')"
                                 :options="layoutOptions"

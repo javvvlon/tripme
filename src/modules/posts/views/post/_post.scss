@@ -115,8 +115,72 @@
 
         img {
             max-width: 100%;
-            border-radius: radius('md');
+            border-radius: radius(md);
         }
+
+        .tm-md-figure {
+            margin: 32px 0;
+
+            img {
+                display: block;
+                width: 100%;
+                border-radius: radius(md);
+            }
+
+            figcaption {
+                margin-top: 10px;
+                color: var(--tm-ink-4);
+                font-size: size(13);
+                line-height: 1.5;
+            }
+
+            &.is-left,
+            &.is-right {
+                width: min(46%, 340px);
+                margin-top: 6px;
+            }
+
+            &.is-left {
+                float: left;
+                margin-right: 28px;
+            }
+
+            &.is-right {
+                float: right;
+                margin-left: 28px;
+            }
+
+            &.is-full {
+                width: 100vw;
+                max-width: 1120px;
+                margin-inline: calc(50% - 50vw);
+                margin-left: max(calc(50% - 50vw), calc((100% - 1120px) / 2));
+
+                img { border-radius: radius(lg); }
+
+                figcaption { text-align: center; }
+            }
+        }
+
+        .tm-md-embed {
+            position: relative;
+            margin: 32px 0;
+            aspect-ratio: 16 / 9;
+            clear: both;
+
+            iframe,
+            video {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+                border-radius: radius(md);
+                background: var(--tm-ink-1);
+            }
+        }
+
+        h2, h3 { clear: both; }
 
         code {
             padding: 2px 6px;
@@ -148,6 +212,20 @@
 }
 
 @media #{$until-md} {
+    .tm-post__body .tm-md-figure {
+        &.is-left,
+        &.is-right {
+            float: none;
+            width: 100%;
+            margin: 24px 0;
+        }
+
+        &.is-full {
+            width: 100%;
+            margin-inline: 0;
+        }
+    }
+
     .tm-post {
         padding: 32px 0 64px;
 
