@@ -8,6 +8,7 @@ import type {
   IEditableSectionRaw,
   IHomeContentRaw,
   IListSummaryRaw,
+  IStoredFileRaw,
 } from '~/modules/content/contracts/blocks'
 import type { AnyObject } from '~/shared/contracts/data'
 
@@ -88,6 +89,12 @@ export const useContentRepository = () => {
    * editor's change is already saved, and an extra file in a bucket is a
    * smaller problem than an error they cannot act on.
    */
+  const library = async (): Promise<IStoredFileRaw[]> => {
+    const response = await http.call<IStoredFileRaw[]>('Content', 'library')
+
+    return response.data
+  }
+
   const removeUpload = async (url: string): Promise<void> => {
     try {
       await http.call<void>('Content', 'removeUpload', { url })
@@ -103,6 +110,6 @@ export const useContentRepository = () => {
 
   return {
     banner, saveBanner, homeContent,
-    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, removeUpload,
+    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload,
   }
 }

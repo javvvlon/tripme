@@ -69,6 +69,13 @@ export interface IHomeContentRaw {
   posts: IPostRaw[]
 }
 
+export interface IStoredFileRaw {
+  url: string
+  path: string
+  size: number
+  uploaded_at: string | null
+}
+
 export interface IListSummaryRaw {
   uuid: string
   name: string

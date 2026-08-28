@@ -18,9 +18,10 @@
                 <button
                     v-if="uploader"
                     type="button" class="tm-md__tool"
+                    :class="{ 'is-active': picking }"
                     :title="t('markdown.image')" :aria-label="t('markdown.image')"
                     :disabled="disabled || preview || uploading"
-                    @click="file?.click()"
+                    @click="openPicker"
                 >
                     <Icon name="image" :size="16" />
                 </button>
@@ -43,6 +44,32 @@
             >
                 {{ preview ? t('markdown.write') : t('markdown.preview') }}
             </button>
+        </div>
+
+        <div v-if="picking" class="tm-md__library">
+            <div class="tm-md__library-head">
+                <span>{{ t('markdown.library') }}</span>
+
+                <Button type="button" size="sm" variant="ghost" :disabled="uploading" @click="file?.click()">
+                    {{ t('markdown.upload') }}
+                </Button>
+            </div>
+
+            <p v-if="loadingLibrary" class="tm-md__library-empty">{{ t('common.loading') }}</p>
+
+            <p v-else-if="!media.length" class="tm-md__library-empty">{{ t('markdown.libraryEmpty') }}</p>
+
+            <ul v-else class="tm-md__library-grid">
+                <li v-for="item in media" :key="item.path">
+                    <button
+                        type="button" class="tm-md__thumb"
+                        :title="t('markdown.insert')"
+                        @click="insertImage(item.url)"
+                    >
+                        <img :src="item.url" alt="" loading="lazy">
+                    </button>
+                </li>
+            </ul>
         </div>
 
         <div v-if="asking" class="tm-md__ask">
@@ -91,7 +118,7 @@
 
 <script setup lang="ts">
 import { ACCEPTED_IMAGES, MARKDOWN_ACTIONS } from './MarkdownEditor.config'
-import type { IMarkdownAction, IMarkdownEditorProps } from './MarkdownEditor.d'
+import type { IMarkdownAction, IMarkdownEditorProps, IMediaFile } from './MarkdownEditor.d'
 import { renderMarkdown } from '~/shared/helpers/markdown'
 
 const props = withDefaults(defineProps<IMarkdownEditorProps>(), { rows: 16 })
@@ -106,6 +133,9 @@ const url = useTemplateRef<HTMLInputElement>('url')
 
 const preview = ref(false)
 const asking = ref(false)
+const picking = ref(false)
+const loadingLibrary = ref(false)
+const media = ref<IMediaFile[]>([])
 const videoUrl = ref('')
 const uploading = ref(false)
 const error = ref('')
@@ -137,6 +167,29 @@ function insertAtCursor(snippet: string) {
     model.value = `${before}${padded}${after}`
 }
 
+async function openPicker() {
+    picking.value = !picking.value
+
+    if (!picking.value || !props.library || media.value.length) return
+
+    loadingLibrary.value = true
+
+    try {
+        media.value = await props.library()
+    }
+    catch {
+        media.value = []
+    }
+    finally {
+        loadingLibrary.value = false
+    }
+}
+
+function insertImage(url: string) {
+    insertAtCursor(`![](${url})`)
+    picking.value = false
+}
+
 async function onFile(event: Event) {
     const input = event.target as HTMLInputElement
     const chosen = input.files?.[0]
@@ -149,7 +202,11 @@ async function onFile(event: Event) {
     error.value = ''
 
     try {
-        insertAtCursor(`![${chosen.name.replace(/\.[^.]+$/, '')}](${await props.uploader(chosen)})`)
+        const url = await props.uploader(chosen)
+
+        media.value = [{ url, path: url }, ...media.value]
+
+        insertImage(url)
     }
     catch {
         error.value = t('markdown.uploadFailed')

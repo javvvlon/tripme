@@ -15,7 +15,7 @@ export const usePostEditor = () => {
   const localePath = useLocalePath()
 
   const { one, update, remove: removePost } = usePostsRepository()
-  const { upload, removeUpload } = useContentRepository()
+  const { upload, library, removeUpload } = useContentRepository()
 
   const id = computed(() => String(route.params.id ?? ''))
 
@@ -90,6 +90,8 @@ export const usePostEditor = () => {
 
   const uploadInline = async (chosen: File): Promise<string> => upload(chosen)
 
+  const mediaLibrary = async () => (await library()).map(item => ({ url: item.url, path: item.path }))
+
   const clearImage = () => {
     draft.imageUrl = null
   }
@@ -147,6 +149,6 @@ export const usePostEditor = () => {
 
   return {
     id, locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline,
+    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline, mediaLibrary,
   }
 }

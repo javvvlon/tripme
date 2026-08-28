@@ -415,7 +415,10 @@
     "insert": "Insert",
     "uploading": "Uploading the image…",
     "uploadFailed": "The image could not be uploaded.",
-    "alignHint": "Wrap text around it: ![caption](url \"left\"), \"right\", or \"full\" for full width."
+    "alignHint": "Wrap text around it: ![caption](url \"left\"), \"right\", or \"full\" for full width.",
+    "library": "Uploaded images",
+    "libraryEmpty": "Nothing uploaded yet.",
+    "upload": "Upload new"
   },
   "post": {
     "readMore": "Read at the source",

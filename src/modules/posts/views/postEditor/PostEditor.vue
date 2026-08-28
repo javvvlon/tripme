@@ -41,6 +41,7 @@
                             <MarkdownEditor
                                 v-model="draft.translations[locale].body"
                                 :uploader="uploadInline"
+                                :library="mediaLibrary"
                                 :placeholder="t('cms.posts.fields.bodyPlaceholder')"
                                 :hint="t('cms.posts.fields.bodyHint')"
                             />
@@ -141,7 +142,7 @@ const { t, locales } = useI18n()
 
 const {
     locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline,
+    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline, mediaLibrary,
 } = usePostEditor()
 const { errors, touched } = validation
 

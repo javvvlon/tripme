@@ -415,7 +415,10 @@
     "insert": "Qoʻshish",
     "uploading": "Rasm yuklanmoqda…",
     "uploadFailed": "Rasmni yuklab boʻlmadi.",
-    "alignHint": "Matn bilan yonma-yon: ![izoh](havola \"left\"), \"right\" yoki \"full\"."
+    "alignHint": "Matn bilan yonma-yon: ![izoh](havola \"left\"), \"right\" yoki \"full\".",
+    "library": "Yuklangan rasmlar",
+    "libraryEmpty": "Hozircha hech nima yuklanmagan.",
+    "upload": "Yangisini yuklash"
   },
   "post": {
     "readMore": "Manbada oʻqish",

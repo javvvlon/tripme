@@ -21,6 +21,7 @@ export const resource: IResource = {
     sections: { url: 'sections', method: 'GET' },
     saveSections: { url: 'sections', method: 'PUT' },
     upload: { url: 'uploads', method: 'POST' },
+    library: { url: 'uploads', method: 'GET' },
     removeUpload: { url: 'uploads', method: 'DELETE', params: ['url'] },
   },
 }
