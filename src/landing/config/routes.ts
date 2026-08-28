@@ -8,7 +8,7 @@ export const routes: IModuleRoute[] = [
     name: 'landing-home',
     path: '/',
     file: 'landing/views/home/Home.vue',
-    swr: 600,
+    swr: 60,
     meta: { header: 'over' },
   },
   {
