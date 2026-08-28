@@ -1,12 +1,18 @@
+import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { AppBootstrap } from './src/shared/bootstrap/service'
 import { modules as appModules } from './src/modules'
+import { LOCALES } from './src/shared/config/locales'
 
 const bootstrap = new AppBootstrap(appModules).bootSync()
 
 const srcDir = fileURLToPath(new URL('./src', import.meta.url))
 
-const LOCALES = ['ru', 'uz', 'en'] as const
+const revalidateSecret = process.env.NUXT_REVALIDATE_SECRET || ''
+
+const bypassToken = revalidateSecret
+  ? createHash('sha256').update(revalidateSecret).digest('hex').slice(0, 32)
+  : ''
 
 const routeRules: Record<string, Record<string, unknown>> = {}
 
@@ -18,7 +24,7 @@ for (const route of bootstrap.routes) {
   }
 
   if (route.swr) {
-    for (const locale of LOCALES) routeRules[`/${locale}${suffix}`] = { swr: route.swr }
+    for (const locale of LOCALES) routeRules[`/${locale}${suffix}`] = { swr: route.swr, isr: route.swr }
   }
 
   if (route.ssr === false) {
@@ -38,6 +44,10 @@ export default defineNuxtConfig({
   routeRules,
 
   nitro: {
+    vercel: {
+      config: { bypassToken },
+    },
+
     prerender: {
       crawlLinks: false,
     },
@@ -91,7 +101,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
+    revalidateSecret,
+    vercelBypassToken: bypassToken,
 
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.tripme.uz/api/v1',
