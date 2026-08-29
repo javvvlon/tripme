@@ -6,7 +6,8 @@ import type { IMiddleware, IResource } from '~/shared/contracts/data'
 export interface IModuleRoute {
   name: string
   path: string
-  file: string
+  file?: string
+  redirect?: string
   layout?: string | false
   prerender?: boolean
   swr?: number

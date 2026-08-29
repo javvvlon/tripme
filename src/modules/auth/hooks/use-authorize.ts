@@ -11,7 +11,7 @@ export const useAuthorize = () => {
   const localePath = useLocalePath()
   const route = useRoute()
 
-  return async (tokens: IAuthTokens, fallback = '/app') => {
+  return async (tokens: IAuthTokens, fallback = '/app/leads') => {
     storage.setTokens(tokens)
     await restore(true)
 

@@ -1,8 +1,8 @@
 <template>
     <div class="tm-cms">
-        <Sidebar v-model:collapsed="collapsed">
+        <Sidebar>
             <template #brand>
-                <NuxtLink :to="localePath('/app')" class="tm-cms__logo" :class="{ 'is-compact': collapsed }">
+                <NuxtLink :to="localePath('/app/leads')" class="tm-cms__logo">
                     <img
                         :src="BRAND_LOGO.onDark.src" :alt="BRAND_NAME"
                         :width="BRAND_LOGO.onDark.width" :height="BRAND_LOGO.onDark.height"
@@ -18,7 +18,6 @@
                 :to="node.to"
                 :active="isActive(node)"
                 :expandable="Boolean(node.children)"
-                :compact="collapsed"
                 :disabled="node.disabled && !node.children?.length"
             >
                 <NestedNavbarItem
@@ -34,7 +33,6 @@
                 <UserCard
                     :name="user?.fullName() ?? ''"
                     :role="roleLabel"
-                    :compact="collapsed"
                     :action-label="t('nav.logout')"
                     @action="signOut"
                 />
@@ -62,7 +60,6 @@ const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 
-const { collapsed } = useSidebar()
 const { user, logout } = useAuthSession()
 
 const trail = computed(() => findNavTrail(CMS_NAVIGATION, route.path, localePath))
@@ -83,9 +80,9 @@ const crumbs = computed(() => {
     to: i < trail.value.length - 1 ? step.to : undefined,
   }))
 
-  const rooted = trail.value[0]?.to === '/app'
+  const rooted = trail.value[0]?.to === '/app/leads'
 
-  return rooted ? steps : [{ label: t('cms.nav.dashboard'), to: '/app', icon: 'home' }, ...steps]
+  return rooted ? steps : [{ label: t('cms.nav.leads'), to: '/app/leads', icon: 'home' }, ...steps]
 })
 
 const roleLabel = computed(() => {

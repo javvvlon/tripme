@@ -7,6 +7,5 @@ export interface INavbarItemProps {
   to?: string
   active?: boolean
   expandable?: boolean
-  compact?: boolean
   disabled?: boolean
 }

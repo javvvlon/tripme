@@ -5,36 +5,20 @@ import type { INavNode } from '../../../shared/helpers/navigation'
  */
 export const CMS_NAVIGATION: INavNode[] = [
   {
-    key: 'dashboard',
-    labelKey: 'cms.nav.dashboard',
-    icon: 'pie',
-    to: '/app',
-  },
-  {
-    key: 'home',
-    labelKey: 'cms.nav.home',
-    icon: 'home',
-    children: [
-      { key: 'home.banner', labelKey: 'cms.nav.banner', to: '/app/content/banner' },
-      { key: 'home.sections', labelKey: 'cms.nav.sections', to: '/app/content/sections' },
-    ],
-  },
-  {
     key: 'leads',
     labelKey: 'cms.nav.leads',
-    icon: 'inbox',
+    icon: 'users',
     to: '/app/leads',
   },
   {
-    key: 'posts',
-    labelKey: 'cms.nav.posts',
-    icon: 'doc',
-    to: '/app/posts',
-  },
-  {
-    key: 'lists',
-    labelKey: 'cms.nav.lists',
-    icon: 'list',
-    to: '/app/content/lists',
+    key: 'content',
+    labelKey: 'cms.nav.content',
+    icon: 'folder',
+    children: [
+      { key: 'content.banner', labelKey: 'cms.nav.banner', to: '/app/content/banner' },
+      { key: 'content.sections', labelKey: 'cms.nav.sections', to: '/app/content/sections' },
+      { key: 'content.posts', labelKey: 'cms.nav.posts', to: '/app/posts' },
+      { key: 'content.lists', labelKey: 'cms.nav.lists', to: '/app/content/lists' },
+    ],
   },
 ]

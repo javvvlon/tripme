@@ -67,18 +67,20 @@
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
 
-        .is-order { width: 74px; }
-        .is-date { width: 92px; }
-        .is-phone { width: 132px; }
-        .is-party { width: 62px; }
+        .is-order { width: 76px; }
+        .is-date { width: 96px; }
+        .is-stay { width: 128px; }
+        .is-phone { width: 136px; }
+        .is-party { width: 72px; }
         .is-price { width: 96px; }
-        .is-status { width: 128px; }
+        .is-status { width: 130px; }
     }
 
     &__sort {
         display: flex;
         align-items: center;
         gap: 4px;
+        overflow: hidden;
         width: 100%;
         padding: 10px 12px;
         border: 0;

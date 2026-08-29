@@ -237,14 +237,12 @@
   "cms": {
     "nav": {
       "label": "Site sections",
-      "collapse": "Collapse the menu",
-      "dashboard": "Dashboard",
-      "home": "Home page",
       "banner": "Banner",
       "sections": "Sections",
       "lists": "Lists",
       "posts": "Articles",
-      "leads": "Leads"
+      "leads": "Leads",
+      "content": "Content"
     },
     "roles": {
       "CLIENT": "Client",
@@ -416,7 +414,7 @@
         "client": "Client",
         "phone": "Phone",
         "tour": "Hotel",
-        "dates": "Check-in · nights",
+        "dates": "Check-in",
         "party": "Guests",
         "price": "Price",
         "supplier": "Operator",
@@ -468,7 +466,7 @@
         "required": "Pick a tour from the search results."
       },
       "search": "Search leads",
-      "searchPlaceholder": "Name, phone, number or tour…",
+      "searchPlaceholder": "Name, phone, number or hotel…",
       "noMatches": "Nothing found.",
       "openAtOperator": "Open at the operator",
       "openHotelPage": "Hotel page",

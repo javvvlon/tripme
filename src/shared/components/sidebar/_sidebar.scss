@@ -3,30 +3,17 @@
 .tm-sidebar {
     display: flex;
     flex-direction: column;
-    width: 268px;
-    flex: 0 0 268px;
+    width: 232px;
+    flex: 0 0 232px;
     background: var(--tm-cms-panel);
     color: var(--tm-cms-panel-ink);
     overflow: hidden;
-    transition: width .18s ease, flex-basis .18s ease;
-
-    &.is-collapsed {
-        width: 84px;
-        flex-basis: 84px;
-
-        .tm-sidebar__head {
-            flex-direction: column;
-            gap: 12px;
-            padding: 18px 10px;
-        }
-    }
 
     &__head {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 22px 20px;
+        gap: 10px;
+        padding: 16px;
         border-bottom: 1px solid var(--tm-cms-panel-line);
     }
 
@@ -37,42 +24,25 @@
         overflow: hidden;
     }
 
-    &__collapse {
-        display: grid;
-        place-items: center;
-        flex: 0 0 auto;
-        width: 38px;
-        height: 38px;
-        border: 0;
-        border-radius: radius('sm');
-        background: var(--tm-cms-panel-active);
-        color: var(--tm-cms-panel-ink);
-        cursor: pointer;
-
-        &:hover { background: var(--tm-cms-panel-hover); }
-    }
-
     &__nav {
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        padding: 18px 14px;
+        padding: 12px 10px;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
     }
 
     &__foot {
-        padding: 18px 14px;
+        padding: 12px 10px;
         border-top: 1px solid var(--tm-cms-panel-line);
     }
 }
 
 @media #{$until-md} {
     .tm-sidebar {
-        width: 84px;
-        flex-basis: 84px;
-
-        &__collapse { display: none; }
+        width: 68px;
+        flex-basis: 68px;
     }
 }

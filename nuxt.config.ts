@@ -32,6 +32,8 @@ for (const route of bootstrap.routes) {
   }
 }
 
+for (const locale of LOCALES) routeRules[`/${locale}/app`] = { redirect: `/${locale}/app/leads` }
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-01',
   devtools: { enabled: false },
@@ -115,7 +117,8 @@ export default defineNuxtConfig({
       const build = (route: typeof bootstrap.routes[number]): NuxtPage => ({
         name: route.name,
         path: route.path,
-        file: `${srcDir}/${route.file}`,
+        ...(route.file ? { file: `${srcDir}/${route.file}` } : {}),
+        ...(route.redirect ? { redirect: route.redirect } : {}),
         meta: { ...(route.meta ?? {}), ...(route.layout !== undefined ? { layout: route.layout } : {}) },
         children: route.children?.map(build),
       })
@@ -128,6 +131,7 @@ export default defineNuxtConfig({
 type NuxtPage = {
   name?: string
   path: string
+  redirect?: string
   file?: string
   meta?: Record<string, unknown>
   children?: NuxtPage[]

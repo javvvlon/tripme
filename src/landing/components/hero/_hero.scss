@@ -40,6 +40,8 @@
     &__title {
         max-width: 16ch;
         margin: 0 auto;
+        font-family: var(--tm-font-display-primary);
+        letter-spacing: -.01em;
         color: var(--tm-common-white);
         text-shadow: 0 2px 24px rgba(7, 26, 66, .45);
     }

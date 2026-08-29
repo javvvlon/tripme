@@ -237,14 +237,12 @@
   "cms": {
     "nav": {
       "label": "Sayt bo‘limlari",
-      "collapse": "Menyuni yig‘ish",
-      "dashboard": "Boshqaruv paneli",
-      "home": "Bosh sahifa",
       "banner": "Banner",
       "sections": "Bo‘limlar",
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
-      "leads": "Arizalar"
+      "leads": "Lidlar",
+      "content": "Kontent"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -401,10 +399,10 @@
       }
     },
     "leads": {
-      "title": "Arizalar",
+      "title": "Lidlar",
       "lead": "Jami {total}, yangi — {fresh}.",
-      "empty": "Hozircha arizalar yoʻq.",
-      "delete": "Arizani o'chirish",
+      "empty": "Hozircha lidlar yoʻq.",
+      "delete": "Lidni oʻchirish",
       "status": {
         "new": "Yangi",
         "in_progress": "Ishda",
@@ -416,7 +414,7 @@
         "client": "Mijoz",
         "phone": "Telefon",
         "tour": "Mehmonxona",
-        "dates": "Kelish · kecha",
+        "dates": "Kelish",
         "party": "Mehmonlar",
         "price": "Narx",
         "supplier": "Operator",
@@ -434,8 +432,8 @@
         "checkIn": "Kelish",
         "nights": "Kecha"
       },
-      "backToList": "Arizalar roʻyxatiga",
-      "missing": "Ariza topilmadi.",
+      "backToList": "Lidlar roʻyxatiga",
+      "missing": "Lid topilmadi.",
       "supplierOrderHint": "Operatordagi bron raqami — bron qilingandan keyin toʻldiriladi.",
       "sources": {
         "site": "Saytdan",
@@ -444,14 +442,14 @@
       "sections": {
         "client": "Mijoz",
         "trip": "Tur",
-        "order": "Ariza",
+        "order": "Lid",
         "raw": "Taklifning barcha maʼlumotlari"
       },
       "create": {
-        "cta": "Ariza qoʻshish",
-        "title": "Yangi ariza",
+        "cta": "Lid qoʻshish",
+        "title": "Yangi lid",
         "lead": "Maʼlum boʻlgan maʼlumotlarni kiriting — qolganini keyin toʻldirish mumkin.",
-        "submit": "Ariza yaratish",
+        "submit": "Lid yaratish",
         "checkIn": "Kelish",
         "nights": "Kecha",
         "adults": "Kattalar",
@@ -467,8 +465,8 @@
         "failed": "Qidiruv amalga oshmadi. Yana urinib koʻring.",
         "required": "Qidiruv natijalaridan turni tanlang."
       },
-      "search": "Arizalarni qidirish",
-      "searchPlaceholder": "Ism, telefon, raqam yoki tur…",
+      "search": "Lidlarni qidirish",
+      "searchPlaceholder": "Ism, telefon, raqam yoki mehmonxona…",
       "noMatches": "Hech nima topilmadi.",
       "openAtOperator": "Operatorda ochish",
       "openHotelPage": "Mehmonxona sahifasi",

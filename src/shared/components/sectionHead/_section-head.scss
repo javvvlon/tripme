@@ -9,9 +9,10 @@
     margin-bottom: 22px;
 
     &__title {
+        font-family: var(--tm-font-display-primary);
         font-size: clamp(#{size(21)}, 2.6vw, #{size(28)});
-        font-weight: 800;
-        letter-spacing: -.025em;
+        font-weight: 700;
+        letter-spacing: -.01em;
     }
 
     &__sub {

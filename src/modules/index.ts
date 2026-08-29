@@ -3,7 +3,6 @@ import { LandingModule } from '../landing'
 import { SearchEngineModule } from '../search_engine'
 import { AuthModule } from './auth'
 import { ContentModule } from './content'
-import { DashboardModule } from './dashboard'
 import { PostsModule } from './posts'
 import { LeadsModule } from './leads'
 
@@ -14,7 +13,6 @@ export const modules: IModule[] = [
   SearchEngineModule,
   LandingModule,
   AuthModule,
-  DashboardModule,
   ContentModule,
   PostsModule,
   LeadsModule,

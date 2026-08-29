@@ -15,13 +15,6 @@
             height: auto;
         }
 
-        &.is-compact img {
-            width: 26px;
-            height: 34px;
-            object-fit: cover;
-            object-position: left center;
-        }
-    }
 
     &__main {
         flex: 1;

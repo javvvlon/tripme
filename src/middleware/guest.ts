@@ -8,5 +8,5 @@ export default defineNuxtRouteMiddleware(() => {
 
   if (!isAuthenticated.value) return
 
-  return navigateTo(useLocalePath()('/app'))
+  return navigateTo(useLocalePath()('/app/leads'))
 })

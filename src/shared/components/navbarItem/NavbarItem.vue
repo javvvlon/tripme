@@ -3,21 +3,20 @@
         <component
             :is="tag" v-bind="attrs"
             class="tm-navbar-item__control"
-            :class="{ 'is-active': active, 'is-compact': compact, 'is-disabled': disabled }"
-            :title="compact ? label : undefined"
+            :class="{ 'is-active': active, 'is-disabled': disabled }"
         >
             <Icon v-if="icon" :name="icon" :size="21" class="tm-navbar-item__icon" />
 
-            <span v-if="!compact" class="tm-navbar-item__label">{{ label }}</span>
+            <span class="tm-navbar-item__label">{{ label }}</span>
 
             <Icon
-                v-if="expandable && !compact"
+                v-if="expandable"
                 name="chevron" :size="18"
                 class="tm-navbar-item__chevron" :class="{ 'is-open': expanded }"
             />
         </component>
 
-        <div v-if="$slots.default && !compact" v-show="expanded" class="tm-navbar-item__children">
+        <div v-if="$slots.default" v-show="expanded" class="tm-navbar-item__children">
             <slot />
         </div>
     </div>

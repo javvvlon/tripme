@@ -4,15 +4,15 @@
     &__control {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 10px;
         width: 100%;
-        padding: 12px 14px;
+        padding: 8px 10px;
         border: 0;
-        border-radius: radius('md');
+        border-radius: radius('sm');
         background: transparent;
         color: var(--tm-cms-panel-ink);
         font-family: inherit;
-        font-size: size(16);
+        font-size: size(14);
         font-weight: 600;
         text-align: left;
         text-decoration: none;
@@ -25,12 +25,6 @@
 
         &.is-active {
             background: var(--tm-cms-panel-active);
-        }
-
-        &.is-compact {
-            justify-content: center;
-            padding: 12px 0;
-            gap: 0;
         }
 
         &.is-disabled {
@@ -60,7 +54,9 @@
     &__children {
         display: flex;
         flex-direction: column;
-        gap: 2px;
-        margin-top: 4px;
+        gap: 1px;
+        margin: 2px 0 2px 14px;
+        padding-left: 10px;
+        border-left: 1px solid var(--tm-cms-panel-line);
     }
 }

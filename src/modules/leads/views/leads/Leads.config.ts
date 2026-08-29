@@ -9,7 +9,7 @@ export const COLUMNS: Array<{ key: LeadSort, class?: string }> = [
   { key: 'client' },
   { key: 'phone', class: 'is-phone' },
   { key: 'tour' },
-  { key: 'dates', class: 'is-date' },
+  { key: 'dates', class: 'is-stay' },
   { key: 'party', class: 'is-num is-party' },
   { key: 'price', class: 'is-num is-price' },
   { key: 'supplier' },
