@@ -257,7 +257,9 @@
     "saved": "Saved",
     "errors": {
       "load": "Could not load this content. Reload the page.",
-      "save": "Could not save. Try again."
+      "save": "Could not save. Try again.",
+      "titleMissing": "Fill in the title in every language — the one missing it is open.",
+      "imageRejected": "The image was rejected — replace it or remove it."
     },
     "upload": {
       "choose": "Click to upload",

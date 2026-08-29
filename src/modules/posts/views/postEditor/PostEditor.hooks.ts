@@ -113,6 +113,8 @@ export const usePostEditor = () => {
 
     if (!draft.translations[locale.value].title.trim()) {
       validation.validate()
+      error.value = t('cms.errors.titleMissing')
+
       return
     }
 
@@ -124,7 +126,11 @@ export const usePostEditor = () => {
       return
     }
 
-    if (imageError.value) return
+    if (imageError.value) {
+      error.value = t('cms.errors.imageRejected')
+
+      return
+    }
 
     saving.value = true
 

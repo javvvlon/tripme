@@ -257,7 +257,9 @@
     "saved": "Saqlandi",
     "errors": {
       "load": "Kontentni yuklab bo‘lmadi. Sahifani yangilang.",
-      "save": "Saqlab bo‘lmadi. Qayta urinib ko‘ring."
+      "save": "Saqlab bo‘lmadi. Qayta urinib ko‘ring.",
+      "titleMissing": "Sarlavhani barcha tillarda toʻldiring — kerakli ilova ochildi.",
+      "imageRejected": "Rasm tekshiruvdan oʻtmadi — almashtiring yoki olib tashlang."
     },
     "upload": {
       "choose": "Yuklash uchun bosing",

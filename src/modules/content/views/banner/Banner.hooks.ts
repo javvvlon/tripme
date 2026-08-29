@@ -108,11 +108,16 @@ export const useBanner = () => {
     if (missing) {
       locale.value = missing
       validation.validate()
+      error.value = t('cms.errors.titleMissing')
 
       return
     }
 
-    if (imageError.value) return
+    if (imageError.value) {
+      error.value = t('cms.errors.imageRejected')
+
+      return
+    }
 
     saving.value = true
 
