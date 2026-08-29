@@ -397,6 +397,11 @@
         "label": "Roʻyxat koʻrinishi",
         "tile": "Roʻyxat",
         "card": "Kartalar"
+      },
+      "tour": {
+        "title": "Maqoladagi tur",
+        "lead": "Taklifni toping — oʻquvchi uni ariza tugmasi bilan karta koʻrinishida koʻradi.",
+        "remove": "Turni olib tashlash"
       }
     },
     "leads": {
@@ -500,6 +505,10 @@
       "title": "Maqola topilmadi",
       "lead": "Ehtimol u o'chirilgan yoki havola eskirgan.",
       "home": "Bosh sahifaga"
+    },
+    "tour": {
+      "heading": "Ushbu maqoladagi tur",
+      "priceNote": "butun tur uchun"
     }
   },
   "contact": {

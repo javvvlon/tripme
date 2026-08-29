@@ -397,6 +397,11 @@
         "label": "List view",
         "tile": "List",
         "card": "Cards"
+      },
+      "tour": {
+        "title": "Tour in this article",
+        "lead": "Find an offer — readers see it as a card with a request button.",
+        "remove": "Remove tour"
       }
     },
     "leads": {
@@ -500,6 +505,10 @@
       "title": "Article not found",
       "lead": "It may have been removed, or the link is out of date.",
       "home": "Back home"
+    },
+    "tour": {
+      "heading": "The tour from this article",
+      "priceNote": "for the whole trip"
     }
   },
   "contact": {

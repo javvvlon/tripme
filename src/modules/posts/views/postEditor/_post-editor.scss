@@ -49,6 +49,33 @@
         background: var(--tm-surface-1);
     }
 
+    &__tour {
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid var(--tm-border-1);
+    }
+
+    &__tour-head { margin-bottom: 16px; }
+
+    &__tour-title {
+        margin: 0;
+        font-size: size(17);
+        font-weight: 700;
+        color: var(--tm-ink-1);
+    }
+
+    &__tour-lead {
+        margin: 4px 0 0;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+    }
+
+    &__tour-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+    }
+
     &__foot {
         display: flex;
         align-items: center;

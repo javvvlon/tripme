@@ -1,0 +1,106 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-tour-offer {
+    padding: 24px 28px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('lg');
+    background: var(--tm-surface-1);
+    box-shadow: shadow('sm');
+
+    &__eyebrow {
+        margin: 0 0 14px;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    &__body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 28px;
+    }
+
+    &__main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__hotel {
+        margin: 0;
+        font-size: size(21);
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--tm-ink-1);
+    }
+
+    &__facts {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin: 12px 0 0;
+        padding: 0;
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--tm-ink-2);
+            font-size: size(14);
+        }
+
+        svg { color: var(--tm-ink-4); }
+    }
+
+    &__operator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 12px 0 0;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+    }
+
+    &__aside {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+        flex: none;
+    }
+
+    &__price {
+        margin: 0;
+        font-size: size(24);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--tm-ink-1);
+    }
+
+    &__price-note {
+        margin: 0 0 10px;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+}
+
+@media #{$until-md} {
+    .tm-tour-offer {
+        padding: 18px;
+
+        &__body {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        &__aside {
+            align-items: stretch;
+            width: 100%;
+        }
+
+        &__price-note { margin-bottom: 6px; }
+    }
+}

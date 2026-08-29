@@ -3,6 +3,8 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { Post } from '~/modules/posts/models/Post'
 import { POST_EXCERPT_MAX, POST_TITLE_MAX } from './PostEditor.config'
+import { tripFromTour } from '~/modules/leads/helpers/trip'
+import type { Tour } from '~/search_engine/models/Tour'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { IPostDraft } from '~/modules/posts/contracts/posts'
 
@@ -38,6 +40,7 @@ export const usePostEditor = () => {
     draft.badgeType = next.badgeType
     draft.link = next.link
     draft.isPublished = next.isPublished
+    draft.tour = next.tour
 
     author.value = raw.author
       ? `${raw.author.first_name} ${raw.author.last_name}`.trim() || null
@@ -91,6 +94,10 @@ export const usePostEditor = () => {
   const uploadInline = async (chosen: File): Promise<string> => upload(chosen)
 
   const mediaLibrary = async () => (await library()).map(item => ({ url: item.url, path: item.path }))
+
+  const assignTour = (chosen: Tour | null) => {
+    draft.tour = chosen ? tripFromTour(chosen) : null
+  }
 
   const clearImage = () => {
     draft.imageUrl = null
@@ -149,6 +156,6 @@ export const usePostEditor = () => {
 
   return {
     id, locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline, mediaLibrary,
+    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour,
   }
 }

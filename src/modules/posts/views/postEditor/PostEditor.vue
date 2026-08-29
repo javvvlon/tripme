@@ -106,6 +106,25 @@
                     </aside>
                 </div>
 
+                <section class="tm-post-editor__tour">
+                    <header class="tm-post-editor__tour-head">
+                        <h2 class="tm-post-editor__tour-title">{{ t('cms.posts.tour.title') }}</h2>
+                        <p class="tm-post-editor__tour-lead">{{ t('cms.posts.tour.lead') }}</p>
+                    </header>
+
+                    <template v-if="draft.tour">
+                        <TourOffer :trip="draft.tour" />
+
+                        <div class="tm-post-editor__tour-actions">
+                            <Button type="button" size="sm" variant="ghost" @click="assignTour(null)">
+                                {{ t('cms.posts.tour.remove') }}
+                            </Button>
+                        </div>
+                    </template>
+
+                    <TourPicker v-else :selected="null" @update:selected="assignTour" />
+                </section>
+
                 <footer class="tm-post-editor__foot">
                     <Button type="button" variant="ghost" @click="remove">
                         {{ t('cms.posts.delete') }}
@@ -128,6 +147,8 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import MarkdownEditor from '~/shared/components/markdownEditor/MarkdownEditor.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
+import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
+import TourOffer from '~/modules/leads/components/tourOffer/TourOffer.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { BADGE_TYPES } from '~/modules/content/contracts/blocks'
 import type { BadgeType } from '~/modules/content/contracts/blocks'
@@ -138,7 +159,7 @@ const { t, locales } = useI18n()
 
 const {
     locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline, mediaLibrary,
+    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour,
 } = usePostEditor()
 const { errors, touched } = validation
 

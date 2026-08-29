@@ -3,6 +3,7 @@ import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { BadgeType } from '~/modules/content/contracts/blocks'
 import type { IPostAdminRaw, IPostDraft, IPostRaw, IPostTranslationDraft } from '../contracts/posts'
+import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -16,6 +17,7 @@ export interface IPostAttributes {
   imageUrl: string | null
   link: string | null
   badge: { label: string, type: BadgeType } | null
+  tour: ILeadTrip | null
   author: string | null
   publishedAt: string | null
 }
@@ -52,6 +54,7 @@ export class Post extends Model<IPostAttributes> {
       imageUrl: raw.image_url,
       link: raw.link,
       badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
+      tour: raw.tour ?? null,
       author: authorName(raw),
       publishedAt: raw.published_at,
     })
@@ -80,6 +83,7 @@ export class Post extends Model<IPostAttributes> {
     }
 
     return {
+      tour: raw.tour ?? null,
       slug: raw.slug,
       imageUrl: raw.image_url,
       badgeType: raw.badge_type,
@@ -95,6 +99,7 @@ export class Post extends Model<IPostAttributes> {
     for (const locale of CONTENT_LOCALES) translations[locale] = emptyTranslation()
 
     return {
+      tour: null,
       slug: '',
       imageUrl: null,
       badgeType: null,

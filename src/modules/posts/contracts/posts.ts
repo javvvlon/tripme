@@ -1,5 +1,6 @@
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { BadgeType } from '~/modules/content/contracts/blocks'
+import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -25,6 +26,7 @@ export interface IPostRaw {
   badge_type: BadgeType | null
   link: string | null
   published_at: string | null
+  tour: ILeadTrip | null
   author: IPostAuthorRaw | null
   translations: IPostTranslationRaw[]
 }
@@ -42,6 +44,7 @@ export interface IPostTranslationDraft {
 }
 
 export interface IPostDraft {
+  tour: ILeadTrip | null
   slug: string
   imageUrl: string | null
   badgeType: BadgeType | null

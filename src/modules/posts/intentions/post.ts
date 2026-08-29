@@ -12,6 +12,7 @@ export class PostIntention {
       badge_type: draft.badgeType,
       link: draft.link.trim() || null,
       is_published: draft.isPublished,
+      tour: draft.tour,
       translations: CONTENT_LOCALES.map(locale => ({
         locale,
         title: draft.translations[locale].title.trim(),

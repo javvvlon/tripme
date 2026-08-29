@@ -38,6 +38,10 @@
             <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="tm-post__inner tm-post__body" v-html="body" />
 
+            <div v-if="post.tour" class="tm-post__inner tm-post__offer">
+                <TourOffer :trip="post.tour" :heading="t('post.tour.heading')" actionable />
+            </div>
+
             <div v-if="post.link" class="tm-post__inner tm-post__cta">
                 <Button :href="post.link" variant="secondary" icon-right="arrow-right">
                     {{ t('post.readMore') }}
@@ -48,6 +52,7 @@
 </template>
 
 <script setup lang="ts">
+import TourOffer from '~/modules/leads/components/tourOffer/TourOffer.vue'
 import { usePostPage } from './Post.hooks'
 import { renderMarkdown } from '~/shared/helpers/markdown'
 
