@@ -1,0 +1,191 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-cms-leads {
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 24px 0 16px;
+    }
+
+    &__order {
+        color: var(--tm-brand-secondary);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+
+    &__error {
+        margin: 18px 0 0;
+        color: var(--tm-status-danger);
+        font-size: size(15);
+        font-weight: 600;
+    }
+
+    &__empty {
+        margin: 24px 0;
+        color: var(--tm-ink-3);
+    }
+
+    &__sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
+
+    &__scroll {
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        overflow-x: auto;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: size(14);
+
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--tm-border-1);
+            white-space: nowrap;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background: var(--tm-surface-2);
+            color: var(--tm-ink-3);
+            font-size: size(12);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+
+        tbody tr:hover { background: var(--tm-surface-2); }
+
+        tbody tr.is-fresh td:first-child { box-shadow: inset 3px 0 0 var(--tm-brand-primary); }
+
+        .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+        .is-when { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
+    }
+
+    &__tour {
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__name {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { color: var(--tm-brand-secondary); }
+    }
+
+    &__phone {
+        color: var(--tm-ink-2);
+        font-variant-numeric: tabular-nums;
+        text-decoration: none;
+
+        &:hover { color: var(--tm-brand-secondary); }
+    }
+
+    &__status {
+        padding: 4px 8px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        font-size: size(12);
+        font-weight: 600;
+        cursor: pointer;
+
+        &.is-new { border-color: var(--tm-brand-primary); color: var(--tm-brand-primary); }
+        &.is-in_progress { color: var(--tm-ink-2); }
+        &.is-booked { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-rejected { color: var(--tm-ink-4); }
+    }
+
+    &__delete {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border: 0;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-4);
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-1); color: var(--tm-status-danger); }
+    }
+
+    &__detail td {
+        padding: 0 14px 16px;
+        background: var(--tm-surface-2);
+        white-space: normal;
+    }
+
+    &__detail-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        gap: 24px;
+        padding-top: 12px;
+    }
+
+    &__key {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    &__note p {
+        margin: 0;
+        color: var(--tm-ink-1);
+        line-height: 1.6;
+    }
+
+    &__trip {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 8px 20px;
+        margin: 0;
+
+        dt {
+            color: var(--tm-ink-4);
+            font-size: size(12);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        dd {
+            margin: 0;
+            color: var(--tm-ink-1);
+            font-size: size(13);
+            overflow-wrap: anywhere;
+        }
+    }
+}
+
+@media #{$until-lg} {
+    .tm-cms-leads__detail-grid { grid-template-columns: minmax(0, 1fr); }
+}

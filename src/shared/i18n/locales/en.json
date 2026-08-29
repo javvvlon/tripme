@@ -243,7 +243,8 @@
       "banner": "Banner",
       "sections": "Sections",
       "lists": "Lists",
-      "posts": "Articles"
+      "posts": "Articles",
+      "leads": "Leads"
     },
     "roles": {
       "CLIENT": "Client",
@@ -398,6 +399,66 @@
         "tile": "List",
         "card": "Cards"
       }
+    },
+    "leads": {
+      "title": "Leads",
+      "lead": "{total} in total, {fresh} new.",
+      "empty": "No leads yet.",
+      "delete": "Delete lead",
+      "filters": {
+        "label": "Filter by status",
+        "all": "All"
+      },
+      "status": {
+        "new": "New",
+        "in_progress": "In progress",
+        "booked": "Booked",
+        "rejected": "Rejected"
+      },
+      "columns": {
+        "created": "Date",
+        "client": "Client",
+        "phone": "Phone",
+        "tour": "Tour",
+        "dates": "Check-in · nights",
+        "party": "Guests",
+        "price": "Price",
+        "supplier": "Operator",
+        "status": "Status",
+        "actions": "Actions",
+        "comment": "Comment",
+        "order": "No.",
+        "supplierOrder": "Operator ref",
+        "route": "Route",
+        "locale": "Language",
+        "updated": "Updated"
+      },
+      "backToList": "Back to leads",
+      "missing": "Lead not found.",
+      "supplierOrderHint": "The operator's own booking number — filled in once booked.",
+      "sources": {
+        "site": "From the site",
+        "manual": "Added manually"
+      },
+      "sections": {
+        "client": "Client",
+        "trip": "Tour",
+        "order": "Lead",
+        "raw": "Full offer data"
+      },
+      "create": {
+        "cta": "Add a lead",
+        "title": "New lead",
+        "lead": "Fill in what you know — the rest can follow later.",
+        "submit": "Create lead",
+        "routeFrom": "From",
+        "routeTo": "To",
+        "checkIn": "Check-in",
+        "nights": "Nights",
+        "adults": "Adults",
+        "children": "Children",
+        "currency": "Currency"
+      }
     }
   },
   "markdown": {
@@ -456,6 +517,22 @@
     "seo": {
       "title": "Contact — TripMe",
       "description": "Reach the TripMe team: email, phone, our Tashkent office, and a contact form."
+    }
+  },
+  "lead": {
+    "cta": "Request this tour",
+    "title": "Tour request",
+    "lead": "Leave your details and a manager will call to confirm them.",
+    "submit": "Send request",
+    "sent": "Thank you! We have your request — a manager will be in touch shortly.",
+    "error": "The request could not be sent. Please try again.",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "phonePlaceholder": "+998 (77) 000-00-00",
+      "comment": "Comment",
+      "commentPlaceholder": "Preferences on the room, board, dates…"
     }
   }
 }

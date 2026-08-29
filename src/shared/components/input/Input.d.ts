@@ -3,7 +3,7 @@
  */
 export interface IInputProps {
   label?: string
-  type?: 'text' | 'email' | 'password' | 'tel' | 'number' | 'search'
+  type?: 'text' | 'email' | 'password' | 'tel' | 'number' | 'search' | 'date'
   placeholder?: string
   error?: string
   hint?: string

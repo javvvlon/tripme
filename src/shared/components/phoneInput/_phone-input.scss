@@ -1,0 +1,74 @@
+@use '../../styles/utils' as *;
+
+.tm-phone {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+
+    &__label {
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        font-weight: 600;
+
+        span { color: var(--tm-brand-primary); }
+    }
+
+    &__control {
+        display: flex;
+        align-items: stretch;
+        min-width: 0;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        overflow: hidden;
+
+        &:focus-within { border-color: var(--tm-brand-primary); }
+
+        &.has-error { border-color: var(--tm-status-danger); }
+    }
+
+    &__prefix {
+        display: grid;
+        place-items: center;
+        flex: none;
+        padding: 0 12px;
+        border-right: 1px solid var(--tm-border-1);
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+        font-size: size(15);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__field {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        background: none;
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: .01em;
+
+        &:focus { outline: none; }
+
+        @include placeholder {
+            color: var(--tm-ink-4);
+            font-weight: 500;
+        }
+    }
+
+    &__error {
+        margin: 0;
+        color: var(--tm-status-danger);
+        font-size: size(13);
+    }
+
+    &__hint {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+}

@@ -20,6 +20,12 @@ export const CMS_NAVIGATION: INavNode[] = [
     ],
   },
   {
+    key: 'leads',
+    labelKey: 'cms.nav.leads',
+    icon: 'inbox',
+    to: '/app/leads',
+  },
+  {
     key: 'posts',
     labelKey: 'cms.nav.posts',
     icon: 'doc',

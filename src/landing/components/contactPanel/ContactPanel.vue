@@ -42,23 +42,14 @@
                         />
                     </div>
 
-                    <div class="tm-contact__field">
-                        <label :for="phoneId" class="tm-contact__label">
-                            {{ t('contact.fields.phone') }}<span aria-hidden="true"> *</span>
-                        </label>
-
-                        <div class="tm-contact__phone">
-                            <span class="tm-contact__prefix">{{ PHONE_PREFIX }}</span>
-
-                            <Input
-                                :id="phoneId" v-model="form.phone" type="tel"
-                                :placeholder="t('contact.fields.phonePlaceholder')"
-                                :error="touched.phone ? errors.phone : ''"
-                                autocomplete="tel-national"
-                                @blur="validation.touch('phone')"
-                            />
-                        </div>
-                    </div>
+                    <PhoneInput
+                        :id="phoneId"
+                        v-model="form.phone"
+                        :label="t('contact.fields.phone')"
+                        :error="touched.phone ? errors.phone : ''"
+                        required
+                        @blur="validation.touch('phone')"
+                    />
 
                     <div class="tm-contact__field">
                         <label :for="messageId" class="tm-contact__label">{{ t('contact.fields.message') }}</label>
@@ -84,7 +75,8 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT_CHANNELS, MESSAGE_MAX, PHONE_PREFIX } from './ContactPanel.config'
+import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import { CONTACT_CHANNELS, MESSAGE_MAX } from './ContactPanel.config'
 import { useContactForm } from './ContactPanel.hooks'
 
 const { t } = useI18n()

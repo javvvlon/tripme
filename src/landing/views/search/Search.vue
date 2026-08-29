@@ -44,7 +44,11 @@
                 <template v-else-if="tours.length">
                     <ul class="tm-search-view__list">
                         <li v-for="(tour, i) in tours" :key="tour.get('id')">
-                            <TourCard :tour="tour" :eager="i === 0" :agent-view="isAuthenticated" />
+                            <TourCard
+                                :tour="tour" :eager="i === 0"
+                                :agent-view="isAuthenticated"
+                                :route="{ from: criteria.from, to: criteria.to }"
+                            />
                         </li>
                     </ul>
 

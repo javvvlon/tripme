@@ -1,0 +1,65 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-manual-lead {
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        legend {
+            padding: 0 0 10px;
+            color: var(--tm-ink-3);
+            font-size: size(12);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+
+        &.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    &__label {
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-family: inherit;
+        font-size: size(15);
+        line-height: 1.6;
+        resize: vertical;
+
+        &:focus {
+            outline: none;
+            border-color: var(--tm-brand-primary);
+        }
+    }
+}
+
+@media #{$until-md} {
+    .tm-manual-lead__row,
+    .tm-manual-lead__row.is-four { grid-template-columns: minmax(0, 1fr); }
+}

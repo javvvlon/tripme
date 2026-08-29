@@ -5,6 +5,7 @@ import { AuthModule } from './auth'
 import { ContentModule } from './content'
 import { DashboardModule } from './dashboard'
 import { PostsModule } from './posts'
+import { LeadsModule } from './leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -16,4 +17,5 @@ export const modules: IModule[] = [
   DashboardModule,
   ContentModule,
   PostsModule,
+  LeadsModule,
 ]

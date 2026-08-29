@@ -96,33 +96,6 @@
         span { color: var(--tm-brand-primary); }
     }
 
-    &__phone {
-        display: flex;
-        align-items: flex-start;
-        min-width: 0;
-
-        .tm-input {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .tm-input__field { border-radius: 0 radius('sm') radius('sm') 0; }
-    }
-
-    &__prefix {
-        display: grid;
-        place-items: center;
-        align-self: stretch;
-        padding: 0 14px;
-        border: 1px solid var(--tm-border-1);
-        border-right: 0;
-        border-radius: radius('sm') 0 0 radius('sm');
-        background: var(--tm-surface-2);
-        color: var(--tm-ink-2);
-        font-size: size(15);
-        font-weight: 600;
-    }
-
     &__textarea {
         width: 100%;
         padding: 12px 14px;

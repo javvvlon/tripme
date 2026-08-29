@@ -8,6 +8,4 @@ export const CONTACT_CHANNELS = [
   { key: 'phone', icon: 'phone', valueKey: 'contact.channels.phoneValue', href: 'tel:+998770000000' },
 ] as const
 
-export const PHONE_PREFIX = '+998'
-
 export const MESSAGE_MAX = 2000

@@ -243,7 +243,8 @@
       "banner": "Banner",
       "sections": "Bo‘limlar",
       "lists": "Ro‘yxatlar",
-      "posts": "Maqolalar"
+      "posts": "Maqolalar",
+      "leads": "Arizalar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -398,6 +399,66 @@
         "tile": "Roʻyxat",
         "card": "Kartalar"
       }
+    },
+    "leads": {
+      "title": "Arizalar",
+      "lead": "Jami {total}, yangi — {fresh}.",
+      "empty": "Hozircha arizalar yoʻq.",
+      "delete": "Arizani o'chirish",
+      "filters": {
+        "label": "Holat boʻyicha filtr",
+        "all": "Barchasi"
+      },
+      "status": {
+        "new": "Yangi",
+        "in_progress": "Ishda",
+        "booked": "Bron qilindi",
+        "rejected": "Rad etildi"
+      },
+      "columns": {
+        "created": "Sana",
+        "client": "Mijoz",
+        "phone": "Telefon",
+        "tour": "Tur",
+        "dates": "Kelish · kecha",
+        "party": "Mehmonlar",
+        "price": "Narx",
+        "supplier": "Operator",
+        "status": "Holat",
+        "actions": "Amallar",
+        "comment": "Izoh",
+        "order": "Raqam",
+        "supplierOrder": "Operator raqami",
+        "route": "Yoʻnalish",
+        "locale": "Til",
+        "updated": "Yangilangan"
+      },
+      "backToList": "Arizalar roʻyxatiga",
+      "missing": "Ariza topilmadi.",
+      "supplierOrderHint": "Operatordagi bron raqami — bron qilingandan keyin toʻldiriladi.",
+      "sources": {
+        "site": "Saytdan",
+        "manual": "Qoʻlda qoʻshilgan"
+      },
+      "sections": {
+        "client": "Mijoz",
+        "trip": "Tur",
+        "order": "Ariza",
+        "raw": "Taklifning barcha maʼlumotlari"
+      },
+      "create": {
+        "cta": "Ariza qoʻshish",
+        "title": "Yangi ariza",
+        "lead": "Maʼlum boʻlgan maʼlumotlarni kiriting — qolganini keyin toʻldirish mumkin.",
+        "submit": "Ariza yaratish",
+        "routeFrom": "Qayerdan",
+        "routeTo": "Qayerga",
+        "checkIn": "Kelish",
+        "nights": "Kecha",
+        "adults": "Kattalar",
+        "children": "Bolalar",
+        "currency": "Valyuta"
+      }
     }
   },
   "markdown": {
@@ -456,6 +517,22 @@
     "seo": {
       "title": "Aloqa — TripMe",
       "description": "TripMe jamoasi bilan bogʻlaning: pochta, telefon, Toshkentdagi ofis va aloqa shakli."
+    }
+  },
+  "lead": {
+    "cta": "Ariza qoldirish",
+    "title": "Tur tanlash uchun ariza",
+    "lead": "Kontaktlaringizni qoldiring — menejer bogʻlanib, tafsilotlarni tasdiqlaydi.",
+    "submit": "Arizani yuborish",
+    "sent": "Rahmat! Ariza qabul qilindi, menejer tez orada bogʻlanadi.",
+    "error": "Arizani yuborib boʻlmadi. Yana urinib koʻring.",
+    "fields": {
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "phone": "Telefon",
+      "phonePlaceholder": "+998 (77) 000-00-00",
+      "comment": "Izoh",
+      "commentPlaceholder": "Xona, ovqatlanish, sanalar boʻyicha istaklar…"
     }
   }
 }

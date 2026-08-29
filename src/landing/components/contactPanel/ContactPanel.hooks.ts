@@ -1,4 +1,5 @@
-import { MESSAGE_MAX, PHONE_PREFIX } from './ContactPanel.config'
+import { MESSAGE_MAX } from './ContactPanel.config'
+import { isCompletePhone, toE164 } from '~/shared/helpers/phone'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -15,7 +16,7 @@ export const useContactForm = () => {
 
   const validation = useValidation(() => form, {
     firstName: [required()],
-    phone: [required(), minLength(7)],
+    phone: [required(), custom(value => isCompletePhone(String(value ?? '')), 'validation.phone')],
     message: [maxLength(MESSAGE_MAX)],
   })
 
@@ -31,7 +32,7 @@ export const useContactForm = () => {
       await http.call('Landing', 'contact', {}, {
         first_name: form.firstName,
         last_name: form.lastName,
-        phone: `${PHONE_PREFIX}${form.phone.replace(/\D/g, '')}`,
+        phone: toE164(form.phone),
         message: form.message,
       })
 
