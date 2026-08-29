@@ -415,7 +415,7 @@
         "created": "Sana",
         "client": "Mijoz",
         "phone": "Telefon",
-        "tour": "Tur",
+        "tour": "Mehmonxona",
         "dates": "Kelish · kecha",
         "party": "Mehmonlar",
         "price": "Narx",
@@ -429,7 +429,10 @@
         "locale": "Til",
         "updated": "Yangilangan",
         "passport": "Pasport",
-        "passportExpires": "Amal qilish muddati"
+        "passportExpires": "Amal qilish muddati",
+        "hotel": "Mehmonxona",
+        "checkIn": "Kelish",
+        "nights": "Kecha"
       },
       "backToList": "Arizalar roʻyxatiga",
       "missing": "Ariza topilmadi.",
@@ -466,7 +469,9 @@
       },
       "search": "Arizalarni qidirish",
       "searchPlaceholder": "Ism, telefon, raqam yoki tur…",
-      "noMatches": "Hech nima topilmadi."
+      "noMatches": "Hech nima topilmadi.",
+      "openAtOperator": "Operatorda ochish",
+      "openAtOperatorHint": "Xuddi shu taklif turoperator kabinetida."
     }
   },
   "markdown": {

@@ -112,7 +112,7 @@
 
                     <dl class="tm-cms-lead__facts is-columns">
                         <div>
-                            <dt>{{ t('cms.leads.columns.tour') }}</dt>
+                            <dt>{{ t('cms.leads.columns.hotel') }}</dt>
                             <dd>{{ lead.hotel_name || '—' }}</dd>
                         </div>
                         <div>
@@ -124,8 +124,12 @@
                             <dd>{{ lead.route_from || '—' }} → {{ lead.route_to || '—' }}</dd>
                         </div>
                         <div>
-                            <dt>{{ t('cms.leads.columns.dates') }}</dt>
-                            <dd>{{ lead.check_in ? `${shortDate(lead.check_in)} · ${lead.nights}` : '—' }}</dd>
+                            <dt>{{ t('cms.leads.columns.checkIn') }}</dt>
+                            <dd>{{ lead.check_in ? shortDate(lead.check_in) : '—' }}</dd>
+                        </div>
+                        <div>
+                            <dt>{{ t('cms.leads.columns.nights') }}</dt>
+                            <dd>{{ lead.nights || '—' }}</dd>
                         </div>
                         <div>
                             <dt>{{ t('cms.leads.columns.party') }}</dt>
@@ -136,6 +140,19 @@
                             <dd>{{ money(lead) }}</dd>
                         </div>
                     </dl>
+
+                    <div v-if="operatorUrl" class="tm-cms-lead__operator">
+                        <Button
+                            :href="operatorUrl"
+                            variant="secondary" size="sm"
+                            target="_blank" rel="noopener noreferrer"
+                            icon-right="arrow-right"
+                        >
+                            {{ t('cms.leads.openAtOperator') }}
+                        </Button>
+
+                        <span class="tm-cms-lead__operator-note">{{ t('cms.leads.openAtOperatorHint') }}</span>
+                    </div>
                 </section>
 
                 <section v-if="extras.length" class="tm-cms-lead__card tm-cms-lead__card--wide">
@@ -186,8 +203,15 @@ const money = (row: ILeadRaw): string => {
 
 const KNOWN = new Set([
     'hotel_name', 'supplier_name', 'check_in', 'nights', 'adults', 'children',
-    'price_amount', 'price_currency', 'route_from', 'route_to',
+    'price_amount', 'price_currency', 'route_from', 'route_to', 'booking_url',
 ])
+
+const operatorUrl = computed(() => {
+    const trip = lead.value?.trip ?? {}
+    const url = trip.booking_url ?? trip.hotel_url
+
+    return typeof url === 'string' && /^https?:\/\//.test(url) ? url : null
+})
 
 const extras = computed(() =>
     Object.entries(lead.value?.trip ?? {})

@@ -415,7 +415,7 @@
         "created": "Date",
         "client": "Client",
         "phone": "Phone",
-        "tour": "Tour",
+        "tour": "Hotel",
         "dates": "Check-in · nights",
         "party": "Guests",
         "price": "Price",
@@ -429,7 +429,10 @@
         "locale": "Language",
         "updated": "Updated",
         "passport": "Passport",
-        "passportExpires": "Valid until"
+        "passportExpires": "Valid until",
+        "hotel": "Hotel",
+        "checkIn": "Check-in",
+        "nights": "Nights"
       },
       "backToList": "Back to leads",
       "missing": "Lead not found.",
@@ -466,7 +469,9 @@
       },
       "search": "Search leads",
       "searchPlaceholder": "Name, phone, number or tour…",
-      "noMatches": "Nothing found."
+      "noMatches": "Nothing found.",
+      "openAtOperator": "Open at the operator",
+      "openAtOperatorHint": "The same offer in the operator’s own cabinet."
     }
   },
   "markdown": {

@@ -9,6 +9,7 @@ export const tripFromTour = (tour: Tour, route?: { from: string, to: string }): 
   hotel_stars: tour.get('hotelStars'),
   hotel_code: tour.get('hotelSupplierCode'),
   hotel_url: tour.get('hotelUrl'),
+  booking_url: tour.get('bookingUrl'),
   supplier_id: tour.get('supplier').id,
   supplier_name: tour.get('supplier').name,
   offer_id: tour.get('id'),

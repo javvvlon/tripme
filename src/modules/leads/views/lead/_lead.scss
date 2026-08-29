@@ -113,6 +113,20 @@
 
     &__mono { font-variant-numeric: tabular-nums; }
 
+    &__operator {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--tm-border-1);
+    }
+
+    &__operator-note {
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+
     &__comment {
         margin-top: 18px;
         padding-top: 16px;

@@ -415,7 +415,7 @@
         "created": "Дата",
         "client": "Клиент",
         "phone": "Телефон",
-        "tour": "Тур",
+        "tour": "Отель",
         "dates": "Заезд · ночей",
         "party": "Гости",
         "price": "Цена",
@@ -429,7 +429,10 @@
         "locale": "Язык",
         "updated": "Обновлена",
         "passport": "Паспорт",
-        "passportExpires": "Действителен до"
+        "passportExpires": "Действителен до",
+        "hotel": "Отель",
+        "checkIn": "Заезд",
+        "nights": "Ночей"
       },
       "backToList": "К списку заявок",
       "missing": "Заявка не найдена.",
@@ -466,7 +469,9 @@
       },
       "search": "Поиск заявок",
       "searchPlaceholder": "Имя, телефон, номер или тур…",
-      "noMatches": "Ничего не найдено."
+      "noMatches": "Ничего не найдено.",
+      "openAtOperator": "Открыть у оператора",
+      "openAtOperatorHint": "Это же предложение в кабинете туроператора."
     }
   },
   "markdown": {
