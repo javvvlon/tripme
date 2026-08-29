@@ -5,13 +5,13 @@
             class="tm-navbar-item__control"
             :class="{ 'is-active': active, 'is-disabled': disabled }"
         >
-            <Icon v-if="icon" :name="icon" :size="21" class="tm-navbar-item__icon" />
+            <Icon v-if="icon" :name="icon" :size="18" class="tm-navbar-item__icon" />
 
             <span class="tm-navbar-item__label">{{ label }}</span>
 
             <Icon
                 v-if="expandable"
-                name="chevron" :size="18"
+                name="chevron" :size="15"
                 class="tm-navbar-item__chevron" :class="{ 'is-open': expanded }"
             />
         </component>

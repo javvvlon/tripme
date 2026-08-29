@@ -54,9 +54,9 @@
     &__children {
         display: flex;
         flex-direction: column;
-        gap: 1px;
-        margin: 2px 0 2px 14px;
-        padding-left: 10px;
+        gap: 0;
+        margin: 1px 0 2px 15px;
+        padding-left: 8px;
         border-left: 1px solid var(--tm-cms-panel-line);
     }
 }

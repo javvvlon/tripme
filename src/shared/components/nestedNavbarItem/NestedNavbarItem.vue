@@ -4,7 +4,7 @@
         class="tm-nested-navbar-item"
         :class="{ 'is-active': active, 'is-disabled': disabled }"
     >
-        <Icon :name="icon ?? 'folder'" :size="19" class="tm-nested-navbar-item__icon" />
+        <Icon :name="icon ?? 'folder'" :size="16" class="tm-nested-navbar-item__icon" />
         <span class="tm-nested-navbar-item__label">{{ label }}</span>
     </component>
 </template>

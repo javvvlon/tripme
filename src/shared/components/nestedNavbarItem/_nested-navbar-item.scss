@@ -3,11 +3,11 @@
 .tm-nested-navbar-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 11px 14px 11px 34px;
-    border-radius: radius('md');
+    gap: 9px;
+    padding: 7px 10px;
+    border-radius: radius('sm');
     color: var(--tm-cms-panel-ink);
-    font-size: size(15);
+    font-size: size(14);
     font-weight: 500;
     text-decoration: none;
     transition: background .15s, color .15s;
