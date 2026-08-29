@@ -83,6 +83,12 @@ const stored = computed(() => (cleared.value ? null : props.current ?? null))
 watch(upload.error, value => { error.value = value })
 watch(upload.file, value => { file.value = value })
 
+watch(() => props.current, () => {
+  upload.clear()
+  cleared.value = false
+  error.value = ''
+})
+
 const open = () => input.value?.click()
 
 async function take(candidate: File | null | undefined) {

@@ -28,3 +28,24 @@
         font-weight: 600;
     }
 }
+
+.tm-cms-banner__inherited {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 0;
+    padding: 8px 10px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('sm');
+    background: var(--tm-surface-2);
+    color: var(--tm-ink-3);
+    font-size: size(13);
+
+    img {
+        flex: none;
+        width: 64px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: radius('xs');
+    }
+}

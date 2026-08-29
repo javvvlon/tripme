@@ -276,7 +276,8 @@
         "imageHint": "PNG or JPG (max. {width}×{height}px with size of max. {size}mb)",
         "subtitle": "Subtitle",
         "subtitlePlaceholder": "The line under the headline",
-        "subtitleHint": "Empty falls back to the copy built into the design."
+        "subtitleHint": "Empty falls back to the copy built into the design.",
+        "inherited": "No image of its own — the site will show the {locale} one. Remove it there to leave the banner without a photo."
       }
     },
     "dashboard": {

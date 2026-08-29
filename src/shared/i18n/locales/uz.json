@@ -276,7 +276,8 @@
         "imageHint": "PNG yoki JPG (maks. {width}×{height}px), hajmi {size} MB gacha",
         "subtitle": "Qo‘shimcha sarlavha",
         "subtitlePlaceholder": "Sarlavha ostidagi matn",
-        "subtitleHint": "Bo‘sh — dizayndagi matn ko‘rinadi."
+        "subtitleHint": "Bo‘sh — dizayndagi matn ko‘rinadi.",
+        "inherited": "Oʻz rasmi yoʻq — saytda {locale} tilidagi rasm koʻrsatiladi. Banner rasmsiz qolishi uchun uni oʻsha yerda oʻchiring."
       }
     },
     "dashboard": {

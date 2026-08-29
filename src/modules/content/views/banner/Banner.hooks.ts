@@ -54,10 +54,20 @@ export const useBanner = () => {
 
   const imageError = ref('')
 
+  const inheritedImage = computed(() => {
+    if (draft[locale.value].imageUrl) return null
+
+    const donor = CONTENT_LOCALES.find(code => code !== locale.value && draft[code].imageUrl)
+
+    return donor ? { locale: donor, url: draft[donor].imageUrl! } : null
+  })
+
   let uploads: Promise<unknown> = Promise.resolve()
 
   async function pickImage(file: File | null) {
     if (!file) return
+
+    const target = locale.value
 
     uploading.value = true
     error.value = ''
@@ -66,7 +76,7 @@ export const useBanner = () => {
     uploads = new Promise((resolve) => { settle = () => resolve(undefined) })
 
     try {
-      draft[locale.value].imageUrl = await upload(file)
+      draft[target].imageUrl = await upload(file)
     }
     catch {
       error.value = t('cms.lists.uploadFailed')
@@ -119,7 +129,7 @@ export const useBanner = () => {
   }
 
   return {
-    locale, draft, validation, imageError, status, saving, saved, error, uploading,
+    locale, draft, validation, imageError, inheritedImage, status, saving, saved, error, uploading,
     submit, refresh, pickImage, clearImage, discardImage,
   }
 }

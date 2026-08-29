@@ -52,6 +52,11 @@
                     @clear="clearImage"
                     @discard="discardImage"
                 />
+
+                <p v-if="inheritedImage" class="tm-cms-banner__inherited">
+                    <img :src="inheritedImage.url" alt="" width="64" height="36">
+                    <span>{{ t('cms.banner.fields.inherited', { locale: inheritedImage.locale.toUpperCase() }) }}</span>
+                </p>
             </FormRow>
 
             <footer class="tm-cms-banner__foot">
@@ -77,7 +82,7 @@ import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 const { t, locales } = useI18n()
 
 const {
-  locale, draft, validation, imageError, status, saving, saved, error, uploading,
+  locale, draft, validation, imageError, inheritedImage, status, saving, saved, error, uploading,
   submit, pickImage, clearImage, discardImage,
 } = useBanner()
 const { errors, touched } = validation
