@@ -1,0 +1,124 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-tour-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &__criteria {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    &__run {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &__note {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__error {
+        color: var(--tm-status-danger);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__results {
+        list-style: none;
+        max-height: 260px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        overflow-y: auto;
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid var(--tm-border-1);
+        background: none;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); }
+    }
+
+    li:last-child &__option { border-bottom: 0; }
+
+    &__option-main {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    &__option-name {
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__option-meta {
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+
+    &__option-price {
+        flex: none;
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__chosen {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 14px;
+        border: 1px solid var(--tm-status-success-line);
+        border-radius: radius('sm');
+        background: var(--tm-status-success-soft);
+    }
+
+    &__chosen-main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__chosen-name {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 700;
+    }
+
+    &__chosen-meta {
+        margin: 2px 0 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__chosen-price {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+@media #{$until-md} {
+    .tm-tour-picker__criteria { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

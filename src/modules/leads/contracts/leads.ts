@@ -28,6 +28,8 @@ export interface ILeadRaw {
   first_name: string
   last_name: string
   phone: string
+  passport_id: string
+  passport_expires_at: string | null
   comment: string
   locale: string
   hotel_name: string
@@ -56,34 +58,16 @@ export interface ILeadManualDraft {
   firstName: string
   lastName: string
   phone: string
+  passportId: string
+  passportExpiresAt: string
   comment: string
-  hotelName: string
-  supplierName: string
-  checkIn: string
-  nights: string
-  adults: string
-  children: string
-  priceAmount: string
-  priceCurrency: string
-  routeFrom: string
-  routeTo: string
-  supplierOrderId: string
 }
 
 export const emptyManualDraft = (): ILeadManualDraft => ({
   firstName: '',
   lastName: '',
   phone: '',
+  passportId: '',
+  passportExpiresAt: '',
   comment: '',
-  hotelName: '',
-  supplierName: '',
-  checkIn: '',
-  nights: '',
-  adults: '',
-  children: '',
-  priceAmount: '',
-  priceCurrency: 'USD',
-  routeFrom: '',
-  routeTo: '',
-  supplierOrderId: '',
 })

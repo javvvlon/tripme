@@ -19,6 +19,8 @@ export const useLead = () => {
   const error = ref('')
 
   const supplierOrderId = ref('')
+  const passportId = ref('')
+  const passportExpiresAt = ref('')
 
   const { data: lead, status, refresh } = useAsyncData<ILeadRaw | null>(
     'cms:lead',
@@ -27,6 +29,8 @@ export const useLead = () => {
         const found = await one(id.value)
 
         supplierOrderId.value = found.supplier_order_id
+        passportId.value = found.passport_id
+        passportExpiresAt.value = found.passport_expires_at ?? ''
 
         return found
       }
@@ -46,11 +50,15 @@ export const useLead = () => {
     await save({ status: next })
   }
 
-  async function saveSupplierOrder() {
-    await save({ supplier_order_id: supplierOrderId.value })
+  async function saveDetails() {
+    await save({
+      supplier_order_id: supplierOrderId.value,
+      passport_id: passportId.value,
+      passport_expires_at: passportExpiresAt.value || null,
+    })
   }
 
-  async function save(body: Partial<{ status: LeadStatus, supplier_order_id: string }>) {
+  async function save(body: Partial<{ status: LeadStatus, supplier_order_id: string, passport_id: string, passport_expires_at: string | null }>) {
     error.value = ''
     saved.value = false
     saving.value = true
@@ -79,5 +87,9 @@ export const useLead = () => {
     }
   }
 
-  return { lead, status, error, saving, saved, supplierOrderId, statusOptions, change, saveSupplierOrder, remove, refresh }
+  return {
+    lead, status, error, saving, saved,
+    supplierOrderId, passportId, passportExpiresAt,
+    statusOptions, change, saveDetails, remove, refresh,
+  }
 }

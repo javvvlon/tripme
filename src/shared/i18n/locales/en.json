@@ -431,7 +431,9 @@
         "supplierOrder": "Operator ref",
         "route": "Route",
         "locale": "Language",
-        "updated": "Updated"
+        "updated": "Updated",
+        "passport": "Passport",
+        "passportExpires": "Valid until"
       },
       "backToList": "Back to leads",
       "missing": "Lead not found.",
@@ -451,13 +453,20 @@
         "title": "New lead",
         "lead": "Fill in what you know — the rest can follow later.",
         "submit": "Create lead",
-        "routeFrom": "From",
-        "routeTo": "To",
         "checkIn": "Check-in",
         "nights": "Nights",
         "adults": "Adults",
-        "children": "Children",
-        "currency": "Currency"
+        "children": "Children"
+      },
+      "passportHint": "Passport series and number.",
+      "picker": {
+        "search": "Find tours",
+        "searching": "Searching…",
+        "change": "Pick another",
+        "empty": "Nothing found — try different criteria.",
+        "found": "{count} found — pick one",
+        "failed": "The search failed. Please try again.",
+        "required": "Pick a tour from the search results."
       }
     }
   },

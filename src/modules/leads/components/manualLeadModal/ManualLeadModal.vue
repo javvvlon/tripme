@@ -31,39 +31,34 @@
                 />
             </div>
 
-            <PhoneInput
-                v-model="draft.phone"
-                :label="t('lead.fields.phone')"
-                :error="touched.phone ? errors.phone : ''"
-                required
-                @blur="validation.touch('phone')"
+            <div class="tm-manual-lead__row">
+                <PhoneInput
+                    v-model="draft.phone"
+                    :label="t('lead.fields.phone')"
+                    :error="touched.phone ? errors.phone : ''"
+                    required
+                    @blur="validation.touch('phone')"
+                />
+
+                <Input
+                    v-model="draft.passportId"
+                    :label="t('cms.leads.columns.passport')"
+                    :hint="t('cms.leads.passportHint')"
+                    placeholder="AA1234567"
+                />
+            </div>
+
+            <Input
+                v-model="draft.passportExpiresAt"
+                type="date"
+                :label="t('cms.leads.columns.passportExpires')"
             />
         </fieldset>
 
         <fieldset class="tm-manual-lead__group">
             <legend>{{ t('cms.leads.sections.trip') }}</legend>
 
-            <div class="tm-manual-lead__row">
-                <Input v-model="draft.hotelName" :label="t('cms.leads.columns.tour')" />
-                <Input v-model="draft.supplierName" :label="t('cms.leads.columns.supplier')" />
-            </div>
-
-            <div class="tm-manual-lead__row">
-                <Input v-model="draft.routeFrom" :label="t('cms.leads.create.routeFrom')" />
-                <Input v-model="draft.routeTo" :label="t('cms.leads.create.routeTo')" />
-            </div>
-
-            <div class="tm-manual-lead__row is-four">
-                <Input v-model="draft.checkIn" type="date" :label="t('cms.leads.create.checkIn')" />
-                <Input v-model="draft.nights" type="number" :label="t('cms.leads.create.nights')" />
-                <Input v-model="draft.adults" type="number" :label="t('cms.leads.create.adults')" />
-                <Input v-model="draft.children" type="number" :label="t('cms.leads.create.children')" />
-            </div>
-
-            <div class="tm-manual-lead__row">
-                <Input v-model="draft.priceAmount" type="number" :label="t('cms.leads.columns.price')" />
-                <Input v-model="draft.priceCurrency" :label="t('cms.leads.create.currency')" placeholder="USD" />
-            </div>
+            <TourPicker :selected="tour" @update:selected="tour = $event" />
         </fieldset>
 
         <div class="tm-manual-lead__field">
@@ -81,6 +76,7 @@
 <script setup lang="ts">
 import Modal from '~/shared/components/modal/Modal.vue'
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import { useManualLead } from './ManualLeadModal.hooks'
 import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 
@@ -91,7 +87,7 @@ const open = defineModel<boolean>({ default: false })
 const { t } = useI18n()
 const commentId = useId()
 
-const { draft, validation, saving, error, submit, reset } = useManualLead((lead) => {
+const { draft, tour, validation, saving, error, submit, reset } = useManualLead((lead) => {
     open.value = false
     emit('created', lead)
 })

@@ -31,33 +31,24 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
-  const create = async (draft: ILeadManualDraft): Promise<ILeadRaw> => {
-    const number = (value: string): number | undefined =>
-      value.trim() === '' ? undefined : Number(value)
-
+  const create = async (draft: ILeadManualDraft, trip: ILeadTrip): Promise<ILeadRaw> => {
     const response = await http.call<ILeadRaw>('Leads', 'createLead', {}, {
       first_name: draft.firstName.trim(),
       last_name: draft.lastName.trim(),
       phone: toE164(draft.phone),
+      passport_id: draft.passportId.trim(),
+      passport_expires_at: draft.passportExpiresAt || undefined,
       comment: draft.comment.trim(),
-      trip: {
-        hotel_name: draft.hotelName.trim(),
-        supplier_name: draft.supplierName.trim(),
-        check_in: draft.checkIn || undefined,
-        nights: number(draft.nights),
-        adults: number(draft.adults),
-        children: number(draft.children),
-        price_amount: number(draft.priceAmount),
-        price_currency: draft.priceCurrency.trim(),
-        route_from: draft.routeFrom.trim(),
-        route_to: draft.routeTo.trim(),
-      },
+      trip,
     } as AnyObject)
 
     return response.data
   }
 
-  const patch = async (id: string, body: Partial<{ status: LeadStatus, supplier_order_id: string, comment: string }>): Promise<ILeadRaw> => {
+  const patch = async (
+    id: string,
+    body: Partial<{ status: LeadStatus, supplier_order_id: string, comment: string, passport_id: string, passport_expires_at: string | null }>,
+  ): Promise<ILeadRaw> => {
     const response = await http.call<ILeadRaw>('Leads', 'patchLead', { id }, body as AnyObject)
 
     return response.data

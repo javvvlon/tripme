@@ -12,9 +12,10 @@
         <div class="tm-tour-card__body">
             <div class="tm-tour-card__head">
                 <h3 class="tm-tour-card__name">
-                    <NuxtLink :to="localePath(`/hotels/${tour.get('hotelSupplierCode')}`)">
+                    <NuxtLink v-if="hotelPage" :to="localePath(hotelPage)">
                         {{ tour.get('hotelName') }}
                     </NuxtLink>
+                    <span v-else>{{ tour.get('hotelName') }}</span>
                 </h3>
                 <Rating v-if="tour.stars()" :value="tour.stars()" />
             </div>
@@ -120,6 +121,7 @@
 <script setup lang="ts">
 import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
+import { tripFromTour } from '~/modules/leads/helpers/trip'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { BadgeTone } from '../badge/Badge.d'
 import type { ITourCardProps } from './TourCard.d'
@@ -129,38 +131,23 @@ const props = defineProps<ITourCardProps>()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
+const routeExists = useRouteExists()
+
 const requesting = ref(false)
+
+const hotelPage = computed(() => {
+  const path = `/hotels/${props.tour.get('hotelSupplierCode')}`
+
+  return routeExists(path) ? path : null
+})
 
 const price = computed(() => formatMoney(props.tour.get('price'), locale.value))
 
 const summary = computed(() =>
   [props.tour.get('hotelName'), dates.value, price.value].filter(Boolean).join(' · '))
 
-const trip = computed<ILeadTrip>(() => ({
-  hotel_name: props.tour.get('hotelName'),
-  hotel_stars: props.tour.get('hotelStars'),
-  hotel_code: props.tour.get('hotelSupplierCode'),
-  hotel_url: props.tour.get('hotelUrl'),
-  supplier_id: props.tour.get('supplier').id,
-  supplier_name: props.tour.get('supplier').name,
-  offer_id: props.tour.get('id'),
-  check_in: props.tour.get('checkIn'),
-  nights: props.tour.get('nights'),
-  adults: props.tour.get('adults'),
-  children: props.tour.get('children'),
-  meal_code: props.tour.get('mealCode'),
-  meal_name: props.tour.get('mealName'),
-  room_name: props.tour.get('roomName'),
-  district: props.tour.get('district'),
-  availability: props.tour.get('availability'),
-  refundable: props.tour.get('refundable'),
-  programme: props.tour.get('programme'),
-  fare: props.tour.get('fare'),
-  price_amount: props.tour.get('price').amount,
-  price_currency: props.tour.get('price').currency,
-  route_from: props.route?.from ?? '',
-  route_to: props.route?.to ?? '',
-}))
+const trip = computed<ILeadTrip>(() =>
+  tripFromTour(props.tour, { from: props.route?.from ?? '', to: props.route?.to ?? '' }))
 
 
 const photo = computed(() => ({ src: null, alt: props.tour.get('hotelName') }))

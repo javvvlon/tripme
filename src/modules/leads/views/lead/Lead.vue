@@ -53,6 +53,14 @@
                             <dt>{{ t('cms.leads.columns.locale') }}</dt>
                             <dd>{{ lead.locale.toUpperCase() }}</dd>
                         </div>
+                        <div>
+                            <dt>{{ t('cms.leads.columns.passport') }}</dt>
+                            <dd>{{ lead.passport_id || '—' }}</dd>
+                        </div>
+                        <div>
+                            <dt>{{ t('cms.leads.columns.passportExpires') }}</dt>
+                            <dd>{{ lead.passport_expires_at ? shortDate(lead.passport_expires_at) : '—' }}</dd>
+                        </div>
                     </dl>
 
                     <div v-if="lead.comment" class="tm-cms-lead__comment">
@@ -75,7 +83,7 @@
                         </div>
                     </dl>
 
-                    <div class="tm-cms-lead__supplier-order">
+                    <div class="tm-cms-lead__editable">
                         <Input
                             v-model="supplierOrderId"
                             :label="t('cms.leads.columns.supplierOrder')"
@@ -83,7 +91,19 @@
                             placeholder="—"
                         />
 
-                        <Button type="button" size="sm" :disabled="saving" @click="saveSupplierOrder">
+                        <Input
+                            v-model="passportId"
+                            :label="t('cms.leads.columns.passport')"
+                            placeholder="AA1234567"
+                        />
+
+                        <Input
+                            v-model="passportExpiresAt"
+                            type="date"
+                            :label="t('cms.leads.columns.passportExpires')"
+                        />
+
+                        <Button type="button" size="sm" :disabled="saving" @click="saveDetails">
                             {{ saving ? t('cms.saving') : t('cms.save') }}
                         </Button>
                     </div>
@@ -145,7 +165,8 @@ const localePath = useLocalePath()
 
 const {
     lead, status, error, saving, saved,
-    supplierOrderId, statusOptions, change, saveSupplierOrder, remove,
+    supplierOrderId, passportId, passportExpiresAt,
+    statusOptions, change, saveDetails, remove,
 } = useLead()
 
 const shortDate = (value: string): string =>

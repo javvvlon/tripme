@@ -431,7 +431,9 @@
         "supplierOrder": "Operator raqami",
         "route": "Yoʻnalish",
         "locale": "Til",
-        "updated": "Yangilangan"
+        "updated": "Yangilangan",
+        "passport": "Pasport",
+        "passportExpires": "Amal qilish muddati"
       },
       "backToList": "Arizalar roʻyxatiga",
       "missing": "Ariza topilmadi.",
@@ -451,13 +453,20 @@
         "title": "Yangi ariza",
         "lead": "Maʼlum boʻlgan maʼlumotlarni kiriting — qolganini keyin toʻldirish mumkin.",
         "submit": "Ariza yaratish",
-        "routeFrom": "Qayerdan",
-        "routeTo": "Qayerga",
         "checkIn": "Kelish",
         "nights": "Kecha",
         "adults": "Kattalar",
-        "children": "Bolalar",
-        "currency": "Valyuta"
+        "children": "Bolalar"
+      },
+      "passportHint": "Xorijiy pasport seriyasi va raqami.",
+      "picker": {
+        "search": "Turlarni topish",
+        "searching": "Qidirilmoqda…",
+        "change": "Boshqasini tanlash",
+        "empty": "Hech nima topilmadi — parametrlarni oʻzgartiring.",
+        "found": "{count} ta topildi — turni tanlang",
+        "failed": "Qidiruv amalga oshmadi. Yana urinib koʻring.",
+        "required": "Qidiruv natijalaridan turni tanlang."
       }
     }
   },
