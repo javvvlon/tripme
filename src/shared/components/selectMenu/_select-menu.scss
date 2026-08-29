@@ -1,0 +1,99 @@
+@use '../../styles/utils' as *;
+
+.tm-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+
+    &__label {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__control {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+
+        &:hover:not(:disabled) { border-color: var(--tm-ink-4); }
+        &:disabled { opacity: .6; cursor: default; }
+
+        &.is-new { border-color: var(--tm-brand-primary); color: var(--tm-brand-primary); }
+        &.is-booked { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-rejected { color: var(--tm-ink-4); }
+    }
+
+    &__value {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__caret {
+        flex: none;
+        opacity: .6;
+        transition: transform .15s ease;
+    }
+
+    &.is-open &__caret { transform: rotate(180deg); }
+
+    &--sm &__control {
+        padding: 4px 10px;
+        font-size: size(12);
+    }
+
+    &--md &__control {
+        padding: 8px 14px;
+        font-size: size(14);
+        border-radius: radius('sm');
+    }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + 4px);
+        z-index: 30;
+        list-style: none;
+        min-width: 100%;
+        margin: 0;
+        padding: 4px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        box-shadow: shadow('md');
+
+        &.is-left { left: 0; }
+        &.is-right { right: 0; }
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        padding: 7px 10px;
+        border: 0;
+        border-radius: radius('xs');
+        background: none;
+        color: var(--tm-ink-1);
+        font-size: size(13);
+        text-align: left;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); }
+
+        &.is-selected { color: var(--tm-brand-secondary); font-weight: 600; }
+    }
+}

@@ -49,21 +49,6 @@
         background: var(--tm-surface-1);
     }
 
-    &__select {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('sm');
-        background: var(--tm-surface-1);
-        color: var(--tm-ink-1);
-        font-size: size(15);
-
-        &:focus {
-            outline: none;
-            border-color: var(--tm-brand-primary);
-        }
-    }
-
     &__foot {
         display: flex;
         align-items: center;

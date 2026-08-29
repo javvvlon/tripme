@@ -84,18 +84,12 @@
                             />
                         </div>
 
-                        <div class="tm-post-editor__field">
-                            <label :for="badgeTypeId" class="tm-post-editor__label">
-                                {{ t('cms.posts.fields.badgeType') }}
-                            </label>
-
-                            <select :id="badgeTypeId" v-model="draft.badgeType" class="tm-post-editor__select">
-                                <option :value="null">{{ t('cms.posts.fields.badgeNone') }}</option>
-                                <option v-for="type in BADGE_TYPES" :key="type" :value="type">
-                                    {{ t(`cms.lists.badgeTypes.${type}`) }}
-                                </option>
-                            </select>
-                        </div>
+                        <SelectMenu
+                            :model-value="draft.badgeType ?? ''"
+                            :options="badgeOptions"
+                            :label="t('cms.posts.fields.badgeType')"
+                            @update:model-value="draft.badgeType = ($event || null) as BadgeType | null"
+                        />
 
                         <Input
                             v-if="draft.badgeType"
@@ -133,8 +127,10 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import MarkdownEditor from '~/shared/components/markdownEditor/MarkdownEditor.vue'
+import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { BADGE_TYPES } from '~/modules/content/contracts/blocks'
+import type { BadgeType } from '~/modules/content/contracts/blocks'
 import { POST_IMAGE } from './PostEditor.config'
 import { usePostEditor } from './PostEditor.hooks'
 
@@ -146,7 +142,10 @@ const {
 } = usePostEditor()
 const { errors, touched } = validation
 
-const badgeTypeId = useId()
+const badgeOptions = computed(() => [
+    { value: '', label: t('cms.posts.fields.badgeNone') },
+    ...BADGE_TYPES.map(type => ({ value: type, label: t(`cms.lists.badgeTypes.${type}`) })),
+])
 
 const localeTabs = computed(() => CONTENT_LOCALES.map(code => ({
     value: code,

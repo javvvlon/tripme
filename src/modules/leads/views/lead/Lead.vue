@@ -18,16 +18,14 @@
                 </div>
 
                 <div class="tm-cms-lead__head-actions">
-                    <select
-                        class="tm-cms-lead__status" :class="`is-${lead.status}`"
-                        :value="lead.status" :disabled="saving"
-                        :aria-label="t('cms.leads.columns.status')"
-                        @change="change(($event.target as HTMLSelectElement).value as LeadStatus)"
-                    >
-                        <option v-for="option in statusOptions" :key="option.value" :value="option.value">
-                            {{ option.label }}
-                        </option>
-                    </select>
+                    <SelectMenu
+                        :model-value="lead.status"
+                        :options="statusOptions"
+                        :tone="lead.status"
+                        :disabled="saving"
+                        align="right"
+                        @update:model-value="change($event as LeadStatus)"
+                    />
 
                     <Button type="button" variant="ghost" @click="remove">{{ t('cms.leads.delete') }}</Button>
                 </div>
@@ -157,6 +155,7 @@
 
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
 import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 

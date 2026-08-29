@@ -18,104 +18,68 @@
 
         <p v-else-if="!leads?.length" class="tm-cms-leads__empty">{{ t('cms.leads.empty') }}</p>
 
-        <div v-else class="tm-cms-leads__scroll">
-            <table class="tm-cms-leads__table">
-                <thead>
-                    <tr>
-                        <th scope="col" class="is-num">{{ t('cms.leads.columns.order') }}</th>
-                        <th scope="col" class="is-when">{{ t('cms.leads.columns.created') }}</th>
-                        <th scope="col">{{ t('cms.leads.columns.client') }}</th>
-                        <th scope="col">{{ t('cms.leads.columns.phone') }}</th>
-                        <th scope="col">{{ t('cms.leads.columns.tour') }}</th>
-                        <th scope="col" class="is-when">{{ t('cms.leads.columns.dates') }}</th>
-                        <th scope="col" class="is-num">{{ t('cms.leads.columns.party') }}</th>
-                        <th scope="col" class="is-num">{{ t('cms.leads.columns.price') }}</th>
-                        <th scope="col">{{ t('cms.leads.columns.supplier') }}</th>
-                        <th scope="col">{{ t('cms.leads.columns.status') }}</th>
-                        <th scope="col"><span class="tm-cms-leads__sr">{{ t('cms.leads.columns.actions') }}</span></th>
-                    </tr>
-                </thead>
+        <table v-else class="tm-cms-leads__table">
+            <thead>
+                <tr>
+                    <th scope="col" class="is-num">{{ t('cms.leads.columns.order') }}</th>
+                    <th scope="col">{{ t('cms.leads.columns.created') }}</th>
+                    <th scope="col">{{ t('cms.leads.columns.client') }}</th>
+                    <th scope="col">{{ t('cms.leads.columns.tour') }}</th>
+                    <th scope="col">{{ t('cms.leads.columns.dates') }}</th>
+                    <th scope="col" class="is-num">{{ t('cms.leads.columns.price') }}</th>
+                    <th scope="col" class="is-status">{{ t('cms.leads.columns.status') }}</th>
+                </tr>
+            </thead>
 
-                <tbody>
-                    <template v-for="lead in leads" :key="lead.uuid">
-                        <tr :class="{ 'is-fresh': lead.status === 'new' }">
-                            <td class="is-num">
-                                <NuxtLink :to="localePath(`/app/leads/${lead.uuid}`)" class="tm-cms-leads__order">
-                                    #{{ lead.order_id }}
-                                </NuxtLink>
-                            </td>
+            <tbody>
+                <tr
+                    v-for="lead in leads" :key="lead.uuid"
+                    class="tm-cms-leads__row" :class="{ 'is-fresh': lead.status === 'new' }"
+                    tabindex="0"
+                    @click="go(lead)"
+                    @keydown.enter="go(lead)"
+                >
+                    <td class="is-num tm-cms-leads__order">#{{ lead.order_id }}</td>
 
-                            <td class="is-when">{{ shortDate(lead.created_at) }}</td>
+                    <td class="is-muted">{{ shortDate(lead.created_at) }}</td>
 
-                            <td>
-                                <button type="button" class="tm-cms-leads__name" @click="toggle(lead.uuid)">
-                                    {{ [lead.first_name, lead.last_name].filter(Boolean).join(' ') }}
-                                    <Icon :name="expanded === lead.uuid ? 'chevron-up' : 'chevron'" :size="14" />
-                                </button>
-                            </td>
+                    <td>
+                        <span class="tm-cms-leads__name">
+                            {{ [lead.first_name, lead.last_name].filter(Boolean).join(' ') }}
+                        </span>
+                        <span class="tm-cms-leads__second">{{ lead.phone }}</span>
+                    </td>
 
-                            <td><a :href="`tel:${lead.phone}`" class="tm-cms-leads__phone">{{ lead.phone }}</a></td>
+                    <td>
+                        <span class="tm-cms-leads__tour">{{ lead.hotel_name || '—' }}</span>
+                        <span class="tm-cms-leads__second">{{ lead.supplier_name || '—' }}</span>
+                    </td>
 
-                            <td class="tm-cms-leads__tour">{{ lead.hotel_name || '—' }}</td>
+                    <td class="is-muted">
+                        <template v-if="lead.check_in">
+                            {{ shortDate(lead.check_in) }} · {{ lead.nights }}
+                            <span class="tm-cms-leads__second">
+                                {{ lead.adults }}<template v-if="lead.children">+{{ lead.children }}</template>
+                            </span>
+                        </template>
+                        <template v-else>—</template>
+                    </td>
 
-                            <td class="is-when">{{ lead.check_in ? `${shortDate(lead.check_in)} · ${lead.nights}` : '—' }}</td>
+                    <td class="is-num">{{ money(lead) }}</td>
 
-                            <td class="is-num">{{ lead.adults }}<template v-if="lead.children">+{{ lead.children }}</template></td>
-
-                            <td class="is-num">{{ money(lead) }}</td>
-
-                            <td>{{ lead.supplier_name || '—' }}</td>
-
-                            <td>
-                                <select
-                                    class="tm-cms-leads__status" :class="`is-${lead.status}`"
-                                    :value="lead.status"
-                                    :aria-label="t('cms.leads.columns.status')"
-                                    @change="change(lead, ($event.target as HTMLSelectElement).value as LeadStatus)"
-                                >
-                                    <option v-for="option in rowOptions" :key="option.value" :value="option.value">
-                                        {{ option.label }}
-                                    </option>
-                                </select>
-                            </td>
-
-                            <td>
-                                <button
-                                    type="button" class="tm-cms-leads__delete"
-                                    :aria-label="t('cms.leads.delete')" :title="t('cms.leads.delete')"
-                                    @click="remove(lead.uuid)"
-                                >
-                                    <Icon name="close" :size="15" />
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr v-if="expanded === lead.uuid" class="tm-cms-leads__detail">
-                            <td colspan="11">
-                                <div class="tm-cms-leads__detail-grid">
-                                    <div v-if="lead.comment" class="tm-cms-leads__note">
-                                        <span class="tm-cms-leads__key">{{ t('cms.leads.columns.comment') }}</span>
-                                        <p>{{ lead.comment }}</p>
-                                    </div>
-
-                                    <dl class="tm-cms-leads__trip">
-                                        <div v-if="lead.supplier_order_id">
-                                            <dt>{{ t('cms.leads.columns.supplierOrder') }}</dt>
-                                            <dd>{{ lead.supplier_order_id }}</dd>
-                                        </div>
-
-                                        <div v-for="entry in tripEntries(lead)" :key="entry.key">
-                                            <dt>{{ entry.key }}</dt>
-                                            <dd>{{ entry.value }}</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
+                    <td class="is-status" @click.stop>
+                        <SelectMenu
+                            :model-value="lead.status"
+                            :options="rowOptions"
+                            :tone="lead.status"
+                            size="sm"
+                            align="right"
+                            @update:model-value="change(lead, $event as LeadStatus)"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <ManualLeadModal v-model="creating" @created="onCreated" />
     </div>
@@ -123,6 +87,7 @@
 
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import ManualLeadModal from '~/modules/leads/components/manualLeadModal/ManualLeadModal.vue'
 import { useLeads } from './Leads.hooks'
 import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
@@ -133,14 +98,16 @@ const localePath = useLocalePath()
 const creating = ref(false)
 
 const {
-    leads, status, error, filter, expanded,
+    leads, status, error, filter,
     statusOptions, rowOptions, counts,
-    change, remove, toggle, refresh,
+    change, refresh,
 } = useLeads()
+
+const go = (lead: ILeadRaw) => navigateTo(localePath(`/app/leads/${lead.uuid}`))
 
 async function onCreated(lead: ILeadRaw) {
     await refresh()
-    await navigateTo(localePath(`/app/leads/${lead.uuid}`))
+    await go(lead)
 }
 
 const shortDate = (value: string): string =>
@@ -155,11 +122,6 @@ const money = (lead: ILeadRaw): string => {
         maximumFractionDigits: 0,
     }).format(lead.price_amount)
 }
-
-const tripEntries = (lead: ILeadRaw): Array<{ key: string, value: string }> =>
-    Object.entries(lead.trip)
-        .filter(([, value]) => value !== null && value !== '' && value !== undefined)
-        .map(([key, value]) => ({ key, value: String(value) }))
 
 useSeoMeta({ title: () => t('cms.leads.title'), robots: 'noindex, nofollow' })
 </script>

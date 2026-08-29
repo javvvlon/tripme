@@ -7,11 +7,10 @@ import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
  */
 export const useLeads = () => {
   const { t } = useI18n()
-  const { all, setStatus, remove: removeLead } = useLeadsRepository()
+  const { all, setStatus } = useLeadsRepository()
 
   const filter = ref<LeadStatus | ''>('')
   const error = ref('')
-  const expanded = ref<string | null>(null)
 
   const { data, status, refresh } = useAsyncData(
     'cms:leads',
@@ -50,25 +49,9 @@ export const useLeads = () => {
     }
   }
 
-  async function remove(id: string) {
-    error.value = ''
-
-    try {
-      await removeLead(id)
-      await refresh()
-    }
-    catch {
-      error.value = t('cms.errors.save')
-    }
-  }
-
-  const toggle = (id: string) => {
-    expanded.value = expanded.value === id ? null : id
-  }
-
   return {
-    leads: data, status, error, filter, expanded,
+    leads: data, status, error, filter,
     statusOptions, rowOptions, counts,
-    change, remove, toggle, refresh,
+    change, refresh,
   }
 }
