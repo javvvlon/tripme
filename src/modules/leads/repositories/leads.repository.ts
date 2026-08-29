@@ -1,5 +1,5 @@
 import { toE164 } from '~/shared/helpers/phone'
-import type { ILeadDraft, ILeadManualDraft, ILeadRaw, ILeadTrip, LeadStatus } from '../contracts/leads'
+import type { ILeadDraft, ILeadManualDraft, ILeadRaw, ILeadTrip, LeadSort, LeadStatus, SortDirection } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
 
 /**
@@ -19,8 +19,14 @@ export const useLeadsRepository = () => {
     } as AnyObject)
   }
 
-  const all = async (status?: LeadStatus | ''): Promise<ILeadRaw[]> => {
-    const response = await http.call<ILeadRaw[]>('Leads', 'adminLeads', status ? { status } : {})
+  const all = async (query: { q?: string, sort?: LeadSort, dir?: SortDirection } = {}): Promise<ILeadRaw[]> => {
+    const params: Record<string, string> = {}
+
+    if (query.q) params.q = query.q
+    if (query.sort) params.sort = query.sort
+    if (query.dir) params.dir = query.dir
+
+    const response = await http.call<ILeadRaw[]>('Leads', 'adminLeads', params)
 
     return response.data
   }

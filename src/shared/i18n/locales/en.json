@@ -405,10 +405,6 @@
       "lead": "{total} in total, {fresh} new.",
       "empty": "No leads yet.",
       "delete": "Delete lead",
-      "filters": {
-        "label": "Filter by status",
-        "all": "All"
-      },
       "status": {
         "new": "New",
         "in_progress": "In progress",
@@ -467,7 +463,10 @@
         "found": "{count} found — pick one",
         "failed": "The search failed. Please try again.",
         "required": "Pick a tour from the search results."
-      }
+      },
+      "search": "Search leads",
+      "searchPlaceholder": "Name, phone, number or tour…",
+      "noMatches": "Nothing found."
     }
   },
   "markdown": {

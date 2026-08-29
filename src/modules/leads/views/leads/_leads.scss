@@ -9,6 +9,28 @@
         margin: 24px 0 16px;
     }
 
+    &__search {
+        flex: 1;
+        max-width: 380px;
+
+        .tm-search-field__control {
+            padding: 8px 12px;
+            border: 1px solid var(--tm-border-1);
+            border-radius: radius('sm');
+            background: var(--tm-surface-1);
+        }
+
+        &:focus-within .tm-search-field__control { border-color: var(--tm-brand-primary); }
+
+        .tm-search-field__label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+        }
+    }
+
     &__error {
         margin: 18px 0 0;
         color: var(--tm-status-danger);
@@ -23,43 +45,59 @@
 
     &__table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('md');
-        background: var(--tm-surface-1);
-        overflow: hidden;
-        font-size: size(14);
+        border-collapse: collapse;
+        font-size: size(13);
         table-layout: fixed;
 
         th, td {
-            padding: 12px 16px;
+            padding: 9px 12px;
             text-align: left;
             border-bottom: 1px solid var(--tm-border-1);
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         th {
-            background: var(--tm-surface-2);
-            color: var(--tm-ink-3);
-            font-size: size(11);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            white-space: nowrap;
+            padding: 0;
+            border-bottom: 1px solid var(--tm-border-1);
         }
 
         tbody tr:last-child td { border-bottom: 0; }
 
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
-        .is-status { width: 1%; white-space: nowrap; }
 
-        th:first-child, td:first-child { width: 84px; }
-        th:nth-child(2), td:nth-child(2) { width: 92px; }
-        th:nth-child(5), td:nth-child(5) { width: 160px; }
-        th:nth-child(6), td:nth-child(6) { width: 110px; }
+        .is-order { width: 74px; }
+        .is-date { width: 92px; }
+        .is-phone { width: 132px; }
+        .is-party { width: 62px; }
+        .is-price { width: 96px; }
+        .is-status { width: 128px; }
     }
+
+    &__sort {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+        padding: 10px 12px;
+        border: 0;
+        background: none;
+        color: var(--tm-ink-3);
+        font-size: size(11);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover { color: var(--tm-ink-1); }
+    }
+
+    .is-num &__sort { justify-content: flex-end; }
+
+    th[aria-sort='ascending'] &__sort,
+    th[aria-sort='descending'] &__sort { color: var(--tm-ink-1); }
 
     &__row {
         cursor: pointer;
@@ -71,8 +109,6 @@
             outline: 2px solid var(--tm-brand-primary);
             outline-offset: -2px;
         }
-
-        &.is-fresh td:first-child { box-shadow: inset 3px 0 0 var(--tm-brand-primary); }
     }
 
     &__order {
@@ -80,31 +116,22 @@
         font-weight: 700;
     }
 
-    &__name,
-    &__tour {
-        display: block;
+    &__strong {
         color: var(--tm-ink-1);
         font-weight: 600;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
-    &__second {
-        display: block;
-        margin-top: 2px;
-        color: var(--tm-ink-4);
-        font-size: size(12);
-        font-variant-numeric: tabular-nums;
+    &__truncate {
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
     }
 }
 
 @media #{$until-lg} {
     .tm-cms-leads__table {
-        th:nth-child(2), td:nth-child(2),
-        th:nth-child(5), td:nth-child(5) { display: none; }
+        th.is-phone, td:nth-child(4),
+        th.is-date:nth-child(2), td:nth-child(2) { display: none; }
     }
 }

@@ -3,6 +3,15 @@
  */
 export const LEAD_STATUSES = ['new', 'in_progress', 'booked', 'rejected'] as const
 
+export const LEAD_SORTS = [
+  'order', 'created', 'client', 'phone', 'tour',
+  'dates', 'party', 'price', 'supplier', 'status',
+] as const
+
+export type LeadSort = typeof LEAD_SORTS[number]
+
+export type SortDirection = 'asc' | 'desc'
+
 export type LeadStatus = typeof LEAD_STATUSES[number]
 
 export interface ILeadTrip {

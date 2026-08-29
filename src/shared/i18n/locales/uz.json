@@ -405,10 +405,6 @@
       "lead": "Jami {total}, yangi — {fresh}.",
       "empty": "Hozircha arizalar yoʻq.",
       "delete": "Arizani o'chirish",
-      "filters": {
-        "label": "Holat boʻyicha filtr",
-        "all": "Barchasi"
-      },
       "status": {
         "new": "Yangi",
         "in_progress": "Ishda",
@@ -467,7 +463,10 @@
         "found": "{count} ta topildi — turni tanlang",
         "failed": "Qidiruv amalga oshmadi. Yana urinib koʻring.",
         "required": "Qidiruv natijalaridan turni tanlang."
-      }
+      },
+      "search": "Arizalarni qidirish",
+      "searchPlaceholder": "Ism, telefon, raqam yoki tur…",
+      "noMatches": "Hech nima topilmadi."
     }
   },
   "markdown": {

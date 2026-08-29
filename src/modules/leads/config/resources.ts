@@ -9,7 +9,7 @@ export const resource: IResource = {
   resources: {
     submit: { url: 'leads', method: 'POST' },
 
-    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status'] },
+    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status', 'q', 'sort', 'dir'] },
     adminLead: { url: 'cms/leads/:id', method: 'GET' },
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },

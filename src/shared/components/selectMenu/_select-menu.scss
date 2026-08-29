@@ -59,24 +59,21 @@
         border-radius: radius('sm');
     }
 
-    &__menu {
-        position: absolute;
-        top: calc(100% + 4px);
-        z-index: 30;
-        list-style: none;
-        min-width: 100%;
-        margin: 0;
-        padding: 4px;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('sm');
-        background: var(--tm-surface-1);
-        box-shadow: shadow('md');
+}
 
-        &.is-left { left: 0; }
-        &.is-right { right: 0; }
-    }
+.tm-select__menu {
+    z-index: 70;
+    list-style: none;
+    max-height: 280px;
+    margin: 0;
+    padding: 4px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('sm');
+    background: var(--tm-surface-1);
+    box-shadow: shadow('md');
+    overflow-y: auto;
 
-    &__option {
+    .tm-select__option {
         display: flex;
         align-items: center;
         justify-content: space-between;
