@@ -1,3 +1,5 @@
+import type { ModalSizeValue } from './Modal.config'
+
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
@@ -9,5 +11,5 @@ export interface IModalProps {
   busy?: boolean
   disabled?: boolean
   error?: string
-  size?: 'sm' | 'md'
+  size?: ModalSizeValue
 }

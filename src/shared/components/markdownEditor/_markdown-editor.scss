@@ -56,62 +56,6 @@
         cursor: pointer;
     }
 
-    &__library {
-        padding: 10px 12px;
-        border: 1px solid var(--tm-border-1);
-        border-bottom: 0;
-        background: var(--tm-surface-2);
-    }
-
-    &__library-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 10px;
-        color: var(--tm-ink-3);
-        font-size: size(13);
-        font-weight: 600;
-    }
-
-    &__library-empty {
-        margin: 0;
-        padding: 12px 0;
-        color: var(--tm-ink-4);
-        font-size: size(13);
-    }
-
-    &__library-grid {
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-        gap: 8px;
-        max-height: 260px;
-        margin: 0;
-        padding: 0;
-        overflow-y: auto;
-    }
-
-    &__thumb {
-        display: block;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        padding: 0;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('xs');
-        background: var(--tm-surface-1);
-        overflow: hidden;
-        cursor: pointer;
-
-        &:hover { border-color: var(--tm-brand-primary); }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
     &__ask {
         display: flex;
         gap: 8px;
@@ -147,32 +91,7 @@
         font-size: size(12);
     }
 
-    &__file { display: none; }
 
-    &__error {
-        margin: 6px 0 0;
-        color: var(--tm-status-danger);
-        font-size: size(13);
-        font-weight: 600;
-    }
-
-    &__field {
-        display: block;
-        width: 100%;
-        padding: 14px 16px;
-        border: 1px solid var(--tm-border-1);
-        border-radius: 0 0 radius('sm') radius('sm');
-        background: var(--tm-surface-1);
-        color: var(--tm-ink-1);
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: size(14);
-        line-height: 1.65;
-        resize: vertical;
-
-        &:focus {
-            outline: none;
-            border-color: var(--tm-brand-primary);
-        }
     }
 
     &__preview {

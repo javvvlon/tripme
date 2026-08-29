@@ -13,7 +13,7 @@ const blank = (): BannerDraft => Object.fromEntries(
 
 export const useBanner = () => {
   const { t } = useI18n()
-  const { banner, saveBanner, upload, removeUpload } = useContentRepository()
+  const { banner, saveBanner, upload, library, removeUpload } = useContentRepository()
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = reactive<BannerDraft>(blank())
@@ -87,6 +87,12 @@ export const useBanner = () => {
     }
   }
 
+  const mediaLibrary = async () => (await library()).map(item => ({ url: item.url, path: item.path }))
+
+  const useStored = (url: string) => {
+    draft[locale.value].imageUrl = url
+  }
+
   const clearImage = () => {
     draft[locale.value].imageUrl = null
   }
@@ -135,6 +141,6 @@ export const useBanner = () => {
 
   return {
     locale, draft, validation, imageError, inheritedImage, status, saving, saved, error, uploading,
-    submit, refresh, pickImage, clearImage, discardImage,
+    submit, refresh, pickImage, clearImage, discardImage, mediaLibrary, useStored,
   }
 }

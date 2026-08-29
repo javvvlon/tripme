@@ -78,9 +78,11 @@
                                 :hint="uploading ? t('cms.lists.uploading') : imageHint"
                                 :disabled="uploading"
                                 override
+                                :library="mediaLibrary"
                                 @update:model-value="pickImage"
                                 @clear="clearImage"
                                 @discard="discardImage"
+                                @pick="useStored"
                             />
                         </div>
 
@@ -159,7 +161,7 @@ const { t, locales } = useI18n()
 
 const {
     locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour,
+    uploading, imageError, submit, remove, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour, useStored,
 } = usePostEditor()
 const { errors, touched } = validation
 

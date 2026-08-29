@@ -14,6 +14,9 @@
                     <button type="button" class="tm-file-upload__link" @click="open">
                         {{ t('cms.upload.replace') }}
                     </button>
+                    <button v-if="library" type="button" class="tm-file-upload__link" @click="browsing = true">
+                        {{ t('cms.upload.library') }}
+                    </button>
                     <button type="button" class="tm-file-upload__remove" @click="remove">
                         {{ t('cms.upload.remove') }}
                     </button>
@@ -32,6 +35,12 @@
                     {{ ' ' }}{{ t('cms.upload.orDrop') }}
                 </p>
 
+                <p v-if="library" class="tm-file-upload__cta">
+                    <button type="button" class="tm-file-upload__link" :disabled="disabled" @click="browsing = true">
+                        {{ t('cms.upload.library') }}
+                    </button>
+                </p>
+
                 <p v-if="hint" class="tm-file-upload__hint">{{ hint }}</p>
             </template>
 
@@ -41,10 +50,20 @@
                 @change="onChange"
             >
         </div>
+
+        <MediaLibrary
+            v-if="library"
+            v-model="browsing"
+            :library="library"
+            :accept="accept"
+            :current="current ?? null"
+            @select="fromLibrary"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
+import MediaLibrary from '~/shared/components/mediaLibrary/MediaLibrary.vue'
 import type { IFileUploadEmits, IFileUploadProps } from './FileUpload.d'
 
 const props = defineProps<IFileUploadProps>()
@@ -68,6 +87,7 @@ const { preview, acceptAttr } = upload
 
 const input = useTemplateRef<HTMLInputElement>('input')
 const dragging = ref(false)
+const browsing = ref(false)
 
 /**
  * Set when Remove was pressed, so a `current` that is still on its way out of
@@ -90,6 +110,18 @@ watch(() => props.current, () => {
 })
 
 const open = () => input.value?.click()
+
+/**
+ * A library image is already stored, so nothing is uploaded and nothing is
+ * discarded — the file being replaced may still be used somewhere else.
+ */
+function fromLibrary(url: string) {
+  upload.clear()
+  cleared.value = false
+  error.value = ''
+
+  emit('pick', url)
+}
 
 async function take(candidate: File | null | undefined) {
   const previous = stored.value

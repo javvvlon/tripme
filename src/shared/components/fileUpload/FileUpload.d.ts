@@ -1,6 +1,8 @@
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
+import type { IMediaFile } from '~/shared/components/mediaLibrary/MediaLibrary.d'
+
 export interface IFileUploadProps {
   id?: string
   accept?: string[]
@@ -18,6 +20,8 @@ export interface IFileUploadProps {
    * references is a bucket that only ever grows.
    */
   override?: boolean
+  /** when given, the picker can also choose something already uploaded */
+  library?: () => Promise<IMediaFile[]>
 }
 
 export interface IFileUploadEmits {
@@ -25,4 +29,6 @@ export interface IFileUploadEmits {
   clear: []
   /** `override` only: this stored file is no longer referenced */
   discard: [url: string]
+  /** an already-stored file was chosen from the library */
+  pick: [url: string]
 }

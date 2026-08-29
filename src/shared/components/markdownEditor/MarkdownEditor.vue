@@ -20,8 +20,8 @@
                     type="button" class="tm-md__tool"
                     :class="{ 'is-active': picking }"
                     :title="t('markdown.image')" :aria-label="t('markdown.image')"
-                    :disabled="disabled || preview || uploading"
-                    @click="openPicker"
+                    :disabled="disabled || preview"
+                    @click="picking = true"
                 >
                     <Icon name="image" :size="16" />
                 </button>
@@ -44,32 +44,6 @@
             >
                 {{ preview ? t('markdown.write') : t('markdown.preview') }}
             </button>
-        </div>
-
-        <div v-if="picking" class="tm-md__library">
-            <div class="tm-md__library-head">
-                <span>{{ t('markdown.library') }}</span>
-
-                <Button type="button" size="sm" variant="ghost" :disabled="uploading" @click="file?.click()">
-                    {{ t('markdown.upload') }}
-                </Button>
-            </div>
-
-            <p v-if="loadingLibrary" class="tm-md__library-empty">{{ t('common.loading') }}</p>
-
-            <p v-else-if="!media.length" class="tm-md__library-empty">{{ t('markdown.libraryEmpty') }}</p>
-
-            <ul v-else class="tm-md__library-grid">
-                <li v-for="item in media" :key="item.path">
-                    <button
-                        type="button" class="tm-md__thumb"
-                        :title="t('markdown.insert')"
-                        @click="insertImage(item.url)"
-                    >
-                        <img :src="item.url" alt="" loading="lazy">
-                    </button>
-                </li>
-            </ul>
         </div>
 
         <div v-if="asking" class="tm-md__ask">
@@ -99,26 +73,27 @@
             class="tm-md__field"
             :rows="rows"
             :placeholder="placeholder"
-            :disabled="disabled || uploading"
+            :disabled="disabled"
             spellcheck="true"
         />
 
-        <input
-            ref="file"
-            type="file" class="tm-md__file"
-            :accept="ACCEPTED_IMAGES.join(',')"
-            @change="onFile"
-        >
+        <MediaLibrary
+            v-if="library"
+            v-model="picking"
+            :library="library"
+            :uploader="uploader"
+            :accept="ACCEPTED_IMAGES"
+            @select="insertImage"
+        />
 
-        <p v-if="error" class="tm-md__error" role="alert">{{ error }}</p>
-        <p v-else-if="uploading" class="tm-md__hint">{{ t('markdown.uploading') }}</p>
-        <p v-else-if="hint" class="tm-md__hint">{{ hint }}</p>
+        <p v-if="hint" class="tm-md__hint">{{ hint }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
+import MediaLibrary from '~/shared/components/mediaLibrary/MediaLibrary.vue'
 import { ACCEPTED_IMAGES, MARKDOWN_ACTIONS } from './MarkdownEditor.config'
-import type { IMarkdownAction, IMarkdownEditorProps, IMediaFile } from './MarkdownEditor.d'
+import type { IMarkdownAction, IMarkdownEditorProps } from './MarkdownEditor.d'
 import { renderMarkdown } from '~/shared/helpers/markdown'
 
 const props = withDefaults(defineProps<IMarkdownEditorProps>(), { rows: 16 })
@@ -128,17 +103,12 @@ const model = defineModel<string>({ default: '' })
 const { t } = useI18n()
 
 const field = useTemplateRef<HTMLTextAreaElement>('field')
-const file = useTemplateRef<HTMLInputElement>('file')
 const url = useTemplateRef<HTMLInputElement>('url')
 
 const preview = ref(false)
 const asking = ref(false)
 const picking = ref(false)
-const loadingLibrary = ref(false)
-const media = ref<IMediaFile[]>([])
 const videoUrl = ref('')
-const uploading = ref(false)
-const error = ref('')
 
 const html = computed(() => renderMarkdown(model.value))
 
@@ -167,53 +137,9 @@ function insertAtCursor(snippet: string) {
     model.value = `${before}${padded}${after}`
 }
 
-async function openPicker() {
-    picking.value = !picking.value
-
-    if (!picking.value || !props.library || media.value.length) return
-
-    loadingLibrary.value = true
-
-    try {
-        media.value = await props.library()
-    }
-    catch {
-        media.value = []
-    }
-    finally {
-        loadingLibrary.value = false
-    }
-}
-
 function insertImage(url: string) {
     insertAtCursor(`![](${url})`)
     picking.value = false
-}
-
-async function onFile(event: Event) {
-    const input = event.target as HTMLInputElement
-    const chosen = input.files?.[0]
-
-    input.value = ''
-
-    if (!chosen || !props.uploader) return
-
-    uploading.value = true
-    error.value = ''
-
-    try {
-        const url = await props.uploader(chosen)
-
-        media.value = [{ url, path: url }, ...media.value]
-
-        insertImage(url)
-    }
-    catch {
-        error.value = t('markdown.uploadFailed')
-    }
-    finally {
-        uploading.value = false
-    }
 }
 
 function insertVideo() {

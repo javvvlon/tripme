@@ -265,7 +265,8 @@
       "choose": "Yuklash uchun bosing",
       "orDrop": "yoki faylni tashlang",
       "replace": "Almashtirish",
-      "remove": "O‘chirish"
+      "remove": "O‘chirish",
+      "library": "Galereyadan"
     },
     "banner": {
       "title": "Banner",
@@ -559,5 +560,14 @@
       "comment": "Izoh",
       "commentPlaceholder": "Xona, ovqatlanish, sanalar boʻyicha istaklar…"
     }
+  },
+  "media": {
+    "title": "Rasmlar galereyasi",
+    "lead": "Yuklanganini tanlang yoki yangisini qoʻshing.",
+    "empty": "Hozircha hech nima yuklanmagan.",
+    "choose": "Tanlash",
+    "upload": "Yangisini yuklash",
+    "failed": "Galereyani yuklab boʻlmadi.",
+    "uploadFailed": "Rasmni yuklab boʻlmadi."
   }
 }

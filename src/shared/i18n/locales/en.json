@@ -265,7 +265,8 @@
       "choose": "Click to upload",
       "orDrop": "or drag and drop",
       "replace": "Replace",
-      "remove": "Remove"
+      "remove": "Remove",
+      "library": "From library"
     },
     "banner": {
       "title": "Banner",
@@ -559,5 +560,14 @@
       "comment": "Comment",
       "commentPlaceholder": "Preferences on the room, board, dates…"
     }
+  },
+  "media": {
+    "title": "Image library",
+    "lead": "Pick something already uploaded, or add a new one.",
+    "empty": "Nothing uploaded yet.",
+    "choose": "Choose",
+    "upload": "Upload new",
+    "failed": "The library could not be loaded.",
+    "uploadFailed": "The image could not be uploaded."
   }
 }

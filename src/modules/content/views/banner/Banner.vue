@@ -48,9 +48,11 @@
                     :hint="uploading ? t('cms.lists.uploading') : imageHint"
                     :disabled="uploading"
                     override
+                    :library="mediaLibrary"
                     @update:model-value="pickImage"
                     @clear="clearImage"
                     @discard="discardImage"
+                    @pick="useStored"
                 />
 
                 <p v-if="inheritedImage" class="tm-cms-banner__inherited">
@@ -83,7 +85,7 @@ const { t, locales } = useI18n()
 
 const {
   locale, draft, validation, imageError, inheritedImage, status, saving, saved, error, uploading,
-  submit, pickImage, clearImage, discardImage,
+  submit, pickImage, clearImage, discardImage, mediaLibrary, useStored,
 } = useBanner()
 const { errors, touched } = validation
 

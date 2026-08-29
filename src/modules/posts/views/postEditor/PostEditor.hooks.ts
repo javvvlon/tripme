@@ -99,6 +99,10 @@ export const usePostEditor = () => {
     draft.tour = chosen ? tripFromTour(chosen) : null
   }
 
+  const useStored = (url: string) => {
+    draft.imageUrl = url
+  }
+
   const clearImage = () => {
     draft.imageUrl = null
   }
@@ -162,6 +166,6 @@ export const usePostEditor = () => {
 
   return {
     id, locale, draft, author, validation, status, saving, saved, error,
-    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour,
+    uploading, imageError, submit, remove, refresh, pickImage, clearImage, discardImage, uploadInline, mediaLibrary, assignTour, useStored,
   }
 }
