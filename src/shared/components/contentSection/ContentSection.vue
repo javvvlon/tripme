@@ -41,23 +41,30 @@ const columns = computed(() => distribute(props.section.items, props.section.gri
 const gridStyle = computed(() => ({ gridTemplateColumns: 'repeat(12, minmax(0, 1fr))' }))
 
 /**
- * Whether every column is the same width.
+ * Whether a row's columns are all the same width, judged row by row: a layout
+ * can be even on one line and mixed on the next.
  *
  * It decides how a card gets its height. In an even row nothing else sets one,
  * so each card holds its own square. In a mixed row the wide card sets the
  * row's height and the narrow one stretches to match — giving that one a shape
  * of its own would make the two disagree and leave a gap.
  */
-const even = computed(() => {
-  const spans = props.section.grid.columns.map(column => column.span)
+const evenRows = computed(() => {
+  const rows = new Map<number, number[]>()
 
-  return spans.every(span => span === spans[0])
+  for (const column of props.section.grid.columns) {
+    rows.set(column.row, [...(rows.get(column.row) ?? []), column.span])
+  }
+
+  return new Map([...rows].map(([row, spans]) => [row, spans.every(span => span === spans[0])]))
 })
 
 function shapeOf(column: number): 'square' | 'wide' | 'fill' {
-  if (even.value) return 'square'
+  const current = props.section.grid.columns[column]!
 
-  return props.section.grid.columns[column]!.span >= 8 ? 'wide' : 'fill'
+  if (evenRows.value.get(current.row)) return 'square'
+
+  return current.span >= 8 ? 'wide' : 'fill'
 }
 </script>
 

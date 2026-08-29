@@ -4,11 +4,13 @@
 export interface IGridColumn {
   span: number
   cells: number
+  row: number
 }
 
 export interface IGrid {
   columns: IGridColumn[]
   capacity: number
+  rows: number
 }
 
 const COLUMNS = 12
@@ -17,6 +19,9 @@ export function parseGrid(grid: string | null | undefined): IGrid | null {
   if (!grid?.trim()) return null
 
   const columns: IGridColumn[] = []
+
+  let row = 0
+  let filled = 0
 
   for (const part of grid.trim().split('_')) {
     const cells = part.split('.')
@@ -28,14 +33,24 @@ export function parseGrid(grid: string | null | undefined): IGrid | null {
 
     if (spans.some(span => span !== spans[0])) return null
 
-    columns.push({ span: spans[0]!, cells: cells.length })
+    const span = spans[0]!
+
+    if (filled + span > COLUMNS) {
+      row += 1
+      filled = 0
+    }
+
+    columns.push({ span, cells: cells.length, row })
+    filled += span
   }
 
-  const total = columns.reduce((sum, column) => sum + column.span, 0)
+  if (!columns.length) return null
 
-  if (!columns.length || total > COLUMNS) return null
-
-  return { columns, capacity: columns.reduce((sum, column) => sum + column.cells, 0) }
+  return {
+    columns,
+    rows: row + 1,
+    capacity: columns.reduce((sum, column) => sum + column.cells, 0),
+  }
 }
 
 export function distribute<T>(items: T[], grid: IGrid): T[][] {
