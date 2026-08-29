@@ -187,7 +187,8 @@
     "bookAtOperator": "Bronlashga",
     "aboutHotel": "Mehmonxona haqida",
     "programme": "Dastur",
-    "fare": "Tarif"
+    "fare": "Tarif",
+    "filters": "Filtrlar"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",

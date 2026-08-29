@@ -80,3 +80,16 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+@media #{$until-md} {
+    .tm-post-editor {
+        &__side { padding: 16px; }
+
+        &__foot {
+            flex-wrap: wrap;
+            gap: 12px;
+
+            > :last-child { margin-left: 0; flex: 1; }
+        }
+    }
+}

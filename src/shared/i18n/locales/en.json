@@ -187,7 +187,8 @@
     "bookAtOperator": "To booking",
     "aboutHotel": "About the hotel",
     "programme": "Programme",
-    "fare": "Fare code"
+    "fare": "Fare code",
+    "filters": "Filters"
   },
   "auth": {
     "mode": "Sign in or sign up",

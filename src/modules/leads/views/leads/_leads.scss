@@ -134,6 +134,31 @@
 @media #{$until-lg} {
     .tm-cms-leads__table {
         th.is-phone, td:nth-child(4),
-        th.is-date:nth-child(2), td:nth-child(2) { display: none; }
+        th.is-date, td:nth-child(2) { display: none; }
+    }
+}
+
+@media #{$until-md} {
+    .tm-cms-leads {
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__search { max-width: none; }
+
+        &__table {
+            table-layout: auto;
+
+            th.is-stay, td:nth-child(6),
+            th.is-party, td:nth-child(7),
+            th.is-price, td:nth-child(8),
+            th:nth-child(9), td:nth-child(9) { display: none; }
+
+            th, td { padding: 10px 8px; }
+
+            .is-order { width: 64px; }
+            .is-status { width: auto; }
+        }
     }
 }

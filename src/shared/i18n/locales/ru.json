@@ -187,7 +187,8 @@
     "bookAtOperator": "К бронированию",
     "aboutHotel": "Об отеле",
     "programme": "Программа",
-    "fare": "Тариф"
+    "fare": "Тариф",
+    "filters": "Фильтры"
   },
   "auth": {
     "mode": "Вход или регистрация",

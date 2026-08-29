@@ -2,7 +2,17 @@
     <div class="tm-search-view container-wide">
         <Breadcrumbs :items="breadcrumbs" class="tm-search-view__crumbs" />
 
-        <div class="tm-search-view__layout">
+        <button
+            type="button" class="tm-search-view__filters-toggle"
+            :aria-expanded="filtersOpen"
+            @click="filtersOpen = !filtersOpen"
+        >
+            <Icon name="filter" :size="17" />
+            {{ t('results.filters') }}
+            <Icon :name="filtersOpen ? 'chevron-up' : 'chevron'" :size="16" />
+        </button>
+
+        <div class="tm-search-view__layout" :class="{ 'is-filtering': filtersOpen }">
             <ClientOnly>
                 <FilterPanel
                     v-model="filters" :facets="facets" :loading="pending"
@@ -93,6 +103,8 @@ const {
 } = useSearch()
 
 const { sentinel } = useInfiniteScroll(loadMore, { enabled: canLoadMore })
+
+const filtersOpen = ref(false)
 
 const headline = computed(() => {
   if (!isSearchable.value) return t('results.prompt')
@@ -217,9 +229,33 @@ useSeoMeta({
         border-radius: radius('lg');
     }
 
+    &__filters-toggle {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin-bottom: 14px;
+        padding: 11px 14px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+        cursor: pointer;
+
+        > :last-child { margin-left: auto; }
+    }
+
     @media #{$until-lg} {
         &__layout { grid-template-columns: 1fr; }
         &__filters { position: static; }
+    }
+
+    @media #{$until-md} {
+        &__filters-toggle { display: flex; }
+
+        &__layout:not(.is-filtering) .tm-search-view__filters { display: none; }
     }
 }
 </style>
