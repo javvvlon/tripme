@@ -471,7 +471,8 @@
       "searchPlaceholder": "Имя, телефон, номер или тур…",
       "noMatches": "Ничего не найдено.",
       "openAtOperator": "Открыть у оператора",
-      "openAtOperatorHint": "Это же предложение в кабинете туроператора."
+      "openHotelPage": "Страница отеля",
+      "noBookingUrl": "Ссылка на подбор доступна только для новых заявок."
     }
   },
   "markdown": {

@@ -122,6 +122,15 @@
         border-top: 1px solid var(--tm-border-1);
     }
 
+    &__hotel-link {
+        color: var(--tm-brand-secondary);
+        font-size: size(13);
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+
     &__operator-note {
         color: var(--tm-ink-4);
         font-size: size(12);

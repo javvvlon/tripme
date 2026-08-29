@@ -471,7 +471,8 @@
       "searchPlaceholder": "Ism, telefon, raqam yoki tur…",
       "noMatches": "Hech nima topilmadi.",
       "openAtOperator": "Operatorda ochish",
-      "openAtOperatorHint": "Xuddi shu taklif turoperator kabinetida."
+      "openHotelPage": "Mehmonxona sahifasi",
+      "noBookingUrl": "Tanlov havolasi faqat yangi arizalarda mavjud."
     }
   },
   "markdown": {

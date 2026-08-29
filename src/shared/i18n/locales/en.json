@@ -471,7 +471,8 @@
       "searchPlaceholder": "Name, phone, number or tour…",
       "noMatches": "Nothing found.",
       "openAtOperator": "Open at the operator",
-      "openAtOperatorHint": "The same offer in the operator’s own cabinet."
+      "openHotelPage": "Hotel page",
+      "noBookingUrl": "The search link is only stored for newer leads."
     }
   },
   "markdown": {
