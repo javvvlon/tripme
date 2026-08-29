@@ -91,6 +91,24 @@
         font-size: size(12);
     }
 
+    &__field {
+        display: block;
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: 0 0 radius('sm') radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: size(14);
+        line-height: 1.65;
+        resize: vertical;
+
+        &:focus {
+            outline: none;
+            border-color: var(--tm-brand-primary);
+        }
+    }
     &__preview {
         min-height: 200px;
         padding: 14px 18px;
