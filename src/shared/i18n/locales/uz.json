@@ -244,7 +244,8 @@
       "posts": "Maqolalar",
       "leads": "Lidlar",
       "content": "Kontent",
-      "orders": "Buyurtmalar"
+      "orders": "Buyurtmalar",
+      "operators": "Turoperatorlar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -566,6 +567,36 @@
         "issued": "Rasmiylashtirilgan",
         "travelling": "Sayohatda",
         "completed": "Yakunlangan"
+      }
+    },
+    "operators": {
+      "title": "Turoperatorlar",
+      "lead": "Jami {total}, ulangan — {live}.",
+      "turnOn": "{name} ni yoqish",
+      "turnOff": "{name} ni oʻchirish",
+      "configure": "Sozlash",
+      "configureLead": "Oʻchirilgan operator qidiruvda qatnashmaydi.",
+      "keySet": "Kalit saqlangan",
+      "keyMissing": "Kalit yoʻq",
+      "stored": "saqlangan — boʻsh qoldiring",
+      "secretHint": "Boʻsh maydon saqlangan kalitni oʻzgartirmaydi.",
+      "connections": {
+        "mirror": "Oyna",
+        "api": "API"
+      },
+      "hints": {
+        "mirror": "Operator saytida xuddi agent kabi qidiramiz.",
+        "api": "Toʻgʻridan-toʻgʻri integratsiya. Kalitlarni oldindan saqlash mumkin."
+      },
+      "fields": {
+        "name": "Nomi",
+        "connection": "Ulanish turi",
+        "siteUrl": "Operator sayti",
+        "apiBaseUrl": "API manzili",
+        "apiLogin": "Login",
+        "apiKey": "API kalit",
+        "apiSecret": "Secret",
+        "note": "Eslatma"
       }
     }
   },

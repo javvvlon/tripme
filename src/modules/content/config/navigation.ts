@@ -17,6 +17,12 @@ export const CMS_NAVIGATION: INavNode[] = [
     to: '/app/orders',
   },
   {
+    key: 'operators',
+    labelKey: 'cms.nav.operators',
+    icon: 'globe',
+    to: '/app/operators',
+  },
+  {
     key: 'content',
     labelKey: 'cms.nav.content',
     icon: 'folder',

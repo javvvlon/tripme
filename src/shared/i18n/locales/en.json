@@ -244,7 +244,8 @@
       "posts": "Articles",
       "leads": "Leads",
       "content": "Content",
-      "orders": "Orders"
+      "orders": "Orders",
+      "operators": "Operators"
     },
     "roles": {
       "CLIENT": "Client",
@@ -566,6 +567,36 @@
         "issued": "Issued",
         "travelling": "Travelling",
         "completed": "Completed"
+      }
+    },
+    "operators": {
+      "title": "Tour operators",
+      "lead": "{total} in total, {live} connected.",
+      "turnOn": "Turn on {name}",
+      "turnOff": "Turn off {name}",
+      "configure": "Configure",
+      "configureLead": "An operator that is off takes no part in search.",
+      "keySet": "Key stored",
+      "keyMissing": "No key",
+      "stored": "stored — leave blank to keep",
+      "secretHint": "Leaving this blank keeps the stored key.",
+      "connections": {
+        "mirror": "Mirror",
+        "api": "API"
+      },
+      "hints": {
+        "mirror": "We search their own site the way an agent would.",
+        "api": "A direct integration. Credentials can be stored ahead of the connection being built."
+      },
+      "fields": {
+        "name": "Name",
+        "connection": "Connection",
+        "siteUrl": "Operator site",
+        "apiBaseUrl": "API base URL",
+        "apiLogin": "Login",
+        "apiKey": "API key",
+        "apiSecret": "Secret",
+        "note": "Note"
       }
     }
   },
