@@ -74,8 +74,10 @@
                                 :current="item.imageUrl || null"
                                 :hint="uploading === item.key ? t('cms.lists.uploading') : t('cms.lists.itemImageHint')"
                                 :disabled="uploading === item.key"
+                                :library="mediaLibrary"
                                 override
                                 @update:model-value="file => file && pickImage(item.key, file)"
+                                @pick="url => useStored(item.key, url)"
                                 @clear="clearImage(item.key)"
                                 @discard="discardImage"
                             />
@@ -136,7 +138,7 @@ const route = useRoute()
 
 const {
   locale, name, items, status, saving, saved, error, uploading,
-  add, remove, move, submit, back, pickImage, clearImage, discardImage,
+  add, remove, move, submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
 } = useListEditor(String(route.params.id))
 
 const nameId = useId()

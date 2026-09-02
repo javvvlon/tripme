@@ -25,6 +25,7 @@ export const useListEditor = (id: string) => {
   const { t } = useI18n()
   const localePath = useLocalePath()
   const { list, updateList, upload, removeUpload } = useContentRepository()
+  const { mediaLibrary } = useMediaLibrary()
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const name = ref('')
@@ -108,6 +109,15 @@ export const useListEditor = (id: string) => {
     }
   }
 
+  const useStored = (key: string, url: string) => {
+    const item = items.value.find(candidate => candidate.key === key)
+
+    if (item) {
+      item.imageUrl = url
+      items.value = [...items.value]
+    }
+  }
+
   const clearImage = (key: string) => {
     const item = items.value.find(candidate => candidate.key === key)
 
@@ -188,6 +198,6 @@ export const useListEditor = (id: string) => {
 
   return {
     locale, name, items, status, saving, saved, error, uploading,
-    add, remove, move, submit, back, pickImage, clearImage, discardImage,
+    add, remove, move, submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
   }
 }
