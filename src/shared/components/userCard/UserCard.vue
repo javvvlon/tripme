@@ -1,7 +1,7 @@
 <template>
     <div class="tm-user-card" :class="{ 'is-compact': compact }">
         <span class="tm-user-card__avatar" aria-hidden="true">
-            <img v-if="avatar" :src="avatar" :alt="''" width="44" height="44">
+            <img v-if="avatar" :src="avatar" :alt="''" width="36" height="36">
             <span v-else class="tm-user-card__initials">{{ initials }}</span>
         </span>
 
@@ -15,7 +15,7 @@
             :aria-label="actionLabel" :title="actionLabel"
             @click="$emit('action')"
         >
-            <Icon :name="actionIcon ?? 'logout'" :size="20" />
+            <Icon :name="actionIcon ?? 'logout'" :size="18" />
         </button>
     </div>
 </template>

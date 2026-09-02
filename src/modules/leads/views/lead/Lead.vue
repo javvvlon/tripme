@@ -13,7 +13,7 @@
                 <div>
                     <h1 class="tm-cms-lead__number">#{{ lead.order_id }}</h1>
                     <p class="tm-cms-lead__sub">
-                        {{ t(`cms.leads.sources.${lead.source}`) }} · {{ fullDate(lead.created_at) }}
+                        {{ t(`cms.leads.channels.${lead.channel}`) }} · {{ fullDate(lead.created_at) }}
                     </p>
                 </div>
 
@@ -34,11 +34,11 @@
             <p v-if="error" class="tm-cms-lead__error" role="alert">{{ error }}</p>
             <p v-else-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
-            <div class="tm-cms-lead__grid">
+            <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-lead__card">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
 
-                    <dl class="tm-cms-lead__facts">
+                    <dl class="tm-cms-lead__facts is-columns">
                         <div>
                             <dt>{{ t('cms.leads.columns.client') }}</dt>
                             <dd>{{ [lead.first_name, lead.last_name].filter(Boolean).join(' ') || '—' }}</dd>
@@ -51,130 +51,86 @@
                             <dt>{{ t('cms.leads.columns.locale') }}</dt>
                             <dd>{{ lead.locale.toUpperCase() }}</dd>
                         </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.passport') }}</dt>
-                            <dd>{{ lead.passport_id || '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.passportExpires') }}</dt>
-                            <dd>{{ lead.passport_expires_at ? shortDate(lead.passport_expires_at) : '—' }}</dd>
-                        </div>
                     </dl>
-
-                    <div v-if="lead.comment" class="tm-cms-lead__comment">
-                        <span class="tm-cms-lead__key">{{ t('cms.leads.columns.comment') }}</span>
-                        <p>{{ lead.comment }}</p>
-                    </div>
                 </section>
 
                 <section class="tm-cms-lead__card">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.order') }}</h2>
+                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.request') }}</h2>
 
-                    <dl class="tm-cms-lead__facts">
-                        <div>
-                            <dt>{{ t('cms.leads.columns.order') }}</dt>
-                            <dd class="tm-cms-lead__mono">#{{ lead.order_id }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.updated') }}</dt>
-                            <dd>{{ fullDate(lead.updated_at) }}</dd>
-                        </div>
-                    </dl>
-
-                    <div class="tm-cms-lead__editable">
+                    <div class="tm-cms-lead__row">
+                        <Input v-model="draft.destination" :label="t('cms.leads.fields.destination')" />
                         <Input
-                            v-model="supplierOrderId"
-                            :label="t('cms.leads.columns.supplierOrder')"
-                            :hint="t('cms.leads.supplierOrderHint')"
-                            placeholder="—"
+                            v-model="draft.plannedDates"
+                            :label="t('cms.leads.fields.plannedDates')"
+                            :hint="t('cms.leads.fields.plannedDatesHint')"
                         />
+                        <Input v-model="draft.partySize" type="number" :label="t('cms.leads.fields.partySize')" />
+                    </div>
 
-                        <Input
-                            v-model="passportId"
-                            :label="t('cms.leads.columns.passport')"
-                            placeholder="AA1234567"
-                        />
+                    <div class="tm-cms-lead__row">
+                        <Input v-model="draft.budgetAmount" type="number" :label="t('cms.leads.fields.budget')" />
+                        <Input v-model="draft.budgetCurrency" :label="t('cms.leads.fields.budgetCurrency')" placeholder="UZS" />
+                        <div />
+                    </div>
 
-                        <Input
-                            v-model="passportExpiresAt"
-                            type="date"
-                            :label="t('cms.leads.columns.passportExpires')"
-                        />
+                    <div class="tm-cms-lead__field">
+                        <label :for="commentId" class="tm-cms-lead__label">{{ t('cms.leads.columns.comment') }}</label>
+                        <textarea :id="commentId" v-model="draft.comment" class="tm-cms-lead__textarea" rows="3" />
+                    </div>
 
-                        <Button type="button" size="sm" :disabled="saving" @click="saveDetails">
-                            {{ saving ? t('cms.saving') : t('cms.save') }}
-                        </Button>
+                    <div v-if="lead.status === 'rejected'" class="tm-cms-lead__field">
+                        <label :for="reasonId" class="tm-cms-lead__label">{{ t('cms.leads.fields.rejectReason') }}</label>
+                        <textarea :id="reasonId" v-model="draft.rejectReason" class="tm-cms-lead__textarea" rows="2" />
                     </div>
                 </section>
 
-                <section class="tm-cms-lead__card tm-cms-lead__card--wide">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.trip') }}</h2>
+                <footer class="tm-cms-lead__foot">
+                    <Button type="submit" size="lg" :disabled="saving">
+                        {{ saving ? t('cms.saving') : t('cms.save') }}
+                    </Button>
+                </footer>
+            </form>
 
-                    <dl class="tm-cms-lead__facts is-columns">
-                        <div>
-                            <dt>{{ t('cms.leads.columns.hotel') }}</dt>
-                            <dd>{{ lead.hotel_name || '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.supplier') }}</dt>
-                            <dd>{{ lead.supplier_name || '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.route') }}</dt>
-                            <dd>{{ lead.route_from || '—' }} → {{ lead.route_to || '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.checkIn') }}</dt>
-                            <dd>{{ lead.check_in ? shortDate(lead.check_in) : '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.nights') }}</dt>
-                            <dd>{{ lead.nights || '—' }}</dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.party') }}</dt>
-                            <dd>{{ lead.adults }}<template v-if="lead.children">+{{ lead.children }}</template></dd>
-                        </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.price') }}</dt>
-                            <dd>{{ money(lead) }}</dd>
-                        </div>
-                    </dl>
+            <section class="tm-cms-lead__card tm-cms-lead__orders">
+                <header class="tm-cms-lead__orders-head">
+                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.orders') }}</h2>
 
-                    <div v-if="bookingUrl || hotelUrl" class="tm-cms-lead__operator">
-                        <Button
-                            v-if="bookingUrl"
-                            :href="bookingUrl"
-                            variant="secondary" size="sm"
-                            target="_blank" rel="noopener noreferrer"
-                            icon-right="arrow-right"
-                        >
-                            {{ t('cms.leads.openAtOperator') }}
-                        </Button>
+                    <Button type="button" size="sm" @click="addOrder">{{ t('cms.leads.addOrder') }}</Button>
+                </header>
 
-                        <a
-                            v-if="hotelUrl"
-                            :href="hotelUrl" class="tm-cms-lead__hotel-link"
-                            target="_blank" rel="noopener noreferrer"
-                        >{{ t('cms.leads.openHotelPage') }}</a>
+                <p v-if="!orders.length" class="tm-cms-lead__no-orders">{{ t('cms.leads.noOrders') }}</p>
 
-                        <span v-if="!bookingUrl" class="tm-cms-lead__operator-note">
-                            {{ t('cms.leads.noBookingUrl') }}
-                        </span>
+                <ul v-else class="tm-cms-lead__order-list">
+                    <li v-for="order in orders" :key="order.uuid">
+                        <NuxtLink :to="localePath(`/app/orders/${order.uuid}`)" class="tm-cms-lead__order">
+                            <span class="tm-cms-lead__order-no">#{{ order.order_no }}</span>
+
+                            <span class="tm-cms-lead__order-main">
+                                <span class="tm-cms-lead__order-hotel">{{ order.hotel_name || '—' }}</span>
+                                <span class="tm-cms-lead__order-meta">
+                                    {{ order.check_in ? `${shortDate(order.check_in)} · ${order.nights}` : '—' }}
+                                    <template v-if="order.supplier_name"> · {{ order.supplier_name }}</template>
+                                </span>
+                            </span>
+
+                            <span class="tm-cms-lead__order-status" :class="`is-${order.status}`">
+                                {{ t(`cms.orders.status.${order.status}`) }}
+                            </span>
+                        </NuxtLink>
+                    </li>
+                </ul>
+            </section>
+
+            <section v-if="extras.length" class="tm-cms-lead__card">
+                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
+
+                <dl class="tm-cms-lead__raw">
+                    <div v-for="entry in extras" :key="entry.key">
+                        <dt>{{ entry.key }}</dt>
+                        <dd>{{ entry.value }}</dd>
                     </div>
-                </section>
-
-                <section v-if="extras.length" class="tm-cms-lead__card tm-cms-lead__card--wide">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
-
-                    <dl class="tm-cms-lead__raw">
-                        <div v-for="entry in extras" :key="entry.key">
-                            <dt>{{ entry.key }}</dt>
-                            <dd>{{ entry.value }}</dd>
-                        </div>
-                    </dl>
-                </section>
-            </div>
+                </dl>
+            </section>
         </template>
     </div>
 </template>
@@ -183,32 +139,24 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
-import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
+import type { LeadStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
+const commentId = useId()
+const reasonId = useId()
+
 const {
-    lead, status, error, saving, saved,
-    supplierOrderId, passportId, passportExpiresAt,
-    statusOptions, change, saveDetails, remove,
+    lead, draft, orders, status, error, saving, saved,
+    statusOptions, change, submit, addOrder, remove,
 } = useLead()
 
 const shortDate = (value: string): string =>
-    new Intl.DateTimeFormat(locale.value, { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(value))
+    new Intl.DateTimeFormat(locale.value, { day: '2-digit', month: 'short' }).format(new Date(value))
 
 const fullDate = (value: string): string =>
     new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
-
-const money = (row: ILeadRaw): string => {
-    if (row.price_amount === null) return '—'
-
-    return new Intl.NumberFormat(locale.value, {
-        style: 'currency',
-        currency: row.price_currency || 'USD',
-        maximumFractionDigits: 0,
-    }).format(row.price_amount)
-}
 
 const KNOWN = new Set([
     'hotel_name', 'supplier_name', 'check_in', 'nights', 'adults', 'children',
@@ -216,19 +164,14 @@ const KNOWN = new Set([
     'booking_url', 'hotel_url',
 ])
 
-const link = (key: string) => computed(() => {
-    const url = (lead.value?.trip ?? {})[key]
-
-    return typeof url === 'string' && /^https?:\/\//.test(url) ? url : null
-})
-
-const bookingUrl = link('booking_url')
-const hotelUrl = link('hotel_url')
+const plain = (value: unknown): string =>
+    String(value).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 
 const extras = computed(() =>
     Object.entries(lead.value?.trip ?? {})
         .filter(([key, value]) => !KNOWN.has(key) && value !== null && value !== '' && value !== undefined)
-        .map(([key, value]) => ({ key, value: String(value) })))
+        .map(([key, value]) => ({ key, value: plain(value) }))
+        .filter(entry => entry.value))
 
 useSeoMeta({ title: () => t('cms.leads.title'), robots: 'noindex, nofollow' })
 </script>

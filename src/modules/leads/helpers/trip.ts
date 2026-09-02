@@ -30,3 +30,16 @@ export const tripFromTour = (tour: Tour, route?: { from: string, to: string }): 
   route_from: route?.from ?? '',
   route_to: route?.to ?? '',
 })
+
+export const tripFromLead = (lead: { trip: Record<string, unknown>, hotel_name: string, supplier_name: string, check_in: string | null, nights: number, adults: number, children: number, price_amount: number | null, price_currency: string, destination: string }): ILeadTrip => ({
+  ...(lead.trip as Partial<ILeadTrip>),
+  hotel_name: lead.hotel_name,
+  supplier_name: lead.supplier_name,
+  check_in: lead.check_in,
+  nights: lead.nights,
+  adults: lead.adults,
+  children: lead.children,
+  price_amount: lead.price_amount,
+  price_currency: lead.price_currency,
+  route_to: lead.destination,
+} as ILeadTrip)

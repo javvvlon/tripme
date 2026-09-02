@@ -1,0 +1,192 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-cms-order {
+    &__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 20px;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover { color: var(--tm-brand-secondary); }
+    }
+
+    &__empty {
+        margin: 40px 0;
+        color: var(--tm-ink-3);
+    }
+
+    &__head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--tm-border-1);
+    }
+
+    &__number {
+        margin: 0;
+        font-size: size(28);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--tm-ink-1);
+    }
+
+    &__sub {
+        margin: 4px 0 0;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+    }
+
+    &__head-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__error {
+        margin: 16px 0 0;
+        color: var(--tm-status-danger);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__saved {
+        margin: 16px 0 0;
+        color: var(--tm-status-success);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    &__card {
+        padding: 20px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+    }
+
+    &__card-title {
+        margin: 0 0 16px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+
+        & + & { margin-top: 14px; }
+
+        &.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 14px;
+        min-width: 0;
+    }
+
+    &__label {
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-family: inherit;
+        font-size: size(15);
+        line-height: 1.6;
+        resize: vertical;
+
+        &:focus {
+            outline: none;
+            border-color: var(--tm-brand-primary);
+        }
+    }
+
+    &__warning {
+        margin: 12px 0 0;
+        color: var(--tm-status-warning);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__foot {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__history { margin-top: 24px; }
+
+    &__events {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            font-size: size(13);
+        }
+    }
+
+    &__event-when {
+        flex: none;
+        width: 160px;
+        color: var(--tm-ink-4);
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__event-move { color: var(--tm-ink-1); font-weight: 600; }
+}
+
+@media #{$until-lg} {
+    .tm-cms-order__row,
+    .tm-cms-order__row.is-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media #{$until-md} {
+    .tm-cms-order {
+        &__head {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+        }
+
+        &__row,
+        &__row.is-four { grid-template-columns: minmax(0, 1fr); }
+
+        &__card { padding: 16px; }
+
+        &__events li { flex-direction: column; gap: 2px; }
+
+        &__event-when { width: auto; }
+    }
+}

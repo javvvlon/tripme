@@ -243,7 +243,8 @@
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
       "leads": "Lidlar",
-      "content": "Kontent"
+      "content": "Kontent",
+      "orders": "Buyurtmalar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -416,7 +417,8 @@
       "status": {
         "new": "Yangi",
         "in_progress": "Ishda",
-        "booked": "Bron qilindi",
+        "quote_sent": "Taklif yuborildi",
+        "won": "Bitim",
         "rejected": "Rad etildi"
       },
       "columns": {
@@ -453,7 +455,9 @@
         "client": "Mijoz",
         "trip": "Tur",
         "order": "Lid",
-        "raw": "Taklifning barcha maʼlumotlari"
+        "raw": "Taklifning barcha maʼlumotlari",
+        "request": "Soʻrov",
+        "orders": "Buyurtmalar"
       },
       "create": {
         "cta": "Lid qoʻshish",
@@ -480,7 +484,89 @@
       "noMatches": "Hech nima topilmadi.",
       "openAtOperator": "Operatorda ochish",
       "openHotelPage": "Mehmonxona sahifasi",
-      "noBookingUrl": "Tanlov havolasi faqat yangi arizalarda mavjud."
+      "noBookingUrl": "Tanlov havolasi faqat yangi arizalarda mavjud.",
+      "channels": {
+        "site": "Saytdan",
+        "telegram": "Telegram",
+        "call": "Qoʻngʻiroq",
+        "referral": "Tavsiya",
+        "instagram": "Instagram",
+        "walk_in": "Ofisda",
+        "manual": "Qoʻlda qoʻshilgan"
+      },
+      "addOrder": "Buyurtma yaratish",
+      "noOrders": "Bu lid boʻyicha hali buyurtma yoʻq.",
+      "fields": {
+        "destination": "Yoʻnalish",
+        "plannedDates": "Rejalashtirilgan sanalar",
+        "plannedDatesHint": "Mijoz aytganidek — «avgust oxiri», «15.08 — 22.08».",
+        "partySize": "Sayohatchilar soni",
+        "budget": "Taxminiy byudjet",
+        "budgetCurrency": "Valyuta",
+        "rejectReason": "Rad etish sababi"
+      }
+    },
+    "orders": {
+      "title": "Buyurtmalar",
+      "lead": "Jami {total}, ishda — {live}.",
+      "empty": "Hozircha buyurtmalar yoʻq.",
+      "noMatches": "Hech nima topilmadi.",
+      "search": "Buyurtmalarni qidirish",
+      "searchPlaceholder": "Sayohatchi, mehmonxona, operator yoki raqam…",
+      "back": "Orqaga",
+      "missing": "Buyurtma topilmadi.",
+      "delete": "Buyurtmani oʻchirish",
+      "createdOn": "{date} da yaratilgan",
+      "passportShort": "Pasport uchishdan keyin olti oydan kam amal qiladi — talablarni tekshiring.",
+      "passportExpired": "Pasport uchish sanasidan oldin tugaydi.",
+      "filters": {
+        "all": "Barcha holatlar"
+      },
+      "sections": {
+        "traveller": "Sayohatchi",
+        "trip": "Tur",
+        "booking": "Bron",
+        "history": "Holatlar tarixi"
+      },
+      "columns": {
+        "number": "Raqam",
+        "traveller": "Sayohatchi",
+        "trip": "Yoʻnalish",
+        "departure": "Uchish · kecha",
+        "party": "Mehmonlar",
+        "price": "Narx",
+        "supplierOrder": "Operator raqami",
+        "status": "Holat"
+      },
+      "fields": {
+        "traveller": "Asosiy sayohatchi FIO",
+        "passport": "Pasport seriyasi va raqami",
+        "passportExpires": "Amal qilish muddati",
+        "country": "Davlat",
+        "hotel": "Mehmonxona",
+        "operator": "Turoperator",
+        "departure": "Uchish sanasi",
+        "return": "Qaytish sanasi",
+        "nights": "Kecha",
+        "adults": "Kattalar",
+        "children": "Bolalar",
+        "price": "Narx",
+        "currency": "Valyuta",
+        "dealDate": "Bitim sanasi",
+        "supplierOrder": "Operator raqami",
+        "supplierOrderHint": "Bron qilingandan keyin turoperator beradi.",
+        "branch": "Filial",
+        "note": "Eslatma"
+      },
+      "status": {
+        "draft": "Qoralama",
+        "requested": "Soʻrov yuborildi",
+        "confirmed": "Tasdiqlangan",
+        "paid": "Toʻlangan",
+        "issued": "Rasmiylashtirilgan",
+        "travelling": "Sayohatda",
+        "completed": "Yakunlangan"
+      }
     }
   },
   "markdown": {

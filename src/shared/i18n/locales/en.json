@@ -243,7 +243,8 @@
       "lists": "Lists",
       "posts": "Articles",
       "leads": "Leads",
-      "content": "Content"
+      "content": "Content",
+      "orders": "Orders"
     },
     "roles": {
       "CLIENT": "Client",
@@ -416,7 +417,8 @@
       "status": {
         "new": "New",
         "in_progress": "In progress",
-        "booked": "Booked",
+        "quote_sent": "Quote sent",
+        "won": "Won",
         "rejected": "Rejected"
       },
       "columns": {
@@ -453,7 +455,9 @@
         "client": "Client",
         "trip": "Tour",
         "order": "Lead",
-        "raw": "Full offer data"
+        "raw": "Full offer data",
+        "request": "Request",
+        "orders": "Orders"
       },
       "create": {
         "cta": "Add a lead",
@@ -480,7 +484,89 @@
       "noMatches": "Nothing found.",
       "openAtOperator": "Open at the operator",
       "openHotelPage": "Hotel page",
-      "noBookingUrl": "The search link is only stored for newer leads."
+      "noBookingUrl": "The search link is only stored for newer leads.",
+      "channels": {
+        "site": "Website",
+        "telegram": "Telegram",
+        "call": "Phone call",
+        "referral": "Referral",
+        "instagram": "Instagram",
+        "walk_in": "Walk-in",
+        "manual": "Added manually"
+      },
+      "addOrder": "Create an order",
+      "noOrders": "No orders for this lead yet.",
+      "fields": {
+        "destination": "Destination",
+        "plannedDates": "Planned dates",
+        "plannedDatesHint": "However the client put it — \"end of August\", \"15.08 — 22.08\".",
+        "partySize": "Party size",
+        "budget": "Rough budget",
+        "budgetCurrency": "Currency",
+        "rejectReason": "Reason for rejection"
+      }
+    },
+    "orders": {
+      "title": "Orders",
+      "lead": "{total} in total, {live} in progress.",
+      "empty": "No orders yet.",
+      "noMatches": "Nothing found.",
+      "search": "Search orders",
+      "searchPlaceholder": "Traveller, hotel, operator or number…",
+      "back": "Back",
+      "missing": "Order not found.",
+      "delete": "Delete order",
+      "createdOn": "Created {date}",
+      "passportShort": "The passport is valid for less than six months after departure — check the entry rules.",
+      "passportExpired": "The passport expires before departure.",
+      "filters": {
+        "all": "All statuses"
+      },
+      "sections": {
+        "traveller": "Traveller",
+        "trip": "Tour",
+        "booking": "Booking",
+        "history": "Status history"
+      },
+      "columns": {
+        "number": "No.",
+        "traveller": "Traveller",
+        "trip": "Destination",
+        "departure": "Departure · nights",
+        "party": "Guests",
+        "price": "Price",
+        "supplierOrder": "Operator ref",
+        "status": "Status"
+      },
+      "fields": {
+        "traveller": "Lead traveller",
+        "passport": "Passport number",
+        "passportExpires": "Valid until",
+        "country": "Country",
+        "hotel": "Hotel",
+        "operator": "Operator",
+        "departure": "Departure",
+        "return": "Return",
+        "nights": "Nights",
+        "adults": "Adults",
+        "children": "Children",
+        "price": "Price",
+        "currency": "Currency",
+        "dealDate": "Deal date",
+        "supplierOrder": "Operator ref",
+        "supplierOrderHint": "Issued by the operator once booked.",
+        "branch": "Branch",
+        "note": "Note"
+      },
+      "status": {
+        "draft": "Draft",
+        "requested": "Requested",
+        "confirmed": "Confirmed",
+        "paid": "Paid",
+        "issued": "Issued",
+        "travelling": "Travelling",
+        "completed": "Completed"
+      }
     }
   },
   "markdown": {

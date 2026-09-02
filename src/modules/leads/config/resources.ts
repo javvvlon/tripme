@@ -14,5 +14,13 @@ export const resource: IResource = {
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },
     deleteLead: { url: 'cms/leads/:id', method: 'DELETE' },
+
+    orders: { url: 'cms/orders', method: 'GET', params: ['q', 'status'] },
+    leadOrders: { url: 'cms/leads/:id/orders', method: 'GET' },
+    createOrder: { url: 'cms/leads/:id/orders', method: 'POST' },
+    order: { url: 'cms/orders/:id', method: 'GET' },
+    orderHistory: { url: 'cms/orders/:id/history', method: 'GET' },
+    patchOrder: { url: 'cms/orders/:id', method: 'PATCH' },
+    deleteOrder: { url: 'cms/orders/:id', method: 'DELETE' },
   },
 }

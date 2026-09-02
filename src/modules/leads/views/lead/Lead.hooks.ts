@@ -1,6 +1,7 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
-import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
+import { tripFromLead } from '~/modules/leads/helpers/trip'
+import type { ILeadRaw, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -10,7 +11,10 @@ export const useLead = () => {
   const route = useRoute()
   const localePath = useLocalePath()
 
-  const { one, patch, remove: removeLead } = useLeadsRepository()
+  const {
+    one, patch, remove: removeLead,
+    ordersFor, createOrder,
+  } = useLeadsRepository()
 
   const id = computed(() => String(route.params.id ?? ''))
 
@@ -18,9 +22,27 @@ export const useLead = () => {
   const saved = ref(false)
   const error = ref('')
 
-  const supplierOrderId = ref('')
-  const passportId = ref('')
-  const passportExpiresAt = ref('')
+  const orders = ref<IOrderRaw[]>([])
+
+  const draft = reactive({
+    destination: '',
+    plannedDates: '',
+    partySize: '',
+    budgetAmount: '',
+    budgetCurrency: '',
+    rejectReason: '',
+    comment: '',
+  })
+
+  const adopt = (found: ILeadRaw) => {
+    draft.destination = found.destination
+    draft.plannedDates = found.planned_dates
+    draft.partySize = String(found.party_size || '')
+    draft.budgetAmount = found.budget_amount === null ? '' : String(found.budget_amount)
+    draft.budgetCurrency = found.budget_currency
+    draft.rejectReason = found.reject_reason
+    draft.comment = found.comment
+  }
 
   const { data: lead, status, refresh } = useAsyncData<ILeadRaw | null>(
     'cms:lead',
@@ -28,9 +50,8 @@ export const useLead = () => {
       try {
         const found = await one(id.value)
 
-        supplierOrderId.value = found.supplier_order_id
-        passportId.value = found.passport_id
-        passportExpiresAt.value = found.passport_expires_at ?? ''
+        adopt(found)
+        orders.value = await ordersFor(id.value)
 
         return found
       }
@@ -46,32 +67,54 @@ export const useLead = () => {
   const statusOptions = computed(() =>
     LEAD_STATUSES.map(value => ({ value, label: t(`cms.leads.status.${value}`) })))
 
-  async function change(next: LeadStatus) {
-    await save({ status: next })
-  }
-
-  async function saveDetails() {
-    await save({
-      supplier_order_id: supplierOrderId.value,
-      passport_id: passportId.value,
-      passport_expires_at: passportExpiresAt.value || null,
-    })
-  }
-
-  async function save(body: Partial<{ status: LeadStatus, supplier_order_id: string, passport_id: string, passport_expires_at: string | null }>) {
+  async function save(body: Parameters<typeof patch>[1]) {
     error.value = ''
     saved.value = false
     saving.value = true
 
     try {
-      lead.value = await patch(id.value, body)
+      const next = await patch(id.value, body)
+
+      lead.value = next
+      adopt(next)
       saved.value = true
     }
-    catch {
-      error.value = t('cms.errors.save')
+    catch (e) {
+      const response = e as { data?: { message?: string } }
+
+      error.value = response.data?.message ?? t('cms.errors.save')
     }
     finally {
       saving.value = false
+    }
+  }
+
+  const change = (next: LeadStatus) => save({ status: next })
+
+  const submit = () => save({
+    destination: draft.destination,
+    planned_dates: draft.plannedDates,
+    party_size: draft.partySize.trim() === '' ? 0 : Number(draft.partySize),
+    budget_amount: draft.budgetAmount.trim() === '' ? null : Number(draft.budgetAmount),
+    budget_currency: draft.budgetCurrency,
+    reject_reason: draft.rejectReason,
+    comment: draft.comment,
+  })
+
+  async function addOrder() {
+    if (!lead.value) return
+
+    error.value = ''
+
+    try {
+      const created = await createOrder(id.value, tripFromLead(lead.value))
+
+      await navigateTo(localePath(`/app/orders/${created.uuid}`))
+    }
+    catch (e) {
+      const response = e as { data?: { message?: string } }
+
+      error.value = response.data?.message ?? t('cms.errors.save')
     }
   }
 
@@ -82,14 +125,15 @@ export const useLead = () => {
       await removeLead(id.value)
       await navigateTo(localePath('/app/leads'))
     }
-    catch {
-      error.value = t('cms.errors.save')
+    catch (e) {
+      const response = e as { data?: { message?: string } }
+
+      error.value = response.data?.message ?? t('cms.errors.save')
     }
   }
 
   return {
-    lead, status, error, saving, saved,
-    supplierOrderId, passportId, passportExpiresAt,
-    statusOptions, change, saveDetails, remove, refresh,
+    lead, draft, orders, status, error, saving, saved,
+    statusOptions, change, submit, addOrder, remove, refresh,
   }
 }

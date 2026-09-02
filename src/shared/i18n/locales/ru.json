@@ -243,7 +243,8 @@
       "lists": "Списки",
       "posts": "Статьи",
       "leads": "Лиды",
-      "content": "Контент"
+      "content": "Контент",
+      "orders": "Заказы"
     },
     "roles": {
       "CLIENT": "Клиент",
@@ -414,9 +415,10 @@
       "empty": "Лидов пока нет.",
       "delete": "Удалить лид",
       "status": {
-        "new": "Новая",
+        "new": "Новый",
         "in_progress": "В работе",
-        "booked": "Забронирована",
+        "quote_sent": "КП отправлено",
+        "won": "Сделка",
         "rejected": "Отказ"
       },
       "columns": {
@@ -453,7 +455,9 @@
         "client": "Клиент",
         "trip": "Тур",
         "order": "Лид",
-        "raw": "Все данные предложения"
+        "raw": "Все данные предложения",
+        "request": "Запрос",
+        "orders": "Заказы"
       },
       "create": {
         "cta": "Добавить лид",
@@ -480,7 +484,89 @@
       "noMatches": "Ничего не найдено.",
       "openAtOperator": "Открыть у оператора",
       "openHotelPage": "Страница отеля",
-      "noBookingUrl": "Ссылка на подбор доступна только для новых заявок."
+      "noBookingUrl": "Ссылка на подбор доступна только для новых заявок.",
+      "channels": {
+        "site": "С сайта",
+        "telegram": "Telegram",
+        "call": "Звонок",
+        "referral": "Рекомендация",
+        "instagram": "Instagram",
+        "walk_in": "В офисе",
+        "manual": "Добавлен вручную"
+      },
+      "addOrder": "Создать заказ",
+      "noOrders": "Заказов по этому лиду ещё нет.",
+      "fields": {
+        "destination": "Направление",
+        "plannedDates": "Планируемые даты",
+        "plannedDatesHint": "Как назвал клиент — «конец августа», «15.08 — 22.08».",
+        "partySize": "Состав туристов",
+        "budget": "Ориентировочный бюджет",
+        "budgetCurrency": "Валюта",
+        "rejectReason": "Причина отказа"
+      }
+    },
+    "orders": {
+      "title": "Заказы",
+      "lead": "Всего {total}, в работе — {live}.",
+      "empty": "Заказов пока нет.",
+      "noMatches": "Ничего не найдено.",
+      "search": "Поиск заказов",
+      "searchPlaceholder": "Турист, отель, оператор или номер…",
+      "back": "Назад",
+      "missing": "Заказ не найден.",
+      "delete": "Удалить заказ",
+      "createdOn": "Создан {date}",
+      "passportShort": "Паспорт действует меньше шести месяцев после вылета — проверьте требования страны.",
+      "passportExpired": "Паспорт истекает до даты вылета.",
+      "filters": {
+        "all": "Все статусы"
+      },
+      "sections": {
+        "traveller": "Турист",
+        "trip": "Тур",
+        "booking": "Бронирование",
+        "history": "История статусов"
+      },
+      "columns": {
+        "number": "Номер",
+        "traveller": "Турист",
+        "trip": "Направление",
+        "departure": "Вылет · ночей",
+        "party": "Гости",
+        "price": "Цена",
+        "supplierOrder": "Номер у оператора",
+        "status": "Статус"
+      },
+      "fields": {
+        "traveller": "ФИО главного туриста",
+        "passport": "Серия и номер паспорта",
+        "passportExpires": "Срок действия",
+        "country": "Страна",
+        "hotel": "Отель",
+        "operator": "Туроператор",
+        "departure": "Дата вылета",
+        "return": "Дата возврата",
+        "nights": "Ночей",
+        "adults": "Взрослых",
+        "children": "Детей",
+        "price": "Цена",
+        "currency": "Валюта",
+        "dealDate": "Дата сделки",
+        "supplierOrder": "Номер у оператора",
+        "supplierOrderHint": "Присваивается туроператором после бронирования.",
+        "branch": "Филиал",
+        "note": "Заметка"
+      },
+      "status": {
+        "draft": "Черновик",
+        "requested": "Запрос отправлен",
+        "confirmed": "Подтверждён",
+        "paid": "Оплачен",
+        "issued": "Выписан",
+        "travelling": "В поездке",
+        "completed": "Завершён"
+      }
     }
   },
   "markdown": {

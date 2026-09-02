@@ -40,19 +40,8 @@
                     @blur="validation.touch('phone')"
                 />
 
-                <Input
-                    v-model="draft.passportId"
-                    :label="t('cms.leads.columns.passport')"
-                    :hint="t('cms.leads.passportHint')"
-                    placeholder="AA1234567"
-                />
             </div>
 
-            <Input
-                v-model="draft.passportExpiresAt"
-                type="date"
-                :label="t('cms.leads.columns.passportExpires')"
-            />
         </fieldset>
 
         <fieldset class="tm-manual-lead__group">

@@ -20,4 +20,20 @@ export const routes: IModuleRoute[] = [
     ssr: false,
     meta: { middleware: 'auth' },
   },
+  {
+    name: 'cms-orders',
+    path: '/app/orders',
+    file: 'modules/leads/views/orders/Orders.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth' },
+  },
+  {
+    name: 'cms-order',
+    path: '/app/orders/:id',
+    file: 'modules/leads/views/order/Order.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth' },
+  },
 ]
