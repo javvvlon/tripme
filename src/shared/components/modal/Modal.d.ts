@@ -12,4 +12,5 @@ export interface IModalProps {
   disabled?: boolean
   error?: string
   size?: ModalSizeValue
+  tone?: 'default' | 'danger'
 }

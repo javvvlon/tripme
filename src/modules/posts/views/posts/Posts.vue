@@ -50,7 +50,7 @@
                 <button
                     type="button" class="tm-cms-posts__delete"
                     :aria-label="t('cms.posts.delete')" :title="t('cms.posts.delete')"
-                    @click="remove(post.uuid)"
+                    @click="remove(post.uuid, titleOf(post))"
                 >
                     <Icon name="close" :size="16" />
                 </button>

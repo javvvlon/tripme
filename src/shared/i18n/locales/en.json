@@ -18,7 +18,9 @@
     "close": "Close",
     "cancel": "Cancel",
     "save": "Save",
-    "saving": "Saving…"
+    "saving": "Saving…",
+    "delete": "Delete",
+    "deleteWarning": "This cannot be undone."
   },
   "nav": {
     "home": "TripMe — home",
@@ -331,7 +333,11 @@
         "sale": "Sale"
       },
       "uploading": "Uploading the image…",
-      "uploadFailed": "Could not upload the image"
+      "uploadFailed": "Could not upload the image",
+      "confirmDelete": {
+        "title": "Delete this list?",
+        "lead": "It disappears from every section using it."
+      }
     },
     "sections": {
       "title": "Home sections",
@@ -408,6 +414,10 @@
         "title": "Tour in this article",
         "lead": "Find an offer — readers see it as a card with a request button.",
         "remove": "Remove tour"
+      },
+      "confirmDelete": {
+        "title": "Delete this article?",
+        "lead": "Its page stops opening and sections built from it empty out."
       }
     },
     "leads": {
@@ -505,6 +515,10 @@
         "budget": "Rough budget",
         "budgetCurrency": "Currency",
         "rejectReason": "Reason for rejection"
+      },
+      "confirmDelete": {
+        "title": "Delete this lead?",
+        "lead": "Every order under it and its history go with it."
       }
     },
     "orders": {
@@ -567,6 +581,10 @@
         "issued": "Issued",
         "travelling": "Travelling",
         "completed": "Completed"
+      },
+      "confirmDelete": {
+        "title": "Delete this order?",
+        "lead": "The order and its status history are removed. The lead stays."
       }
     },
     "operators": {

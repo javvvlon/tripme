@@ -27,6 +27,7 @@ export type PostsView = 'tile' | 'card'
 
 export const usePosts = () => {
   const { t } = useI18n()
+  const { ask } = useConfirm()
   const localePath = useLocalePath()
   const { all, create, remove: removePost } = usePostsRepository()
 
@@ -86,7 +87,13 @@ export const usePosts = () => {
     }
   }
 
-  async function remove(id: string) {
+  async function remove(id: string, title?: string) {
+    if (!await ask({
+      title: t('cms.posts.confirmDelete.title'),
+      description: t('cms.posts.confirmDelete.lead'),
+      subject: title || undefined,
+    })) return
+
     error.value = ''
 
     try {

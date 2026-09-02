@@ -28,7 +28,7 @@
                 <button
                     type="button" class="tm-cms-lists__delete"
                     :aria-label="t('cms.lists.delete')" :title="t('cms.lists.delete')"
-                    @click="remove(list.uuid)"
+                    @click="remove(list.uuid, list.name)"
                 >
                     <Icon name="close" :size="16" />
                 </button>

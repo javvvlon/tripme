@@ -5,6 +5,7 @@ import { useContentRepository } from '~/modules/content/repositories'
  */
 export const useLists = () => {
   const { t } = useI18n()
+  const { ask } = useConfirm()
   const { lists, createList, deleteList } = useContentRepository()
 
   const error = ref('')
@@ -29,7 +30,13 @@ export const useLists = () => {
     }
   }
 
-  async function remove(id: string) {
+  async function remove(id: string, name?: string) {
+    if (!await ask({
+      title: t('cms.lists.confirmDelete.title'),
+      description: t('cms.lists.confirmDelete.lead'),
+      subject: name || undefined,
+    })) return
+
     error.value = ''
 
     try {

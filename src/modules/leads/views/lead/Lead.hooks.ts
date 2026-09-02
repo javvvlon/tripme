@@ -8,6 +8,7 @@ import type { ILeadRaw, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/
  */
 export const useLead = () => {
   const { t } = useI18n()
+  const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
 
@@ -119,6 +120,12 @@ export const useLead = () => {
   }
 
   async function remove() {
+    if (!await ask({
+      title: t('cms.leads.confirmDelete.title'),
+      description: t('cms.leads.confirmDelete.lead'),
+      subject: [lead.value?.first_name, lead.value?.last_name].filter(Boolean).join(' ') || undefined,
+    })) return
+
     error.value = ''
 
     try {

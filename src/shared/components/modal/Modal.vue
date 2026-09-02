@@ -37,7 +37,11 @@
                                 {{ cancelLabel ?? t('common.cancel') }}
                             </Button>
 
-                            <Button type="submit" :disabled="busy || disabled">
+                            <Button
+                                type="submit"
+                                :disabled="busy || disabled"
+                                :class="{ 'tm-modal__danger': tone === 'danger' }"
+                            >
                                 {{ busy ? t('common.saving') : (confirmLabel ?? t('common.save')) }}
                             </Button>
                         </footer>

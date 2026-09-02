@@ -1,0 +1,20 @@
+@use '../../styles/utils' as *;
+
+.tm-confirm {
+    &__subject {
+        margin: 0;
+        padding: 12px 14px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 600;
+    }
+
+    &__warning {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+    }
+}

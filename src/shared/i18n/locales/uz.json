@@ -18,7 +18,9 @@
     "close": "Yopish",
     "cancel": "Bekor qilish",
     "save": "Saqlash",
-    "saving": "Saqlanmoqda…"
+    "saving": "Saqlanmoqda…",
+    "delete": "Oʻchirish",
+    "deleteWarning": "Bu amalni bekor qilib boʻlmaydi."
   },
   "nav": {
     "home": "TripMe — bosh sahifa",
@@ -331,7 +333,11 @@
         "sale": "Chegirma"
       },
       "uploading": "Rasm yuklanmoqda…",
-      "uploadFailed": "Rasmni yuklab bo‘lmadi"
+      "uploadFailed": "Rasmni yuklab bo‘lmadi",
+      "confirmDelete": {
+        "title": "Roʻyxat oʻchirilsinmi?",
+        "lead": "Roʻyxat u ishlatilgan boʻlimlardan yoʻqoladi."
+      }
     },
     "sections": {
       "title": "Bosh sahifa bo‘limlari",
@@ -408,6 +414,10 @@
         "title": "Maqoladagi tur",
         "lead": "Taklifni toping — oʻquvchi uni ariza tugmasi bilan karta koʻrinishida koʻradi.",
         "remove": "Turni olib tashlash"
+      },
+      "confirmDelete": {
+        "title": "Maqola oʻchirilsinmi?",
+        "lead": "Maqola sahifasi ochilmay qoladi, boʻlimlar esa boʻshaydi."
       }
     },
     "leads": {
@@ -505,6 +515,10 @@
         "budget": "Taxminiy byudjet",
         "budgetCurrency": "Valyuta",
         "rejectReason": "Rad etish sababi"
+      },
+      "confirmDelete": {
+        "title": "Lid oʻchirilsinmi?",
+        "lead": "U bilan birga barcha buyurtmalari va tarixi oʻchadi."
       }
     },
     "orders": {
@@ -567,6 +581,10 @@
         "issued": "Rasmiylashtirilgan",
         "travelling": "Sayohatda",
         "completed": "Yakunlangan"
+      },
+      "confirmDelete": {
+        "title": "Buyurtma oʻchirilsinmi?",
+        "lead": "Buyurtma va uning holatlar tarixi oʻchadi. Lid qoladi."
       }
     },
     "operators": {

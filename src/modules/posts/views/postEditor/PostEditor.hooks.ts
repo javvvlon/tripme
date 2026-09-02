@@ -13,6 +13,7 @@ import type { IPostDraft } from '~/modules/posts/contracts/posts'
  */
 export const usePostEditor = () => {
   const { t } = useI18n()
+  const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
 
@@ -153,6 +154,12 @@ export const usePostEditor = () => {
   }
 
   async function remove() {
+    if (!await ask({
+      title: t('cms.posts.confirmDelete.title'),
+      description: t('cms.posts.confirmDelete.lead'),
+      subject: draft.translations[locale.value].title || undefined,
+    })) return
+
     error.value = ''
 
     try {
