@@ -2,23 +2,18 @@ import { useToursRepository } from '~/search_engine/repositories/tours.repositor
 import { SearchSort } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
 import type { SearchRequest } from '~/search_engine/contracts/search'
-import { AUTO_DATE_ATTEMPTS, EMPTY_FACETS, RESULTS_PAGE_SIZE } from './Search.config'
+import { EMPTY_FACETS, RESULTS_PAGE_SIZE } from './Search.config'
 import type { IChosenDate } from './Search.config'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useSearch = () => {
-  const { search } = useToursRepository()
+  const { search, soonestDeparture } = useToursRepository()
 
   const criteria = useAppliedCriteria()
   const route = useRoute()
   const router = useRouter()
-
-  const departure = computed(() => criteria.value.from)
-  const destination = computed(() => criteria.value.to)
-
-  const { calendar, calendarPending } = useSearchReferences(departure, destination)
 
   const { filters } = useSearchFilters()
   const sort = ref<SearchSort>(SearchSort.Popular)
@@ -32,25 +27,19 @@ export const useSearch = () => {
     Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
 
   /**
-   * A route is known but the day it leaves on is not yet. Nothing can be
-   * fetched until it lands, and without this the page would sit on "choose a
-   * route" for a second or two while looking like it had finished.
-   *
-   * It stays true past the calendar's arrival, until the day it yields
-   * reaches the URL — otherwise the empty panel flashes in between. A
-   * calendar with no open day at all ends it, so this cannot hang.
+   * Fixed once, on the server, and carried to the client: two clocks
+   * disagreeing about what day it is would send the page searching twice.
    */
-  const settling = computed(() => {
-    if (!criteria.value.from || !criteria.value.to || criteria.value.date) return false
+  const today = useState('search-today', () => new Date().toISOString().slice(0, 10))
 
-    return calendarPending.value || Boolean(firstOpenDate(calendar.value))
-  })
+  /** A route is known but the day it leaves on is not settled yet. */
+  const settling = computed(() =>
+    Boolean(criteria.value.from && criteria.value.to && !criteria.value.date))
 
   /**
-   * The date this page chose on the visitor's behalf, and how many days it
-   * has stepped over to get there. A date they picked themselves is never
-   * recorded here, which is what keeps the search from wandering off the day
-   * they asked for.
+   * The date this page chose on the visitor's behalf. A date they picked
+   * themselves is never recorded here, which is what keeps the search from
+   * wandering off the day they asked for.
    *
    * Held in transferable state rather than a plain ref: the first date is
    * chosen while rendering on the server, and the client has to know it was
@@ -63,28 +52,23 @@ export const useSearch = () => {
   const dateWasOurs = computed(() =>
     chosen.value?.lane === lane.value && chosen.value?.date === criteria.value.date)
 
-  const useDate = (day: string) => {
-    chosen.value = {
-      lane: lane.value,
-      date: day,
-      hops: (chosen.value?.lane === lane.value ? chosen.value.hops : 0) + 1,
-    }
+  const useDate = (day: string, asked = false) => {
+    chosen.value = { lane: lane.value, date: day, asked: asked || Boolean(chosen.value?.asked) }
 
     return router.replace({ query: { ...route.query, date: day } })
   }
 
   /**
    * A route reached without a date — a card on the home page, a shared link —
-   * means "as soon as possible", so it takes the soonest day the operators
-   * still fly. Written into the URL rather than assumed quietly, so the date
-   * field shows the day the results actually belong to.
+   * means "as soon as possible", and today is the soonest there is. Written
+   * into the URL rather than assumed quietly, so the date field shows the day
+   * the results belong to, and searched straight away: asking the operators
+   * when they next fly costs a round trip, and most routes sell today.
    */
-  watch([calendar, criteria], () => {
+  watch(criteria, () => {
     if (!criteria.value.from || !criteria.value.to || criteria.value.date) return
 
-    const soonest = firstOpenDate(calendar.value)
-
-    if (soonest) void useDate(soonest)
+    void useDate(today.value)
   }, { immediate: true })
 
   const request = computed<SearchRequest>(() => ({
@@ -123,34 +107,39 @@ export const useSearch = () => {
     loadMoreError.value = ''
   })
 
-  /** The next day the operators fly after the one being shown. */
-  const following = computed(() =>
-    criteria.value.date ? firstOpenDate(calendar.value, nextDay(criteria.value.date)) : '')
-
   /**
-   * Flying on a day and selling for it are different things: an operator's
-   * calendar leaves days open that turn up nothing. When the day this page
-   * picked comes back empty it moves to the next one, a few times, rather
-   * than showing an empty page for a route that does have tours. A day the
-   * visitor chose is left alone.
+   * Today sold nothing, so ask when this route next does.
+   *
+   * Only ever asked about a day this page chose: a visitor who picked a date
+   * and found it empty meant that date, and moving them off it would answer
+   * a question they did not ask. Asked once per route — a second empty
+   * answer means the operators have nothing, not that the day was wrong.
    */
-  const advancing = computed(() =>
-    Boolean(
-      data.value
-      && data.value.date === criteria.value.date
-      && !data.value.tours.length
-      && dateWasOurs.value
-      && (chosen.value?.hops ?? 0) <= AUTO_DATE_ATTEMPTS
-      && following.value
-      && following.value !== criteria.value.date,
-    ))
+  const seeking = ref(false)
 
-  watch(advancing, (moving) => {
-    if (moving) void useDate(following.value)
-  }, { immediate: true })
+  watch(data, async (result) => {
+    if (!result || result.date !== criteria.value.date || result.tours.length) return
 
-  /** Fetching, or between two dates — either way the page is not done. */
-  const busy = computed(() => pending.value || advancing.value)
+    if (!dateWasOurs.value || chosen.value?.asked || seeking.value) return
+
+    seeking.value = true
+
+    try {
+      const day = await soonestDeparture(request.value)
+
+      if (day && day !== criteria.value.date) await useDate(day, true)
+      else if (chosen.value) chosen.value = { ...chosen.value, asked: true }
+    }
+    catch {
+      if (chosen.value) chosen.value = { ...chosen.value, asked: true }
+    }
+    finally {
+      seeking.value = false
+    }
+  })
+
+  /** Fetching, or asking for a better day — either way the page is not done. */
+  const busy = computed(() => pending.value || seeking.value)
 
   const tours = computed<Tour[]>(() =>
     [...((data.value?.tours ?? []) as unknown as Tour[]), ...extraPages.value.flat()])

@@ -14,6 +14,11 @@ export const resource: IResource = {
                'children', 'currency', 'stars', 'meals', 'resorts', 'hotels',
                'suppliers', 'priceMin', 'priceMax', 'page'],
     },
+    soonestDeparture: {
+      url: 'soonest',
+      method: 'GET',
+      params: ['from', 'to', 'date', 'nights', 'nightsTo', 'adults', 'children', 'currency'],
+    },
     fetchTour: { url: 'offers/:tour_id/', method: 'GET' },
     suggestDestinations: {
       url: 'destinations/suggest/',

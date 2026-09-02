@@ -61,10 +61,27 @@ export const useToursRepository = () => {
     }
   }
 
+  /**
+   * The first day this route is actually being sold on. Asked of the API
+   * rather than worked out here: it takes one fan-out across the operators,
+   * and the answer is the same for everyone arriving at this route.
+   */
+  const soonestDeparture = async (request: SearchRequest): Promise<string> => {
+    const { from, to, nights, adults, kids } = request
+
+    const response = await http.call<{ date: string | null }>(
+      'SearchEngine',
+      'soonestDeparture',
+      { from, to, nights, adults, children: kids ? String(kids) : undefined },
+    )
+
+    return response.data?.date ?? ''
+  }
+
   const fetchOne = async (id: string): Promise<Tour> => {
     const response = await http.call<ITourRaw>('SearchEngine', 'fetchTour', { tour_id: id })
     return Tour.fromRaw(response.data)
   }
 
-  return { search, fetchOne }
+  return { search, soonestDeparture, fetchOne }
 }
