@@ -9,8 +9,13 @@ export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
 
   const { departures, unavailable } = useDepartures()
 
+  /**
+   * The key carries the route. Without it the empty-handed answer fetched on
+   * the home page was reused on the search page, and the destination field
+   * had no option to show its own value against.
+   */
   const { data: countries } = useAsyncData(
-    'references-countries',
+    () => `references-countries-${from.value}`,
     () => fetchCountries(from.value).catch(() => {
       unavailable.value = true
       return { items: [], from: null }
@@ -19,7 +24,7 @@ export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
   )
 
   const { data: constraints } = useAsyncData<IRouteConstraints | null>(
-    'references-constraints',
+    () => `references-constraints-${from.value}-${to.value}`,
     () => fetchConstraints(from.value, to.value).catch(() => null),
     { watch: [from, to], default: () => null },
   )

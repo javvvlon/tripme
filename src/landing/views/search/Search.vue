@@ -29,7 +29,7 @@
             </ClientOnly>
 
             <div class="tm-search-view__results">
-                <ResultsHeader v-model:sort="sort" :title="headline" />
+                <ResultsHeader v-model:sort="sort" :title="headline" :sortable="tours.length > 0" />
 
                 <!--
                     Card-shaped placeholders, not a spinner: the layout is

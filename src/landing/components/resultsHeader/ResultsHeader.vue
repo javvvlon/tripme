@@ -2,7 +2,7 @@
     <header class="tm-results-header">
         <h1 class="tm-results-header__title">{{ title }}</h1>
 
-        <div class="tm-results-header__controls">
+        <div v-if="sortable" class="tm-results-header__controls">
             <div class="tm-results-header__sort">
                 <label :for="`${id}-sort`" class="sr-only">{{ t('results.sort') }}</label>
                 <Icon name="filter" :size="15" />
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { SearchSort } from '~/search_engine/contracts/search'
 
-defineProps<{ title: string }>()
+defineProps<{ title: string, sortable?: boolean }>()
 
 const sort = defineModel<SearchSort>('sort', { default: SearchSort.Popular })
 

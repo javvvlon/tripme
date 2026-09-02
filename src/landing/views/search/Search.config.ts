@@ -19,3 +19,13 @@ export const EMPTY_FACETS: SearchFacets = {
   partial: false,
   total: 0,
 }
+
+/** How many empty days the search will step over before giving up. */
+export const AUTO_DATE_ATTEMPTS = 4
+
+/** A departure date the search page picked, and the route it picked it for. */
+export interface IChosenDate {
+  lane: string
+  date: string
+  hops: number
+}
