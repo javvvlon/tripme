@@ -4,10 +4,13 @@
 export interface IMediaFile {
   url: string
   path: string
+  title: string
+  size: number
+  uploadedAt: string | null
 }
 
 export interface IMediaLibraryProps {
-  library: () => Promise<IMediaFile[]>
+  library?: (query?: string) => Promise<IMediaFile[]>
   uploader?: (file: File) => Promise<string>
   accept?: string[]
 }

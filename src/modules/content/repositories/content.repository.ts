@@ -89,8 +89,8 @@ export const useContentRepository = () => {
    * editor's change is already saved, and an extra file in a bucket is a
    * smaller problem than an error they cannot act on.
    */
-  const library = async (): Promise<IStoredFileRaw[]> => {
-    const response = await http.call<IStoredFileRaw[]>('Content', 'library')
+  const library = async (query = ''): Promise<IStoredFileRaw[]> => {
+    const response = await http.call<IStoredFileRaw[]>('Content', 'library', query ? { q: query } : {})
 
     return response.data
   }
@@ -104,12 +104,20 @@ export const useContentRepository = () => {
     }
   }
 
+  /**
+   * Names a stored file. Unlike removal this is not tidying up, so a failure
+   * is surfaced: the editor asked for the name to change.
+   */
+  const renameUpload = async (url: string, title: string): Promise<void> => {
+    await http.call<void>('Content', 'renameUpload', {}, { url, title })
+  }
+
   const saveSections = async (items: AnyObject[]): Promise<void> => {
     await http.call<void>('Content', 'saveSections', {}, { items })
   }
 
   return {
     banner, saveBanner, homeContent,
-    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload,
+    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, renameUpload,
   }
 }

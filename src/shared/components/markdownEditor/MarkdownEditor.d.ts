@@ -1,10 +1,7 @@
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export interface IMediaFile {
-  url: string
-  path: string
-}
+import type { IMediaFile } from '~/shared/components/mediaLibrary/MediaLibrary.d'
 
 export interface IMarkdownEditorProps {
   label?: string
@@ -13,7 +10,7 @@ export interface IMarkdownEditorProps {
   rows?: number
   disabled?: boolean
   uploader?: (file: File) => Promise<string>
-  library?: () => Promise<IMediaFile[]>
+  library?: (query?: string) => Promise<IMediaFile[]>
 }
 
 export interface IMarkdownAction {

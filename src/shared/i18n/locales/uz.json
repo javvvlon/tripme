@@ -703,6 +703,20 @@
     "choose": "Tanlash",
     "upload": "Yangisini yuklash",
     "failed": "Galereyani yuklab boʻlmadi.",
-    "uploadFailed": "Rasmni yuklab boʻlmadi."
+    "uploadFailed": "Rasmni yuklab boʻlmadi.",
+    "name": "Nomi",
+    "namePlaceholder": "Masalan: Istanbul sohili",
+    "rename": "Nomini oʻzgartirish",
+    "remove": "Xotiradan oʻchirish",
+    "chosen": "Tanlangan",
+    "renameFailed": "Rasm nomini oʻzgartirib boʻlmadi.",
+    "removeFailed": "Rasmni oʻchirib boʻlmadi.",
+    "confirmRemove": {
+      "title": "Rasm xotiradan oʻchirilsinmi?",
+      "lead": "Fayl butunlay oʻchiriladi. Unga bogʻlangan bannerlar, roʻyxatlar va maqolalar rasmsiz qoladi."
+    },
+    "back": "Barcha rasmlar",
+    "search": "Nomi boʻyicha qidirish",
+    "noMatches": "Hech narsa topilmadi."
   }
 }

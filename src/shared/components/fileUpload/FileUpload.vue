@@ -71,6 +71,7 @@
             :accept="accept"
             :current="current ?? null"
             @select="fromLibrary"
+            @remove="onGalleryRemove"
         />
     </div>
 </template>
@@ -134,6 +135,19 @@ function fromLibrary(url: string) {
   error.value = ''
 
   emit('pick', url)
+}
+
+/**
+ * The gallery deleted the very file this field points at, so the field has
+ * to let go of it — no discard, the bytes are already gone.
+ */
+function onGalleryRemove(url: string) {
+  if (url !== props.current) return
+
+  upload.clear()
+  cleared.value = true
+  file.value = null
+  emit('clear')
 }
 
 async function take(candidate: File | null | undefined) {

@@ -1,6 +1,42 @@
 @use '../../styles/utils' as *;
 
 .tm-media {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    &__search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 0 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-4);
+
+        &:focus-within {
+            border-color: var(--tm-cms-accent);
+            background: var(--tm-surface-1);
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 9px 0;
+            border: 0;
+            background: none;
+            color: var(--tm-ink-1);
+            font: inherit;
+            font-size: size(14);
+
+            &::placeholder { color: var(--tm-ink-4); }
+            &:focus { outline: none; }
+            &::-webkit-search-cancel-button { cursor: pointer; }
+        }
+    }
+
     &__state {
         margin: 0;
         padding: 24px 0;
@@ -9,18 +45,27 @@
         text-align: center;
     }
 
-    &__grid {
+    /**
+     * One rule for both shapes. At full width `auto-fill` lays the images out
+     * as a grid; once the preview takes the room, the same rule resolves to a
+     * single column — so the width is all that has to animate.
+     */
+    &__deck {
         list-style: none;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-        gap: 12px;
-        max-height: 46vh;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 100%;
+        max-height: 340px;
         margin: 0;
         padding: 2px;
         overflow-y: auto;
     }
 
-    &__tile {
+    &__slide {
+        position: relative;
         display: block;
         width: 100%;
         aspect-ratio: 4 / 3;
@@ -32,14 +77,11 @@
         cursor: pointer;
         transition: border-color .15s, box-shadow .15s;
 
-        &:hover {
-            border-color: var(--tm-brand-primary);
-            box-shadow: shadow('sm');
-        }
+        &:hover { border-color: var(--tm-cms-accent); }
 
-        &.is-current {
-            border-color: var(--tm-brand-primary);
-            box-shadow: 0 0 0 2px var(--tm-brand-primary-soft);
+        &.is-active {
+            border-color: var(--tm-cms-accent);
+            box-shadow: 0 0 0 2px var(--tm-cms-accent-soft);
         }
 
         img {
@@ -49,9 +91,164 @@
         }
     }
 
+    &__flag {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        display: grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+    }
+
+    &__stage {
+        display: grid;
+        gap: 10px;
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    &__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        justify-self: start;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-cms-accent);
+        font: inherit;
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { text-decoration: underline; }
+
+        @include focus-ring(var(--tm-cms-accent));
+    }
+
+    &__canvas {
+        display: grid;
+        place-items: center;
+        height: 240px;
+        padding: 8px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-2);
+        overflow: hidden;
+
+        img {
+            max-width: 100%;
+            max-height: 224px;
+            object-fit: contain;
+            border-radius: radius('sm');
+        }
+    }
+
+    &__meta { min-width: 0; }
+
+    &__name {
+        margin: 0;
+        font-size: size(15);
+        font-weight: 600;
+        color: var(--tm-ink-1);
+        overflow-wrap: anywhere;
+    }
+
+    &__facts {
+        margin: 2px 0 0;
+        font-size: size(13);
+        color: var(--tm-ink-4);
+    }
+
+    &__row {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    &__tools {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    &__tool {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-cms-accent);
+        cursor: pointer;
+        transition: background .15s, border-color .15s;
+
+        &:hover {
+            background: var(--tm-cms-accent-soft);
+            border-color: var(--tm-cms-accent);
+        }
+
+        &:disabled {
+            color: var(--tm-ink-4);
+            cursor: not-allowed;
+        }
+
+        @include focus-ring(var(--tm-cms-accent));
+
+        &--danger {
+            color: var(--tm-status-danger);
+
+            &:hover {
+                background: var(--tm-status-danger-soft);
+                border-color: var(--tm-status-danger);
+            }
+
+            @include focus-ring(var(--tm-status-danger));
+        }
+    }
+
+    &.is-previewing &__deck {
+        width: 128px;
+        flex: 0 0 128px;
+        gap: 8px;
+    }
+
     &__input { display: none; }
 }
 
 @media #{$until-md} {
-    .tm-media__grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+    .tm-media {
+        flex-direction: column;
+    }
+
+    .tm-media__deck {
+        grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    }
+
+    .tm-media.is-previewing .tm-media__deck {
+        grid-auto-flow: column;
+        grid-template-columns: none;
+        grid-auto-columns: 72px;
+        width: 100%;
+        flex: 0 0 auto;
+        max-height: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .tm-media__stage {
+        width: 100%;
+    }
+
+    .tm-media__canvas {
+        height: 200px;
+
+        img { max-height: 184px; }
+    }
 }

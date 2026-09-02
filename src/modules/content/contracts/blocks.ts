@@ -72,6 +72,7 @@ export interface IHomeContentRaw {
 export interface IStoredFileRaw {
   url: string
   path: string
+  title: string
   size: number
   uploaded_at: string | null
 }

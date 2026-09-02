@@ -703,6 +703,20 @@
     "choose": "Choose",
     "upload": "Upload new",
     "failed": "The library could not be loaded.",
-    "uploadFailed": "The image could not be uploaded."
+    "uploadFailed": "The image could not be uploaded.",
+    "name": "Name",
+    "namePlaceholder": "For example: Istanbul waterfront",
+    "rename": "Rename",
+    "remove": "Delete from storage",
+    "chosen": "Selected",
+    "renameFailed": "Could not rename the image.",
+    "removeFailed": "Could not delete the image.",
+    "confirmRemove": {
+      "title": "Delete this image from storage?",
+      "lead": "The file is removed for good. Banners, lists and articles pointing at it will be left without a picture."
+    },
+    "back": "All images",
+    "search": "Search by name",
+    "noMatches": "Nothing matched."
   }
 }
