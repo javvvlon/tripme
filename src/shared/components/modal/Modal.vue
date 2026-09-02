@@ -39,8 +39,8 @@
 
                             <Button
                                 type="submit"
+                                :variant="tone === 'danger' ? 'danger' : 'primary'"
                                 :disabled="busy || disabled"
-                                :class="{ 'tm-modal__danger': tone === 'danger' }"
                             >
                                 {{ busy ? t('common.saving') : (confirmLabel ?? t('common.save')) }}
                             </Button>

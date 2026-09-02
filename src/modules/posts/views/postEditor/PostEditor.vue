@@ -128,7 +128,7 @@
                 </section>
 
                 <footer class="tm-post-editor__foot">
-                    <Button type="button" variant="ghost" @click="remove">
+                    <Button type="button" variant="danger-quiet" @click="remove">
                         {{ t('cms.posts.delete') }}
                     </Button>
 

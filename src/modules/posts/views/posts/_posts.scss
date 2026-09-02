@@ -93,7 +93,10 @@
         color: var(--tm-ink-4);
         cursor: pointer;
 
-        &:hover { background: var(--tm-surface-2); color: var(--tm-status-danger); }
+        &:hover {
+            background: var(--tm-status-danger-soft);
+            color: var(--tm-status-danger);
+        }
     }
 
     &__name {

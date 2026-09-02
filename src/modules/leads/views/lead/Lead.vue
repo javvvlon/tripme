@@ -27,7 +27,7 @@
                         @update:model-value="change($event as LeadStatus)"
                     />
 
-                    <Button type="button" variant="ghost" @click="remove">{{ t('cms.leads.delete') }}</Button>
+                    <Button type="button" variant="danger-quiet" @click="remove">{{ t('cms.leads.delete') }}</Button>
                 </div>
             </header>
 

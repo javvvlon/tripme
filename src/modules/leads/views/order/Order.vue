@@ -27,7 +27,7 @@
                         @update:model-value="change($event as OrderStatus)"
                     />
 
-                    <Button type="button" variant="ghost" @click="remove">{{ t('cms.orders.delete') }}</Button>
+                    <Button type="button" variant="danger-quiet" @click="remove">{{ t('cms.orders.delete') }}</Button>
                 </div>
             </header>
 

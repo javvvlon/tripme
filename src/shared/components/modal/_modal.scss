@@ -74,13 +74,6 @@
         font-weight: 600;
     }
 
-    &__danger {
-        background: var(--tm-status-danger);
-        border-color: var(--tm-status-danger);
-
-        &:hover:not(:disabled) { background: #C93A3F; border-color: #C93A3F; }
-    }
-
     &__foot {
         display: flex;
         justify-content: flex-end;

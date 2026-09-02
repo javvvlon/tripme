@@ -38,6 +38,28 @@
         &:hover { background: var(--tm-surface-2); border-color: var(--tm-ink-4); }
     }
 
+    &--danger {
+        background: var(--tm-status-danger);
+        color: var(--tm-common-white);
+        border: 1px solid var(--tm-status-danger);
+
+        &:hover {
+            background: var(--tm-status-danger-dark);
+            border-color: var(--tm-status-danger-dark);
+        }
+    }
+
+    &--danger-quiet {
+        background: transparent;
+        color: var(--tm-status-danger);
+        border: 1px solid var(--tm-border-1);
+
+        &:hover {
+            background: var(--tm-status-danger-soft);
+            border-color: var(--tm-status-danger);
+        }
+    }
+
     &--quiet {
         background: rgba(255, 255, 255, .14);
         color: var(--tm-common-white);

@@ -1,7 +1,7 @@
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'quiet' | 'link'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'quiet' | 'link' | 'danger' | 'danger-quiet'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 export interface IButtonProps {
