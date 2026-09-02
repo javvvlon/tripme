@@ -18,7 +18,7 @@ export const useSearch = () => {
   const departure = computed(() => criteria.value.from)
   const destination = computed(() => criteria.value.to)
 
-  const { calendar } = useSearchReferences(departure, destination)
+  const { calendar, calendarPending } = useSearchReferences(departure, destination)
 
   const { filters } = useSearchFilters()
   const sort = ref<SearchSort>(SearchSort.Popular)
@@ -30,6 +30,21 @@ export const useSearch = () => {
 
   const isSearchable = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
+
+  /**
+   * A route is known but the day it leaves on is not yet. Nothing can be
+   * fetched until it lands, and without this the page would sit on "choose a
+   * route" for a second or two while looking like it had finished.
+   *
+   * It stays true past the calendar's arrival, until the day it yields
+   * reaches the URL — otherwise the empty panel flashes in between. A
+   * calendar with no open day at all ends it, so this cannot hang.
+   */
+  const settling = computed(() => {
+    if (!criteria.value.from || !criteria.value.to || criteria.value.date) return false
+
+    return calendarPending.value || Boolean(firstOpenDate(calendar.value))
+  })
 
   /**
    * The date this page chose on the visitor's behalf, and how many days it
@@ -84,12 +99,14 @@ export const useSearch = () => {
     'search-results',
     async () => {
       if (!isSearchable.value) {
-        return { tours: [] as Tour[], total: 0, facets: EMPTY_FACETS, statuses: [], hasMore: false }
+        return { date: '', tours: [] as Tour[], total: 0, facets: EMPTY_FACETS, statuses: [], hasMore: false }
       }
 
       const results = await search(request.value, 1)
 
       return {
+        /** The day these results are for, so a stale answer is recognisable. */
+        date: criteria.value.date,
         tours: results.items,
         total: results.total,
         facets: results.facets ?? EMPTY_FACETS,
@@ -106,22 +123,34 @@ export const useSearch = () => {
     loadMoreError.value = ''
   })
 
+  /** The next day the operators fly after the one being shown. */
+  const following = computed(() =>
+    criteria.value.date ? firstOpenDate(calendar.value, nextDay(criteria.value.date)) : '')
+
   /**
    * Flying on a day and selling for it are different things: an operator's
    * calendar leaves days open that turn up nothing. When the day this page
-   * picked comes back empty it tries the next one, a few times, rather than
-   * showing an empty page for a route that does have tours. A day the
+   * picked comes back empty it moves to the next one, a few times, rather
+   * than showing an empty page for a route that does have tours. A day the
    * visitor chose is left alone.
    */
-  watch(data, (result) => {
-    if (!result || result.tours.length || !dateWasOurs.value) return
+  const advancing = computed(() =>
+    Boolean(
+      data.value
+      && data.value.date === criteria.value.date
+      && !data.value.tours.length
+      && dateWasOurs.value
+      && (chosen.value?.hops ?? 0) <= AUTO_DATE_ATTEMPTS
+      && following.value
+      && following.value !== criteria.value.date,
+    ))
 
-    if ((chosen.value?.hops ?? 0) > AUTO_DATE_ATTEMPTS) return
+  watch(advancing, (moving) => {
+    if (moving) void useDate(following.value)
+  }, { immediate: true })
 
-    const following = firstOpenDate(calendar.value, nextDay(criteria.value.date))
-
-    if (following && following !== criteria.value.date) void useDate(following)
-  })
+  /** Fetching, or between two dates — either way the page is not done. */
+  const busy = computed(() => pending.value || advancing.value)
 
   const tours = computed<Tour[]>(() =>
     [...((data.value?.tours ?? []) as unknown as Tour[]), ...extraPages.value.flat()])
@@ -162,7 +191,7 @@ export const useSearch = () => {
 
   return {
     criteria, filters, sort,
-    tours, facets, total, statuses,
+    tours, facets, total, statuses, settling, busy,
     isSearchable, pending, error,
     hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
   }

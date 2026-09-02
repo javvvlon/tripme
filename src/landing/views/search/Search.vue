@@ -15,14 +15,14 @@
         <div class="tm-search-view__layout" :class="{ 'is-filtering': filtersOpen }">
             <ClientOnly>
                 <FilterPanel
-                    v-model="filters" :facets="facets" :loading="pending"
+                    v-model="filters" :facets="facets" :loading="busy"
                     :agent-view="isAuthenticated"
                     class="tm-search-view__filters"
                 />
 
                 <template #fallback>
                     <FilterPanel
-                        v-model="filters" :facets="facets" :loading="pending"
+                        v-model="filters" :facets="facets" :loading="busy"
                         class="tm-search-view__filters"
                     />
                 </template>
@@ -36,7 +36,12 @@
                     already known, so holding its shape stops the page jumping
                     when results land.
                 -->
-                <ul v-if="pending" class="tm-search-view__list" :aria-busy="true" :aria-label="t('results.loading')">
+                <div v-if="settling" class="tm-search-view__settling">
+                    <Spinner />
+                    <p>{{ t('results.settling') }}</p>
+                </div>
+
+                <ul v-else-if="busy" class="tm-search-view__list" :aria-busy="true" :aria-label="t('results.loading')">
                     <li v-for="n in 5" :key="n" class="tm-search-view__skeleton">
                         <Skeleton height="100%" radius="md" class="tm-search-view__skeleton-media" />
                         <div class="tm-search-view__skeleton-body">
@@ -88,6 +93,7 @@
 
 <script setup lang="ts">
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
+import Spinner from '~/shared/components/spinner/Spinner.vue'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
 
@@ -98,7 +104,7 @@ const { isAuthenticated } = useAuthSession()
 
 const {
   criteria, filters, sort,
-  tours, facets, isSearchable, pending,
+  tours, facets, isSearchable, busy, settling,
   hasMore, canLoadMore, loadingMore, loadMoreError, loadMore,
 } = useSearch()
 
@@ -227,6 +233,21 @@ useSeoMeta({
         color: var(--tm-ink-3);
         background: var(--tm-surface-2);
         border-radius: radius('lg');
+    }
+
+    &__settling {
+        display: grid;
+        justify-items: center;
+        gap: 14px;
+        padding: 72px 40px;
+        background: var(--tm-surface-2);
+        border-radius: radius('lg');
+
+        p {
+            margin: 0;
+            font-size: size(14);
+            color: var(--tm-ink-3);
+        }
     }
 
     &__filters-toggle {

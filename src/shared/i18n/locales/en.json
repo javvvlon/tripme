@@ -190,7 +190,8 @@
     "aboutHotel": "About the hotel",
     "programme": "Programme",
     "fare": "Fare code",
-    "filters": "Filters"
+    "filters": "Filters",
+    "settling": "Finding the soonest departure…"
   },
   "auth": {
     "mode": "Sign in or sign up",

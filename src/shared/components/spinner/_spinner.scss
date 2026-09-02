@@ -1,0 +1,56 @@
+@use '../../styles/utils' as *;
+
+.tm-spinner {
+    display: grid;
+    place-items: center;
+
+    &__ring {
+        animation: tm-spinner-turn 1.4s linear infinite;
+    }
+
+    &__track {
+        stroke: var(--tm-border-1);
+    }
+
+    /**
+     * The arc grows and shrinks as it turns, so the ring reads as chasing its
+     * own end rather than as a bar sliding past.
+     */
+    &__arc {
+        stroke: var(--tm-brand-primary);
+        stroke-dasharray: 90 200;
+        stroke-dashoffset: 0;
+        transform-origin: center;
+        animation: tm-spinner-chase 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes tm-spinner-turn {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes tm-spinner-chase {
+    0% {
+        stroke-dasharray: 12 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 80 200;
+        stroke-dashoffset: -22;
+    }
+
+    100% {
+        stroke-dasharray: 12 200;
+        stroke-dashoffset: -110;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-spinner__ring { animation-duration: 3s; }
+
+    .tm-spinner__arc {
+        animation: none;
+        stroke-dasharray: 60 200;
+    }
+}

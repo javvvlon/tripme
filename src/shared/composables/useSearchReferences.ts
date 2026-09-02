@@ -23,7 +23,7 @@ export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
     { watch: [from], default: () => ({ items: [], from: null }) },
   )
 
-  const { data: constraints } = useAsyncData<IRouteConstraints | null>(
+  const { data: constraints, pending: calendarPending } = useAsyncData<IRouteConstraints | null>(
     () => `references-constraints-${from.value}-${to.value}`,
     () => fetchConstraints(from.value, to.value).catch(() => null),
     { watch: [from, to], default: () => null },
@@ -45,6 +45,7 @@ export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
 
   return {
     unavailable,
+    calendarPending,
     departureOptions,
     countryOptions,
     nightsOptions,

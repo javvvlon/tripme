@@ -190,7 +190,8 @@
     "aboutHotel": "Mehmonxona haqida",
     "programme": "Dastur",
     "fare": "Tarif",
-    "filters": "Filtrlar"
+    "filters": "Filtrlar",
+    "settling": "Eng yaqin uchish sanasi tanlanmoqda…"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
