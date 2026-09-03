@@ -1138,6 +1138,309 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
     <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>7</span></div>
 </section>
 
+<!-- ============ DOCUMENTS ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Документы</span>
+    <h2>Что вы отправляете клиенту</h2>
+    <p class="lead-in">
+        Система пишет два документа сама и хранит их рядом с заказом. Третье —
+        всё, что вы прикрепите руками: скан паспорта, ваучер, переписку.
+    </p>
+
+    <div class="grid-3" style="margin-bottom:14px">
+        <div class="card">
+            <span class="chip chip--violet">КП</span>
+            <h3 style="margin:8px 0 4px">Коммерческое предложение</h3>
+            <p style="font-size:10.5px;margin:0 0 6px">
+                Что вы предлагаете и сколько это стоит. Уходит клиенту
+                <strong>до того, как что-либо забронировано</strong>.
+            </p>
+            <p class="tiny" style="margin:0">Цена — ориентир, а не обязательство.</p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--orange">Счёт</span>
+            <h3 style="margin:8px 0 4px">Счёт на оплату</h3>
+            <p style="font-size:10.5px;margin:0 0 6px">
+                Сумма к оплате по <strong>уже подтверждённой</strong> брони.
+                Выставляется после ответа оператора.
+            </p>
+            <p class="tiny" style="margin:0">Цена — та, что подтвердил оператор.</p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--grey">Файл</span>
+            <h3 style="margin:8px 0 4px">Прикреплённый файл</h3>
+            <p style="font-size:10.5px;margin:0 0 6px">
+                Всё остальное: паспорт, ваучер, билеты, страховка.
+                PDF, картинка, Word или Excel.
+            </p>
+            <p class="tiny" style="margin:0">До 15 МБ на файл.</p>
+        </div>
+    </div>
+
+    <h3>Где это в карточке заказа</h3>
+
+    <div class="pair" style="align-items:start">
+        <div class="mock">
+            <div class="mock__bar">
+                <div>
+                    <div class="mock__id">Документы</div>
+                    <div class="mock__sub">Заказ #305</div>
+                </div>
+            </div>
+
+            <div class="mock__body mock__body--numbered">
+                <div class="field" style="margin-bottom:12px">
+                    <span class="callout">1</span>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <span class="chip chip--blue" style="padding:5px 10px">Коммерческое предложение</span>
+                        <span class="chip chip--grey" style="padding:5px 10px">Счёт</span>
+                        <span class="chip chip--grey" style="padding:5px 10px">Прикрепить файл</span>
+                    </div>
+                </div>
+
+                <p class="mock__section">Уже готово</p>
+
+                <div class="field">
+                    <span class="callout">2</span>
+                    <div class="field__box" style="display:flex;align-items:center;gap:8px">
+                        <span class="chip chip--violet" style="font-size:9px">КП</span>
+                        <span style="flex:1">КП-305.pdf</span>
+                        <span class="tiny">31 КБ · 04.09</span>
+                        <span style="color:#E5484D">✕</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field__box" style="display:flex;align-items:center;gap:8px">
+                        <span class="chip chip--grey" style="font-size:9px">Файл</span>
+                        <span style="flex:1">паспорт.pdf</span>
+                        <span class="tiny">240 КБ · 04.09</span>
+                        <span style="color:#E5484D">✕</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <ol class="legend">
+                <li><b>Три кнопки</b> — нажали, и через несколько секунд документ готов. Пока он готовится, кнопка так и пишет: «Готовим…». Остальные в это время ждут.</li>
+                <li><b>Список ниже</b> — всё, что уже есть по заказу. Название открывает файл в новой вкладке: оттуда его можно скачать и отправить клиенту.</li>
+            </ol>
+
+            <div class="note note--warn" style="margin-top:12px">
+                <span class="note__icon">!</span>
+                <div>
+                    <p><strong>Документ берёт данные из карточки в момент нажатия.</strong> Поменяли цену или даты — нажмите ещё раз, появится новый файл.</p>
+                    <p>Старый не исчезает. Удалите его крестиком, чтобы не отправить клиенту прошлую версию.</p>
+                </div>
+            </div>
+
+            <div class="note note--stop">
+                <span class="note__icon">!</span>
+                <div>
+                    <p><strong>Удаление файла необратимо.</strong> Система спросит подтверждение. Сам заказ при этом остаётся на месте.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>8</span></div>
+</section>
+
+<!-- ============ WHEN ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Документы</span>
+    <h2>Когда какой документ</h2>
+    <p class="lead-in">
+        Каждый документ привязан к своему моменту в жизни заказа. Ниже — те же
+        семь шагов брони, и где на них появляются бумаги.
+    </p>
+
+    <svg viewBox="0 0 700 244" style="width:100%;height:auto;margin-bottom:12px">
+        <defs>
+            <marker id="ard" markerWidth="9" markerHeight="9" refX="7.5" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#98A0AC"/>
+            </marker>
+        </defs>
+
+        <rect x="4" y="6" width="200" height="62" rx="10" fill="#F4F0FF" stroke="#DFD3F8"/>
+        <text x="20" y="26" font-size="10.5" font-weight="700" fill="#7F56D9">Коммерческое предложение</text>
+        <text x="20" y="43" font-size="9" fill="#6B7482">пишется, пока у оператора</text>
+        <text x="20" y="56" font-size="9" fill="#6B7482">ещё ничего не забронировано</text>
+        <path d="M60 68 L48 96" stroke="#7F56D9" stroke-width="1.2" stroke-dasharray="3 3"/>
+
+        <rect x="232" y="6" width="186" height="62" rx="10" fill="#FFF3E9" stroke="#F8D8BB"/>
+        <text x="248" y="26" font-size="10.5" font-weight="700" fill="#D9701E">Счёт на оплату</text>
+        <text x="248" y="43" font-size="9" fill="#6B7482">выставляется, когда оператор</text>
+        <text x="248" y="56" font-size="9" fill="#6B7482">подтвердил место и цену</text>
+        <path d="M282 68 L275 96" stroke="#D9701E" stroke-width="1.2" stroke-dasharray="3 3"/>
+
+        <rect x="4" y="100" width="86" height="30" rx="9" fill="#EDF0F4" stroke="#E3E6EA"/>
+        <text x="47" y="119" font-size="9.5" font-weight="700" fill="#3C434E" text-anchor="middle">Черновик</text>
+
+        <rect x="106" y="100" width="98" height="30" rx="9" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="155" y="114" font-size="9" font-weight="700" fill="#0940AC" text-anchor="middle">Запрос</text>
+        <text x="155" y="125" font-size="9" font-weight="700" fill="#0940AC" text-anchor="middle">отправлен</text>
+
+        <rect x="220" y="100" width="98" height="30" rx="9" fill="#FFF4DC" stroke="#F3DFAE"/>
+        <text x="269" y="119" font-size="9.5" font-weight="700" fill="#8A6100" text-anchor="middle">Подтверждён</text>
+
+        <rect x="334" y="100" width="82" height="30" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="375" y="119" font-size="9.5" font-weight="700" fill="#2E6B3C" text-anchor="middle">Оплачен</text>
+
+        <rect x="432" y="100" width="78" height="30" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="471" y="119" font-size="9.5" font-weight="700" fill="#2E6B3C" text-anchor="middle">Выписан</text>
+
+        <rect x="526" y="100" width="78" height="30" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="565" y="119" font-size="9.5" font-weight="700" fill="#2E6B3C" text-anchor="middle">В поездке</text>
+
+        <rect x="620" y="100" width="76" height="30" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="658" y="119" font-size="9.5" font-weight="700" fill="#2E6B3C" text-anchor="middle">Завершён</text>
+
+        <path d="M90 115 L102 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+        <path d="M204 115 L216 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+        <path d="M318 115 L330 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+        <path d="M416 115 L428 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+        <path d="M510 115 L522 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+        <path d="M604 115 L616 115" stroke="#98A0AC" stroke-width="1.3" marker-end="url(#ard)"/>
+
+        <rect x="4" y="162" width="692" height="42" rx="9" fill="#F2F4F7" stroke="#E3E6EA"/>
+        <text x="24" y="180" font-size="10" font-weight="700" fill="#3C434E">Прикреплённые файлы</text>
+        <text x="24" y="194" font-size="9.5" fill="#6B7482">паспорта, ваучеры, билеты, страховка — на любом шаге, сколько нужно</text>
+        <path d="M350 162 L350 136" stroke="#98A0AC" stroke-width="1.2" stroke-dasharray="3 3"/>
+
+        <text x="350" y="228" font-size="9.5" fill="#98A0AC" text-anchor="middle">чем правее шаг, тем меньше в заказе можно менять</text>
+    </svg>
+
+    <div class="note">
+        <span class="note__icon">i</span>
+        <div>
+            <p><strong>КП пишется из заказа, а заказ на этот момент — «Черновик».</strong> Это не ошибка: «Черновик» и означает «заказ есть, но у оператора ничего не бронировали».</p>
+            <p>Порядок такой: выбрали вариант → нажали «Создать заказ» → нажали «Коммерческое предложение» → отправили клиенту.</p>
+        </div>
+    </div>
+
+    <div class="note note--warn">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Счёт до подтверждения выставлять не стоит.</strong> Система не запретит, но пока оператор не ответил, цена может измениться — и клиент получит счёт на сумму, которой уже нет.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:16px">Частые вопросы</h3>
+
+    <div class="grid-3">
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Клиент попросил другой отель</h3>
+            <p style="font-size:10px;margin:0">
+                Поменяйте поля в заказе и нажмите «Коммерческое предложение» ещё раз.
+                Старый файл удалите, чтобы не отправить его по ошибке.
+            </p>
+        </div>
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Нужно два варианта клиенту</h3>
+            <p style="font-size:10px;margin:0">
+                Создайте по лиду <strong>два заказа</strong> и сделайте КП по каждому.
+                Лид останется один.
+            </p>
+        </div>
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Оператор изменил цену</h3>
+            <p style="font-size:10px;margin:0">
+                Впишите новую цену в заказ и только потом выставляйте счёт —
+                документ берёт сумму из карточки.
+            </p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>9</span></div>
+</section>
+
+<!-- ============ AUTOMATION ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Автоматика</span>
+    <h2>Что система делает за вас</h2>
+    <p class="lead-in">
+        Один статус система ставит сама. Всё остальное, что связано с деньгами,
+        остаётся за человеком — и это сделано намеренно.
+    </p>
+
+    <h3>Единственное правило автоматики</h3>
+
+    <svg viewBox="0 0 700 150" style="width:100%;height:auto;margin-bottom:12px">
+        <defs>
+            <marker id="ara" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+                <path d="M0,0 L8,3.5 L0,7 z" fill="#2E6B3C"/>
+            </marker>
+        </defs>
+
+        <rect x="8" y="40" width="212" height="66" rx="12" fill="#F4F0FF" stroke="#DFD3F8"/>
+        <text x="114" y="66" font-size="11" font-weight="700" fill="#7F56D9" text-anchor="middle">Вы нажали</text>
+        <text x="114" y="84" font-size="11" font-weight="700" fill="#7F56D9" text-anchor="middle">«Коммерческое предложение»</text>
+
+        <path d="M226 73 L296 73" stroke="#2E6B3C" stroke-width="2" marker-end="url(#ara)"/>
+        <text x="261" y="64" font-size="9" font-weight="700" fill="#2E6B3C" text-anchor="middle">сразу</text>
+
+        <rect x="308" y="40" width="180" height="66" rx="12" fill="#fff" stroke="#E3E6EA"/>
+        <text x="398" y="62" font-size="10" fill="#6B7482" text-anchor="middle">Лид переходит в</text>
+        <rect x="340" y="70" width="116" height="22" rx="11" fill="#F4F0FF" stroke="#DFD3F8"/>
+        <text x="398" y="85" font-size="10" font-weight="700" fill="#7F56D9" text-anchor="middle">КП отправлено</text>
+
+        <rect x="504" y="40" width="188" height="66" rx="12" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="598" y="62" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">Ставить руками</text>
+        <text x="598" y="78" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">ничего не нужно</text>
+        <text x="598" y="95" font-size="9" fill="#5C8A68" text-anchor="middle">доска обновится сама</text>
+
+        <text x="350" y="132" font-size="9.5" fill="#98A0AC" text-anchor="middle">потому что «отправить КП» — это ровно то действие, которое этот статус и описывает</text>
+    </svg>
+
+    <div class="note note--ok">
+        <span class="note__icon">✓</span>
+        <div>
+            <p><strong>Только если такой шаг разрешён.</strong> Лид «Новый» или «В работе» перейдёт в «КП отправлено». Лид, который уже «Сделка» или «Отказ», останется как был — система не станет тянуть его назад.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:14px">Что система не делает сама — и почему</h3>
+
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th style="width:180px">Действие</th><th>Почему это решает человек</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><span class="chip chip--orange">Счёт → «Оплачен»</span></td>
+                    <td>Выставленный счёт не значит полученные деньги. Статус «Оплачен» ставит тот, кто видел поступление.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--grey">Файл → «Выписан»</span></td>
+                    <td>Прикреплённый ваучер не значит, что оформлены все документы. Это решает менеджер.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--blue">Запрос оператору</span></td>
+                    <td>Система не знает, отправили ли вы заявку. Статус ставите вы, когда действительно отправили.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="note note--stop" style="margin-top:12px">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Правило простое:</strong> система берёт на себя то, что сама и сделала. Всё, за чем стоят деньги или чужое подтверждение, ставит человек.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>10</span></div>
+</section>
+
 <!-- ============ 8. GUARDS ============ -->
 <section class="page">
     <div class="page__rule"></div>
@@ -1221,7 +1524,7 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </div>
     </div>
 
-    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>8</span></div>
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>11</span></div>
 </section>
 
 <!-- ============ 9. EXAMPLE part 1 ============ -->
@@ -1270,33 +1573,43 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </li>
 
         <li>
-            <h4>Четверг: отправлено предложение</h4>
+            <h4>Четверг: предложение клиенту</h4>
             <p>
-                Менеджер подобрал три варианта и отправил их клиенту.
-                Лид переходит в <strong>«КП отправлено»</strong> — теперь по доске видно,
-                что мяч на стороне клиента, и лид ждёт ответа, а не действия менеджера.
+                Менеджер подобрал вариант и нажал <strong>«Создать заказ»</strong> — появился
+                <strong>заказ #305</strong> в статусе «Черновик». У оператора пока ничего
+                не бронировали: черновик и нужен, чтобы было из чего собрать документ.
+            </p>
+            <p>
+                В блоке «Документы» он нажимает <strong>«Коммерческое предложение»</strong>.
+                Через пару секунд готов <em>КП-305.pdf</em> — менеджер скачивает его и
+                отправляет клиенту.
+            </p>
+            <p>
+                Статус лида менять не нужно: система перевела его в
+                <strong>«КП отправлено»</strong> сама, в тот же момент.
             </p>
             <div class="state-line">
                 <span>Лид:</span> <span class="chip chip--blue">В работе</span>
                 <span class="arrow">→</span> <span class="chip chip--violet">КП отправлено</span>
+                <span class="arrow">·</span>
+                <span>Заказ #305:</span> <span class="chip chip--grey">Черновик</span>
             </div>
         </li>
 
         <li>
-            <h4>Пятница: клиент выбрал</h4>
+            <h4>Пятница: клиент согласился</h4>
             <p>
-                Азиза выбрала Rixos Sharm El Sheikh 5*. Менеджер открывает лид и нажимает
-                <strong>«Создать заказ»</strong>. Появляется <strong>заказ #305</strong>
-                в статусе «Черновик» — отель, даты, ночи, гости и цена уже подставлены из лида.
+                Азиза выбрала Rixos Sharm El Sheikh 5* из предложенного. Менеджер открывает
+                заказ #305 и дозаполняет то, чего в лиде быть не могло: ФИО латиницей,
+                паспорт, срок его действия и дату возврата.
             </p>
             <p>
-                Менеджер дозаполняет то, чего в лиде быть не могло:
-                ФИО латиницей, паспорт, срок его действия и дату возврата.
+                Заодно прикрепляет скан паспорта — кнопка <strong>«Прикрепить файл»</strong>
+                в том же блоке «Документы».
             </p>
             <div class="state-line">
-                <span>Лид:</span> <span class="chip chip--violet">КП отправлено</span>
-                <span class="arrow">·</span>
                 <span>Заказ #305:</span> <span class="chip chip--grey">Черновик</span>
+                <span class="arrow">·</span> <span>КП и паспорт на месте</span>
             </div>
         </li>
 
@@ -1317,7 +1630,7 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </li>
     </ol>
 
-    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>9</span></div>
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>12</span></div>
 </section>
 
 <!-- ============ 10. EXAMPLE part 2 ============ -->
@@ -1339,6 +1652,11 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
                 В этот момент система сама поднимает лид в <strong>«Сделка»</strong> —
                 руками ничего делать не нужно.
             </p>
+            <p>
+                Теперь цена подтверждена, и можно выставлять счёт: кнопка
+                <strong>«Счёт»</strong> в блоке «Документы» — и <em>Счёт-305.pdf</em>
+                уходит клиенту.
+            </p>
             <div class="state-line">
                 <span>Заказ:</span> <span class="chip chip--amber">Подтверждён</span>
                 <span class="arrow">·</span>
@@ -1350,7 +1668,9 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         <li>
             <h4>Вторник: оплата</h4>
             <p>
-                Азиза внесла всю сумму. Заказ переходит в <strong>«Оплачен»</strong>.
+                Азиза оплатила по счёту. Менеджер увидел поступление и перевёл заказ
+                в <strong>«Оплачен»</strong> — сам: выставленный счёт не значит
+                полученные деньги, и этот шаг система за вас не сделает.
             </p>
             <p>
                 С этой минуты заказ защищён: его нельзя удалить и нельзя вернуть назад.
@@ -1366,8 +1686,8 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         <li>
             <h4>Среда: документы на руках</h4>
             <p>
-                Билеты, ваучер и страховка оформлены и отправлены клиенту.
-                Заказ — <strong>«Выписан»</strong>. Перед этим система напомнила,
+                Билеты, ваучер и страховка оформлены, прикреплены к заказу и отправлены
+                клиенту. Заказ — <strong>«Выписан»</strong>. Перед этим система напомнила,
                 что паспорт действует до 12.11.2026, то есть меньше шести месяцев
                 после вылета: менеджер заранее уточнил у оператора требования Египта.
             </p>
@@ -1429,7 +1749,7 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </div>
     </div>
 
-    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>10</span></div>
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>13</span></div>
 </section>
 
 <!-- ============ 11. CHEAT SHEET ============ -->
@@ -1497,7 +1817,36 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </div>
     </div>
 
-    <h3>Шпаргалка по статусам</h3>
+    <div class="pair" style="margin-bottom:14px">
+        <div class="card">
+            <div class="big-num">7</div>
+            <h3 style="margin:6px 0 4px">КП — до брони, счёт — после</h3>
+            <p style="font-size:10.5px;margin:0">
+                Предложение пишется из черновика, счёт — когда оператор
+                подтвердил и цена уже настоящая.
+            </p>
+        </div>
+        <div class="card">
+            <div class="big-num">8</div>
+            <h3 style="margin:6px 0 4px">Нажали КП — статус сам</h3>
+            <p style="font-size:10.5px;margin:0">
+                Лид уходит в «КП отправлено». Всё, за чем стоят деньги,
+                по-прежнему ставите вы.
+            </p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>14</span></div>
+</section>
+
+<!-- ============ 15. STATUS CHEAT SHEET ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+    <img class="watermark" src="data:image/svg+xml;base64,__MARK_B64__" alt="">
+
+    <span class="eyebrow">Памятка</span>
+    <h2>Шпаргалка по статусам</h2>
+    <p class="lead-in">Что означает каждый статус — одной строкой.</p>
     <div class="pair">
         <div class="table-wrap">
             <table>
@@ -1528,7 +1877,41 @@ ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
         </div>
     </div>
 
-    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>11</span></div>
+    <h3 style="margin-top:14px">Документы</h3>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th style="width:150px">Документ</th><th style="width:190px">Когда</th><th>Что в нём</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="chip chip--violet">Коммерческое предложение</span></td>
+                    <td>Заказ в «Черновике», до брони</td>
+                    <td>Клиент, тур, ориентировочная цена. Отправляется клиенту на выбор.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--orange">Счёт</span></td>
+                    <td>После «Подтверждён»</td>
+                    <td>Та же бронь и подтверждённая сумма к оплате.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--grey">Файл</span></td>
+                    <td>На любом шаге</td>
+                    <td>Паспорт, ваучер, билеты, страховка. До 15 МБ.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="note note--ok" style="margin-top:12px">
+        <span class="note__icon">✓</span>
+        <div>
+            <p><strong>Нажали «Коммерческое предложение» — статус лида ставится сам.</strong> Всё остальное, за чем стоят деньги, по-прежнему ставите вы.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>15</span></div>
 </section>
 
 </body>
