@@ -32,7 +32,7 @@
 
                         <p v-if="error" class="tm-modal__error" role="alert">{{ error }}</p>
 
-                        <footer class="tm-modal__foot">
+                        <footer v-if="footer !== false" class="tm-modal__foot">
                             <Button type="button" variant="ghost" :disabled="busy" @click="dismiss">
                                 {{ cancelLabel ?? t('common.cancel') }}
                             </Button>
@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import type { IModalProps } from './Modal.d'
 
-const props = withDefaults(defineProps<IModalProps>(), { size: 'sm' })
+const props = withDefaults(defineProps<IModalProps>(), { size: 'sm', footer: true })
 
 const open = defineModel<boolean>({ default: false })
 const emit = defineEmits<{ confirm: [], dismiss: [] }>()

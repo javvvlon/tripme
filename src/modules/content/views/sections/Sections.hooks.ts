@@ -29,7 +29,7 @@ const nextKey = () => `section-${++counter}`
 
 export const useSections = () => {
   const { t } = useI18n()
-  const { saved: cheer } = useToast()
+  const { saved: cheer, fail, loadFailed } = useToast()
   const { sections, lists, layouts, saveSections } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
 
@@ -132,7 +132,7 @@ export const useSections = () => {
       !section.layoutId || (section.variant === 'list' && !section.listId))
 
     if (incomplete) {
-      error.value = t('cms.sections.pickRequired')
+      error.value = fail(t('cms.sections.pickRequired'))
       return
     }
 
@@ -140,7 +140,7 @@ export const useSections = () => {
       !CONTENT_LOCALES.some(code => section.titles[code].trim()))
 
     if (untitled) {
-      error.value = t('cms.sections.titleRequired')
+      error.value = fail(t('cms.sections.titleRequired'))
       return
     }
 
@@ -161,7 +161,7 @@ export const useSections = () => {
       cheer()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
     finally {
       saving.value = false

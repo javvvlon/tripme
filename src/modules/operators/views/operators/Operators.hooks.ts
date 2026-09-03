@@ -18,7 +18,7 @@ const blank = (): IOperatorDraft => ({
 
 export const useOperators = () => {
   const { t } = useI18n()
-  const { saved: cheer } = useToast()
+  const { saved: cheer, fail, loadFailed } = useToast()
   const { all, toggle, save } = useOperatorsRepository()
 
   const editing = ref<string | null>(null)
@@ -71,7 +71,7 @@ export const useOperators = () => {
       await refresh()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
   }
 
@@ -91,7 +91,7 @@ export const useOperators = () => {
       draft.apiSecret = ''
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
     finally {
       saving.value = false

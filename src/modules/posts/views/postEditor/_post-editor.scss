@@ -87,13 +87,6 @@
         > :last-child { margin-left: auto; }
     }
 
-    &__error {
-        margin: 0;
-        color: var(--tm-status-danger);
-        font-size: size(15);
-        font-weight: 600;
-    }
-
     &__saved {
         margin: 0;
         color: var(--tm-status-success);

@@ -31,8 +31,7 @@
                 </div>
             </header>
 
-            <p v-if="error" class="tm-cms-lead__error" role="alert">{{ error }}</p>
-            <p v-else-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
+            <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
             <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-lead__card">

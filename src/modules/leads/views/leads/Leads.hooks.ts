@@ -7,6 +7,7 @@ import type { ILeadRaw, LeadSort, LeadStatus, SortDirection } from '~/modules/le
  */
 export const useLeads = () => {
   const { t } = useI18n()
+  const { fail, loadFailed } = useToast()
   const { all, setStatus } = useLeadsRepository()
 
   const query = ref('')
@@ -61,7 +62,7 @@ export const useLeads = () => {
       await refresh()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
   }
 

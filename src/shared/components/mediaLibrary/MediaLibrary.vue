@@ -6,18 +6,22 @@
         :size="ModalSize.Medium"
         :busy="busy"
         :error="error"
-        :cancel-label="t('common.close')"
-        :confirm-label="t('media.upload')"
-        @confirm="file?.click()"
+        :footer="false"
     >
-        <div class="tm-media__search">
-            <Icon name="search" :size="16" />
-            <input
-                v-model="query"
-                type="search"
-                :placeholder="t('media.search')"
-                :aria-label="t('media.search')"
-            >
+        <div class="tm-media__toolbar">
+            <div class="tm-media__search">
+                <Icon name="search" :size="16" />
+                <input
+                    v-model="query"
+                    type="search"
+                    :placeholder="t('media.search')"
+                    :aria-label="t('media.search')"
+                >
+            </div>
+
+            <Button type="button" size="sm" icon="upload" :disabled="busy" @click="file?.click()">
+                {{ t('media.upload') }}
+            </Button>
         </div>
 
         <p v-if="loading" class="tm-media__state">{{ t('common.loading') }}</p>
@@ -173,13 +177,12 @@ const load = async () => {
     }
 }
 
-watch(open, (next) => {
-    naming.value = false
-    focused.value = null
-    query.value = ''
-
-    if (next) void load()
-})
+/**
+ * Fetched once, on mount. The service mounts this only while it is open, so
+ * there is no closed state to wait for — watching `open` for the way in was
+ * why the gallery came up empty.
+ */
+onMounted(() => { void load() })
 
 /**
  * Typing asks the API, so it waits for a pause rather than firing per

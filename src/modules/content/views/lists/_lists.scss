@@ -3,13 +3,6 @@
 .tm-cms-lists {
     &__actions { margin: 26px 0 18px; }
 
-    &__error {
-        margin: 18px 0 0;
-        color: var(--tm-status-danger);
-        font-size: size(15);
-        font-weight: 600;
-    }
-
     &__empty {
         margin: 24px 0;
         color: var(--tm-ink-3);

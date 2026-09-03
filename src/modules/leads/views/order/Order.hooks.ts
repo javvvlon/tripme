@@ -35,7 +35,7 @@ const blank = (): IOrderDraft => ({
 
 export const useOrder = () => {
   const { t } = useI18n()
-  const { failed, saved: cheer } = useToast()
+  const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
@@ -83,7 +83,7 @@ export const useOrder = () => {
         return found
       }
       catch {
-        error.value = t('cms.errors.load')
+        error.value = loadFailed(t('cms.errors.load'))
 
         return null
       }

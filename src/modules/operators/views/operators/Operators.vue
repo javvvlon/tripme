@@ -6,7 +6,6 @@
             :sub="t('cms.operators.lead', counts)"
         />
 
-        <p v-if="error" class="tm-cms-operators__error" role="alert">{{ error }}</p>
 
         <EditorSkeleton v-if="status === 'pending'" variant="rows" />
 

@@ -2,7 +2,6 @@
     <div class="tm-cms-lists">
         <SectionHead :level="1" :title="t('cms.lists.title')" :sub="t('cms.lists.lead')" />
 
-        <p v-if="error" class="tm-cms-lists__error" role="alert">{{ error }}</p>
 
         <div class="tm-cms-lists__actions">
             <Button size="md" :disabled="busy" @click="create">

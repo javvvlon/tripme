@@ -2,7 +2,6 @@
     <div class="tm-cms-posts">
         <SectionHead :level="1" :title="t('cms.posts.title')" :sub="t('cms.posts.lead')" />
 
-        <p v-if="error && !creating" class="tm-cms-posts__error" role="alert">{{ error }}</p>
 
         <div class="tm-cms-posts__actions">
             <Button size="md" @click="open">{{ t('cms.posts.create') }}</Button>

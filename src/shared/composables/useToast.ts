@@ -21,6 +21,22 @@ export const useToast = () => {
     return text
   }
 
+  /**
+   * Says it and hands it back, so a caller can keep its own copy without
+   * writing the message twice.
+   */
+  const fail = (message: string, options?: { timeout?: number }): string => {
+    $toast.error(message, options)
+
+    return message
+  }
+
+  /**
+   * A page that could not load has nothing else on it to read, so this one
+   * stays until it is dismissed.
+   */
+  const loadFailed = (message: string): string => fail(message, { timeout: 0 })
+
   const saved = (message?: string): void => {
     $toast.success(message ?? t('cms.saved'))
   }
@@ -32,6 +48,8 @@ export const useToast = () => {
     info: $toast.info.bind($toast),
     dismiss: $toast.dismiss.bind($toast),
     failed,
+    fail,
+    loadFailed,
     saved,
   }
 }

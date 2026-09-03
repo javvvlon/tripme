@@ -132,8 +132,7 @@
                         {{ t('cms.posts.delete') }}
                     </Button>
 
-                    <p v-if="error" class="tm-post-editor__error" role="alert">{{ error }}</p>
-                    <p v-else-if="saved" class="tm-post-editor__saved" role="status">{{ t('cms.saved') }}</p>
+                    <p v-if="saved" class="tm-post-editor__saved" role="status">{{ t('cms.saved') }}</p>
 
                     <Button type="submit" size="lg" :disabled="saving">
                         {{ saving ? t('cms.saving') : t('cms.save') }}

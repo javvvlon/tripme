@@ -48,13 +48,6 @@
         gap: 10px;
     }
 
-    &__error {
-        margin: 16px 0 0;
-        color: var(--tm-status-danger);
-        font-size: size(14);
-        font-weight: 600;
-    }
-
     &__saved {
         margin: 16px 0 0;
         color: var(--tm-status-success);

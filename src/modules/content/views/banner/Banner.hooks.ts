@@ -13,7 +13,7 @@ const blank = (): BannerDraft => Object.fromEntries(
 
 export const useBanner = () => {
   const { t } = useI18n()
-  const { saved: cheer } = useToast()
+  const { saved: cheer, fail, loadFailed } = useToast()
   const { banner, saveBanner, upload, removeUpload } = useContentRepository()
   const { mediaLibrary } = useMediaLibrary()
 
@@ -43,7 +43,7 @@ export const useBanner = () => {
     catch (e) {
       const response = e as { status?: number }
 
-      if (response.status !== 404) error.value = t('cms.errors.load')
+      if (response.status !== 404) error.value = loadFailed(t('cms.errors.load'))
     }
 
     return true
@@ -81,7 +81,7 @@ export const useBanner = () => {
       draft[target].imageUrl = await upload(file)
     }
     catch {
-      error.value = t('cms.lists.uploadFailed')
+      error.value = fail(t('cms.lists.uploadFailed'))
     }
     finally {
       uploading.value = false
@@ -114,13 +114,13 @@ export const useBanner = () => {
     if (missing) {
       locale.value = missing
       validation.validate()
-      error.value = t('cms.errors.titleMissing')
+      error.value = fail(t('cms.errors.titleMissing'))
 
       return
     }
 
     if (imageError.value) {
-      error.value = t('cms.errors.imageRejected')
+      error.value = fail(t('cms.errors.imageRejected'))
 
       return
     }
@@ -133,7 +133,7 @@ export const useBanner = () => {
       cheer()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
     finally {
       saving.value = false

@@ -13,7 +13,7 @@ import type { IPostDraft } from '~/modules/posts/contracts/posts'
  */
 export const usePostEditor = () => {
   const { t } = useI18n()
-  const { failed, saved: cheer } = useToast()
+  const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
@@ -57,7 +57,7 @@ export const usePostEditor = () => {
       fill(await one(id.value))
     }
     catch {
-      error.value = t('cms.errors.load')
+      error.value = loadFailed(t('cms.errors.load'))
     }
 
     return true
@@ -86,7 +86,7 @@ export const usePostEditor = () => {
       draft.imageUrl = await upload(file)
     }
     catch {
-      error.value = t('cms.lists.uploadFailed')
+      error.value = fail(t('cms.lists.uploadFailed'))
     }
     finally {
       uploading.value = false
@@ -118,7 +118,7 @@ export const usePostEditor = () => {
 
     if (!draft.translations[locale.value].title.trim()) {
       validation.validate()
-      error.value = t('cms.errors.titleMissing')
+      error.value = fail(t('cms.errors.titleMissing'))
 
       return
     }
@@ -126,13 +126,13 @@ export const usePostEditor = () => {
     if (draft.isPublished && !draft.translations.ru.title.trim()) {
       locale.value = 'ru'
       validation.validate()
-      error.value = t('cms.posts.errors.needsRussian')
+      error.value = fail(t('cms.posts.errors.needsRussian'))
 
       return
     }
 
     if (imageError.value) {
-      error.value = t('cms.errors.imageRejected')
+      error.value = fail(t('cms.errors.imageRejected'))
 
       return
     }
@@ -166,7 +166,7 @@ export const usePostEditor = () => {
       await navigateTo(localePath('/app/posts'))
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
   }
 

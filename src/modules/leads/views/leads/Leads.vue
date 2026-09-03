@@ -6,7 +6,6 @@
             :sub="t('cms.leads.lead', counts)"
         />
 
-        <p v-if="error" class="tm-cms-leads__error" role="alert">{{ error }}</p>
 
         <div class="tm-cms-leads__actions">
             <SearchField

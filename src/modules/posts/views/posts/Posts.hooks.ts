@@ -27,7 +27,7 @@ export type PostsView = 'tile' | 'card'
 
 export const usePosts = () => {
   const { t } = useI18n()
-  const { failed, saved: cheer } = useToast()
+  const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const localePath = useLocalePath()
   const { all, create, remove: removePost } = usePostsRepository()
@@ -100,7 +100,7 @@ export const usePosts = () => {
       await refresh()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
   }
 

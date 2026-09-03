@@ -31,8 +31,7 @@
                 </div>
             </header>
 
-            <p v-if="error" class="tm-cms-order__error" role="alert">{{ error }}</p>
-            <p v-else-if="saved" class="tm-cms-order__saved" role="status">{{ t('cms.saved') }}</p>
+            <p v-if="saved" class="tm-cms-order__saved" role="status">{{ t('cms.saved') }}</p>
 
             <form class="tm-cms-order__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-order__card">

@@ -5,7 +5,7 @@ import { useContentRepository } from '~/modules/content/repositories'
  */
 export const useLists = () => {
   const { t } = useI18n()
-  const { failed, saved: cheer } = useToast()
+  const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const { lists, createList, deleteList } = useContentRepository()
 
@@ -24,7 +24,7 @@ export const useLists = () => {
       await navigateTo(useLocalePath()(`/app/content/lists/${uuid}`))
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
     finally {
       busy.value = false

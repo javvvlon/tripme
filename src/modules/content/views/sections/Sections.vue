@@ -105,8 +105,7 @@
                 </Button>
 
                 <footer class="tm-cms-sections__foot">
-                    <p v-if="error" class="tm-cms-sections__error" role="alert">{{ error }}</p>
-                    <p v-else-if="saved" class="tm-cms-sections__saved" role="status">{{ t('cms.saved') }}</p>
+                    <p v-if="saved" class="tm-cms-sections__saved" role="status">{{ t('cms.saved') }}</p>
 
                     <Button type="submit" size="lg" :disabled="saving">
                         {{ saving ? t('cms.saving') : t('cms.save') }}

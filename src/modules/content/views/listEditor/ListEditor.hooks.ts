@@ -23,7 +23,7 @@ const nextKey = () => `draft-${++counter}`
 
 export const useListEditor = (id: string) => {
   const { t } = useI18n()
-  const { saved: cheer } = useToast()
+  const { saved: cheer, fail, loadFailed } = useToast()
   const localePath = useLocalePath()
   const { list, updateList, upload, removeUpload } = useContentRepository()
   const { mediaLibrary } = useMediaLibrary()
@@ -102,7 +102,7 @@ export const useListEditor = (id: string) => {
       }
     }
     catch {
-      error.value = t('cms.lists.uploadFailed')
+      error.value = fail(t('cms.lists.uploadFailed'))
     }
     finally {
       uploading.value = null
@@ -158,12 +158,12 @@ export const useListEditor = (id: string) => {
     saved.value = false
 
     if (!name.value.trim()) {
-      error.value = t('cms.lists.nameRequired')
+      error.value = fail(t('cms.lists.nameRequired'))
       return
     }
 
     if (missingTitles.value.length) {
-      error.value = t('cms.lists.titleRequired')
+      error.value = fail(t('cms.lists.titleRequired'))
       return
     }
 
@@ -189,7 +189,7 @@ export const useListEditor = (id: string) => {
       cheer()
     }
     catch {
-      error.value = t('cms.errors.save')
+      error.value = fail(t('cms.errors.save'))
     }
     finally {
       saving.value = false
