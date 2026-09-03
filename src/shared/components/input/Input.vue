@@ -44,7 +44,12 @@ import type { IInputProps } from './Input.d'
 
 const props = withDefaults(defineProps<IInputProps>(), { type: 'text' })
 
-const model = defineModel<string>({ default: '' })
+/**
+ * A number, not only a string: Vue casts the value of `type="number"` as
+ * soon as someone types in it, and typing this as a string made every
+ * numeric field lie about what it holds.
+ */
+const model = defineModel<string | number>({ default: '' })
 const emit = defineEmits<{ blur: [] }>()
 
 const { t } = useI18n()

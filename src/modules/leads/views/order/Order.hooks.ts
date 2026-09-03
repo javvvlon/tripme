@@ -1,3 +1,4 @@
+import type { FieldInput } from '~/shared/helpers/numbers'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { ORDER_TRANSITIONS } from '~/modules/leads/contracts/leads'
 import type { IOrderEvent, IOrderRaw, OrderStatus } from '~/modules/leads/contracts/leads'
@@ -16,10 +17,15 @@ export interface IOrderDraft {
   dealDate: string
   checkIn: string
   returnDate: string
-  nights: string
-  adults: string
-  children: string
-  priceAmount: string
+  /**
+   * Loosely typed on purpose: Vue casts the value of `<input type="number">`
+   * to a number the moment someone types in it, so these hold a string until
+   * edited and a number afterwards.
+   */
+  nights: FieldInput
+  adults: FieldInput
+  children: FieldInput
+  priceAmount: FieldInput
   priceCurrency: string
   branch: string
   note: string
@@ -102,7 +108,6 @@ export const useOrder = () => {
     }))
   })
 
-  const number = (value: string): number | null => (value.trim() === '' ? null : Number(value))
 
   async function save(body: Parameters<typeof patchOrder>[1]) {
     error.value = ''
@@ -139,10 +144,10 @@ export const useOrder = () => {
     deal_date: draft.dealDate || null,
     check_in: draft.checkIn || null,
     return_date: draft.returnDate || null,
-    nights: number(draft.nights) ?? 0,
-    adults: number(draft.adults) ?? 0,
-    children: number(draft.children) ?? 0,
-    price_amount: number(draft.priceAmount),
+    nights: asCount(draft.nights),
+    adults: asCount(draft.adults),
+    children: asCount(draft.children),
+    price_amount: asAmount(draft.priceAmount),
     price_currency: draft.priceCurrency,
     branch: draft.branch,
     note: draft.note,

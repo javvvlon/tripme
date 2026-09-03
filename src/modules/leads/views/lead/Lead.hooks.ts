@@ -1,3 +1,4 @@
+import type { FieldInput } from '~/shared/helpers/numbers'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
 import { tripFromLead } from '~/modules/leads/helpers/trip'
@@ -26,11 +27,16 @@ export const useLead = () => {
 
   const orders = ref<IOrderRaw[]>([])
 
+  /**
+   * The number fields are typed loosely on purpose: Vue casts the value of
+   * `<input type="number">` to a number the moment someone types in it, so
+   * these hold a string until edited and a number afterwards.
+   */
   const draft = reactive({
     destination: '',
     plannedDates: '',
-    partySize: '',
-    budgetAmount: '',
+    partySize: '' as FieldInput,
+    budgetAmount: '' as FieldInput,
     budgetCurrency: '',
     rejectReason: '',
     comment: '',
@@ -95,8 +101,8 @@ export const useLead = () => {
   const submit = () => save({
     destination: draft.destination,
     planned_dates: draft.plannedDates,
-    party_size: draft.partySize.trim() === '' ? 0 : Number(draft.partySize),
-    budget_amount: draft.budgetAmount.trim() === '' ? null : Number(draft.budgetAmount),
+    party_size: asCount(draft.partySize),
+    budget_amount: asAmount(draft.budgetAmount),
     budget_currency: draft.budgetCurrency,
     reject_reason: draft.rejectReason,
     comment: draft.comment,
