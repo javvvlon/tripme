@@ -101,6 +101,75 @@
             </form>
 
             <section class="tm-cms-order__card">
+                <h2 class="tm-cms-order__card-title">{{ t('cms.orders.documents.title') }}</h2>
+
+                <div class="tm-cms-order__doc-actions">
+                    <Button
+                        size="sm" variant="secondary" icon="doc"
+                        :disabled="Boolean(working)"
+                        @click="generate('offer')"
+                    >
+                        {{ working === 'offer' ? t('cms.orders.documents.making') : t('cms.orders.documents.offer') }}
+                    </Button>
+
+                    <Button
+                        size="sm" variant="ghost" icon="doc"
+                        :disabled="Boolean(working)"
+                        @click="generate('invoice')"
+                    >
+                        {{ working === 'invoice' ? t('cms.orders.documents.making') : t('cms.orders.documents.invoice') }}
+                    </Button>
+
+                    <Button
+                        size="sm" variant="ghost" icon="upload"
+                        :disabled="Boolean(working)"
+                        @click="file?.click()"
+                    >
+                        {{ working === 'attachment' ? t('cms.orders.documents.attaching') : t('cms.orders.documents.attach') }}
+                    </Button>
+
+                    <input
+                        ref="file"
+                        type="file" class="tm-cms-order__doc-input"
+                        :accept="ACCEPTED_DOCUMENTS"
+                        @change="onFile"
+                    >
+                </div>
+
+                <p v-if="documentsLoading" class="tm-cms-order__doc-state">{{ t('cms.loading') }}</p>
+
+                <p v-else-if="!documents.length" class="tm-cms-order__doc-state">
+                    {{ t('cms.orders.documents.empty') }}
+                </p>
+
+                <ul v-else class="tm-cms-order__docs">
+                    <li v-for="document in documents" :key="document.id" class="tm-cms-order__doc">
+                        <span class="tm-cms-order__doc-kind" :class="`is-${document.kind}`">
+                            {{ t(`cms.orders.documents.kinds.${document.kind}`) }}
+                        </span>
+
+                        <a
+                            class="tm-cms-order__doc-name"
+                            :href="document.url" target="_blank" rel="noopener"
+                        >{{ document.name }}</a>
+
+                        <span class="tm-cms-order__doc-meta">
+                            {{ weight(document.size) }} · {{ fullDate(document.created_at) }}
+                        </span>
+
+                        <button
+                            type="button" class="tm-cms-order__doc-drop"
+                            :aria-label="t('cms.orders.documents.remove')"
+                            :title="t('cms.orders.documents.remove')"
+                            @click="dropDocument(document)"
+                        >
+                            <Icon name="trash" :size="15" />
+                        </button>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="tm-cms-order__card">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
 
                 <p class="tm-cms-order__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
@@ -156,6 +225,7 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
 import Button from '~/shared/components/button/Button.vue'
+import Icon from '~/shared/components/icon/Icon.vue'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
@@ -168,9 +238,33 @@ const noteId = useId()
 const {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove,
+    documents, documentsLoading, working, generate, attach, dropDocument,
 } = useOrder()
 
 const links = computed(() => offerLinks(order.value?.trip as never))
+
+const file = useTemplateRef<HTMLInputElement>('file')
+
+/** What the API will take; anything else is refused before it is uploaded. */
+const ACCEPTED_DOCUMENTS = [
+    'application/pdf',
+    'image/png', 'image/jpeg', 'image/webp',
+    '.doc', '.docx', '.xls', '.xlsx',
+].join(',')
+
+const weight = (bytes: number): string =>
+    bytes >= 1024 * 1024
+        ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
+        : `${Math.max(1, Math.round(bytes / 1024))} KB`
+
+function onFile(event: Event) {
+    const input = event.target as HTMLInputElement
+
+    void attach(input.files?.[0])
+
+    /** Cleared so choosing the same file twice still counts as a change. */
+    input.value = ''
+}
 
 const backTo = computed(() =>
     localePath(order.value?.lead_id ? `/app/leads/${order.value.lead_id}` : '/app/orders'))

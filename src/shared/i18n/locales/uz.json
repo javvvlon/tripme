@@ -605,7 +605,33 @@
         "title": "Buyurtma oʻchirilsinmi?",
         "lead": "Buyurtma va uning holatlar tarixi oʻchadi. Lid qoladi."
       },
-      "created": "Buyurtma yaratildi"
+      "created": "Buyurtma yaratildi",
+      "documents": {
+        "title": "Hujjatlar",
+        "offer": "Tijorat taklifi",
+        "invoice": "Hisob",
+        "attach": "Fayl biriktirish",
+        "making": "Tayyorlanmoqda…",
+        "attaching": "Yuklanmoqda…",
+        "empty": "Bu buyurtma boʻyicha hujjatlar hozircha yoʻq.",
+        "remove": "Hujjatni oʻchirish",
+        "offerMade": "Tijorat taklifi tayyor",
+        "invoiceMade": "Hisob tayyor",
+        "attached": "Fayl biriktirildi",
+        "loadFailed": "Hujjatlarni yuklab boʻlmadi.",
+        "generateFailed": "Hujjatni tayyorlab boʻlmadi.",
+        "attachFailed": "Faylni biriktirib boʻlmadi.",
+        "removeFailed": "Hujjatni oʻchirib boʻlmadi.",
+        "kinds": {
+          "offer": "Taklif",
+          "invoice": "Hisob",
+          "attachment": "Fayl"
+        },
+        "confirmDelete": {
+          "title": "Hujjat oʻchirilsinmi?",
+          "lead": "Fayl butunlay oʻchiriladi. Buyurtmaning oʻzi qoladi."
+        }
+      }
     },
     "operators": {
       "title": "Turoperatorlar",

@@ -1,6 +1,6 @@
 import { toE164 } from '~/shared/helpers/phone'
 import type {
-  ILeadDraft, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderEvent, IOrderRaw,
+  ILeadDraft, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderRaw,
   LeadSort, LeadStatus, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -141,6 +141,32 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
+  const orderDocuments = async (id: string): Promise<IOrderDocument[]> => {
+    const response = await http.call<IOrderDocument[]>('Leads', 'orderDocuments', { id })
+
+    return response.data ?? []
+  }
+
+  const generateDocument = async (id: string, kind: 'offer' | 'invoice'): Promise<IOrderDocument> => {
+    const response = await http.call<IOrderDocument>('Leads', 'generateDocument', { id, kind })
+
+    return response.data
+  }
+
+  const attachDocument = async (id: string, file: File): Promise<IOrderDocument> => {
+    const body = new FormData()
+
+    body.append('file', file, file.name)
+
+    const response = await http.call<IOrderDocument>('Leads', 'attachDocument', { id }, body)
+
+    return response.data
+  }
+
+  const removeDocument = async (id: string): Promise<void> => {
+    await http.call<void>('Leads', 'removeDocument', { id })
+  }
+
   const order = async (id: string): Promise<IOrderRaw> => {
     const response = await http.call<IOrderRaw>('Leads', 'order', { id })
 
@@ -169,5 +195,6 @@ export const useLeadsRepository = () => {
   return {
     submit, all, one, create, patch, setStatus, remove,
     orders, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
+    orderDocuments, generateDocument, attachDocument, removeDocument,
   }
 }

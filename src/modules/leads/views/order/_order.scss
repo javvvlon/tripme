@@ -139,6 +139,99 @@
         justify-content: flex-end;
     }
 
+    &__doc-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    &__doc-input { display: none; }
+
+    &__doc-state {
+        margin: 0;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+    }
+
+    &__docs {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__doc {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+    }
+
+    &__doc-kind {
+        flex: 0 0 auto;
+        padding: 2px 8px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-3);
+        color: var(--tm-ink-3);
+        font-size: size(11);
+        font-weight: 600;
+
+        &.is-offer {
+            background: var(--tm-cms-accent-soft);
+            color: var(--tm-cms-accent);
+        }
+
+        &.is-invoice {
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary-dark);
+        }
+    }
+
+    &__doc-name {
+        flex: 1;
+        min-width: 0;
+        color: var(--tm-ink-1);
+        font-size: size(13);
+        font-weight: 600;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+
+        &:hover { color: var(--tm-brand-secondary); text-decoration: underline; }
+    }
+
+    &__doc-meta {
+        flex: 0 0 auto;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+    }
+
+    &__doc-drop {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: 0;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-4);
+        cursor: pointer;
+
+        &:hover {
+            background: var(--tm-status-danger-soft);
+            color: var(--tm-status-danger);
+        }
+
+        @include focus-ring(var(--tm-status-danger));
+    }
+
     &__offer-lead {
         margin: 0 0 10px;
         font-size: size(13);

@@ -1,7 +1,7 @@
 import type { FieldInput, FieldValue } from '~/shared/helpers/numbers'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { ORDER_TRANSITIONS } from '~/modules/leads/contracts/leads'
-import type { IOrderEvent, IOrderRaw, OrderStatus } from '~/modules/leads/contracts/leads'
+import type { IOrderDocument, IOrderEvent, IOrderRaw, OrderStatus } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -46,12 +46,20 @@ export const useOrder = () => {
   const route = useRoute()
   const localePath = useLocalePath()
 
-  const { order: fetchOrder, orderHistory, patchOrder, removeOrder } = useLeadsRepository()
+  const {
+    order: fetchOrder, orderHistory, patchOrder, removeOrder,
+    orderDocuments, generateDocument, attachDocument, removeDocument,
+  } = useLeadsRepository()
 
   const id = computed(() => String(route.params.id ?? ''))
 
   const draft = reactive<IOrderDraft>(blank())
   const history = ref<IOrderEvent[]>([])
+
+  const documents = ref<IOrderDocument[]>([])
+  const documentsLoading = ref(false)
+  /** Which action is running, so only its own button shows it is busy. */
+  const working = ref<'offer' | 'invoice' | 'attachment' | null>(null)
 
   const saving = ref(false)
   const saved = ref(false)
@@ -85,6 +93,12 @@ export const useOrder = () => {
 
         adopt(found)
         history.value = await orderHistory(id.value)
+
+        /**
+         * Fetched alongside, not awaited: the form is readable without its
+         * documents, and a slow bucket should not hold the page back.
+         */
+        void loadDocuments()
 
         return found
       }
@@ -173,8 +187,91 @@ export const useOrder = () => {
     }
   }
 
+  async function loadDocuments() {
+    if (!id.value) return
+
+    documentsLoading.value = true
+
+    try {
+      documents.value = await orderDocuments(id.value)
+    }
+    catch (e) {
+      failed(e, t('cms.orders.documents.loadFailed'))
+    }
+    finally {
+      documentsLoading.value = false
+    }
+  }
+
+  /**
+   * Writing a document is slow enough to notice — a PDF is built, stored and
+   * recorded — so the button it came from says it is working and the rest of
+   * the bar is left alone.
+   */
+  async function generate(kind: 'offer' | 'invoice') {
+    if (working.value) return
+
+    working.value = kind
+
+    try {
+      const made = await generateDocument(id.value, kind)
+
+      documents.value = [made, ...documents.value]
+
+      cheer(t(`cms.orders.documents.${kind}Made`))
+
+      /**
+       * Writing an offer moves the lead to "КП отправлено" on the server, so
+       * the order is re-read to show whatever that left behind.
+       */
+      if (kind === 'offer') await refresh()
+    }
+    catch (e) {
+      failed(e, t('cms.orders.documents.generateFailed'))
+    }
+    finally {
+      working.value = null
+    }
+  }
+
+  async function attach(file: File | null | undefined) {
+    if (!file || working.value) return
+
+    working.value = 'attachment'
+
+    try {
+      documents.value = [await attachDocument(id.value, file), ...documents.value]
+
+      cheer(t('cms.orders.documents.attached'))
+    }
+    catch (e) {
+      failed(e, t('cms.orders.documents.attachFailed'))
+    }
+    finally {
+      working.value = null
+    }
+  }
+
+  async function dropDocument(document: IOrderDocument) {
+    if (!await ask({
+      title: t('cms.orders.documents.confirmDelete.title'),
+      description: t('cms.orders.documents.confirmDelete.lead'),
+      subject: document.name,
+    })) return
+
+    try {
+      await removeDocument(document.id)
+
+      documents.value = documents.value.filter(item => item.id !== document.id)
+    }
+    catch (e) {
+      failed(e, t('cms.orders.documents.removeFailed'))
+    }
+  }
+
   return {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove, refresh,
+    documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
   }
 }

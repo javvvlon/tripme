@@ -605,7 +605,33 @@
         "title": "Delete this order?",
         "lead": "The order and its status history are removed. The lead stays."
       },
-      "created": "Order created"
+      "created": "Order created",
+      "documents": {
+        "title": "Documents",
+        "offer": "Commercial offer",
+        "invoice": "Invoice",
+        "attach": "Attach a file",
+        "making": "Preparing…",
+        "attaching": "Uploading…",
+        "empty": "No documents for this order yet.",
+        "remove": "Delete document",
+        "offerMade": "The commercial offer is ready",
+        "invoiceMade": "The invoice is ready",
+        "attached": "File attached",
+        "loadFailed": "Could not load the documents.",
+        "generateFailed": "Could not prepare the document.",
+        "attachFailed": "Could not attach the file.",
+        "removeFailed": "Could not delete the document.",
+        "kinds": {
+          "offer": "Offer",
+          "invoice": "Invoice",
+          "attachment": "File"
+        },
+        "confirmDelete": {
+          "title": "Delete this document?",
+          "lead": "The file is removed for good. The order itself stays."
+        }
+      }
     },
     "operators": {
       "title": "Tour operators",
