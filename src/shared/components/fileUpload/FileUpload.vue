@@ -22,7 +22,7 @@
                         v-if="library"
                         type="button" class="tm-file-upload__action"
                         :aria-label="t('cms.upload.library')" :title="t('cms.upload.library')"
-                        @click="browsing = true"
+                        @click="browse"
                     >
                         <Icon name="image" :size="16" />
                     </button>
@@ -49,7 +49,7 @@
                 </p>
 
                 <p v-if="library" class="tm-file-upload__cta">
-                    <button type="button" class="tm-file-upload__link" :disabled="disabled" @click="browsing = true">
+                    <button type="button" class="tm-file-upload__link" :disabled="disabled" @click="browse">
                         {{ t('cms.upload.library') }}
                     </button>
                 </p>
@@ -64,25 +64,19 @@
             >
         </div>
 
-        <MediaLibrary
-            v-if="library"
-            v-model="browsing"
-            :library="library"
-            :accept="accept"
-            :current="current ?? null"
-            @select="fromLibrary"
-            @remove="onGalleryRemove"
-        />
     </div>
 </template>
 
 <script setup lang="ts">
-import MediaLibrary from '~/shared/components/mediaLibrary/MediaLibrary.vue'
 import type { IFileUploadEmits, IFileUploadProps } from './FileUpload.d'
+import { Modal } from '~/shared/services/ui/modals'
+import type { IGalleryResult } from '~/shared/components/mediaLibrary/MediaLibrary.d'
 
 const props = defineProps<IFileUploadProps>()
 
 const emit = defineEmits<IFileUploadEmits>()
+
+const modal = useModal()
 
 const file = defineModel<File | null>({ default: null })
 
@@ -101,7 +95,6 @@ const { preview, acceptAttr } = upload
 
 const input = useTemplateRef<HTMLInputElement>('input')
 const dragging = ref(false)
-const browsing = ref(false)
 
 /**
  * Set when Remove was pressed, so a `current` that is still on its way out of
@@ -141,6 +134,23 @@ function fromLibrary(url: string) {
  * The gallery deleted the very file this field points at, so the field has
  * to let go of it — no discard, the bytes are already gone.
  */
+/**
+   * The gallery is opened through the service rather than mounted here: a
+   * list with ten image fields used to carry ten copies of it in the DOM.
+   */
+async function browse() {
+  const picked = await modal.open<IGalleryResult>(Modal.Gallery, {
+    library: props.library,
+    accept: props.accept,
+    current: props.current ?? null,
+  })
+
+  if (!picked) return
+
+  if (picked.removed) onGalleryRemove(picked.removed)
+  if (picked.url) fromLibrary(picked.url)
+}
+
 function onGalleryRemove(url: string) {
   if (url !== props.current) return
 

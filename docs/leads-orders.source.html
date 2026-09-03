@@ -1,0 +1,1535 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>TripMe — от лида к заказу</title>
+<style>
+@font-face {
+    font-family: 'VAG Rounded';
+    src: url(data:font/otf;base64,__FONT_B64__) format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+:root {
+    --brand: #F68634;
+    --brand-dark: #D9701E;
+    --brand-soft: #FFF3E9;
+    --blue: #0B4FD4;
+    --blue-light: #1A62EE;
+    --blue-dark: #0940AC;
+    --blue-soft: #EEF3FF;
+
+    --ink-1: #14171C;
+    --ink-2: #3C434E;
+    --ink-3: #6B7482;
+    --ink-4: #98A0AC;
+
+    --surface-1: #ffffff;
+    --surface-2: #F2F4F7;
+    --surface-3: #EDF0F4;
+    --border-1: #E3E6EA;
+    --border-2: #F0F2F5;
+
+    --accent: #7F56D9;
+    --accent-soft: #F4F0FF;
+
+    --success: #2E6B3C;
+    --success-soft: #EFF8F1;
+    --success-line: #B9D9C0;
+    --danger: #E5484D;
+    --danger-soft: #FDECEC;
+    --warning: #F5B324;
+
+    --display: 'VAG Rounded', 'Helvetica Neue', Arial, sans-serif;
+    --body: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--surface-1);
+    color: var(--ink-1);
+    font-family: var(--body);
+    font-size: 11px;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.page {
+    position: relative;
+    zoom: 1.15;
+    width: calc(210mm / 1.15);
+    height: calc(297mm / 1.15);
+    padding: 15.6mm 13.9mm 13.9mm;
+    overflow: hidden;
+    page-break-after: always;
+    background: var(--surface-1);
+}
+
+.page:last-child { page-break-after: auto; }
+
+/* ---------- decorations ---------- */
+
+.page__rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--brand) 0%, var(--brand) 34%, var(--blue) 34%, var(--blue) 100%);
+}
+
+.page__foot {
+    position: absolute;
+    left: 13.9mm;
+    right: 13.9mm;
+    bottom: 7.8mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    border-top: 1px solid var(--border-1);
+    font-size: 9px;
+    color: var(--ink-4);
+}
+
+.page__foot b { color: var(--ink-3); font-weight: 600; }
+
+.watermark {
+    position: absolute;
+    right: -26mm;
+    bottom: -30mm;
+    width: 120mm;
+    opacity: .05;
+    transform: rotate(-12deg);
+}
+
+/* ---------- headings ---------- */
+
+.eyebrow {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+h1 {
+    font-family: var(--display);
+    font-size: 34px;
+    line-height: 1.08;
+    margin: 10px 0 6px;
+    color: var(--ink-1);
+}
+
+h2 {
+    font-family: var(--display);
+    font-size: 21px;
+    line-height: 1.15;
+    margin: 8px 0 10px;
+    color: var(--ink-1);
+}
+
+h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 16px 0 6px;
+    color: var(--ink-1);
+}
+
+p { margin: 0 0 8px; color: var(--ink-2); }
+
+.lead-in {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+}
+
+strong { color: var(--ink-1); font-weight: 600; }
+
+/* ---------- cover ---------- */
+
+.cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(150deg, var(--blue) 0%, var(--blue-dark) 62%, #072F7E 100%);
+}
+
+.cover__band {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 84% 14%, rgba(246,134,52,.42) 0, rgba(246,134,52,0) 42%),
+        radial-gradient(circle at 8% 88%, rgba(26,98,238,.55) 0, rgba(26,98,238,0) 45%);
+}
+
+.cover__inner {
+    position: relative;
+    padding: 20.9mm 15.7mm 13.9mm;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cover__logo { width: 62mm; margin-bottom: auto; }
+
+.cover h1 {
+    color: #fff;
+    font-size: 46px;
+    margin: 0 0 10px;
+    max-width: 150mm;
+}
+
+.cover__sub {
+    font-size: 14px;
+    color: rgba(255,255,255,.86);
+    max-width: 128mm;
+    margin-bottom: 16px;
+}
+
+.cover__chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20mm; }
+
+.cover__chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.24);
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.cover__meta {
+    position: relative;
+    padding: 10px 15.7mm 12.2mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(255,255,255,.7);
+}
+
+.cover__mark {
+    position: absolute;
+    right: -14mm;
+    top: 42mm;
+    width: 74mm;
+    opacity: .13;
+}
+
+/* ---------- building blocks ---------- */
+
+.card {
+    border: 1px solid var(--border-1);
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: var(--surface-1);
+}
+
+.card--soft { background: var(--surface-2); border-color: var(--border-2); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+
+.note {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--blue-soft);
+    border-left: 3px solid var(--blue);
+    margin: 10px 0;
+}
+
+.note--warn { background: #FFF8E8; border-left-color: var(--warning); }
+.note--stop { background: var(--danger-soft); border-left-color: var(--danger); }
+.note--ok { background: var(--success-soft); border-left-color: var(--success); }
+
+.note__icon {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.note--warn .note__icon { background: var(--warning); color: #4A3402; }
+.note--stop .note__icon { background: var(--danger); }
+.note--ok .note__icon { background: var(--success); }
+
+.note p { margin: 0; font-size: 10.5px; }
+.note p + p { margin-top: 4px; }
+
+/* ---------- status chips ---------- */
+
+.chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+.chip--grey   { background: var(--surface-3); color: var(--ink-2); border-color: var(--border-1); }
+.chip--blue   { background: var(--blue-soft); color: var(--blue-dark); border-color: #CBDBFF; }
+.chip--amber  { background: #FFF4DC; color: #8A6100; border-color: #F3DFAE; }
+.chip--green  { background: var(--success-soft); color: var(--success); border-color: var(--success-line); }
+.chip--red    { background: var(--danger-soft); color: var(--danger); border-color: #F6C9CB; }
+.chip--orange { background: var(--brand-soft); color: var(--brand-dark); border-color: #F8D8BB; }
+.chip--violet { background: var(--accent-soft); color: var(--accent); border-color: #DFD3F8; }
+
+/* ---------- tables ---------- */
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+
+th {
+    text-align: left;
+    padding: 6px 8px;
+    background: var(--surface-2);
+    color: var(--ink-3);
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--border-1);
+}
+
+td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-2);
+    color: var(--ink-2);
+    vertical-align: top;
+}
+
+tr:last-child td { border-bottom: 0; }
+
+.table-wrap { border: 1px solid var(--border-1); border-radius: 12px; overflow: hidden; }
+
+/* ---------- form mock-up ---------- */
+
+.mock {
+    border: 1px solid var(--border-1);
+    border-radius: 14px;
+    background: var(--surface-1);
+    box-shadow: 0 1px 2px rgba(20,23,28,.04), 0 8px 28px rgba(20,23,28,.06);
+    overflow: hidden;
+}
+
+.mock__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border-1);
+}
+
+.mock__id { font-size: 13px; font-weight: 700; color: var(--ink-1); }
+.mock__sub { font-size: 9px; color: var(--ink-4); }
+
+.mock__body { padding: 12px; }
+
+.mock__section {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin: 0 0 7px;
+}
+
+.mock__section + .mock__section { margin-top: 12px; }
+
+.field { margin-bottom: 8px; position: relative; }
+
+.field__label { font-size: 9px; font-weight: 600; color: var(--ink-3); margin-bottom: 3px; }
+
+.field__box {
+    border: 1px solid var(--border-1);
+    border-radius: 8px;
+    background: var(--surface-1);
+    padding: 6px 9px;
+    font-size: 10.5px;
+    color: var(--ink-1);
+    min-height: 26px;
+}
+
+.field__box--ghost { color: var(--ink-4); }
+.field__box--tall { min-height: 40px; }
+.field__box--locked { background: var(--surface-2); color: var(--ink-2); }
+
+.field--req .field__label::after { content: ' *'; color: var(--danger); }
+
+.callout {
+    position: absolute;
+    left: -19px;
+    top: 13px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+}
+
+.mock__body--numbered { padding-left: 26px; }
+
+.legend { margin: 0; padding: 0; list-style: none; counter-reset: legend; }
+
+.legend li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 7px;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    counter-increment: legend;
+}
+
+.legend li::before {
+    content: counter(legend);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+    font-size: 9px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+}
+
+.legend b { color: var(--ink-1); }
+
+/* ---------- steps ---------- */
+
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+
+.steps > li {
+    position: relative;
+    padding-left: 34px;
+    padding-bottom: 12px;
+    counter-increment: step;
+}
+
+.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--display);
+    font-size: 11px;
+    display: grid;
+    place-items: center;
+}
+
+.steps > li::after {
+    content: '';
+    position: absolute;
+    left: 10.5px;
+    top: 24px;
+    bottom: 2px;
+    width: 1px;
+    background: var(--border-1);
+}
+
+.steps > li:last-child { padding-bottom: 0; }
+.steps > li:last-child::after { display: none; }
+
+.steps h4 {
+    margin: 2px 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-1);
+}
+
+.steps p { margin: 0 0 5px; font-size: 10.5px; }
+
+.state-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 5px 0 0;
+    font-size: 9.5px;
+    color: var(--ink-4);
+}
+
+.state-line .arrow { color: var(--ink-4); }
+
+/* ---------- misc ---------- */
+
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; font-size: 10px; }
+.kv dt { color: var(--ink-4); }
+.kv dd { margin: 0; color: var(--ink-1); font-weight: 600; }
+
+.split-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.big-num {
+    font-family: var(--display);
+    font-size: 26px;
+    color: var(--brand);
+    line-height: 1;
+}
+
+.tiny { font-size: 9.5px; color: var(--ink-4); }
+
+ul.plain { margin: 0 0 8px; padding-left: 16px; }
+ul.plain li { margin-bottom: 4px; font-size: 10.5px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<!-- ============ 1. COVER ============ -->
+<section class="page cover">
+    <div class="cover__band"></div>
+    <img class="cover__mark" src="data:image/svg+xml;base64,__MARK_B64__" alt="">
+    <div class="cover__inner">
+        <img class="cover__logo" src="data:image/svg+xml;base64,__LOGO_LIGHT_B64__" alt="TripMe">
+
+        <h1>От лида<br>к заказу</h1>
+        <p class="cover__sub">
+            Как устроена работа с клиентом в TripMe: где живёт интерес человека,
+            где живут деньги, и почему это две разные карточки.
+        </p>
+
+        <div class="cover__chips">
+            <span class="cover__chip">5 статусов лида</span>
+            <span class="cover__chip">7 статусов заказа</span>
+            <span class="cover__chip">Разбор на живом примере</span>
+        </div>
+    </div>
+
+    <div class="cover__meta">
+        <span>Руководство для менеджеров и администраторов</span>
+        <span>TripMe CMS</span>
+    </div>
+</section>
+
+<!-- ============ 2. WHY TWO ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Основа</span>
+    <h2>Две карточки вместо одной</h2>
+    <p class="lead-in">
+        Раньше всё жило в одной строке: и «человек интересуется», и «человек оплатил».
+        Это удобно ровно до первой сложности — а сложности начинаются сразу.
+    </p>
+
+    <div class="pair">
+        <div class="card">
+            <div class="split-head">
+                <h3 style="margin:0">Лид</h3>
+                <span class="chip chip--blue">Интерес</span>
+            </div>
+            <p style="font-size:10.5px">
+                Человек и его запрос. Откуда пришёл, что хочет, на какие даты,
+                какой бюджет. Лид может закончиться ничем — и это нормально.
+            </p>
+            <p class="tiny" style="margin:0"><b>Один человек — один лид.</b></p>
+        </div>
+
+        <div class="card">
+            <div class="split-head">
+                <h3 style="margin:0">Заказ</h3>
+                <span class="chip chip--green">Деньги</span>
+            </div>
+            <p style="font-size:10.5px">
+                Конкретная бронь у конкретного оператора: отель, даты, паспорт,
+                цена, номер брони. За заказом стоят обязательства перед клиентом.
+            </p>
+            <p class="tiny" style="margin:0"><b>У одного лида может быть несколько заказов.</b></p>
+        </div>
+    </div>
+
+    <h3>Почему их нельзя было оставить одним</h3>
+    <ul class="plain">
+        <li>Семья берёт <strong>два тура сразу</strong> — родители и дети летят по разным путёвкам. Это один интерес, но две брони, два номера у оператора, две оплаты.</li>
+        <li>Клиент <strong>вернулся через год</strong>. Тот же человек, та же история переписки — но заказ новый.</li>
+        <li>Первый тур <strong>сорвался</strong>, подобрали другой. Старая бронь должна остаться в истории, а не быть затёрта.</li>
+        <li>Отчётность: «сколько людей обратилось» и «сколько путёвок продано» — <strong>разные числа</strong>, и оба нужны.</li>
+    </ul>
+
+    <h3>Путь клиента целиком</h3>
+    <svg viewBox="0 0 700 208" style="width:100%;height:auto;margin-top:4px">
+        <defs>
+            <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#98A0AC"/>
+            </marker>
+        </defs>
+
+        <rect x="2" y="6" width="336" height="196" rx="14" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="18" y="26" font-size="11" font-weight="700" fill="#0940AC">ЛИД — интерес человека</text>
+
+        <rect x="362" y="6" width="336" height="196" rx="14" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="378" y="26" font-size="11" font-weight="700" fill="#2E6B3C">ЗАКАЗЫ — брони и деньги</text>
+
+        <rect x="18" y="42" width="304" height="66" rx="10" fill="#fff" stroke="#CBDBFF"/>
+        <text x="32" y="63" font-size="12" font-weight="700" fill="#14171C">Лид #1042 · Азиза К.</text>
+        <text x="32" y="80" font-size="10" fill="#6B7482">Египет, конец сентября, 2 взрослых</text>
+        <rect x="32" y="88" width="72" height="15" rx="7.5" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="68" y="99" font-size="9" font-weight="600" fill="#0940AC" text-anchor="middle">В работе</text>
+
+        <text x="18" y="132" font-size="10" fill="#6B7482">Здесь — переписка, звонки,</text>
+        <text x="18" y="147" font-size="10" fill="#6B7482">подбор вариантов и причина</text>
+        <text x="18" y="162" font-size="10" fill="#6B7482">отказа, если сделка не вышла.</text>
+
+        <rect x="378" y="42" width="304" height="52" rx="10" fill="#fff" stroke="#B9D9C0"/>
+        <text x="392" y="61" font-size="11" font-weight="700" fill="#14171C">Заказ #305 · Rixos Sharm 5*</text>
+        <text x="392" y="77" font-size="9.5" fill="#6B7482">24.09 — 01.10 · 7 ночей · 1 480 $</text>
+        <rect x="600" y="52" width="66" height="15" rx="7.5" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="633" y="63" font-size="9" font-weight="600" fill="#2E6B3C" text-anchor="middle">Оплачен</text>
+
+        <rect x="378" y="104" width="304" height="52" rx="10" fill="#fff" stroke="#E3E6EA"/>
+        <text x="392" y="123" font-size="11" font-weight="700" fill="#14171C">Заказ #306 · тот же отель, дети</text>
+        <text x="392" y="139" font-size="9.5" fill="#6B7482">24.09 — 01.10 · 7 ночей · 990 $</text>
+        <rect x="592" y="114" width="74" height="15" rx="7.5" fill="#FFF4DC" stroke="#F3DFAE"/>
+        <text x="629" y="125" font-size="9" font-weight="600" fill="#8A6100" text-anchor="middle">Подтверждён</text>
+
+        <text x="378" y="176" font-size="10" fill="#6B7482">Два заказа по одному лиду: одна семья,</text>
+        <text x="378" y="190" font-size="10" fill="#6B7482">две путёвки, два номера у оператора.</text>
+
+        <path d="M322 75 L360 75" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar)"/>
+        <path d="M322 75 Q344 75 344 130 L360 130" stroke="#98A0AC" stroke-width="1.4" fill="none" marker-end="url(#ar)"/>
+    </svg>
+
+    <div class="note">
+        <span class="note__icon">i</span>
+        <div>
+            <p><strong>Правило, которое стоит запомнить:</strong> интерес живёт в лиде, деньги живут в заказе.</p>
+            <p>Если вы не знаете, куда записать информацию, спросите себя: это про <em>человека и его желание</em> или про <em>конкретную бронь</em>?</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>2</span></div>
+</section>
+
+<!-- ============ 3. LEAD STATUSES ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Лид</span>
+    <h2>Пять состояний интереса</h2>
+    <p class="lead-in">
+        Статус лида отвечает на один вопрос: <strong>на каком мы этапе разговора с человеком?</strong>
+        Он не про деньги — деньги начинаются в заказе.
+    </p>
+
+    <div class="table-wrap" style="margin-bottom:12px">
+        <table>
+            <thead>
+                <tr><th style="width:110px">Статус</th><th>Что означает</th><th style="width:180px">Когда ставить</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="chip chip--grey">Новый</span></td>
+                    <td>Заявка пришла, но её ещё никто не взял в работу.</td>
+                    <td>Ставится системой автоматически.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--blue">В работе</span></td>
+                    <td>Менеджер связался с человеком и выясняет, что ему нужно.</td>
+                    <td>После первого контакта.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--violet">КП отправлено</span></td>
+                    <td>Клиенту отправлены конкретные варианты с ценами.</td>
+                    <td>Когда предложение ушло клиенту.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--green">Сделка</span></td>
+                    <td>Клиент согласился, бронь пошла.</td>
+                    <td>Обычно ставится <strong>сама</strong> — см. стр. 5.</td>
+                </tr>
+                <tr>
+                    <td><span class="chip chip--red">Отказ</span></td>
+                    <td>Не сложилось. Обязательно заполните причину.</td>
+                    <td>Когда клиент отказался или пропал.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Какие переходы разрешены</h3>
+
+    <svg viewBox="0 0 700 176" style="width:100%;height:auto">
+        <defs>
+            <marker id="ar2" markerWidth="9" markerHeight="9" refX="7.5" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#98A0AC"/>
+            </marker>
+            <marker id="ar2r" markerWidth="9" markerHeight="9" refX="7.5" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#E5484D"/>
+            </marker>
+        </defs>
+
+        <rect x="14" y="52" width="104" height="34" rx="9" fill="#EDF0F4" stroke="#E3E6EA"/>
+        <text x="66" y="73" font-size="11" font-weight="700" fill="#3C434E" text-anchor="middle">Новый</text>
+
+        <rect x="182" y="52" width="104" height="34" rx="9" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="234" y="73" font-size="11" font-weight="700" fill="#0940AC" text-anchor="middle">В работе</text>
+
+        <rect x="350" y="52" width="118" height="34" rx="9" fill="#F4F0FF" stroke="#DFD3F8"/>
+        <text x="409" y="73" font-size="11" font-weight="700" fill="#7F56D9" text-anchor="middle">КП отправлено</text>
+
+        <rect x="532" y="52" width="104" height="34" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="584" y="73" font-size="11" font-weight="700" fill="#2E6B3C" text-anchor="middle">Сделка</text>
+
+        <rect x="350" y="132" width="118" height="32" rx="9" fill="#FDECEC" stroke="#F6C9CB"/>
+        <text x="409" y="152" font-size="11" font-weight="700" fill="#E5484D" text-anchor="middle">Отказ</text>
+
+        <path d="M118 69 L178 69" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar2)"/>
+        <path d="M286 69 L346 69" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar2)"/>
+        <path d="M468 69 L528 69" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar2)"/>
+
+        <path d="M286 80 Q318 96 346 80" stroke="#98A0AC" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#ar2)"/>
+        <path d="M66 42 Q238 6 409 42" stroke="#98A0AC" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#ar2)"/>
+        <path d="M584 42 Q420 2 240 42" stroke="#98A0AC" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#ar2)"/>
+        <text x="330" y="16" font-size="8.5" fill="#98A0AC" text-anchor="middle">можно вернуться назад</text>
+
+        <path d="M66 86 Q66 148 346 148" stroke="#E5484D" stroke-width="1.1" fill="none" opacity=".55" marker-end="url(#ar2r)"/>
+        <path d="M234 86 Q234 140 346 145" stroke="#E5484D" stroke-width="1.1" fill="none" opacity=".55" marker-end="url(#ar2r)"/>
+        <path d="M409 86 L409 128" stroke="#E5484D" stroke-width="1.1" opacity=".55" marker-end="url(#ar2r)"/>
+        <path d="M584 86 Q584 148 472 148" stroke="#E5484D" stroke-width="1.1" fill="none" opacity=".55" marker-end="url(#ar2r)"/>
+        <text x="560" y="164" font-size="8.5" fill="#E5484D" text-anchor="end">отказаться можно с любого шага</text>
+    </svg>
+
+    <div class="note note--stop">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>«Отказ» — конечная.</strong> Из отказа не выходят: система не даст перевести такой лид ни в какой другой статус, и по нему нельзя создать новый заказ.</p>
+            <p>Если клиент вернулся — заведите новый лид. Так в отчётности видно, что это второе обращение, а не исправленное первое.</p>
+        </div>
+    </div>
+
+    <div class="note note--warn">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Из «Нового» нельзя сразу в «Сделку».</strong> Сначала возьмите лид в работу. Это не бюрократия: «Сделка» без единого касания означает, что мы не знаем, кто и как продал тур.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>3</span></div>
+</section>
+
+<!-- ============ 4. LEAD FORM ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Лид</span>
+    <h2>Карточка лида: что где заполнять</h2>
+    <p class="lead-in">Слева — как выглядит форма в CMS. Справа — что означает каждое поле и зачем оно нужно.</p>
+
+    <div class="pair">
+        <div class="mock">
+            <div class="mock__bar">
+                <div>
+                    <div class="mock__id">#1042</div>
+                    <div class="mock__sub">С сайта · 1 сентября 2026</div>
+                </div>
+                <span class="chip chip--blue">В работе ▾</span>
+            </div>
+
+            <div class="mock__body mock__body--numbered">
+                <p class="mock__section">Клиент</p>
+
+                <div class="field">
+                    <span class="callout">1</span>
+                    <div class="field__label">Клиент</div>
+                    <div class="field__box field__box--locked">Азиза Каримова</div>
+                </div>
+                <div class="field">
+                    <div class="field__label">Телефон</div>
+                    <div class="field__box field__box--locked">+998 (90) 123-45-67</div>
+                </div>
+                <div class="field">
+                    <div class="field__label">Язык</div>
+                    <div class="field__box field__box--locked">RU</div>
+                </div>
+
+                <p class="mock__section">Запрос</p>
+
+                <div class="field">
+                    <span class="callout">2</span>
+                    <div class="field__label">Направление</div>
+                    <div class="field__box">Египет, Шарм-эль-Шейх</div>
+                </div>
+                <div class="field">
+                    <span class="callout">3</span>
+                    <div class="field__label">Планируемые даты</div>
+                    <div class="field__box">конец сентября</div>
+                </div>
+                <div class="field">
+                    <span class="callout">4</span>
+                    <div class="field__label">Состав туристов</div>
+                    <div class="field__box">4</div>
+                </div>
+                <div class="field">
+                    <span class="callout">5</span>
+                    <div class="field__label">Ориентировочный бюджет</div>
+                    <div class="field__box">2500</div>
+                </div>
+                <div class="field">
+                    <div class="field__label">Валюта</div>
+                    <div class="field__box field__box--ghost">USD</div>
+                </div>
+                <div class="field">
+                    <span class="callout">6</span>
+                    <div class="field__label">Комментарий</div>
+                    <div class="field__box field__box--tall">Хотят «всё включено», первая линия. Летят с двумя детьми 6 и 9 лет.</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <ol class="legend">
+                <li><b>Клиент, телефон, язык</b> — приходят с сайта и не редактируются здесь. Это то, что человек ввёл сам. Имя и телефон обязательны: без них лид не создать.</li>
+                <li><b>Направление</b> — куда хочет клиент. Пишите так, как будете искать потом: «Египет», «Турция, Анталия».</li>
+                <li><b>Планируемые даты</b> — <em>словами клиента</em>. «Конец августа», «после 15-го», «на осенние каникулы». Не подгоняйте под календарь: точные даты появятся в заказе.</li>
+                <li><b>Состав туристов</b> — сколько человек едет всего. Нужно, чтобы на этапе подбора сразу видеть, ищем мы двухместный номер или семейный.</li>
+                <li><b>Бюджет и валюта</b> — ориентир, а не обещание. Помогает отсечь варианты, которые заведомо не подойдут.</li>
+                <li><b>Комментарий</b> — всё, что не влезло в поля: пожелания, ограничения, договорённости. Именно сюда смотрит коллега, который подхватит лид вместо вас.</li>
+            </ol>
+
+            <div class="note note--warn" style="margin-top:12px">
+                <span class="note__icon">!</span>
+                <div>
+                    <p><strong>Поле «Причина отказа»</strong> появляется в форме только тогда, когда лид переведён в статус «Отказ».</p>
+                    <p>Заполняйте его честно — «дорого», «выбрали другого оператора», «перенесли поездку». Через полгода это единственный способ понять, что мы теряем.</p>
+                </div>
+            </div>
+
+            <div class="card card--soft" style="margin-top:10px">
+                <h3 style="margin-top:0">Кнопка «Создать заказ»</h3>
+                <p style="font-size:10.5px;margin-bottom:0">
+                    Внизу карточки лида есть блок <strong>«Заказы»</strong>. Пока их нет,
+                    там написано «Заказов по этому лиду ещё нет». Кнопка
+                    <strong>«Создать заказ»</strong> — это и есть момент, когда интерес
+                    превращается в бронь. Что происходит дальше — на следующей странице.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>4</span></div>
+</section>
+
+<!-- ============ 5. HANDOVER ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Переход</span>
+    <h2>Как из лида рождается заказ</h2>
+    <p class="lead-in">
+        Один клик по кнопке «Создать заказ» — и система делает несколько вещей сразу.
+        Их полезно знать, чтобы не искать потом, «откуда это взялось».
+    </p>
+
+    <svg viewBox="0 0 700 150" style="width:100%;height:auto;margin-bottom:10px">
+        <defs>
+            <marker id="ar3" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+                <path d="M0,0 L8,3.5 L0,7 z" fill="#F68634"/>
+            </marker>
+        </defs>
+
+        <rect x="8" y="26" width="200" height="98" rx="12" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="108" y="50" font-size="11" font-weight="700" fill="#0940AC" text-anchor="middle">Лид #1042</text>
+        <text x="108" y="70" font-size="9.5" fill="#3C434E" text-anchor="middle">Отель, оператор, заезд,</text>
+        <text x="108" y="84" font-size="9.5" fill="#3C434E" text-anchor="middle">ночи, гости, цена</text>
+        <text x="108" y="106" font-size="9" fill="#6B7482" text-anchor="middle">из подобранного тура</text>
+
+        <path d="M214 75 L286 75" stroke="#F68634" stroke-width="2" marker-end="url(#ar3)"/>
+        <text x="250" y="66" font-size="9" font-weight="700" fill="#D9701E" text-anchor="middle">копируется</text>
+
+        <rect x="298" y="26" width="200" height="98" rx="12" fill="#fff" stroke="#E3E6EA"/>
+        <text x="398" y="50" font-size="11" font-weight="700" fill="#14171C" text-anchor="middle">Заказ #305</text>
+        <rect x="358" y="60" width="80" height="17" rx="8.5" fill="#EDF0F4" stroke="#E3E6EA"/>
+        <text x="398" y="72" font-size="9.5" font-weight="600" fill="#3C434E" text-anchor="middle">Черновик</text>
+        <text x="398" y="94" font-size="9.5" fill="#6B7482" text-anchor="middle">Номер присвоен,</text>
+        <text x="398" y="108" font-size="9.5" fill="#6B7482" text-anchor="middle">история начата</text>
+
+        <path d="M504 75 L568 75" stroke="#F68634" stroke-width="2" marker-end="url(#ar3)"/>
+
+        <rect x="580" y="26" width="112" height="98" rx="12" fill="#FFF3E9" stroke="#F8D8BB"/>
+        <text x="636" y="52" font-size="10.5" font-weight="700" fill="#D9701E" text-anchor="middle">Вы попадаете</text>
+        <text x="636" y="68" font-size="10.5" font-weight="700" fill="#D9701E" text-anchor="middle">на страницу</text>
+        <text x="636" y="84" font-size="10.5" font-weight="700" fill="#D9701E" text-anchor="middle">заказа</text>
+        <text x="636" y="104" font-size="9" fill="#B4703A" text-anchor="middle">и дозаполняете её</text>
+    </svg>
+
+    <h3>Что именно переносится</h3>
+    <div class="table-wrap" style="margin-bottom:12px">
+        <table>
+            <thead><tr><th style="width:200px">Из лида</th><th>Попадает в заказ</th></tr></thead>
+            <tbody>
+                <tr><td>Отель и туроператор</td><td>Поля «Отель» и «Туроператор»</td></tr>
+                <tr><td>Дата заезда и число ночей</td><td>«Дата вылета» и «Ночей»</td></tr>
+                <tr><td>Взрослые и дети</td><td>«Взрослых» и «Детей»</td></tr>
+                <tr><td>Цена и валюта</td><td>«Цена» и «Валюта»</td></tr>
+                <tr><td>Направление</td><td>«Страна»</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="note note--ok">
+        <span class="note__icon">✓</span>
+        <div>
+            <p><strong>Статус лида менять руками не нужно.</strong> Лид сам следует за своими заказами:</p>
+            <p>— заказ ушёл в <strong>«Запрос отправлен»</strong> → лид из «Нового» поднимается в <strong>«В работе»</strong>;</p>
+            <p>— заказ дошёл до <strong>«Подтверждён»</strong> и дальше → лид становится <strong>«Сделка»</strong>.</p>
+        </div>
+    </div>
+
+    <div class="note note--warn">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Одно исключение, о котором стоит знать.</strong> Лид не может прыгнуть из «Нового» сразу в «Сделку» — такого перехода не существует. Если заказ по нетронутому лиду сразу подтвердили, лид молча останется «Новым».</p>
+            <p>Поэтому берите лид в работу до того, как подтверждаете бронь. Тогда цепочка сложится сама.</p>
+        </div>
+    </div>
+
+    <div class="note note--stop">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>По отказному лиду заказ не создать.</strong> Система откажет. Если клиент передумал после отказа — заводите новый лид.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>5</span></div>
+</section>
+
+<!-- ============ 6. ORDER STATUSES ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Заказ</span>
+    <h2>Семь шагов брони</h2>
+    <p class="lead-in">
+        Статусы заказа идут строго по порядку. Это сделано намеренно: за каждым шагом
+        стоят деньги и обязательства, и «перепрыгнуть» их нельзя.
+    </p>
+
+    <svg viewBox="0 0 700 118" style="width:100%;height:auto;margin-bottom:12px">
+        <defs>
+            <marker id="ar4" markerWidth="9" markerHeight="9" refX="7.5" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#98A0AC"/>
+            </marker>
+            <marker id="ar4b" markerWidth="9" markerHeight="9" refX="7.5" refY="3.2" orient="auto">
+                <path d="M0,0 L7,3.2 L0,6.4 z" fill="#0B4FD4"/>
+            </marker>
+        </defs>
+
+        <rect x="4" y="44" width="86" height="32" rx="9" fill="#EDF0F4" stroke="#E3E6EA"/>
+        <text x="47" y="64" font-size="10" font-weight="700" fill="#3C434E" text-anchor="middle">Черновик</text>
+
+        <rect x="106" y="44" width="104" height="32" rx="9" fill="#EEF3FF" stroke="#CBDBFF"/>
+        <text x="158" y="60" font-size="9.5" font-weight="700" fill="#0940AC" text-anchor="middle">Запрос</text>
+        <text x="158" y="71" font-size="9.5" font-weight="700" fill="#0940AC" text-anchor="middle">отправлен</text>
+
+        <rect x="226" y="44" width="100" height="32" rx="9" fill="#FFF4DC" stroke="#F3DFAE"/>
+        <text x="276" y="64" font-size="10" font-weight="700" fill="#8A6100" text-anchor="middle">Подтверждён</text>
+
+        <rect x="342" y="44" width="84" height="32" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="384" y="64" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">Оплачен</text>
+
+        <rect x="442" y="44" width="80" height="32" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="482" y="64" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">Выписан</text>
+
+        <rect x="538" y="44" width="80" height="32" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="578" y="64" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">В поездке</text>
+
+        <rect x="634" y="44" width="62" height="32" rx="9" fill="#EFF8F1" stroke="#B9D9C0"/>
+        <text x="665" y="64" font-size="10" font-weight="700" fill="#2E6B3C" text-anchor="middle">Завершён</text>
+
+        <path d="M90 60 L102 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+        <path d="M210 60 L222 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+        <path d="M326 60 L338 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+        <path d="M426 60 L438 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+        <path d="M522 60 L534 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+        <path d="M618 60 L630 60" stroke="#98A0AC" stroke-width="1.4" marker-end="url(#ar4)"/>
+
+        <path d="M158 40 Q102 18 47 40" stroke="#0B4FD4" stroke-width="1.1" fill="none" stroke-dasharray="3 3" marker-end="url(#ar4b)"/>
+        <path d="M276 40 Q217 14 158 40" stroke="#0B4FD4" stroke-width="1.1" fill="none" stroke-dasharray="3 3" marker-end="url(#ar4b)"/>
+        <text x="160" y="12" font-size="8.5" fill="#0B4FD4" text-anchor="middle">назад — только до оплаты</text>
+
+        <rect x="340" y="86" width="356" height="24" rx="8" fill="#FDECEC" stroke="#F6C9CB"/>
+        <text x="518" y="102" font-size="9.5" font-weight="700" fill="#E5484D" text-anchor="middle">от «Оплачен» и дальше — только вперёд, назад дороги нет</text>
+    </svg>
+
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th style="width:112px">Статус</th><th>Что произошло в реальности</th></tr></thead>
+            <tbody>
+                <tr><td><span class="chip chip--grey">Черновик</span></td><td>Заказ создан, но у оператора ещё ничего не бронировали. Здесь можно спокойно править всё.</td></tr>
+                <tr><td><span class="chip chip--blue">Запрос отправлен</span></td><td>Заявка ушла туроператору, ждём ответа.</td></tr>
+                <tr><td><span class="chip chip--amber">Подтверждён</span></td><td>Оператор подтвердил место. Появился номер брони — впишите его в «Номер у оператора».</td></tr>
+                <tr><td><span class="chip chip--green">Оплачен</span></td><td>Деньги от клиента получены. <strong>С этого момента заказ нельзя ни удалить, ни откатить.</strong></td></tr>
+                <tr><td><span class="chip chip--green">Выписан</span></td><td>Документы оформлены: билеты, ваучер, страховка на руках.</td></tr>
+                <tr><td><span class="chip chip--green">В поездке</span></td><td>Клиент вылетел.</td></tr>
+                <tr><td><span class="chip chip--green">Завершён</span></td><td>Вернулся. Заказ закрыт.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="note">
+        <span class="note__icon">i</span>
+        <div>
+            <p><strong>Выпадающий список статусов заказа показывает только то, что разрешено.</strong> Если вы не видите нужный статус — значит, между текущим и им есть пропущенный шаг.</p>
+            <p>В карточке лида список ведёт себя иначе: там показаны все пять статусов, и запрещённый вариант отклонит уже сервер.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>6</span></div>
+</section>
+
+<!-- ============ 7. ORDER FORM ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Заказ</span>
+    <h2>Карточка заказа: три блока</h2>
+    <p class="lead-in">
+        Форма заказа разделена по смыслу: кто едет, куда едет, и как это забронировано.
+        Звёздочкой отмечено то, без чего заказ нельзя считать готовым к оплате.
+    </p>
+
+    <div class="pair">
+        <div class="mock">
+            <div class="mock__bar">
+                <div>
+                    <div class="mock__id">#305</div>
+                    <div class="mock__sub">Создан 4 сентября 2026</div>
+                </div>
+                <span class="chip chip--amber">Подтверждён ▾</span>
+            </div>
+
+            <div class="mock__body mock__body--numbered">
+                <p class="mock__section">Турист</p>
+
+                <div class="field">
+                    <span class="callout">1</span>
+                    <div class="field__label">ФИО главного туриста</div>
+                    <div class="field__box">KARIMOVA AZIZA</div>
+                </div>
+                <div class="field">
+                    <span class="callout">2</span>
+                    <div class="field__label">Серия и номер паспорта</div>
+                    <div class="field__box">AA1234567</div>
+                </div>
+                <div class="field">
+                    <span class="callout">3</span>
+                    <div class="field__label">Срок действия</div>
+                    <div class="field__box">12.11.2026</div>
+                </div>
+
+                <p class="mock__section">Тур</p>
+
+                <div class="field">
+                    <div class="field__label">Страна</div>
+                    <div class="field__box">Египет</div>
+                </div>
+                <div class="field">
+                    <span class="callout">4</span>
+                    <div class="field__label">Отель</div>
+                    <div class="field__box">Rixos Sharm El Sheikh 5*</div>
+                </div>
+                <div class="field">
+                    <div class="field__label">Туроператор</div>
+                    <div class="field__box">FUN&amp;SUN Asia</div>
+                </div>
+                <div class="field">
+                    <span class="callout">5</span>
+                    <div class="field__label">Дата вылета · Дата возврата</div>
+                    <div class="field__box">24.09.2026 · 01.10.2026</div>
+                </div>
+                <div class="field">
+                    <span class="callout">6</span>
+                    <div class="field__label">Цена · Валюта</div>
+                    <div class="field__box">1480 · USD</div>
+                </div>
+
+                <p class="mock__section">Бронирование</p>
+
+                <div class="field">
+                    <span class="callout">7</span>
+                    <div class="field__label">Номер у оператора</div>
+                    <div class="field__box">FS-2026-88417</div>
+                </div>
+                <div class="field">
+                    <span class="callout">8</span>
+                    <div class="field__label">Филиал</div>
+                    <div class="field__box">Ташкент, Чиланзар</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <ol class="legend">
+                <li><b>ФИО главного туриста</b> — <em>латиницей, ровно как в загранпаспорте</em>. Оператор сверяет посимвольно; расхождение в одной букве означает переоформление за наш счёт.</li>
+                <li><b>Серия и номер паспорта</b> — то, по чему оператор выпишет билет.</li>
+                <li><b>Срок действия</b> — система сама сравнит его с датой вылета и предупредит: «Паспорт действует меньше шести месяцев после вылета» или «Паспорт истекает до даты вылета». Не игнорируйте это — многие страны не пустят.</li>
+                <li><b>Отель и туроператор</b> — подтягиваются из лида, но проверьте: в брони мог оказаться другой корпус или другое питание.</li>
+                <li><b>Дата вылета и возврата</b> — возврат заполняется вручную. Он нужен для страховки и для отчёта «кто сейчас в поездке».</li>
+                <li><b>Цена и валюта</b> — итог, который платит клиент.</li>
+                <li><b>Номер у оператора</b> — появляется <em>после</em> подтверждения брони. Это единственный способ связать нашу карточку с системой туроператора. Без него разбирательство по спорной брони превращается в переписку вслепую.</li>
+                <li><b>Филиал</b> — чей это заказ. Нужен для отчётности по офисам.</li>
+            </ol>
+
+            <div class="card card--soft" style="margin-top:8px">
+                <h3 style="margin-top:0">Дата сделки и заметка</h3>
+                <p style="font-size:10.5px;margin-bottom:0">
+                    Ниже в форме есть <strong>«Дата сделки»</strong> — день, когда клиент согласился, —
+                    и <strong>«Заметка»</strong> для всего, что важно помнить по этой брони:
+                    договорённость о доплате, особые пожелания, обещанный трансфер.
+                </p>
+            </div>
+
+            <div class="note note--ok" style="margin-top:8px">
+                <span class="note__icon">✓</span>
+                <div>
+                    <p><strong>История статусов</strong> внизу карточки пишется сама. Каждая смена статуса — отдельная строка с датой. Её нельзя подделать или стереть.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>7</span></div>
+</section>
+
+<!-- ============ 8. GUARDS ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Защита</span>
+    <h2>Что система не даст сделать</h2>
+    <p class="lead-in">
+        Эти правила встроены в сервер, а не в кнопки. Их нельзя обойти,
+        и это специально: каждое из них закрывает ситуацию, которая иначе стоила бы денег.
+    </p>
+
+    <div class="grid-2" style="gap:10px">
+        <div class="card">
+            <span class="chip chip--red">Запрещено</span>
+            <h3 style="margin:8px 0 4px">Перепрыгнуть шаг</h3>
+            <p style="font-size:10.5px;margin:0">
+                Из «Черновика» нельзя сразу в «Оплачен». Иначе в системе появляются
+                оплаченные заказы, которые никто не бронировал у оператора.
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--red">Запрещено</span>
+            <h3 style="margin:8px 0 4px">Откатить оплату</h3>
+            <p style="font-size:10.5px;margin:0">
+                После «Оплачен» вернуть заказ назад нельзя. Деньги уже прошли —
+                отмена оформляется отдельно, а не подменой статуса.
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--red">Запрещено</span>
+            <h3 style="margin:8px 0 4px">Удалить оплаченный заказ</h3>
+            <p style="font-size:10.5px;margin:0">
+                Заказ со статусом «Оплачен» и дальше удалить невозможно.
+                История оплат не должна исчезать.
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--red">Запрещено</span>
+            <h3 style="margin:8px 0 4px">Отказать лиду с оплатой</h3>
+            <p style="font-size:10.5px;margin:0">
+                Если хотя бы один заказ лида оплачен, перевести лид в «Отказ» нельзя.
+                Клиент, который заплатил, не может числиться отказавшимся.
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--red">Запрещено</span>
+            <h3 style="margin:8px 0 4px">Заказ по отказному лиду</h3>
+            <p style="font-size:10.5px;margin:0">
+                По лиду в статусе «Отказ» новый заказ не создать.
+                Вернулся клиент — заводим новый лид.
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="chip chip--green">Происходит само</span>
+            <h3 style="margin:8px 0 4px">Лид следует за заказом</h3>
+            <p style="font-size:10.5px;margin:0">
+                Статус лида подтягивается за его заказами и никогда не спорит с ними.
+                Руками его двигать почти не приходится.
+            </p>
+        </div>
+    </div>
+
+    <div class="note note--stop" style="margin-top:14px">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Удаление лида удаляет все его заказы.</strong> Вместе с ним уходит и история статусов — включая оплаченные брони, которые поодиночке удалить было бы нельзя.</p>
+            <p>Поэтому CMS спрашивает подтверждение и прямо пишет: «Вместе с ним удалятся все его заказы и история». Удаляйте лид только если он заведён по ошибке — во всех остальных случаях ставьте «Отказ» с причиной.</p>
+        </div>
+    </div>
+
+    <div class="note note--warn">
+        <span class="note__icon">!</span>
+        <div>
+            <p><strong>Сообщения об ошибках сейчас на английском.</strong> Если система отказала, вы увидите текст вроде <em>«An order cannot go from draft to paid»</em> или <em>«This lead has a paid order and cannot be rejected»</em>.</p>
+            <p>Это не сбой — это одно из правил выше. Сверьтесь с этой страницей: перевод сообщений запланирован отдельно.</p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>8</span></div>
+</section>
+
+<!-- ============ 9. EXAMPLE part 1 ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Пример</span>
+    <h2>Один лид от начала до конца</h2>
+    <p class="lead-in">
+        Азиза оставила заявку на сайте во вторник вечером. Проследим её путь по шагам —
+        и посмотрим, что в каждый момент показывает система.
+    </p>
+
+    <ol class="steps">
+        <li>
+            <h4>Вечер вторника: заявка с сайта</h4>
+            <p>
+                Азиза нашла тур в Египет через поиск, нажала «Оставить заявку» и заполнила
+                имя, фамилию и телефон. В комментарии написала: «Хотим всё включено, летим вчетвером».
+            </p>
+            <p>
+                В CMS появился <strong>лид #1042</strong>. Вместе с ним сохранился весь тур,
+                который она смотрела: отель, оператор, даты, цена. Ничего вводить руками не пришлось.
+            </p>
+            <div class="state-line">
+                <span>Лид:</span> <span class="chip chip--grey">Новый</span>
+                <span class="arrow">·</span> <span>Заказов пока нет</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Утро среды: менеджер берёт лид</h4>
+            <p>
+                Менеджер открывает карточку, звонит Азизе и выясняет подробности:
+                двое взрослых и двое детей 6 и 9 лет, вылет в конце сентября, бюджет около 2500 $.
+            </p>
+            <p>
+                Он заполняет «Направление», «Планируемые даты», «Состав туристов», «Бюджет»
+                и переводит лид в <strong>«В работе»</strong>. Всё, что узнал в разговоре, —
+                в «Комментарий».
+            </p>
+            <div class="state-line">
+                <span>Лид:</span> <span class="chip chip--grey">Новый</span>
+                <span class="arrow">→</span> <span class="chip chip--blue">В работе</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Четверг: отправлено предложение</h4>
+            <p>
+                Менеджер подобрал три варианта и отправил их клиенту.
+                Лид переходит в <strong>«КП отправлено»</strong> — теперь по доске видно,
+                что мяч на стороне клиента, и лид ждёт ответа, а не действия менеджера.
+            </p>
+            <div class="state-line">
+                <span>Лид:</span> <span class="chip chip--blue">В работе</span>
+                <span class="arrow">→</span> <span class="chip chip--violet">КП отправлено</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Пятница: клиент выбрал</h4>
+            <p>
+                Азиза выбрала Rixos Sharm El Sheikh 5*. Менеджер открывает лид и нажимает
+                <strong>«Создать заказ»</strong>. Появляется <strong>заказ #305</strong>
+                в статусе «Черновик» — отель, даты, ночи, гости и цена уже подставлены из лида.
+            </p>
+            <p>
+                Менеджер дозаполняет то, чего в лиде быть не могло:
+                ФИО латиницей, паспорт, срок его действия и дату возврата.
+            </p>
+            <div class="state-line">
+                <span>Лид:</span> <span class="chip chip--violet">КП отправлено</span>
+                <span class="arrow">·</span>
+                <span>Заказ #305:</span> <span class="chip chip--grey">Черновик</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Пятница: бронь ушла оператору</h4>
+            <p>
+                Менеджер отправил заявку в FUN&amp;SUN Asia и перевёл заказ
+                в <strong>«Запрос отправлен»</strong>.
+            </p>
+            <p>
+                Лид при этом не трогали — он остался «КП отправлено»,
+                потому что уже прошёл дальше «Нового».
+            </p>
+            <div class="state-line">
+                <span>Заказ #305:</span> <span class="chip chip--grey">Черновик</span>
+                <span class="arrow">→</span> <span class="chip chip--blue">Запрос отправлен</span>
+            </div>
+        </li>
+    </ol>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>9</span></div>
+</section>
+
+<!-- ============ 10. EXAMPLE part 2 ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+
+    <span class="eyebrow">Пример · продолжение</span>
+    <h2>От подтверждения до возвращения</h2>
+
+    <ol class="steps" start="6" style="counter-reset: step 5">
+        <li>
+            <h4>Понедельник: оператор подтвердил</h4>
+            <p>
+                Пришло подтверждение с номером брони <strong>FS-2026-88417</strong>.
+                Менеджер вписывает его в «Номер у оператора» и переводит заказ
+                в <strong>«Подтверждён»</strong>.
+            </p>
+            <p>
+                В этот момент система сама поднимает лид в <strong>«Сделка»</strong> —
+                руками ничего делать не нужно.
+            </p>
+            <div class="state-line">
+                <span>Заказ:</span> <span class="chip chip--amber">Подтверждён</span>
+                <span class="arrow">·</span>
+                <span>Лид:</span> <span class="chip chip--violet">КП отправлено</span>
+                <span class="arrow">→</span> <span class="chip chip--green">Сделка</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Вторник: оплата</h4>
+            <p>
+                Азиза внесла всю сумму. Заказ переходит в <strong>«Оплачен»</strong>.
+            </p>
+            <p>
+                С этой минуты заказ защищён: его нельзя удалить и нельзя вернуть назад.
+                И сам лид больше нельзя перевести в «Отказ» — система не позволит.
+            </p>
+            <div class="state-line">
+                <span>Заказ:</span> <span class="chip chip--amber">Подтверждён</span>
+                <span class="arrow">→</span> <span class="chip chip--green">Оплачен</span>
+                <span class="arrow">·</span> <span>заказ защищён</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>Среда: документы на руках</h4>
+            <p>
+                Билеты, ваучер и страховка оформлены и отправлены клиенту.
+                Заказ — <strong>«Выписан»</strong>. Перед этим система напомнила,
+                что паспорт действует до 12.11.2026, то есть меньше шести месяцев
+                после вылета: менеджер заранее уточнил у оператора требования Египта.
+            </p>
+            <div class="state-line">
+                <span>Заказ:</span> <span class="chip chip--green">Оплачен</span>
+                <span class="arrow">→</span> <span class="chip chip--green">Выписан</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>24 сентября: вылет</h4>
+            <p>
+                Семья улетела. Заказ — <strong>«В поездке»</strong>.
+                По этому статусу в любой момент видно, кто из клиентов сейчас за границей.
+            </p>
+            <div class="state-line">
+                <span>Заказ:</span> <span class="chip chip--green">Выписан</span>
+                <span class="arrow">→</span> <span class="chip chip--green">В поездке</span>
+            </div>
+        </li>
+
+        <li>
+            <h4>1 октября: вернулись</h4>
+            <p>
+                Заказ закрывается — <strong>«Завершён»</strong>. Лид остаётся в статусе
+                «Сделка» с полной историей: как пришёл, что предлагали, чем закончилось.
+            </p>
+            <div class="state-line">
+                <span>Заказ:</span> <span class="chip chip--green">В поездке</span>
+                <span class="arrow">→</span> <span class="chip chip--green">Завершён</span>
+                <span class="arrow">·</span>
+                <span>Лид:</span> <span class="chip chip--green">Сделка</span>
+            </div>
+        </li>
+    </ol>
+
+    <h3 style="margin-top:14px">А если бы что-то пошло не так</h3>
+    <div class="grid-3">
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Клиент передумал до оплаты</h3>
+            <p style="font-size:10px;margin:0">
+                Заказ можно вернуть в «Черновик» или удалить, а лид перевести
+                в «Отказ» с причиной. Всё ещё обратимо.
+            </p>
+        </div>
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Клиент передумал после оплаты</h3>
+            <p style="font-size:10px;margin:0">
+                Статус не откатывается. Возврат оформляется по правилам оператора,
+                а в «Заметке» фиксируется, что произошло.
+            </p>
+        </div>
+        <div class="card card--soft">
+            <h3 style="margin-top:0;font-size:11.5px">Взяли второй тур</h3>
+            <p style="font-size:10px;margin:0">
+                Создаём по тому же лиду <strong>второй заказ</strong>.
+                Лид остаётся один, заказов становится два.
+            </p>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>10</span></div>
+</section>
+
+<!-- ============ 11. CHEAT SHEET ============ -->
+<section class="page">
+    <div class="page__rule"></div>
+    <img class="watermark" src="data:image/svg+xml;base64,__MARK_B64__" alt="">
+
+    <span class="eyebrow">Памятка</span>
+    <h2>Коротко — то, что нужно помнить</h2>
+
+    <div class="pair" style="margin-bottom:12px">
+        <div class="card">
+            <div class="big-num">1</div>
+            <h3 style="margin:6px 0 4px">Лид — человек, заказ — бронь</h3>
+            <p style="font-size:10.5px;margin:0">
+                Интерес в лиде, деньги в заказе. У одного лида может быть
+                сколько угодно заказов.
+            </p>
+        </div>
+        <div class="card">
+            <div class="big-num">2</div>
+            <h3 style="margin:6px 0 4px">Берите лид в работу сразу</h3>
+            <p style="font-size:10.5px;margin:0">
+                Из «Нового» нельзя прыгнуть в «Сделку». Один клик в начале
+                избавляет от застрявших лидов потом.
+            </p>
+        </div>
+    </div>
+
+    <div class="pair" style="margin-bottom:12px">
+        <div class="card">
+            <div class="big-num">3</div>
+            <h3 style="margin:6px 0 4px">Статус лида двигается сам</h3>
+            <p style="font-size:10.5px;margin:0">
+                Он следует за заказами. Руками — только «Отказ»
+                и раннее «В работе».
+            </p>
+        </div>
+        <div class="card">
+            <div class="big-num">4</div>
+            <h3 style="margin:6px 0 4px">Номер у оператора — обязательно</h3>
+            <p style="font-size:10.5px;margin:0">
+                Как только пришло подтверждение. Это единственная связь
+                нашей карточки с системой туроператора.
+            </p>
+        </div>
+    </div>
+
+    <div class="pair" style="margin-bottom:14px">
+        <div class="card">
+            <div class="big-num">5</div>
+            <h3 style="margin:6px 0 4px">«Оплачен» — точка невозврата</h3>
+            <p style="font-size:10.5px;margin:0">
+                Ни удалить, ни откатить. И лид с оплаченным заказом
+                уже нельзя отправить в «Отказ».
+            </p>
+        </div>
+        <div class="card">
+            <div class="big-num">6</div>
+            <h3 style="margin:6px 0 4px">Отказ вместо удаления</h3>
+            <p style="font-size:10.5px;margin:0">
+                Удаление лида уносит все его заказы и историю.
+                Ставьте «Отказ» и пишите причину.
+            </p>
+        </div>
+    </div>
+
+    <h3>Шпаргалка по статусам</h3>
+    <div class="pair">
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th colspan="2">Лид</th></tr></thead>
+                <tbody>
+                    <tr><td style="width:104px"><span class="chip chip--grey">Новый</span></td><td>Никто ещё не звонил</td></tr>
+                    <tr><td><span class="chip chip--blue">В работе</span></td><td>Разговариваем, выясняем</td></tr>
+                    <tr><td><span class="chip chip--violet">КП отправлено</span></td><td>Ждём ответа клиента</td></tr>
+                    <tr><td><span class="chip chip--green">Сделка</span></td><td>Бронь пошла</td></tr>
+                    <tr><td><span class="chip chip--red">Отказ</span></td><td>Конечная, с причиной</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th colspan="2">Заказ</th></tr></thead>
+                <tbody>
+                    <tr><td style="width:104px"><span class="chip chip--grey">Черновик</span></td><td>Ещё не бронировали</td></tr>
+                    <tr><td><span class="chip chip--blue">Запрос отправлен</span></td><td>Ждём оператора</td></tr>
+                    <tr><td><span class="chip chip--amber">Подтверждён</span></td><td>Место есть, номер брони есть</td></tr>
+                    <tr><td><span class="chip chip--green">Оплачен</span></td><td>Деньги получены</td></tr>
+                    <tr><td><span class="chip chip--green">Выписан</span></td><td>Документы на руках</td></tr>
+                    <tr><td><span class="chip chip--green">В поездке</span></td><td>Клиент вылетел</td></tr>
+                    <tr><td><span class="chip chip--green">Завершён</span></td><td>Вернулся, закрыто</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="page__foot"><span><b>TripMe</b> · От лида к заказу</span><span>11</span></div>
+</section>
+
+</body>
+</html>

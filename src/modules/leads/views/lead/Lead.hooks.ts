@@ -8,6 +8,7 @@ import type { ILeadRaw, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/
  */
 export const useLead = () => {
   const { t } = useI18n()
+  const { failed, saved: cheer } = useToast()
   const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
@@ -79,11 +80,10 @@ export const useLead = () => {
       lead.value = next
       adopt(next)
       saved.value = true
+      cheer()
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
     finally {
       saving.value = false
@@ -113,9 +113,7 @@ export const useLead = () => {
       await navigateTo(localePath(`/app/orders/${created.uuid}`))
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
   }
 
@@ -133,9 +131,7 @@ export const useLead = () => {
       await navigateTo(localePath('/app/leads'))
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
   }
 

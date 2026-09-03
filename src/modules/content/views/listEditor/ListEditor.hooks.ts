@@ -23,6 +23,7 @@ const nextKey = () => `draft-${++counter}`
 
 export const useListEditor = (id: string) => {
   const { t } = useI18n()
+  const { saved: cheer } = useToast()
   const localePath = useLocalePath()
   const { list, updateList, upload, removeUpload } = useContentRepository()
   const { mediaLibrary } = useMediaLibrary()
@@ -185,6 +186,7 @@ export const useListEditor = (id: string) => {
       })
 
       saved.value = true
+      cheer()
     }
     catch {
       error.value = t('cms.errors.save')

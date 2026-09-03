@@ -27,6 +27,7 @@ export type PostsView = 'tile' | 'card'
 
 export const usePosts = () => {
   const { t } = useI18n()
+  const { failed, saved: cheer } = useToast()
   const { ask } = useConfirm()
   const localePath = useLocalePath()
   const { all, create, remove: removePost } = usePostsRepository()
@@ -78,9 +79,7 @@ export const usePosts = () => {
       await navigateTo(localePath(`/app/posts/${post.uuid}`))
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
     finally {
       busy.value = false

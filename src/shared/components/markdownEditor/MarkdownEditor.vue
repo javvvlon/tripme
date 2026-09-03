@@ -21,7 +21,7 @@
                     :class="{ 'is-active': picking }"
                     :title="t('markdown.image')" :aria-label="t('markdown.image')"
                     :disabled="disabled || preview"
-                    @click="picking = true"
+                    @click="browse"
                 >
                     <Icon name="image" :size="16" />
                 </button>
@@ -77,24 +77,16 @@
             spellcheck="true"
         />
 
-        <MediaLibrary
-            v-if="library"
-            v-model="picking"
-            :library="library"
-            :uploader="uploader"
-            :accept="ACCEPTED_IMAGES"
-            @select="insertImage"
-        />
-
         <p v-if="hint" class="tm-md__hint">{{ hint }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-import MediaLibrary from '~/shared/components/mediaLibrary/MediaLibrary.vue'
 import { ACCEPTED_IMAGES, MARKDOWN_ACTIONS } from './MarkdownEditor.config'
 import type { IMarkdownAction, IMarkdownEditorProps } from './MarkdownEditor.d'
 import { renderMarkdown } from '~/shared/helpers/markdown'
+import { Modal } from '~/shared/services/ui/modals'
+import type { IGalleryResult } from '~/shared/components/mediaLibrary/MediaLibrary.d'
 
 const props = withDefaults(defineProps<IMarkdownEditorProps>(), { rows: 16 })
 
@@ -107,6 +99,8 @@ const url = useTemplateRef<HTMLInputElement>('url')
 
 const preview = ref(false)
 const asking = ref(false)
+
+const modal = useModal()
 const picking = ref(false)
 const videoUrl = ref('')
 
@@ -137,9 +131,24 @@ function insertAtCursor(snippet: string) {
     model.value = `${before}${padded}${after}`
 }
 
+async function browse() {
+  picking.value = true
+
+  try {
+    const picked = await modal.open<IGalleryResult>(Modal.Gallery, {
+      library: props.library,
+      accept: ACCEPTED_IMAGES,
+    })
+
+    if (picked?.url) insertImage(picked.url)
+  }
+  finally {
+    picking.value = false
+  }
+}
+
 function insertImage(url: string) {
     insertAtCursor(`![](${url})`)
-    picking.value = false
 }
 
 function insertVideo() {

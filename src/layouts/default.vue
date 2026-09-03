@@ -3,12 +3,17 @@
         <SiteHeader :variant="header" :with-search="withSearch" />
         <main class="tm-shell__main"><slot /></main>
         <SiteFooter />
+
+        <ModalHost />
+        <ToastHost />
     </div>
 </template>
 
 <script setup lang="ts">
 import SiteHeader from '~/landing/components/siteHeader/SiteHeader.vue'
 import SiteFooter from '~/landing/components/siteFooter/SiteFooter.vue'
+import ModalHost from '~/shared/components/modalHost/ModalHost.vue'
+import ToastHost from '~/shared/components/toastHost/ToastHost.vue'
 
 const route = useRoute()
 

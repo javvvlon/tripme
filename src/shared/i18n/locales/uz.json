@@ -264,7 +264,18 @@
       "load": "Kontentni yuklab bo‘lmadi. Sahifani yangilang.",
       "save": "Saqlab bo‘lmadi. Qayta urinib ko‘ring.",
       "titleMissing": "Sarlavhani barcha tillarda toʻldiring — kerakli ilova ochildi.",
-      "imageRejected": "Rasm tekshiruvdan oʻtmadi — almashtiring yoki olib tashlang."
+      "imageRejected": "Rasm tekshiruvdan oʻtmadi — almashtiring yoki olib tashlang.",
+      "guards": {
+        "transition": "«{from}» dan «{to}» ga oʻtib boʻlmaydi — bosqich tashlab ketilgan.",
+        "leadPaid": "Lidda toʻlangan buyurtma bor — rad etib boʻlmaydi.",
+        "orderPaid": "Toʻlangan buyurtmani oʻchirib boʻlmaydi.",
+        "leadRejected": "«Rad etilgan» liddan yangi buyurtma yaratib boʻlmaydi.",
+        "unknownStatus": "Notaʼnif buyurtma holati.",
+        "leadMissing": "Lid topilmadi — oʻchirilgan boʻlishi mumkin.",
+        "orderMissing": "Buyurtma topilmadi — oʻchirilgan boʻlishi mumkin.",
+        "firstNameRequired": "Mijoz ismini kiriting.",
+        "phoneRequired": "Telefon raqamini kiriting."
+      }
     },
     "upload": {
       "choose": "Yuklash uchun bosing",

@@ -118,16 +118,31 @@ import Button from '~/shared/components/button/Button.vue'
 import Input from '~/shared/components/input/Input.vue'
 import Icon from '~/shared/components/icon/Icon.vue'
 import { ModalSize } from '~/shared/components/modal/Modal.config'
-import type { IMediaFile, IMediaLibraryProps } from './MediaLibrary.d'
+import type { IGalleryResult, IMediaFile, IMediaLibraryProps } from './MediaLibrary.d'
 
 const MAX_TITLE = 120
 
 const props = defineProps<IMediaLibraryProps>()
 
-const open = defineModel<boolean>({ default: false })
-const current = defineModel<string | null>('current', { default: null })
+const { resolve, dismiss } = useModalContext<IGalleryResult>()
 
-const emit = defineEmits<{ select: [url: string], remove: [url: string] }>()
+/** Open for as long as the service keeps it mounted. */
+const open = ref(true)
+const current = computed(() => props.current ?? null)
+
+/**
+ * Deleting the picked file has to reach the field that pointed at it, but
+ * the gallery stays open afterwards — so it is remembered and reported when
+ * the gallery finally closes.
+ */
+const removedCurrent = ref<string | null>(null)
+
+watch(open, (still) => { if (!still) finish() })
+
+const finish = (url?: string) => {
+  if (url || removedCurrent.value) resolve({ url, removed: removedCurrent.value ?? undefined })
+  else dismiss()
+}
 
 const { t, locale } = useI18n()
 const { mediaLibrary, removeMedia, renameMedia } = useMediaLibrary()
@@ -201,8 +216,7 @@ function startNaming() {
 }
 
 function choose(url: string) {
-    emit('select', url)
-    open.value = false
+    finish(url)
 }
 
 async function rename() {
@@ -254,7 +268,7 @@ async function destroy() {
         items.value = items.value.filter(item => item.path !== target.path)
         focused.value = null
 
-        if (target.url === current.value) emit('remove', target.url)
+        if (target.url === current.value) removedCurrent.value = target.url
     }
     catch {
         error.value = t('media.removeFailed')

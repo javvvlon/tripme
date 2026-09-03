@@ -35,6 +35,7 @@ const blank = (): IOrderDraft => ({
 
 export const useOrder = () => {
   const { t } = useI18n()
+  const { failed, saved: cheer } = useToast()
   const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
@@ -115,11 +116,10 @@ export const useOrder = () => {
       adopt(next)
       history.value = await orderHistory(id.value)
       saved.value = true
+      cheer()
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
     finally {
       saving.value = false
@@ -164,9 +164,7 @@ export const useOrder = () => {
       await navigateTo(localePath(leadId ? `/app/leads/${leadId}` : '/app/orders'))
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
   }
 

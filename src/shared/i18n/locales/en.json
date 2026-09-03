@@ -264,7 +264,18 @@
       "load": "Could not load this content. Reload the page.",
       "save": "Could not save. Try again.",
       "titleMissing": "Fill in the title in every language — the one missing it is open.",
-      "imageRejected": "The image was rejected — replace it or remove it."
+      "imageRejected": "The image was rejected — replace it or remove it.",
+      "guards": {
+        "transition": "An order cannot go from “{from}” to “{to}” — a step is missing.",
+        "leadPaid": "This lead has a paid order, so it cannot be rejected.",
+        "orderPaid": "A paid order cannot be deleted.",
+        "leadRejected": "A rejected lead cannot take new orders.",
+        "unknownStatus": "Unknown order status.",
+        "leadMissing": "This lead no longer exists.",
+        "orderMissing": "This order no longer exists.",
+        "firstNameRequired": "A first name is required.",
+        "phoneRequired": "A phone number is required."
+      }
     },
     "upload": {
       "choose": "Click to upload",

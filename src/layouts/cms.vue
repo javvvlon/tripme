@@ -48,6 +48,8 @@
         </main>
 
         <ConfirmDialog />
+        <ModalHost />
+        <ToastHost />
     </div>
 </template>
 

@@ -13,6 +13,7 @@ import type { IPostDraft } from '~/modules/posts/contracts/posts'
  */
 export const usePostEditor = () => {
   const { t } = useI18n()
+  const { failed, saved: cheer } = useToast()
   const { ask } = useConfirm()
   const route = useRoute()
   const localePath = useLocalePath()
@@ -141,11 +142,10 @@ export const usePostEditor = () => {
     try {
       fill(await update(id.value, draft))
       saved.value = true
+      cheer()
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
     finally {
       saving.value = false

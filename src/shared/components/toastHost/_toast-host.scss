@@ -1,0 +1,109 @@
+@use '../../styles/utils' as *;
+
+.tm-toasts {
+    position: fixed;
+    z-index: 1200;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: min(380px, calc(100vw - 32px));
+    pointer-events: none;
+}
+
+.tm-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid var(--tm-border-1);
+    border-left: 3px solid var(--tm-ink-4);
+    border-radius: radius('md');
+    background: var(--tm-surface-1);
+    box-shadow: shadow('lg');
+    pointer-events: auto;
+
+    &__icon {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        color: var(--tm-common-white);
+        background: var(--tm-ink-4);
+    }
+
+    &__text {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        font-size: size(13);
+        line-height: 1.45;
+        color: var(--tm-ink-1);
+        overflow-wrap: anywhere;
+    }
+
+    &__close {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        border: 0;
+        border-radius: radius('xs');
+        background: none;
+        color: var(--tm-ink-4);
+        cursor: pointer;
+
+        &:hover { color: var(--tm-ink-2); }
+
+        @include focus-ring(var(--tm-ink-3));
+    }
+
+    &--success {
+        border-left-color: var(--tm-status-success);
+
+        .tm-toast__icon { background: var(--tm-status-success); }
+    }
+
+    &--error {
+        border-left-color: var(--tm-status-danger);
+
+        .tm-toast__icon { background: var(--tm-status-danger); }
+    }
+
+    &--info {
+        border-left-color: var(--tm-brand-secondary);
+
+        .tm-toast__icon { background: var(--tm-brand-secondary); }
+    }
+}
+
+.tm-toast-enter-active,
+.tm-toast-leave-active { transition: opacity .2s ease, transform .2s ease; }
+
+.tm-toast-enter-from,
+.tm-toast-leave-to {
+    opacity: 0;
+    transform: translateX(14px);
+}
+
+.tm-toast-move { transition: transform .2s ease; }
+
+@media #{$until-md} {
+    .tm-toasts {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-toast-enter-active,
+    .tm-toast-leave-active,
+    .tm-toast-move { transition: none; }
+}

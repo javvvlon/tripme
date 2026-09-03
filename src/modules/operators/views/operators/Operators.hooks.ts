@@ -18,6 +18,7 @@ const blank = (): IOperatorDraft => ({
 
 export const useOperators = () => {
   const { t } = useI18n()
+  const { saved: cheer } = useToast()
   const { all, toggle, save } = useOperatorsRepository()
 
   const editing = ref<string | null>(null)
@@ -85,6 +86,7 @@ export const useOperators = () => {
       await refresh()
 
       saved.value = true
+      cheer()
       draft.apiKey = ''
       draft.apiSecret = ''
     }

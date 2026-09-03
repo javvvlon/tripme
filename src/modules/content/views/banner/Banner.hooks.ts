@@ -13,6 +13,7 @@ const blank = (): BannerDraft => Object.fromEntries(
 
 export const useBanner = () => {
   const { t } = useI18n()
+  const { saved: cheer } = useToast()
   const { banner, saveBanner, upload, removeUpload } = useContentRepository()
   const { mediaLibrary } = useMediaLibrary()
 
@@ -129,6 +130,7 @@ export const useBanner = () => {
     try {
       fill(await saveBanner(draft))
       saved.value = true
+      cheer()
     }
     catch {
       error.value = t('cms.errors.save')

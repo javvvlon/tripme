@@ -29,6 +29,7 @@ const nextKey = () => `section-${++counter}`
 
 export const useSections = () => {
   const { t } = useI18n()
+  const { saved: cheer } = useToast()
   const { sections, lists, layouts, saveSections } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
 
@@ -157,6 +158,7 @@ export const useSections = () => {
       })))
 
       saved.value = true
+      cheer()
     }
     catch {
       error.value = t('cms.errors.save')

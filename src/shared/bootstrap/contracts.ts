@@ -1,4 +1,5 @@
 import type { IMiddleware, IResource } from '~/shared/contracts/data'
+import type { IModalRegistry } from '~/shared/services/ui/modal'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -25,6 +26,8 @@ export interface IModule {
   resource?: IResource
   resources?: IResource[]
   middlewares?: IMiddleware[]
+  /** Modals this module owns, keyed so anywhere can open them. */
+  modals?: IModalRegistry
 }
 
 /**
@@ -34,4 +37,5 @@ export interface IBootstrappedApp {
   routes: IModuleRoute[]
   resources: IResource[]
   middlewares: IMiddleware[]
+  modals: IModalRegistry
 }

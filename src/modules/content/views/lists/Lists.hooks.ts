@@ -5,6 +5,7 @@ import { useContentRepository } from '~/modules/content/repositories'
  */
 export const useLists = () => {
   const { t } = useI18n()
+  const { failed, saved: cheer } = useToast()
   const { ask } = useConfirm()
   const { lists, createList, deleteList } = useContentRepository()
 
@@ -44,9 +45,7 @@ export const useLists = () => {
       await refresh()
     }
     catch (e) {
-      const response = e as { data?: { message?: string } }
-
-      error.value = response.data?.message ?? t('cms.errors.save')
+      error.value = failed(e)
     }
   }
 
