@@ -1,4 +1,4 @@
-import type { FieldInput } from '~/shared/helpers/numbers'
+import type { FieldInput, FieldValue } from '~/shared/helpers/numbers'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { ORDER_TRANSITIONS } from '~/modules/leads/contracts/leads'
 import type { IOrderEvent, IOrderRaw, OrderStatus } from '~/modules/leads/contracts/leads'
@@ -25,7 +25,7 @@ export interface IOrderDraft {
   nights: FieldInput
   adults: FieldInput
   children: FieldInput
-  priceAmount: FieldInput
+  priceAmount: FieldValue
   priceCurrency: string
   branch: string
   note: string

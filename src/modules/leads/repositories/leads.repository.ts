@@ -126,8 +126,17 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
-  const createOrder = async (leadId: string, trip: ILeadTrip): Promise<IOrderRaw> => {
-    const response = await http.call<IOrderRaw>('Leads', 'createOrder', { id: leadId }, { trip } as AnyObject)
+  const createOrder = async (
+    leadId: string,
+    trip: ILeadTrip,
+    starting: Record<string, unknown> = {},
+  ): Promise<IOrderRaw> => {
+    const response = await http.call<IOrderRaw>(
+      'Leads',
+      'createOrder',
+      { id: leadId },
+      { trip, ...starting } as AnyObject,
+    )
 
     return response.data
   }

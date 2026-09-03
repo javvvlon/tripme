@@ -20,7 +20,8 @@
     "save": "Save",
     "saving": "Saving…",
     "delete": "Delete",
-    "deleteWarning": "This cannot be undone."
+    "deleteWarning": "This cannot be undone.",
+    "currency": "Currency"
   },
   "nav": {
     "home": "TripMe — home",
@@ -603,7 +604,8 @@
       "confirmDelete": {
         "title": "Delete this order?",
         "lead": "The order and its status history are removed. The lead stays."
-      }
+      },
+      "created": "Order created"
     },
     "operators": {
       "title": "Tour operators",

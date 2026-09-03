@@ -20,7 +20,8 @@
     "save": "Saqlash",
     "saving": "Saqlanmoqda…",
     "delete": "Oʻchirish",
-    "deleteWarning": "Bu amalni bekor qilib boʻlmaydi."
+    "deleteWarning": "Bu amalni bekor qilib boʻlmaydi.",
+    "currency": "Valyuta"
   },
   "nav": {
     "home": "TripMe — bosh sahifa",
@@ -603,7 +604,8 @@
       "confirmDelete": {
         "title": "Buyurtma oʻchirilsinmi?",
         "lead": "Buyurtma va uning holatlar tarixi oʻchadi. Lid qoladi."
-      }
+      },
+      "created": "Buyurtma yaratildi"
     },
     "operators": {
       "title": "Turoperatorlar",

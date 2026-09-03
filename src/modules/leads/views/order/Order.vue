@@ -64,8 +64,12 @@
 
                     <div class="tm-cms-order__row is-four">
                         <Input v-model="draft.children" type="number" :label="t('cms.orders.fields.children')" />
-                        <Input v-model="draft.priceAmount" type="number" :label="t('cms.orders.fields.price')" />
-                        <Input v-model="draft.priceCurrency" :label="t('cms.orders.fields.currency')" placeholder="USD" />
+                        <PriceInput
+                            v-model="draft.priceAmount"
+                            :label="t('cms.orders.fields.price')"
+                            :currency="draft.priceCurrency"
+                        />
+                        <CurrencySelect v-model="draft.priceCurrency" :label="t('cms.orders.fields.currency')" />
                         <Input v-model="draft.dealDate" type="date" :label="t('cms.orders.fields.dealDate')" />
                     </div>
                 </section>
@@ -152,6 +156,8 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
 import Button from '~/shared/components/button/Button.vue'
+import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
+import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
 import type { OrderStatus } from '~/modules/leads/contracts/leads'
 

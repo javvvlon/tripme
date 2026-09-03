@@ -67,8 +67,12 @@
                     </div>
 
                     <div class="tm-cms-lead__row">
-                        <Input v-model="draft.budgetAmount" type="number" :label="t('cms.leads.fields.budget')" />
-                        <Input v-model="draft.budgetCurrency" :label="t('cms.leads.fields.budgetCurrency')" placeholder="UZS" />
+                        <PriceInput
+                            v-model="draft.budgetAmount"
+                            :label="t('cms.leads.fields.budget')"
+                            :currency="draft.budgetCurrency"
+                        />
+                        <CurrencySelect v-model="draft.budgetCurrency" :label="t('cms.leads.fields.budgetCurrency')" clearable />
                         <div />
                     </div>
 
@@ -175,6 +179,8 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
 import Button from '~/shared/components/button/Button.vue'
+import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
+import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
 

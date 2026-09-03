@@ -1,4 +1,7 @@
-import type { FieldInput } from '~/shared/helpers/numbers'
+import type { FieldInput, FieldValue } from '~/shared/helpers/numbers'
+import { DEFAULT_BRANCH } from '~/modules/leads/config/orders'
+import { DEFAULT_CURRENCY } from '~/shared/helpers/money'
+import { today } from '~/shared/helpers/dates'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
 import { tripFromLead } from '~/modules/leads/helpers/trip'
@@ -36,7 +39,7 @@ export const useLead = () => {
     destination: '',
     plannedDates: '',
     partySize: '' as FieldInput,
-    budgetAmount: '' as FieldInput,
+    budgetAmount: '' as FieldValue,
     budgetCurrency: '',
     rejectReason: '',
     comment: '',
@@ -114,7 +117,21 @@ export const useLead = () => {
     error.value = ''
 
     try {
-      const created = await createOrder(id.value, tripFromLead(lead.value))
+      const trip = tripFromLead(lead.value)
+
+      const created = await createOrder(id.value, {
+        ...trip,
+        price_currency: trip.price_currency || DEFAULT_CURRENCY,
+      }, {
+        deal_date: today(),
+        branch: DEFAULT_BRANCH,
+      })
+
+      /**
+       * Said here, at the one moment it is true. The order page says nothing
+       * on arrival, so opening the same order again stays quiet.
+       */
+      cheer(t('cms.orders.created'))
 
       await navigateTo(localePath(`/app/orders/${created.uuid}`))
     }
