@@ -214,7 +214,8 @@
     "errors": {
       "invalidCredentials": "Pochta yoki parol noto‘g‘ri",
       "failed": "Kirib bo‘lmadi. Yana urinib ko‘ring."
-    }
+    },
+    "expired": "Sessiya tugadi — qaytadan kiring."
   },
   "dashboard": {
     "title": "Agent kabineti",

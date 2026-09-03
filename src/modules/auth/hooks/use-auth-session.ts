@@ -1,6 +1,7 @@
 import type { User } from '~/modules/auth/models/User'
 import { useAuthRepository } from '~/modules/auth/repositories/auth.repository'
 import { useAuthStorage } from '~/modules/auth/storage/auth-storage'
+import { isExpired } from '~/shared/helpers/jwt'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -12,6 +13,13 @@ export const useAuthSession = () => {
   const storage = useAuthStorage()
 
   const isAuthenticated = computed(() => user.value !== null)
+
+  /**
+   * Set when a session that was working stops being accepted, as opposed to
+   * someone signing out or never having signed in. The app watches it to get
+   * the reader out of the CMS.
+   */
+  const expired = useState('auth:expired', () => false)
 
   const nuxtApp = useNuxtApp()
 
@@ -63,8 +71,23 @@ export const useAuthSession = () => {
     })
   }
 
+  /** The session is over and it was not the reader's doing. */
+  const expire = (): void => {
+    const had = user.value !== null || storage.hasSession()
+
+    storage.clear()
+    user.value = null
+    resolved.value = true
+
+    if (had) expired.value = true
+  }
+
   const refresh = async (): Promise<boolean> => {
-    if (!storage.getRefreshToken()) return false
+    if (!storage.getRefreshToken()) {
+      expire()
+
+      return false
+    }
 
     return inFlight('_authRefresh', async () => {
       try {
@@ -72,15 +95,37 @@ export const useAuthSession = () => {
         return true
       }
       catch {
-        storage.clear()
-        user.value = null
-        resolved.value = true
+        expire()
+
         return false
       }
     })
   }
 
+  /**
+   * Whether the CMS can be entered right now.
+   *
+   * The route guard used to ask `isAuthenticated`, which only says whether a
+   * user was loaded at some point — after an hour on an open tab that is
+   * still true while the token behind it has long stopped working. This asks
+   * the tokens, and spends a refresh when the access token has run out.
+   */
+  const ensure = async (): Promise<boolean> => {
+    if (!user.value) return false
+
+    if (!storage.hasSession()) {
+      expire()
+
+      return false
+    }
+
+    if (!isExpired(storage.getAccessToken())) return true
+
+    return refresh()
+  }
+
   const login = async (email: string, password: string): Promise<User> => {
+    expired.value = false
     storage.setTokens(await loginRequest({ email, password }))
     user.value = await me()
     resolved.value = true
@@ -109,5 +154,5 @@ export const useAuthSession = () => {
     }
   }
 
-  return { user, isAuthenticated, restore, refresh, login, signup, logout }
+  return { user, isAuthenticated, expired, restore, refresh, ensure, expire, login, signup, logout }
 }

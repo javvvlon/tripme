@@ -214,7 +214,8 @@
     "errors": {
       "invalidCredentials": "Wrong email or password",
       "failed": "Could not sign in. Please try again."
-    }
+    },
+    "expired": "Your session has expired — please sign in again."
   },
   "dashboard": {
     "title": "Agent workspace",
