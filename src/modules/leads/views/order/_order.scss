@@ -62,6 +62,13 @@
         margin-top: 24px;
     }
 
+    /**
+     * The cards after the form are its siblings, so the form's own gap does
+     * not reach them. One rule gives the whole page the same rhythm without
+     * doubling the space between the cards inside the form.
+     */
+    &__form ~ &__card { margin-top: 16px; }
+
     &__card {
         padding: 20px;
         border: 1px solid var(--tm-border-1);
@@ -132,7 +139,23 @@
         justify-content: flex-end;
     }
 
-    &__history { margin-top: 24px; }
+    &__offer-lead {
+        margin: 0 0 10px;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+
+    &__offer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &__offer-note {
+        margin: 10px 0 0;
+        font-size: size(12);
+        color: var(--tm-ink-4);
+    }
 
     &__events {
         list-style: none;

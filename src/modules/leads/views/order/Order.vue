@@ -96,6 +96,40 @@
                 </footer>
             </form>
 
+            <section class="tm-cms-order__card">
+                <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+
+                <p class="tm-cms-order__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
+
+                <div class="tm-cms-order__offer-links">
+                    <Button
+                        v-if="links.search"
+                        size="sm" variant="secondary" icon="search"
+                        :to="links.search"
+                    >
+                        {{ t('cms.leads.offer.repeatSearch') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.booking"
+                        size="sm" variant="ghost" icon="arrow-right"
+                        :href="links.booking" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openAtOperator') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.hotel"
+                        size="sm" variant="ghost" icon="bed"
+                        :href="links.hotel" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openHotelPage') }}
+                    </Button>
+                </div>
+
+                <p v-if="!links.booking" class="tm-cms-order__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
+            </section>
+
             <section v-if="history.length" class="tm-cms-order__card tm-cms-order__history">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.history') }}</h2>
 
@@ -117,6 +151,8 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
+import Button from '~/shared/components/button/Button.vue'
+import { offerLinks } from '~/modules/leads/helpers/offer'
 import type { OrderStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
@@ -127,6 +163,8 @@ const {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove,
 } = useOrder()
+
+const links = computed(() => offerLinks(order.value?.trip as never))
 
 const backTo = computed(() =>
     localePath(order.value?.lead_id ? `/app/leads/${order.value.lead_id}` : '/app/orders'))
