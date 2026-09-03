@@ -225,6 +225,7 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
 import Button from '~/shared/components/button/Button.vue'
+import { formatDate } from '~/shared/helpers/format-date'
 import Icon from '~/shared/components/icon/Icon.vue'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
@@ -269,8 +270,8 @@ function onFile(event: Event) {
 const backTo = computed(() =>
     localePath(order.value?.lead_id ? `/app/leads/${order.value.lead_id}` : '/app/orders'))
 
-const fullDate = (value: string): string =>
-    new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
+const fullDate = (value: string | null | undefined): string =>
+    formatDate(value, locale.value, { dateStyle: 'medium', timeStyle: 'short' })
 
 /**
  * A passport that expires within six months of departure is refused by most

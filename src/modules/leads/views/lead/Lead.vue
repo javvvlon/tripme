@@ -179,6 +179,7 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
 import Button from '~/shared/components/button/Button.vue'
+import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
@@ -195,11 +196,11 @@ const {
     statusOptions, change, submit, addOrder, remove,
 } = useLead()
 
-const shortDate = (value: string): string =>
-    new Intl.DateTimeFormat(locale.value, { day: '2-digit', month: 'short' }).format(new Date(value))
+const shortDate = (value: string | null | undefined): string =>
+    formatDate(value, locale.value, { day: '2-digit', month: 'short' })
 
-const fullDate = (value: string): string =>
-    new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
+const fullDate = (value: string | null | undefined): string =>
+    formatDate(value, locale.value, { dateStyle: 'medium', timeStyle: 'short' })
 
 const links = computed(() => offerLinks(lead.value?.trip as never))
 
