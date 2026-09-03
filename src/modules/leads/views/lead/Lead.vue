@@ -33,6 +33,40 @@
 
             <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
+            <section class="tm-cms-lead__card">
+                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+
+                <p class="tm-cms-lead__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
+
+                <div class="tm-cms-lead__offer-links">
+                    <Button
+                        v-if="links.search"
+                        size="sm" variant="secondary" icon="search"
+                        :to="links.search"
+                    >
+                        {{ t('cms.leads.offer.repeatSearch') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.booking"
+                        size="sm" variant="ghost" icon="arrow-right"
+                        :href="links.booking" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openAtOperator') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.hotel"
+                        size="sm" variant="ghost" icon="bed"
+                        :href="links.hotel" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openHotelPage') }}
+                    </Button>
+                </div>
+
+                <p v-if="!links.booking" class="tm-cms-lead__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
+            </section>
+
             <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-lead__card">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
@@ -93,40 +127,6 @@
                     </Button>
                 </footer>
             </form>
-
-            <section class="tm-cms-lead__card">
-                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
-
-                <p class="tm-cms-lead__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
-
-                <div class="tm-cms-lead__offer-links">
-                    <Button
-                        v-if="links.search"
-                        size="sm" variant="secondary" icon="search"
-                        :to="links.search"
-                    >
-                        {{ t('cms.leads.offer.repeatSearch') }}
-                    </Button>
-
-                    <Button
-                        v-if="links.booking"
-                        size="sm" variant="ghost" icon="arrow-right"
-                        :href="links.booking" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openAtOperator') }}
-                    </Button>
-
-                    <Button
-                        v-if="links.hotel"
-                        size="sm" variant="ghost" icon="bed"
-                        :href="links.hotel" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openHotelPage') }}
-                    </Button>
-                </div>
-
-                <p v-if="!links.booking" class="tm-cms-lead__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
-            </section>
 
             <section v-if="extras.length" class="tm-cms-lead__card">
                 <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
