@@ -73,8 +73,15 @@ export interface IStoredFileRaw {
   url: string
   path: string
   title: string
+  folder_id: string | null
   size: number
   uploaded_at: string | null
+}
+
+export interface IMediaFolderRaw {
+  id: string
+  name: string
+  count: number
 }
 
 export interface IListSummaryRaw {

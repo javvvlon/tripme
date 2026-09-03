@@ -8,6 +8,7 @@ import type {
   IEditableSectionRaw,
   IHomeContentRaw,
   IListSummaryRaw,
+  IMediaFolderRaw,
   IStoredFileRaw,
 } from '~/modules/content/contracts/blocks'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -89,10 +90,35 @@ export const useContentRepository = () => {
    * editor's change is already saved, and an extra file in a bucket is a
    * smaller problem than an error they cannot act on.
    */
-  const library = async (query = ''): Promise<IStoredFileRaw[]> => {
-    const response = await http.call<IStoredFileRaw[]>('Content', 'library', query ? { q: query } : {})
+  const library = async (query = '', folder = ''): Promise<IStoredFileRaw[]> => {
+    const params: AnyObject = {}
+
+    if (query) params.q = query
+    if (folder) params.folder = folder
+
+    const response = await http.call<IStoredFileRaw[]>('Content', 'library', params)
 
     return response.data
+  }
+
+  const folders = async (): Promise<IMediaFolderRaw[]> => {
+    const response = await http.call<IMediaFolderRaw[]>('Content', 'folders')
+
+    return response.data
+  }
+
+  const createFolder = async (name: string): Promise<IMediaFolderRaw> => {
+    const response = await http.call<IMediaFolderRaw>('Content', 'createFolder', {}, { name })
+
+    return response.data
+  }
+
+  const renameFolder = async (id: string, name: string): Promise<void> => {
+    await http.call<void>('Content', 'renameFolder', { id }, { name })
+  }
+
+  const deleteFolder = async (id: string): Promise<void> => {
+    await http.call<void>('Content', 'deleteFolder', { id })
   }
 
   const removeUpload = async (url: string): Promise<void> => {
@@ -108,8 +134,11 @@ export const useContentRepository = () => {
    * Names a stored file. Unlike removal this is not tidying up, so a failure
    * is surfaced: the editor asked for the name to change.
    */
-  const renameUpload = async (url: string, title: string): Promise<void> => {
-    await http.call<void>('Content', 'renameUpload', {}, { url, title })
+  const describeUpload = async (
+    url: string,
+    changes: { title?: string, folder?: string | null },
+  ): Promise<void> => {
+    await http.call<void>('Content', 'renameUpload', {}, { url, ...changes })
   }
 
   const saveSections = async (items: AnyObject[]): Promise<void> => {
@@ -118,6 +147,7 @@ export const useContentRepository = () => {
 
   return {
     banner, saveBanner, homeContent,
-    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, renameUpload,
+    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, describeUpload,
+    folders, createFolder, renameFolder, deleteFolder,
   }
 }

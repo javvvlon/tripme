@@ -50,6 +50,80 @@
         }
     }
 
+    &__folders {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    &__folder {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 11px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-2);
+        font: inherit;
+        font-size: size(12);
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s, border-color .15s, color .15s;
+
+        &:hover { border-color: var(--tm-cms-accent); }
+
+        &.is-active {
+            background: var(--tm-cms-accent-soft);
+            border-color: var(--tm-cms-accent);
+            color: var(--tm-cms-accent);
+        }
+
+        @include focus-ring(var(--tm-cms-accent));
+
+        &--add {
+            border-style: dashed;
+            color: var(--tm-ink-3);
+        }
+    }
+
+    &__folder-count {
+        color: var(--tm-ink-4);
+        font-weight: 500;
+    }
+
+    &__folder-form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+
+        .tm-input { flex: 1; min-width: 0; }
+        .tm-button { flex: 0 0 auto; white-space: nowrap; }
+    }
+
+    &__filing {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: size(12);
+        color: var(--tm-ink-3);
+
+        select {
+            flex: 1;
+            min-width: 0;
+            padding: 5px 8px;
+            border: 1px solid var(--tm-border-1);
+            border-radius: radius('sm');
+            background: var(--tm-surface-1);
+            color: var(--tm-ink-1);
+            font: inherit;
+            font-size: size(12);
+        }
+    }
+
     &__state {
         margin: 0;
         padding: 24px 0;

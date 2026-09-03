@@ -5,8 +5,15 @@ export interface IMediaFile {
   url: string
   path: string
   title: string
+  folderId: string | null
   size: number
   uploadedAt: string | null
+}
+
+export interface IMediaFolder {
+  id: string
+  name: string
+  count: number
 }
 
 /** What the gallery hands back when it closes. */
@@ -19,7 +26,7 @@ export interface IGalleryResult {
 
 export interface IMediaLibraryProps {
   current?: string | null
-  library?: (query?: string) => Promise<IMediaFile[]>
+  library?: (query?: string, folder?: string) => Promise<IMediaFile[]>
   uploader?: (file: File) => Promise<string>
   accept?: string[]
 }

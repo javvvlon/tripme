@@ -729,6 +729,22 @@
     },
     "back": "Barcha rasmlar",
     "search": "Nomi boʻyicha qidirish",
-    "noMatches": "Hech narsa topilmadi."
+    "noMatches": "Hech narsa topilmadi.",
+    "folders": {
+      "all": "Barchasi",
+      "unfiled": "Papkasiz",
+      "add": "Yangi papka",
+      "field": "Papka",
+      "none": "Papkasiz",
+      "namePlaceholder": "Masalan: Misr",
+      "rename": "Nomini oʻzgartirish",
+      "remove": "Papkani oʻchirish",
+      "empty": "Bu papka hozircha boʻsh.",
+      "failed": "Papkani oʻzgartirib boʻlmadi.",
+      "confirmRemove": {
+        "title": "Papka oʻchirilsinmi?",
+        "lead": "Rasmlar galereyada qoladi — ular shunchaki bu papkadan chiqadi."
+      }
+    }
   }
 }

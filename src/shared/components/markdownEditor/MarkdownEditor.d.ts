@@ -10,7 +10,7 @@ export interface IMarkdownEditorProps {
   rows?: number
   disabled?: boolean
   uploader?: (file: File) => Promise<string>
-  library?: (query?: string) => Promise<IMediaFile[]>
+  library?: (query?: string, folder?: string) => Promise<IMediaFile[]>
 }
 
 export interface IMarkdownAction {

@@ -729,6 +729,22 @@
     },
     "back": "All images",
     "search": "Search by name",
-    "noMatches": "Nothing matched."
+    "noMatches": "Nothing matched.",
+    "folders": {
+      "all": "All",
+      "unfiled": "Unfiled",
+      "add": "New folder",
+      "field": "Folder",
+      "none": "No folder",
+      "namePlaceholder": "For example: Egypt",
+      "rename": "Rename",
+      "remove": "Delete folder",
+      "empty": "This folder is empty.",
+      "failed": "Could not change the folder.",
+      "confirmRemove": {
+        "title": "Delete this folder?",
+        "lead": "The images stay in the gallery — they simply stop being filed here."
+      }
+    }
   }
 }
