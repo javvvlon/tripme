@@ -219,6 +219,13 @@
         margin-top: 24px;
     }
 
+    /**
+     * The cards after the form are its siblings, so the form's own gap does
+     * not reach them. One rule gives the whole page the same rhythm without
+     * doubling the space between the cards inside the form.
+     */
+    &__form ~ &__card { margin-top: 16px; }
+
     &__row {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -262,9 +269,8 @@
     &__foot {
         display: flex;
         justify-content: flex-end;
+        margin-top: 4px;
     }
-
-    &__orders { margin-top: 16px; }
 
     &__orders-head {
         display: flex;
@@ -274,6 +280,24 @@
         margin-bottom: 14px;
 
         .tm-cms-lead__card-title { margin: 0; }
+    }
+
+    &__offer-lead {
+        margin: 0 0 10px;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+
+    &__offer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &__offer-note {
+        margin: 10px 0 0;
+        font-size: size(12);
+        color: var(--tm-ink-4);
     }
 
     &__no-orders {

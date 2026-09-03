@@ -480,7 +480,8 @@
         "order": "Lid",
         "raw": "Taklifning barcha maʼlumotlari",
         "request": "Soʻrov",
-        "orders": "Buyurtmalar"
+        "orders": "Buyurtmalar",
+        "offer": "Taklif"
       },
       "create": {
         "cta": "Lid qoʻshish",
@@ -531,6 +532,10 @@
       "confirmDelete": {
         "title": "Lid oʻchirilsinmi?",
         "lead": "U bilan birga barcha buyurtmalari va tarixi oʻchadi."
+      },
+      "offer": {
+        "lead": "Mijoz tanlagan narsani koʻrish uchun qayerga qaytish kerak.",
+        "repeatSearch": "Qidiruvni takrorlash"
       }
     },
     "orders": {

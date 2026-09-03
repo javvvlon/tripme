@@ -90,11 +90,58 @@
                 </footer>
             </form>
 
+            <section class="tm-cms-lead__card">
+                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+
+                <p class="tm-cms-lead__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
+
+                <div class="tm-cms-lead__offer-links">
+                    <Button
+                        v-if="links.search"
+                        size="sm" variant="secondary" icon="search"
+                        :to="links.search"
+                    >
+                        {{ t('cms.leads.offer.repeatSearch') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.booking"
+                        size="sm" variant="ghost" icon="arrow-right"
+                        :href="links.booking" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openAtOperator') }}
+                    </Button>
+
+                    <Button
+                        v-if="links.hotel"
+                        size="sm" variant="ghost" icon="bed"
+                        :href="links.hotel" target="_blank" rel="noopener"
+                    >
+                        {{ t('cms.leads.openHotelPage') }}
+                    </Button>
+                </div>
+
+                <p v-if="!links.booking" class="tm-cms-lead__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
+            </section>
+
+            <section v-if="extras.length" class="tm-cms-lead__card">
+                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
+
+                <dl class="tm-cms-lead__raw">
+                    <div v-for="entry in extras" :key="entry.key">
+                        <dt>{{ entry.key }}</dt>
+                        <dd>{{ entry.value }}</dd>
+                    </div>
+                </dl>
+            </section>
+
             <section class="tm-cms-lead__card tm-cms-lead__orders">
                 <header class="tm-cms-lead__orders-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.orders') }}</h2>
 
-                    <Button type="button" size="sm" @click="addOrder">{{ t('cms.leads.addOrder') }}</Button>
+                    <Button type="button" size="sm" variant="ghost" icon="plus" @click="addOrder">
+                        {{ t('cms.leads.addOrder') }}
+                    </Button>
                 </header>
 
                 <p v-if="!orders.length" class="tm-cms-lead__no-orders">{{ t('cms.leads.noOrders') }}</p>
@@ -119,17 +166,6 @@
                     </li>
                 </ul>
             </section>
-
-            <section v-if="extras.length" class="tm-cms-lead__card">
-                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
-
-                <dl class="tm-cms-lead__raw">
-                    <div v-for="entry in extras" :key="entry.key">
-                        <dt>{{ entry.key }}</dt>
-                        <dd>{{ entry.value }}</dd>
-                    </div>
-                </dl>
-            </section>
         </template>
     </div>
 </template>
@@ -138,6 +174,8 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
+import Button from '~/shared/components/button/Button.vue'
+import { offerLinks } from '~/modules/leads/helpers/offer'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
@@ -156,6 +194,8 @@ const shortDate = (value: string): string =>
 
 const fullDate = (value: string): string =>
     new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
+
+const links = computed(() => offerLinks(lead.value?.trip as never))
 
 const KNOWN = new Set([
     'hotel_name', 'supplier_name', 'check_in', 'nights', 'adults', 'children',

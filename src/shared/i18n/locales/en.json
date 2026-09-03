@@ -480,7 +480,8 @@
         "order": "Lead",
         "raw": "Full offer data",
         "request": "Request",
-        "orders": "Orders"
+        "orders": "Orders",
+        "offer": "The offer"
       },
       "create": {
         "cta": "Add a lead",
@@ -531,6 +532,10 @@
       "confirmDelete": {
         "title": "Delete this lead?",
         "lead": "Every order under it and its history go with it."
+      },
+      "offer": {
+        "lead": "Where to go back to see what the client picked.",
+        "repeatSearch": "Repeat the search"
       }
     },
     "orders": {
