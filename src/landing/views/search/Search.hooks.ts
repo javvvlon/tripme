@@ -26,25 +26,11 @@ export const useSearch = () => {
   const isSearchable = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
 
-  /**
-   * Fixed once, on the server, and carried to the client: two clocks
-   * disagreeing about what day it is would send the page searching twice.
-   */
   const today = useState('search-today', () => new Date().toISOString().slice(0, 10))
 
-  /** A route is known but the day it leaves on is not settled yet. */
   const settling = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && !criteria.value.date))
 
-  /**
-   * The date this page chose on the visitor's behalf. A date they picked
-   * themselves is never recorded here, which is what keeps the search from
-   * wandering off the day they asked for.
-   *
-   * Held in transferable state rather than a plain ref: the first date is
-   * chosen while rendering on the server, and the client has to know it was
-   * ours once it takes over.
-   */
   const chosen = useState<IChosenDate | null>('search-chosen-date', () => null)
 
   const lane = computed(() => `${criteria.value.from}|${criteria.value.to}`)
@@ -58,13 +44,6 @@ export const useSearch = () => {
     return router.replace({ query: { ...route.query, date: day } })
   }
 
-  /**
-   * A route reached without a date — a card on the home page, a shared link —
-   * means "as soon as possible", and today is the soonest there is. Written
-   * into the URL rather than assumed quietly, so the date field shows the day
-   * the results belong to, and searched straight away: asking the operators
-   * when they next fly costs a round trip, and most routes sell today.
-   */
   watch(criteria, () => {
     if (!criteria.value.from || !criteria.value.to || criteria.value.date) return
 
@@ -89,7 +68,6 @@ export const useSearch = () => {
       const results = await search(request.value, 1)
 
       return {
-        /** The day these results are for, so a stale answer is recognisable. */
         date: criteria.value.date,
         tours: results.items,
         total: results.total,
@@ -107,14 +85,6 @@ export const useSearch = () => {
     loadMoreError.value = ''
   })
 
-  /**
-   * Today sold nothing, so ask when this route next does.
-   *
-   * Only ever asked about a day this page chose: a visitor who picked a date
-   * and found it empty meant that date, and moving them off it would answer
-   * a question they did not ask. Asked once per route — a second empty
-   * answer means the operators have nothing, not that the day was wrong.
-   */
   const seeking = ref(false)
 
   watch(data, async (result) => {
@@ -138,7 +108,6 @@ export const useSearch = () => {
     }
   })
 
-  /** Fetching, or asking for a better day — either way the page is not done. */
   const busy = computed(() => pending.value || seeking.value)
 
   const tours = computed<Tour[]>(() =>

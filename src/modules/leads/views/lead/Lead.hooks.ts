@@ -30,11 +30,6 @@ export const useLead = () => {
 
   const orders = ref<IOrderRaw[]>([])
 
-  /**
-   * The number fields are typed loosely on purpose: Vue casts the value of
-   * `<input type="number">` to a number the moment someone types in it, so
-   * these hold a string until edited and a number afterwards.
-   */
   const draft = reactive({
     destination: '',
     plannedDates: '',
@@ -127,10 +122,6 @@ export const useLead = () => {
         branch: DEFAULT_BRANCH,
       })
 
-      /**
-       * Said here, at the one moment it is true. The order page says nothing
-       * on arrival, so opening the same order again stays quiet.
-       */
       cheer(t('cms.orders.created'))
 
       await navigateTo(localePath(`/app/orders/${created.uuid}`))

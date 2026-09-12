@@ -20,9 +20,5 @@ const model = defineModel<string>({ default: '' })
 
 const { t } = useI18n()
 
-/**
- * The three the agency actually sells in. A free-text field here meant
- * "usd", "USD " and "у.е." all sat in the same column.
- */
 const options = CURRENCIES.map(code => ({ value: code, label: code }))
 </script>

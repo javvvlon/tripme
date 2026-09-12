@@ -193,15 +193,9 @@ const props = defineProps<IMediaLibraryProps>()
 
 const { resolve, dismiss } = useModalContext<IGalleryResult>()
 
-/** Open for as long as the service keeps it mounted. */
 const open = ref(true)
 const current = computed(() => props.current ?? null)
 
-/**
- * Deleting the picked file has to reach the field that pointed at it, but
- * the gallery stays open afterwards — so it is remembered and reported when
- * the gallery finally closes.
- */
 const removedCurrent = ref<string | null>(null)
 
 watch(open, (still) => { if (!still) finish() })
@@ -248,11 +242,6 @@ const load = async () => {
     }
 }
 
-/**
- * Fetched once, on mount. The service mounts this only while it is open, so
- * there is no closed state to wait for — watching `open` for the way in was
- * why the gallery came up empty.
- */
 const loadFolders = async () => {
   try {
     folders.value = await mediaFolders()
@@ -313,9 +302,6 @@ async function saveFolder() {
   }
 }
 
-/**
- * Drops the folder, never what is in it — the files come back as unfiled.
- */
 async function dropFolder() {
   const entry = folders.value.find(item => item.id === folder.value)
 
@@ -346,10 +332,6 @@ async function dropFolder() {
   }
 }
 
-/**
- * Files the previewed image. Only the label moves — the file keeps the key
- * it was uploaded under, so nothing pointing at it has to change.
- */
 async function fileInto(id: string) {
   const target = focused.value
 
@@ -365,7 +347,6 @@ async function fileInto(id: string) {
 
     await loadFolders()
 
-    /** It has left the folder being viewed, so it leaves the list too. */
     if (folder.value && folder.value !== id && !(folder.value === 'none' && !id)) {
       items.value = items.value.filter(item => item.path !== target.path)
       focused.value = null
@@ -379,11 +360,6 @@ async function fileInto(id: string) {
   }
 }
 
-/**
- * Typing asks the API, so it waits for a pause rather than firing per
- * keystroke. Leaving the preview open would show a file the new results no
- * longer contain.
- */
 let typing: ReturnType<typeof setTimeout> | null = null
 
 watch(query, () => {
@@ -438,11 +414,6 @@ async function rename() {
     }
 }
 
-/**
- * Deleting the bytes, not the reference. Anything already pointing at this
- * URL — a banner, a list item, an article — will stop resolving, which is
- * why it asks first and says so.
- */
 async function destroy() {
     const target = focused.value
 

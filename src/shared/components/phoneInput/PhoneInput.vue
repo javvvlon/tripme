@@ -49,11 +49,6 @@ const placeholder = '(90) 123-45-67'
 
 const display = computed(() => formatPhone(model.value))
 
-/**
- * The caret is put back by counting digits rather than characters: inserting a
- * bracket or a dash shifts every position after it, and a caret that jumps to
- * the end on every keystroke makes the field unusable for corrections.
- */
 async function commit(next: string, digitsBeforeCaret: number) {
     model.value = phoneDigits(next)
 

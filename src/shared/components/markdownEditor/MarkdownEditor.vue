@@ -63,7 +63,6 @@
 
         <p v-if="alignHint" class="tm-md__align">{{ t('markdown.alignHint') }}</p>
 
-        <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-if="preview" class="tm-md__preview" v-html="html" />
 
         <textarea

@@ -132,11 +132,6 @@
         text-align: center;
     }
 
-    /**
-     * One rule for both shapes. At full width `auto-fill` lays the images out
-     * as a grid; once the preview takes the room, the same rule resolves to a
-     * single column — so the width is all that has to animate.
-     */
     &__deck {
         list-style: none;
         display: grid;

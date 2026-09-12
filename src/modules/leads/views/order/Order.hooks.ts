@@ -17,11 +17,6 @@ export interface IOrderDraft {
   dealDate: string
   checkIn: string
   returnDate: string
-  /**
-   * Loosely typed on purpose: Vue casts the value of `<input type="number">`
-   * to a number the moment someone types in it, so these hold a string until
-   * edited and a number afterwards.
-   */
   nights: FieldInput
   adults: FieldInput
   children: FieldInput
@@ -58,7 +53,6 @@ export const useOrder = () => {
 
   const documents = ref<IOrderDocument[]>([])
   const documentsLoading = ref(false)
-  /** Which action is running, so only its own button shows it is busy. */
   const working = ref<'offer' | 'invoice' | 'attachment' | null>(null)
 
   const saving = ref(false)
@@ -94,10 +88,6 @@ export const useOrder = () => {
         adopt(found)
         history.value = await orderHistory(id.value)
 
-        /**
-         * Fetched alongside, not awaited: the form is readable without its
-         * documents, and a slow bucket should not hold the page back.
-         */
         void loadDocuments()
 
         return found
@@ -121,7 +111,6 @@ export const useOrder = () => {
       label: t(`cms.orders.status.${value}`),
     }))
   })
-
 
   async function save(body: Parameters<typeof patchOrder>[1]) {
     error.value = ''
@@ -203,11 +192,6 @@ export const useOrder = () => {
     }
   }
 
-  /**
-   * Writing a document is slow enough to notice — a PDF is built, stored and
-   * recorded — so the button it came from says it is working and the rest of
-   * the bar is left alone.
-   */
   async function generate(kind: 'offer' | 'invoice') {
     if (working.value) return
 
@@ -220,10 +204,6 @@ export const useOrder = () => {
 
       cheer(t(`cms.orders.documents.${kind}Made`))
 
-      /**
-       * Writing an offer moves the lead to "КП отправлено" on the server, so
-       * the order is re-read to show whatever that left behind.
-       */
       if (kind === 'offer') await refresh()
     }
     catch (e) {

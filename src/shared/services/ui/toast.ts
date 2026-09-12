@@ -9,7 +9,6 @@ export interface IToast {
   id: number
   tone: ToastTone
   message: string
-  /** Milliseconds on screen. `0` keeps it until dismissed. */
   timeout: number
 }
 
@@ -23,16 +22,8 @@ const DEFAULT_TIMEOUT: Record<ToastTone, number> = {
   error: 6500,
 }
 
-/** At most this many on screen; the oldest gives way. */
 const MAX_VISIBLE = 4
 
-/**
- * The toast stack for one request.
- *
- * Built per request rather than at module scope: on the server a module-level
- * store is shared by everyone being rendered at once, so one visitor's error
- * could surface in another's page.
- */
 export class ToastService {
   private readonly items: Ref<IToast[]>
 
@@ -83,10 +74,6 @@ export class ToastService {
 
     if (!text) return -1
 
-    /**
-     * The same message twice in a row is almost always one action reported
-     * twice, not two things going wrong. It refreshes rather than stacks.
-     */
     const existing = this.items.value.find(item => item.message === text && item.tone === tone)
 
     if (existing) {

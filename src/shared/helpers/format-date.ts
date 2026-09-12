@@ -1,11 +1,5 @@
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
- *
- * Formatting a date that might not be one.
- *
- * `Intl.DateTimeFormat` throws a RangeError on an invalid date, and a throw
- * inside a template stops Vue re-rendering that subtree — the page freezes on
- * whatever it last drew. One missing field should cost a dash, not a page.
  */
 export const formatDate = (
   value: string | number | Date | null | undefined,

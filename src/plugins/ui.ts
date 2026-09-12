@@ -7,13 +7,6 @@ import type { IOpenModal } from '~/shared/services/ui/modal'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
- *
- * The interface services, built once per request.
- *
- * This is the locator the app resolves through — `useToast()` and
- * `useModal()` read it back out. Nuxt already hands every request its own
- * container, so the services live on that rather than at module scope, where
- * the server would share one stack of toasts between everyone at once.
  */
 export default defineNuxtPlugin({
   name: 'ui',

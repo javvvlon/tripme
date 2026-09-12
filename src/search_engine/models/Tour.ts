@@ -51,14 +51,6 @@ export class Tour extends Model<ITour> {
   protected static override mapRaw(raw: ITourRaw): ITour {
     return {
       ...raw,
-      /**
-       * The operator's own figure, not our conversion — it is what the agent
-       * will see in their cabinet, and a card showing a number nobody else
-       * quotes is worse than a list in mixed currencies.
-       *
-       * The conversion is still carried, because sorting and the price filter
-       * need one comparable scale across four operators.
-       */
       price: raw.price.source,
       comparablePrice: raw.price.converted ?? raw.price.source,
     }

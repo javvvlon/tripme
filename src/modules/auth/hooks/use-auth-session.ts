@@ -14,11 +14,6 @@ export const useAuthSession = () => {
 
   const isAuthenticated = computed(() => user.value !== null)
 
-  /**
-   * Set when a session that was working stops being accepted, as opposed to
-   * someone signing out or never having signed in. The app watches it to get
-   * the reader out of the CMS.
-   */
   const expired = useState('auth:expired', () => false)
 
   const nuxtApp = useNuxtApp()
@@ -71,7 +66,6 @@ export const useAuthSession = () => {
     })
   }
 
-  /** The session is over and it was not the reader's doing. */
   const expire = (): void => {
     const had = user.value !== null || storage.hasSession()
 
@@ -102,14 +96,6 @@ export const useAuthSession = () => {
     })
   }
 
-  /**
-   * Whether the CMS can be entered right now.
-   *
-   * The route guard used to ask `isAuthenticated`, which only says whether a
-   * user was loaded at some point — after an hour on an open tab that is
-   * still true while the token behind it has long stopped working. This asks
-   * the tokens, and spends a refresh when the access token has run out.
-   */
   const ensure = async (): Promise<boolean> => {
     if (!user.value) return false
 

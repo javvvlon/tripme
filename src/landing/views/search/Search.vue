@@ -119,11 +119,6 @@ const headline = computed(() => {
   const dates = criteria.value.date
     ? formatDateRange(criteria.value.date, criteria.value.nights, locale.value)
     : ''
-  /**
-   * The cheapest offer in the currency its operator quoted, so the heading
-   * and the first card agree. The converted range behind the price filter is
-   * a different number for a different job.
-   */
   const from = facets.value.priceFrom
   const cheapest = from
     ? formatMoney({ amount: from.amount, currency: from.currency as 'USD' | 'EUR' | 'UZS' }, locale.value)

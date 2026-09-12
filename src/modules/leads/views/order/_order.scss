@@ -61,11 +61,6 @@
         gap: 16px;
     }
 
-    /**
-     * The offer sits above the form and the rest below it, none of them
-     * reached by the form's own gap. These two rules give the page one
-     * rhythm without doubling the space between the cards inside the form.
-     */
     &__head ~ &__card,
     &__saved ~ &__card { margin-top: 24px; }
 

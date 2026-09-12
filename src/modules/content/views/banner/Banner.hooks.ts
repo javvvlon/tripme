@@ -97,10 +97,6 @@ export const useBanner = () => {
     draft[locale.value].imageUrl = null
   }
 
-  /**
-   * Deleted only once any replacement has landed — otherwise a failed upload
-   * would leave the banner with neither the old image nor a new one.
-   */
   const discardImage = (url: string) => {
     void uploads.then(() => removeUpload(url))
   }

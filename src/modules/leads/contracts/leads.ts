@@ -134,10 +134,6 @@ export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   completed: [],
 }
 
-/**
- * A file that belongs to an order: one the system wrote, or one an agent
- * attached.
- */
 export type DocumentKind = 'offer' | 'invoice' | 'attachment'
 
 export interface IOrderDocument {

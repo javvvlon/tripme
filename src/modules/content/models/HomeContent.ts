@@ -38,7 +38,6 @@ export interface IHomeBanner {
 }
 
 export interface IHomeContent {
-  /** null until an editor publishes one; the design's own hero stands in */
   banner: IHomeBanner | null
   sections: IContentSection[]
 }
@@ -95,19 +94,6 @@ export class HomeContent extends Model<IHomeContent> {
 
     const translation = pick(raw?.banner?.translations, locale)
 
-    /**
-     * A banner with no title in this language is not published in it — the
-     * built-in hero copy stands in rather than a blank headline.
-     */
-    /**
-     * The image falls back to whichever language has one.
-     *
-     * It is stored per language so that artwork with the headline baked into
-     * it can differ — but most banners are one photograph, and making an
-     * editor upload it three times to avoid a placeholder on two thirds of the
-     * site is not a choice, it is a chore. Upload once; override per language
-     * only when it actually differs.
-     */
     const imageUrl = translation?.image_url
       ?? raw?.banner?.translations.find(t => t.image_url)?.image_url
       ?? null

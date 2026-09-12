@@ -31,11 +31,6 @@ const props = defineProps<IHeroProps>()
 
 const { t } = useI18n()
 
-/**
- * Each part falls back on its own, so an editor who wrote a headline but has
- * not uploaded a photograph gets their headline over the design's image
- * rather than nothing.
- */
 const title = computed(() => props.banner?.title || t(HERO.titleKey))
 const subtitle = computed(() => props.banner?.subtitle || t(HERO.subtitleKey))
 const image = computed(() => props.banner?.imageUrl || HERO.image)

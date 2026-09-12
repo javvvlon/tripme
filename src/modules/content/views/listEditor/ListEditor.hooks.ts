@@ -128,17 +128,10 @@ export const useListEditor = (id: string) => {
     }
   }
 
-  /**
-   * Delete the stored file the picker has stopped referencing.
-   *
-   * Awaited after the replacement has uploaded, not before: deleting first
-   * would lose the old image if the new one failed to arrive.
-   */
   const discardImage = (url: string) => {
     void uploads.then(() => removeUpload(url))
   }
 
-  /** Resolves once nothing is uploading, so a discard never races a replace. */
   let uploads: Promise<unknown> = Promise.resolve()
 
   const move = (index: number, direction: -1 | 1) => {

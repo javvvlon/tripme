@@ -61,11 +61,6 @@ export const useToursRepository = () => {
     }
   }
 
-  /**
-   * The first day this route is actually being sold on. Asked of the API
-   * rather than worked out here: it takes one fan-out across the operators,
-   * and the answer is the same for everyone arriving at this route.
-   */
   const soonestDeparture = async (request: SearchRequest): Promise<string> => {
     const { from, to, nights, adults, kids } = request
 

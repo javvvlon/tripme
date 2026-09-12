@@ -12,13 +12,6 @@ import { MODAL_CONTEXT } from '~/shared/services/ui/modal'
 import type { Component } from 'vue'
 import type { IOpenModal } from '~/shared/services/ui/modal'
 
-/**
- * Renders whatever the modal service has open.
- *
- * Each entry gets its own context — resolve, dismiss, config — through
- * provide, so a modal component reaches it with `useModalContext()` rather
- * than taking callbacks as props.
- */
 const modal = useModal()
 const open = modal.open_
 
@@ -34,10 +27,6 @@ const load = async (item: IOpenModal) => {
 
     const component = (loaded as { default?: Component }).default ?? loaded as Component
 
-    /**
-     * Wrapped so the context belongs to this opening and not to the key: the
-     * same modal can be open twice, and each must resolve its own promise.
-     */
     resolved.value = {
         ...resolved.value,
         [item.id]: defineComponent({
@@ -65,7 +54,6 @@ watch(open, (items) => {
     )
 }, { immediate: true, deep: false })
 
-/** Escape closes the topmost, unless it asked not to be dismissed. */
 const onKey = (event: KeyboardEvent) => {
     if (event.key !== 'Escape') return
 

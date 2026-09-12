@@ -30,10 +30,6 @@ export class AppBootstrap {
 
     for (const module of this._modules) {
       for (const [key, entry] of Object.entries(module.modals ?? {})) {
-        /**
-         * Two modules claiming one key would mean whichever booted last wins,
-         * silently, and the other module's modal would never open again.
-         */
         if (modals[key]) {
           throw new Error(`Modal "${key}" is registered by more than one module`)
         }

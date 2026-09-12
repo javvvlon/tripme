@@ -16,15 +16,6 @@
     text-decoration: none;
     isolation: isolate;
 
-    /**
-     * Hover is for links only — a card with nowhere to go should not invite a
-     * click. Three things move together, none of them the box itself: the
-     * photograph pushes in, the scrim deepens so the words stay readable
-     * against it, and the copy lifts to meet the eye.
-     *
-     * The card is `overflow: hidden`, so scaling the image inside it reads as
-     * the picture coming closer rather than the card growing.
-     */
     &.is-link:hover,
     &.is-link:focus-visible {
         box-shadow: shadow('lg');
@@ -41,14 +32,6 @@
         }
     }
 
-    /**
-     * Where the height comes from.
-     *
-     * A row of equal cards has nothing else to set one, so each holds a square
-     * — which is the proportion the design uses for a three-up row. A wide
-     * card sets its row's height and the narrow one beside it simply fills,
-     * so the two always finish level.
-     */
     &.is-square { aspect-ratio: 1 / 1; }
 
     &.is-wide { aspect-ratio: 5 / 2; }
@@ -69,8 +52,6 @@
         aspect-ratio: auto !important;
     }
 
-    // The copy sits on the photograph, so it needs its own ground: a scrim
-    // that is opaque where the text is and gone by the middle of the card.
     &::after {
         content: '';
         position: absolute;
@@ -99,10 +80,6 @@
         transition: transform .3s cubic-bezier(.22, .61, .36, 1);
     }
 
-    /**
-     * The arrow that appears on hover, bottom-right. Not a button: the whole
-     * card is the link, and this only says so.
-     */
     &__go {
         position: absolute;
         right: 22px;
@@ -136,8 +113,6 @@
         @include line-clamp(2);
     }
 
-    // Cards that share a row with a wide one are shorter, so the copy has to
-    // give way before the image does.
     &.is-compact {
         min-height: 200px;
         padding: 18px;
@@ -167,8 +142,6 @@
     .tm-content-card { min-height: 260px; }
 }
 
-// A card that lifts and zooms on hover is motion someone may have asked not to
-// see; the shadow alone still says it is interactive.
 @media (prefers-reduced-motion: reduce) {
     .tm-content-card {
         &__media img,

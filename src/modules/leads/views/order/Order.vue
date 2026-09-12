@@ -246,7 +246,6 @@ const links = computed(() => offerLinks(order.value?.trip as never))
 
 const file = useTemplateRef<HTMLInputElement>('file')
 
-/** What the API will take; anything else is refused before it is uploaded. */
 const ACCEPTED_DOCUMENTS = [
     'application/pdf',
     'image/png', 'image/jpeg', 'image/webp',
@@ -263,7 +262,6 @@ function onFile(event: Event) {
 
     void attach(input.files?.[0])
 
-    /** Cleared so choosing the same file twice still counts as a change. */
     input.value = ''
 }
 
@@ -273,10 +271,6 @@ const backTo = computed(() =>
 const fullDate = (value: string | null | undefined): string =>
     formatDate(value, locale.value, { dateStyle: 'medium', timeStyle: 'short' })
 
-/**
- * A passport that expires within six months of departure is refused by most
- * consulates, so it is worth saying before the ticket is issued.
- */
 const passportWarning = computed(() => {
     if (!draft.passportExpiresAt || !draft.checkIn) return ''
 

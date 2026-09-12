@@ -26,13 +26,6 @@
                 </NuxtLink>
             </nav>
 
-
-            <!--
-                Legal keeps the last column of the five even though the two
-                before it are empty: the design's rhythm comes from where the
-                columns sit, and pulling this one leftward would close a gap
-                that is deliberate.
-            -->
             <nav class="tm-site-footer__col tm-site-footer__col--last" :aria-label="t('footer.legal')">
                 <h2 class="tm-site-footer__heading">{{ t('footer.legal') }}</h2>
                 <component

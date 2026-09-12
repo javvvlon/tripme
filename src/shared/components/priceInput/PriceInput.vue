@@ -47,15 +47,9 @@ const digits = ref(priceInput(model.value))
 const display = computed(() => formatPrice(digits.value))
 
 watch(model, (next) => {
-    /** Only when the change came from elsewhere, or typing would fight itself. */
     if (priceValue(digits.value) !== next) digits.value = priceInput(next)
 })
 
-/**
- * Groups the number as it is typed while keeping the caret where the person
- * left it: the spaces added ahead of it shift everything right, so the caret
- * is placed by counting digits rather than characters.
- */
 function onInput(event: Event) {
     const input = event.target as HTMLInputElement
     const before = input.selectionStart ?? input.value.length

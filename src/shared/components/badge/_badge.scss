@@ -18,7 +18,6 @@
     &--secondary { background: var(--tm-surface-3); color: var(--tm-ink-2); }
     &--sale { background: var(--tm-status-danger); color: var(--tm-common-white); }
 
-    // Over a photograph: white, so it reads against anything underneath.
     &--onPhoto {
         background: var(--tm-common-white);
         color: var(--tm-ink-1);

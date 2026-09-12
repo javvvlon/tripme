@@ -19,10 +19,6 @@ export const useOperatorsRepository = () => {
     return response.data
   }
 
-  /**
-   * Secrets left blank are not sent: the form never receives the stored value,
-   * so an untouched field must not be read as an instruction to clear it.
-   */
   const save = async (id: string, draft: IOperatorDraft): Promise<IOperatorRaw> => {
     const body: AnyObject = {
       name: draft.name.trim(),

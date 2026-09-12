@@ -96,15 +96,10 @@ const { preview, acceptAttr } = upload
 const input = useTemplateRef<HTMLInputElement>('input')
 const dragging = ref(false)
 
-/**
- * Set when Remove was pressed, so a `current` that is still on its way out of
- * the parent's state stops being shown immediately.
- */
 const cleared = ref(false)
 
 const shown = computed(() => preview.value ?? (cleared.value ? null : props.current) ?? null)
 
-/** The stored file this picker is about to stop referencing. */
 const stored = computed(() => (cleared.value ? null : props.current ?? null))
 
 watch(upload.error, value => { error.value = value })
@@ -118,10 +113,6 @@ watch(() => props.current, () => {
 
 const open = () => input.value?.click()
 
-/**
- * A library image is already stored, so nothing is uploaded and nothing is
- * discarded — the file being replaced may still be used somewhere else.
- */
 function fromLibrary(url: string) {
   upload.clear()
   cleared.value = false
@@ -130,14 +121,6 @@ function fromLibrary(url: string) {
   emit('pick', url)
 }
 
-/**
- * The gallery deleted the very file this field points at, so the field has
- * to let go of it — no discard, the bytes are already gone.
- */
-/**
-   * The gallery is opened through the service rather than mounted here: a
-   * list with ten image fields used to carry ten copies of it in the DOM.
-   */
 async function browse() {
   const picked = await modal.open<IGalleryResult>(Modal.Gallery, {
     library: props.library,
@@ -166,7 +149,6 @@ async function take(candidate: File | null | undefined) {
 
   if (input.value) input.value.value = ''
 
-  // Replacing: the file that was there is now unreferenced.
   if (accepted && previous && props.override) emit('discard', previous)
 
   if (accepted) cleared.value = false
@@ -189,12 +171,6 @@ function remove() {
   cleared.value = true
   error.value = ''
 
-  /**
-   * `clear` rather than relying on the model going null: when the image came
-   * from the server the model was already null, so assigning null again
-   * changed nothing and told the caller nothing — which is why Remove looked
-   * like it did nothing at all.
-   */
   file.value = null
   emit('clear')
 

@@ -10,11 +10,6 @@ export const useModal = () => {
   return $modal
 }
 
-/**
- * Read from inside a modal the service opened: how to answer, and how to
- * walk away. Outside one it returns a context that does nothing, so a
- * component can be rendered both ways without guarding every call.
- */
 export const useModalContext = <T = unknown>(): IModalContext<T> => {
   const context = inject(MODAL_CONTEXT, null) as IModalContext<T> | null
 

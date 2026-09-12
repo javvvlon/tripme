@@ -85,11 +85,6 @@ export const useContentRepository = () => {
     return response.data.url
   }
 
-  /**
-   * Tidying up, so a failure here must not surface as a failed edit: the
-   * editor's change is already saved, and an extra file in a bucket is a
-   * smaller problem than an error they cannot act on.
-   */
   const library = async (query = '', folder = ''): Promise<IStoredFileRaw[]> => {
     const params: AnyObject = {}
 
@@ -126,14 +121,9 @@ export const useContentRepository = () => {
       await http.call<void>('Content', 'removeUpload', { url })
     }
     catch {
-      // deliberately swallowed — see above
     }
   }
 
-  /**
-   * Names a stored file. Unlike removal this is not tidying up, so a failure
-   * is surfaced: the editor asked for the name to change.
-   */
   const describeUpload = async (
     url: string,
     changes: { title?: string, folder?: string | null },

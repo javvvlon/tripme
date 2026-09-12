@@ -9,11 +9,6 @@ export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
 
   const { departures, unavailable } = useDepartures()
 
-  /**
-   * The key carries the route. Without it the empty-handed answer fetched on
-   * the home page was reused on the search page, and the destination field
-   * had no option to show its own value against.
-   */
   const { data: countries } = useAsyncData(
     () => `references-countries-${from.value}`,
     () => fetchCountries(from.value).catch(() => {

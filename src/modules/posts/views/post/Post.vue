@@ -35,7 +35,6 @@
                 </div>
             </div>
 
-            <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="tm-post__inner tm-post__body" v-html="body" />
 
             <div v-if="post.tour" class="tm-post__inner tm-post__offer">

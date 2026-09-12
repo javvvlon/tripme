@@ -12,10 +12,6 @@
         stroke: var(--tm-border-1);
     }
 
-    /**
-     * The arc grows and shrinks as it turns, so the ring reads as chasing its
-     * own end rather than as a bar sliding past.
-     */
     &__arc {
         stroke: var(--tm-brand-primary);
         stroke-dasharray: 90 200;
