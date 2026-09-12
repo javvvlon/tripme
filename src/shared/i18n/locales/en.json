@@ -518,7 +518,8 @@
         "referral": "Referral",
         "instagram": "Instagram",
         "walk_in": "Walk-in",
-        "manual": "Added manually"
+        "manual": "Added manually",
+        "contact": "Contact form"
       },
       "addOrder": "Create an order",
       "noOrders": "No orders for this lead yet.",
