@@ -47,7 +47,6 @@
         &:disabled { cursor: not-allowed; }
     }
 
-    /** Sits inside the field so an amount is never read without its unit. */
     &__currency {
         display: flex;
         align-items: center;

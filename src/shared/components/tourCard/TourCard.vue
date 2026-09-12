@@ -96,10 +96,13 @@
                     <Button
                         v-if="!agentView"
                         size="sm"
-                        icon-right="arrow-right"
-                        @click="requesting = true"
+                        :variant="sent ? 'secondary' : 'primary'"
+                        :icon="sent ? 'check' : undefined"
+                        :icon-right="sent ? undefined : 'arrow-right'"
+                        :disabled="sending || sent"
+                        @click="request"
                     >
-                        {{ t('lead.cta') }}
+                        {{ sent ? t('lead.sentShort') : sending ? t('lead.sending') : t('lead.cta') }}
                     </Button>
                 </ClientOnly>
 
@@ -113,7 +116,7 @@
         </div>
 
         <ClientOnly>
-            <LeadModal v-if="!agentView" v-model="requesting" :trip="trip" :summary="summary" />
+            <LeadModal v-if="!agentView" v-model="asking" :trip="trip" :summary="summary" />
         </ClientOnly>
     </article>
 </template>
@@ -122,6 +125,7 @@
 import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
+import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { BadgeTone } from '../badge/Badge.d'
 import type { ITourCardProps } from './TourCard.d'
@@ -132,8 +136,6 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const routeExists = useRouteExists()
-
-const requesting = ref(false)
 
 const hotelPage = computed(() => {
   const path = `/hotels/${props.tour.get('hotelSupplierCode')}`
@@ -149,6 +151,7 @@ const summary = computed(() =>
 const trip = computed<ILeadTrip>(() =>
   tripFromTour(props.tour, { from: props.route?.from ?? '', to: props.route?.to ?? '' }))
 
+const { asking, sending, sent, request } = useTourRequest(() => trip.value)
 
 const photo = computed(() => ({ src: null, alt: props.tour.get('hotelName') }))
 

@@ -1,5 +1,6 @@
+import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useLeadsRepository } from '~/modules/leads/repositories'
-import { isCompletePhone } from '~/shared/helpers/phone'
+import { isCompletePhone, phoneDigits } from '~/shared/helpers/phone'
 import type { ILeadDraft, ILeadTrip } from '~/modules/leads/contracts/leads'
 
 /**
@@ -8,6 +9,7 @@ import type { ILeadDraft, ILeadTrip } from '~/modules/leads/contracts/leads'
 export const useLeadForm = (trip: () => ILeadTrip) => {
   const { t, locale } = useI18n()
   const { submit: send } = useLeadsRepository()
+  const { user } = useAuthSession()
 
   const draft = reactive<ILeadDraft>({ firstName: '', lastName: '', phone: '', comment: '' })
 
@@ -22,9 +24,9 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
   })
 
   function reset() {
-    draft.firstName = ''
-    draft.lastName = ''
-    draft.phone = ''
+    draft.firstName = user.value?.get('firstName') ?? ''
+    draft.lastName = user.value?.get('lastName') ?? ''
+    draft.phone = phoneDigits(user.value?.get('phoneNumber') ?? '')
     draft.comment = ''
 
     sent.value = false

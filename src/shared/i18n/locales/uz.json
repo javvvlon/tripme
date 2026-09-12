@@ -209,14 +209,24 @@
     "errorFailed": "Kirib bo‘lmadi. Yana urinib ko‘ring.",
     "seoTitle": "Kirish — TripMe",
     "welcome": "TripMe’ga xush kelibsiz",
-    "lead": "Ish o‘rniga kirish. Hisobni rahbar beradi — bu yerda ro‘yxatdan o‘tish yo‘q.",
+    "lead": "Buyurtmalaringizni kuzatish uchun kiring. Xodimlar ish o‘rniga o‘tadi.",
     "emailPlaceholder": "Pochtani kiriting",
     "passwordPlaceholder": "Parolni kiriting",
     "errors": {
       "invalidCredentials": "Pochta yoki parol noto‘g‘ri",
-      "failed": "Kirib bo‘lmadi. Yana urinib ko‘ring."
+      "failed": "Kirib bo‘lmadi. Yana urinib ko‘ring.",
+      "taken": "Bu pochta allaqachon ro‘yxatdan o‘tgan — kirib ko‘ring.",
+      "registerFailed": "Hisob yaratib bo‘lmadi. Yana urinib ko‘ring."
     },
-    "expired": "Sessiya tugadi — qaytadan kiring."
+    "expired": "Sessiya tugadi — qaytadan kiring.",
+    "registerTitle": "Hisob yaratish",
+    "registerLead": "Buyurtmalar, hujjatlar va sayohat holati — bir joyda.",
+    "registerSeoTitle": "Ro‘yxatdan o‘tish — TripMe",
+    "confirmPassword": "Parolni takrorlang",
+    "passwordHint": "Kamida {min} ta belgi",
+    "registering": "Hisob yaratilmoqda…",
+    "haveAccount": "Hisobingiz bormi?",
+    "noAccount": "Hali hisobingiz yo‘qmi?"
   },
   "dashboard": {
     "title": "Agent kabineti",
@@ -539,7 +549,8 @@
       "offer": {
         "lead": "Mijoz tanlagan narsani koʻrish uchun qayerga qaytish kerak.",
         "repeatSearch": "Qidiruvni takrorlash"
-      }
+      },
+      "registered": "Ro‘yxatdan o‘tgan mijoz"
     },
     "orders": {
       "title": "Buyurtmalar",
@@ -741,7 +752,10 @@
       "phonePlaceholder": "+998 (77) 000-00-00",
       "comment": "Izoh",
       "commentPlaceholder": "Xona, ovqatlanish, sanalar boʻyicha istaklar…"
-    }
+    },
+    "sending": "Yuborilmoqda…",
+    "sentToAccount": "Ariza yuborildi — yangiliklar «Buyurtmalarim» bo‘limida paydo bo‘ladi.",
+    "sentShort": "Ariza yuborildi"
   },
   "media": {
     "title": "Rasmlar galereyasi",
@@ -780,6 +794,91 @@
         "title": "Papka oʻchirilsinmi?",
         "lead": "Rasmlar galereyada qoladi — ular shunchaki bu papkadan chiqadi."
       }
+    }
+  },
+  "account": {
+    "title": "Shaxsiy kabinet",
+    "nav": {
+      "orders": "Buyurtmalarim",
+      "profile": "Profil"
+    },
+    "status": {
+      "draft": "Rasmiylashtirilmoqda",
+      "requested": "Turoperatorga so‘rov yuborildi",
+      "confirmed": "Tasdiqlangan",
+      "paid": "To‘langan",
+      "issued": "Hujjatlar tayyor",
+      "travelling": "Sayohatda",
+      "completed": "Yakunlangan"
+    },
+    "statusHint": {
+      "draft": "Menejer sayohat tafsilotlarini yig‘moqda. Biror narsa yetishmasa — siz bilan bog‘lanamiz.",
+      "requested": "Turoperatordan tasdiq so‘radik. Odatda bu bir ish kunigacha vaqt oladi.",
+      "confirmed": "Turoperator bronni tasdiqladi. Keyingi qadam — to‘lov: hisob hujjatlarda paydo bo‘ladi.",
+      "paid": "To‘lov qabul qilindi. Sayohat hujjatlarini tayyorlayapmiz.",
+      "issued": "Hujjatlar tayyor va quyida mavjud. Oq yo‘l!",
+      "travelling": "Siz sayohatdasiz. Biror narsa kerak bo‘lsa — menejeringiz aloqada.",
+      "completed": "Sayohat yakunlandi. TripMe’ni tanlaganingiz uchun rahmat!"
+    },
+    "documentKinds": {
+      "offer": "Tijorat taklifi",
+      "invoice": "Hisob",
+      "attachment": "Fayl"
+    },
+    "orders": {
+      "title": "Buyurtmalarim",
+      "lead": "Barcha sayohatlaringiz — arizadan qaytishgacha.",
+      "seoTitle": "Buyurtmalarim — TripMe",
+      "loadFailed": "Buyurtmalarni yuklab bo‘lmadi.",
+      "emptyTitle": "Hozircha buyurtma yo‘q",
+      "emptyText": "Turga ariza qoldirganingizdan so‘ng buyurtma shu yerda paydo bo‘ladi.",
+      "findTour": "Tur topish",
+      "untitled": "Sayohat",
+      "dates": "Sanalar",
+      "travellers": "Sayohatchilar",
+      "price": "Narx",
+      "priceLater": "Aniqlashtirilmoqda",
+      "adults": "kattalar yo‘q | {n} kattalar | {n} kattalar | {n} kattalar",
+      "children": "bolalar yo‘q | {n} bola | {n} bola | {n} bola",
+      "open": "Batafsil"
+    },
+    "order": {
+      "back": "Buyurtmalarga",
+      "seoTitle": "Buyurtma #{n} — TripMe",
+      "number": "Buyurtma #{n}",
+      "loadFailed": "Buyurtmani yuklab bo‘lmadi.",
+      "missingTitle": "Buyurtma topilmadi",
+      "missingText": "Havola eskirgan yoki buyurtma boshqa hisobga tegishli bo‘lishi mumkin.",
+      "trip": "Sayohat",
+      "nights": "Kechalar",
+      "operator": "Turoperator",
+      "booking": "Bron raqami",
+      "manager": "Sizning menejeringiz",
+      "managerRole": "Buyurtmangizni yuritadi",
+      "noManager": "Menejer tez orada tayinlanadi.",
+      "contactLead": "Savolingiz bormi?",
+      "contactLink": "Bizga yozing",
+      "documents": "Hujjatlar",
+      "noDocuments": "Hujjatlar hali yo‘q — tayyor bo‘lishi bilan shu yerda paydo bo‘ladi.",
+      "download": "Ochish",
+      "history": "Buyurtma tarixi",
+      "noHistory": "Hali o‘zgarishlar bo‘lmagan."
+    },
+    "profile": {
+      "title": "Profil",
+      "lead": "Ma’lumotlaringiz va parol.",
+      "seoTitle": "Profil — TripMe",
+      "details": "Shaxsiy ma’lumotlar",
+      "emailLocked": "Pochta kirish uchun ishlatiladi, uni o‘zgartirib bo‘lmaydi.",
+      "saved": "Ma’lumotlar saqlandi",
+      "saveFailed": "Ma’lumotlarni saqlab bo‘lmadi.",
+      "password": "Parolni o‘zgartirish",
+      "currentPassword": "Joriy parol",
+      "newPassword": "Yangi parol",
+      "changePassword": "Parolni o‘zgartirish",
+      "passwordChanged": "Parol o‘zgartirildi",
+      "passwordFailed": "Parolni o‘zgartirib bo‘lmadi.",
+      "wrongPassword": "Joriy parol noto‘g‘ri."
     }
   }
 }

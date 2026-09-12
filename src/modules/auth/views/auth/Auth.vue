@@ -39,6 +39,11 @@
                     </Button>
                 </form>
 
+                    <p class="tm-auth__switch">
+                        {{ t('auth.noAccount') }}
+                        <NuxtLink :to="localePath('/register')">{{ t('auth.signup') }}</NuxtLink>
+                    </p>
+
                     <NuxtLink :to="localePath('/')" class="tm-auth__back">{{ t('auth.backHome') }}</NuxtLink>
                 </div>
             </div>

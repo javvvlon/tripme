@@ -209,14 +209,24 @@
     "errorFailed": "Could not sign in. Please try again.",
     "seoTitle": "Sign in — TripMe",
     "welcome": "Welcome to TripMe",
-    "lead": "Sign in to your workspace. Accounts are issued by a manager — there is no self sign-up.",
+    "lead": "Sign in to follow your orders. Staff land in the workspace.",
     "emailPlaceholder": "Enter email",
     "passwordPlaceholder": "Enter password",
     "errors": {
       "invalidCredentials": "Wrong email or password",
-      "failed": "Could not sign in. Please try again."
+      "failed": "Could not sign in. Please try again.",
+      "taken": "That email is already registered — try signing in.",
+      "registerFailed": "Could not create the account. Please try again."
     },
-    "expired": "Your session has expired — please sign in again."
+    "expired": "Your session has expired — please sign in again.",
+    "registerTitle": "Create an account",
+    "registerLead": "Orders, documents and trip status — all in one place.",
+    "registerSeoTitle": "Sign up — TripMe",
+    "confirmPassword": "Repeat password",
+    "passwordHint": "At least {min} characters",
+    "registering": "Creating your account…",
+    "haveAccount": "Already have an account?",
+    "noAccount": "No account yet?"
   },
   "dashboard": {
     "title": "Agent workspace",
@@ -539,7 +549,8 @@
       "offer": {
         "lead": "Where to go back to see what the client picked.",
         "repeatSearch": "Repeat the search"
-      }
+      },
+      "registered": "Registered customer"
     },
     "orders": {
       "title": "Orders",
@@ -741,7 +752,10 @@
       "phonePlaceholder": "+998 (77) 000-00-00",
       "comment": "Comment",
       "commentPlaceholder": "Preferences on the room, board, dates…"
-    }
+    },
+    "sending": "Sending…",
+    "sentToAccount": "Request sent — updates will appear in your orders.",
+    "sentShort": "Request sent"
   },
   "media": {
     "title": "Image library",
@@ -780,6 +794,91 @@
         "title": "Delete this folder?",
         "lead": "The images stay in the gallery — they simply stop being filed here."
       }
+    }
+  },
+  "account": {
+    "title": "My account",
+    "nav": {
+      "orders": "My orders",
+      "profile": "Profile"
+    },
+    "status": {
+      "draft": "Being prepared",
+      "requested": "Awaiting the operator",
+      "confirmed": "Confirmed",
+      "paid": "Paid",
+      "issued": "Documents ready",
+      "travelling": "Travelling",
+      "completed": "Completed"
+    },
+    "statusHint": {
+      "draft": "Your manager is gathering the trip details. We will reach out if anything is missing.",
+      "requested": "We have asked the tour operator to confirm. This usually takes up to one working day.",
+      "confirmed": "The operator confirmed the booking. Next comes payment — the invoice will appear under documents.",
+      "paid": "Payment received. We are preparing your travel documents.",
+      "issued": "Your documents are issued and available below. Have a great trip!",
+      "travelling": "You are on your trip. Your manager is one message away if you need anything.",
+      "completed": "The trip is over. Thank you for choosing TripMe!"
+    },
+    "documentKinds": {
+      "offer": "Commercial offer",
+      "invoice": "Invoice",
+      "attachment": "File"
+    },
+    "orders": {
+      "title": "My orders",
+      "lead": "Every trip of yours — from the request to the way back.",
+      "seoTitle": "My orders — TripMe",
+      "loadFailed": "Could not load your orders.",
+      "emptyTitle": "No orders yet",
+      "emptyText": "Once you request a tour, the order will show up here.",
+      "findTour": "Find a tour",
+      "untitled": "Trip",
+      "dates": "Dates",
+      "travellers": "Travellers",
+      "price": "Price",
+      "priceLater": "To be confirmed",
+      "adults": "no adults | {n} adult | {n} adults | {n} adults",
+      "children": "no children | {n} child | {n} children | {n} children",
+      "open": "Details"
+    },
+    "order": {
+      "back": "Back to orders",
+      "seoTitle": "Order #{n} — TripMe",
+      "number": "Order #{n}",
+      "loadFailed": "Could not load the order.",
+      "missingTitle": "Order not found",
+      "missingText": "The link may be outdated, or the order belongs to another account.",
+      "trip": "Trip",
+      "nights": "Nights",
+      "operator": "Tour operator",
+      "booking": "Booking reference",
+      "manager": "Your manager",
+      "managerRole": "Looks after your order",
+      "noManager": "A manager will be assigned shortly.",
+      "contactLead": "Have a question?",
+      "contactLink": "Write to us",
+      "documents": "Documents",
+      "noDocuments": "No documents yet — they will appear here as soon as they are ready.",
+      "download": "Open",
+      "history": "Order history",
+      "noHistory": "No changes yet."
+    },
+    "profile": {
+      "title": "Profile",
+      "lead": "Your details and password.",
+      "seoTitle": "Profile — TripMe",
+      "details": "Personal details",
+      "emailLocked": "The email is your sign-in and cannot be changed.",
+      "saved": "Details saved",
+      "saveFailed": "Could not save your details.",
+      "password": "Change password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "changePassword": "Change password",
+      "passwordChanged": "Password changed",
+      "passwordFailed": "Could not change the password.",
+      "wrongPassword": "The current password is wrong."
     }
   }
 }

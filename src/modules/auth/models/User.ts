@@ -4,6 +4,10 @@ import { UserRole } from '~/modules/auth/contracts/auth'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
+export const WORKSPACE_HOME = '/app/leads'
+
+export const ACCOUNT_HOME = '/account'
+
 export interface IUserRaw {
   id: string
   first_name: string
@@ -56,6 +60,14 @@ export class User extends Model<IUser> {
 
   public canAccessWorkspace(): boolean {
     return this.isAgent() || this.canSeeAllClients()
+  }
+
+  public isClient(): boolean {
+    return this.get('role') === UserRole.Client
+  }
+
+  public homePath(): string {
+    return this.canAccessWorkspace() ? WORKSPACE_HOME : ACCOUNT_HOME
   }
 
   public fullName(): string {

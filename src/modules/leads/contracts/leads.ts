@@ -41,6 +41,7 @@ export interface ILeadRaw {
   status: LeadStatus
   reject_reason: string
   channel: string
+  user_id: string | null
   destination: string
   planned_dates: string
   party_size: number

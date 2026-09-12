@@ -1,5 +1,6 @@
 import { MESSAGE_MAX } from './ContactPanel.config'
-import { isCompletePhone, toE164 } from '~/shared/helpers/phone'
+import { isCompletePhone, phoneDigits, toE164 } from '~/shared/helpers/phone'
+import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -7,8 +8,17 @@ import { isCompletePhone, toE164 } from '~/shared/helpers/phone'
 export const useContactForm = () => {
   const { t } = useI18n()
   const http = useHttp()
+  const { user } = useAuthSession()
 
   const form = reactive({ firstName: '', lastName: '', phone: '', message: '' })
+
+  const prefill = () => {
+    form.firstName = user.value?.get('firstName') ?? ''
+    form.lastName = user.value?.get('lastName') ?? ''
+    form.phone = phoneDigits(user.value?.get('phoneNumber') ?? '')
+  }
+
+  watch(user, prefill, { immediate: true })
 
   const sending = ref(false)
   const sent = ref(false)
@@ -37,9 +47,7 @@ export const useContactForm = () => {
       })
 
       sent.value = true
-      form.firstName = ''
-      form.lastName = ''
-      form.phone = ''
+      prefill()
       form.message = ''
       validation.reset()
     }

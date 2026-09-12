@@ -12,4 +12,12 @@ export const routes: IModuleRoute[] = [
     ssr: false,
     meta: { middleware: 'guest' },
   },
+  {
+    name: 'auth-register',
+    path: '/register',
+    file: 'modules/auth/views/register/Register.vue',
+    layout: 'blank',
+    ssr: false,
+    meta: { middleware: 'guest' },
+  },
 ]

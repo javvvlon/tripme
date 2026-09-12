@@ -14,6 +14,7 @@
                     <h1 class="tm-cms-lead__number">#{{ lead.order_id }}</h1>
                     <p class="tm-cms-lead__sub">
                         {{ t(`cms.leads.channels.${lead.channel}`) }} · {{ fullDate(lead.created_at) }}
+                        <template v-if="lead.user_id"> · {{ t('cms.leads.registered') }}</template>
                     </p>
                 </div>
 

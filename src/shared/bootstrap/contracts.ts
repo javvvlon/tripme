@@ -26,7 +26,6 @@ export interface IModule {
   resource?: IResource
   resources?: IResource[]
   middlewares?: IMiddleware[]
-  /** Modals this module owns, keyed so anywhere can open them. */
   modals?: IModalRegistry
 }
 

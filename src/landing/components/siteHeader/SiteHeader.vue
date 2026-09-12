@@ -26,8 +26,8 @@
                 <LangSwitcher />
                 <NuxtLink
                     v-if="user"
-                    :to="localePath('/app/leads')" class="tm-site-header__account tm-site-header__account--user"
-                    :aria-label="t('common.workspace')" :title="user.fullName()"
+                    :to="localePath(user.homePath())" class="tm-site-header__account tm-site-header__account--user"
+                    :aria-label="user.isClient() ? t('common.account') : t('common.workspace')" :title="user.fullName()"
                 >
                     {{ initials }}
                 </NuxtLink>

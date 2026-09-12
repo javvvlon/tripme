@@ -30,27 +30,34 @@
                 <p v-if="price" class="tm-tour-offer__price">{{ price }}</p>
                 <p v-if="price" class="tm-tour-offer__price-note">{{ t('post.tour.priceNote') }}</p>
 
-                <Button v-if="actionable" size="md" icon-right="arrow-right" @click="requesting = true">
-                    {{ t('lead.cta') }}
+                <Button
+                    v-if="actionable" size="md"
+                    :variant="sent ? 'secondary' : 'primary'"
+                    :icon="sent ? 'check' : undefined"
+                    :icon-right="sent ? undefined : 'arrow-right'"
+                    :disabled="sending || sent" @click="request"
+                >
+                    {{ sent ? t('lead.sentShort') : sending ? t('lead.sending') : t('lead.cta') }}
                 </Button>
             </div>
         </div>
 
         <ClientOnly v-if="actionable">
-            <LeadModal v-model="requesting" :trip="trip" :summary="summary" />
+            <LeadModal v-model="asking" :trip="trip" :summary="summary" />
         </ClientOnly>
     </section>
 </template>
 
 <script setup lang="ts">
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
+import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
 import type { ITourOfferProps } from './TourOffer.d'
 
 const props = defineProps<ITourOfferProps>()
 
 const { t, locale } = useI18n()
 
-const requesting = ref(false)
+const { asking, sending, sent, request } = useTourRequest(() => props.trip)
 
 const dates = computed(() => {
     if (!props.trip.check_in) return ''

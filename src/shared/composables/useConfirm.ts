@@ -4,7 +4,6 @@
 export interface IConfirmRequest {
   title: string
   description?: string
-  /** what will be lost, named — a title, a number, a person */
   subject?: string
   confirmLabel?: string
   cancelLabel?: string

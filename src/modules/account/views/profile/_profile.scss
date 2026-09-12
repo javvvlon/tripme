@@ -1,0 +1,56 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-profile {
+    &__head { margin-bottom: 22px; }
+
+    &__title {
+        margin: 0;
+        font-size: size(28);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        color: var(--tm-ink-1);
+    }
+
+    &__lead {
+        margin: 6px 0 0;
+        font-size: size(14);
+        color: var(--tm-ink-3);
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px 22px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+
+        & + & { margin-top: 16px; }
+    }
+
+    &__card-title {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    &__foot {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 4px;
+    }
+}
+
+@media #{$until-sm} {
+    .tm-profile__row { grid-template-columns: 1fr; }
+}

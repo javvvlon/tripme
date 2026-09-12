@@ -1,0 +1,20 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-order-status {
+    display: inline-block;
+    padding: 4px 11px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('pill');
+    font-size: size(12);
+    font-weight: 600;
+    color: var(--tm-ink-3);
+    white-space: nowrap;
+
+    &.is-draft { color: var(--tm-ink-4); }
+    &.is-requested { border-color: var(--tm-brand-primary); background: var(--tm-brand-primary-soft); color: var(--tm-brand-primary-dark); }
+    &.is-confirmed,
+    &.is-paid,
+    &.is-issued,
+    &.is-travelling { border-color: var(--tm-status-success-line); background: var(--tm-status-success-soft); color: var(--tm-status-success); }
+    &.is-completed { background: var(--tm-surface-2); color: var(--tm-ink-3); }
+}

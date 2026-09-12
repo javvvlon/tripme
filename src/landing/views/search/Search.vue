@@ -16,7 +16,7 @@
             <ClientOnly>
                 <FilterPanel
                     v-model="filters" :facets="facets" :loading="busy"
-                    :agent-view="isAuthenticated"
+                    :agent-view="isStaff"
                     class="tm-search-view__filters"
                 />
 
@@ -31,11 +31,6 @@
             <div class="tm-search-view__results">
                 <ResultsHeader v-model:sort="sort" :title="headline" :sortable="tours.length > 0" />
 
-                <!--
-                    Card-shaped placeholders, not a spinner: the layout is
-                    already known, so holding its shape stops the page jumping
-                    when results land.
-                -->
                 <div v-if="settling" class="tm-search-view__settling">
                     <Spinner />
                     <p>{{ t('results.settling') }}</p>
@@ -61,7 +56,7 @@
                         <li v-for="(tour, i) in tours" :key="tour.get('id')">
                             <TourCard
                                 :tour="tour" :eager="i === 0"
-                                :agent-view="isAuthenticated"
+                                :agent-view="isStaff"
                                 :route="{ from: criteria.from, to: criteria.to }"
                             />
                         </li>
@@ -100,7 +95,7 @@ import { useSearch } from './Search.hooks'
 const { t, locale } = useI18n()
 const { label } = useCatalogLabel()
 
-const { isAuthenticated } = useAuthSession()
+const { isStaff } = useAuthSession()
 
 const {
   criteria, filters, sort,

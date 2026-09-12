@@ -16,11 +16,8 @@ export interface IMediaFolder {
   count: number
 }
 
-/** What the gallery hands back when it closes. */
 export interface IGalleryResult {
-  /** The file that was picked, if one was. */
   url?: string
-  /** The file the caller was pointing at, if it was deleted from storage. */
   removed?: string
 }
 

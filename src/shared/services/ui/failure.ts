@@ -15,6 +15,7 @@ const KNOWN: Array<[RegExp, string]> = [
   [/^Order not found$/i, 'cms.errors.guards.orderMissing'],
   [/^A first name is required$/i, 'cms.errors.guards.firstNameRequired'],
   [/^A phone number is required$/i, 'cms.errors.guards.phoneRequired'],
+  [/^The current password is wrong$/i, 'account.profile.wrongPassword'],
 ]
 
 const TRANSITION = /^An order cannot go from (\w+) to (\w+)$/i

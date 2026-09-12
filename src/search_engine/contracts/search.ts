@@ -68,7 +68,6 @@ export interface SearchFacets {
   meals: FacetOption[]
   districts: FacetOption[]
   availability: FacetOption[]
-  /** the cheapest offer as its operator quoted it — what the heading shows */
   priceFrom: { amount: number, currency: string } | null
   priceBuckets: { from: number, to: number, count: number }[]
   priceMin: number | null

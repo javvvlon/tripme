@@ -13,6 +13,8 @@ export const useAuthSession = () => {
   const storage = useAuthStorage()
 
   const isAuthenticated = computed(() => user.value !== null)
+  const isStaff = computed(() => user.value?.canAccessWorkspace() ?? false)
+  const isClient = computed(() => user.value?.isClient() ?? false)
 
   const expired = useState('auth:expired', () => false)
 
@@ -54,8 +56,11 @@ export const useAuthSession = () => {
       try {
         user.value = await me()
       }
-      catch {
-        storage.clear()
+      catch (error) {
+        const status = (error as { status?: number }).status
+
+        if (status === 401 || status === 403) storage.clear()
+
         user.value = null
       }
       finally {
@@ -140,5 +145,5 @@ export const useAuthSession = () => {
     }
   }
 
-  return { user, isAuthenticated, expired, restore, refresh, ensure, expire, login, signup, logout }
+  return { user, isAuthenticated, isStaff, isClient, expired, restore, refresh, ensure, expire, login, signup, logout }
 }

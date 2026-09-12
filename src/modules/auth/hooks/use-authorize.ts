@@ -11,9 +11,11 @@ export const useAuthorize = () => {
   const localePath = useLocalePath()
   const route = useRoute()
 
-  return async (tokens: IAuthTokens, fallback = '/app/leads') => {
+  return async (tokens: IAuthTokens) => {
     storage.setTokens(tokens)
-    await restore(true)
+
+    const user = await restore(true)
+    const fallback = user?.homePath() ?? '/'
 
     const requested = typeof route.query.redirect === 'string' ? route.query.redirect : ''
     const target = requested.startsWith('/') && !requested.startsWith('//') ? requested : fallback

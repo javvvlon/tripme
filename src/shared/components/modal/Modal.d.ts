@@ -12,7 +12,6 @@ export interface IModalProps {
   disabled?: boolean
   error?: string
   size?: ModalSizeValue
-  /** Off for modals that finish by picking something rather than confirming. */
   footer?: boolean
   tone?: 'default' | 'danger'
 }
