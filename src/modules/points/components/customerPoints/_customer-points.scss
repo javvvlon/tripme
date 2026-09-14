@@ -1,0 +1,101 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-customer-points {
+    padding: 20px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('md');
+    background: var(--tm-surface-1);
+
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    &__title {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    &__state {
+        margin: 0;
+        font-size: size(14);
+        color: var(--tm-ink-3);
+    }
+
+    &__facts {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    &__fact {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+    }
+
+    &__label {
+        font-size: size(12);
+        color: var(--tm-ink-3);
+    }
+
+    &__value {
+        font-size: size(19);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--tm-ink-1);
+
+        &.is-on { color: var(--tm-status-success); }
+    }
+
+    &__next,
+    &__hint {
+        margin: 12px 0 0;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+
+    &__hint { color: var(--tm-brand-primary-dark); font-weight: 600; }
+
+    &__direction {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    &__choice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        font-size: size(14);
+        font-weight: 600;
+        color: var(--tm-ink-2);
+        cursor: pointer;
+
+        input { margin: 0; }
+
+        &.is-on { border-color: var(--tm-brand-primary); background: var(--tm-brand-primary-soft); color: var(--tm-brand-primary-dark); }
+    }
+
+    .tm-input + .tm-input { margin-top: 12px; }
+}
+
+@media #{$until-sm} {
+    .tm-customer-points__facts { grid-template-columns: 1fr; }
+}

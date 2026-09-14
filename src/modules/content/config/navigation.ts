@@ -23,6 +23,12 @@ export const CMS_NAVIGATION: INavNode[] = [
     to: '/app/operators',
   },
   {
+    key: 'points',
+    labelKey: 'cms.nav.points',
+    icon: 'medal',
+    to: '/app/points',
+  },
+  {
     key: 'content',
     labelKey: 'cms.nav.content',
     icon: 'folder',

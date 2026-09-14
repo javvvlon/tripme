@@ -260,7 +260,8 @@
       "leads": "Leads",
       "content": "Content",
       "orders": "Orders",
-      "operators": "Operators"
+      "operators": "Operators",
+      "points": "TripMe points"
     },
     "roles": {
       "CLIENT": "Client",
@@ -286,7 +287,14 @@
         "leadMissing": "This lead no longer exists.",
         "orderMissing": "This order no longer exists.",
         "firstNameRequired": "A first name is required.",
-        "phoneRequired": "A phone number is required."
+        "phoneRequired": "A phone number is required.",
+        "pointsBelowZero": "The balance cannot go below zero.",
+        "tierName": "A tier needs a name.",
+        "tierThreshold": "The threshold is zero or more points.",
+        "tierDiscount": "The discount is between 0 and 100 percent.",
+        "pointsRate": "A rate is a number of points per unit of currency.",
+        "tierMissing": "Tier not found.",
+        "customerMissing": "Customer not found."
       }
     },
     "upload": {
@@ -674,6 +682,51 @@
         "apiSecret": "Secret",
         "note": "Note"
       }
+    },
+    "points": {
+      "title": "TripMe points",
+      "lead": "Trip points and discount tiers for registered customers.",
+      "loadFailed": "Could not load the points settings.",
+      "tiers": {
+        "title": "Tiers",
+        "lead": "A customer reaches a tier when their balance passes its threshold. The tier discount is applied by the manager when pricing an order.",
+        "name": "Name",
+        "threshold": "Threshold, points",
+        "discount": "Discount",
+        "add": "Add tier",
+        "create": "Create",
+        "edit": "Edit",
+        "empty": "No tiers yet.",
+        "confirmDelete": "Delete the “{name}” tier?",
+        "deleted": "Tier deleted"
+      },
+      "rates": {
+        "title": "Earning",
+        "lead": "How many points one unit of a completed order’s price is worth.",
+        "per": "Points per 1 {currency}",
+        "example": "For example: a 1,000 USD order earns {points} points."
+      },
+      "customer": {
+        "title": "TripMe points",
+        "loadFailed": "Could not load the customer’s points.",
+        "missing": "Points unavailable.",
+        "balance": "Balance",
+        "tier": "Tier",
+        "discount": "Discount",
+        "next": "{points} points to the “{tier}” tier.",
+        "applyHint": "Apply a {percent}% discount to the order price.",
+        "adjust": "Adjust",
+        "adjustTitle": "Adjust points",
+        "adjustSubmit": "Apply",
+        "add": "Add",
+        "take": "Take",
+        "amount": "Points",
+        "note": "Reason",
+        "notePlaceholder": "e.g. bonus for a review",
+        "amountRequired": "Enter the number of points.",
+        "adjusted": "Points updated",
+        "adjustFailed": "Could not change the points."
+      }
     }
   },
   "markdown": {
@@ -800,7 +853,8 @@
     "title": "My account",
     "nav": {
       "orders": "My orders",
-      "profile": "Profile"
+      "profile": "Profile",
+      "points": "TripMe points"
     },
     "status": {
       "draft": "Being prepared",
@@ -879,6 +933,26 @@
       "passwordChanged": "Password changed",
       "passwordFailed": "Could not change the password.",
       "wrongPassword": "The current password is wrong."
+    },
+    "points": {
+      "title": "TripMe points",
+      "lead": "Points for every trip and a discount on the next one.",
+      "seoTitle": "TripMe points — TripMe",
+      "loadFailed": "Could not load your points.",
+      "balance": "Your balance",
+      "unit": "points",
+      "noTier": "No tier yet",
+      "discount": "Your discount — {percent}% on the next order",
+      "noDiscount": "A discount comes with the first tier",
+      "next": "{points} more points to the “{tier}” tier with a {percent}% discount",
+      "top": "You are on the top tier",
+      "how": "How it works",
+      "howText": "Points are added automatically once a trip is completed. The more points, the higher the tier — and the discount on your next order.",
+      "from": "from {points} points",
+      "history": "History",
+      "noHistory": "Nothing yet — points appear after your first completed trip.",
+      "forOrder": "Trip on order #{n}",
+      "adjustment": "Adjustment"
     }
   }
 }

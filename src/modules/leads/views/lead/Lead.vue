@@ -68,6 +68,8 @@
                 <p v-if="!links.booking" class="tm-cms-lead__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
             </section>
 
+            <CustomerPoints v-if="lead.user_id" :user-id="lead.user_id" class="tm-cms-lead__points" />
+
             <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-lead__card">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
@@ -184,6 +186,7 @@ import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
+import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()

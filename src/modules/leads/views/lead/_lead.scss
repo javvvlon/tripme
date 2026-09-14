@@ -222,6 +222,8 @@
     &__saved ~ &__card { margin-top: 24px; }
 
     &__card ~ &__form,
+    &__card ~ &__points,
+    &__points ~ &__form,
     &__form ~ &__card { margin-top: 16px; }
 
     &__row {

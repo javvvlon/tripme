@@ -11,5 +11,6 @@ export interface IAccountNavItem {
 
 export const ACCOUNT_NAVIGATION: IAccountNavItem[] = [
   { key: 'orders', labelKey: 'account.nav.orders', icon: 'briefcase', to: '/account', prefix: '/account/orders' },
+  { key: 'points', labelKey: 'account.nav.points', icon: 'medal', to: '/account/points' },
   { key: 'profile', labelKey: 'account.nav.profile', icon: 'user', to: '/account/profile' },
 ]

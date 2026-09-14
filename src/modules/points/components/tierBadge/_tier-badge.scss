@@ -1,0 +1,19 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-tier {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('pill');
+    font-size: size(12);
+    font-weight: 700;
+    color: var(--tm-ink-2);
+    white-space: nowrap;
+
+    &.is-none { color: var(--tm-ink-4); }
+    &.is-low { border-color: var(--tm-border-1); background: var(--tm-surface-2); }
+    &.is-mid { border-color: var(--tm-brand-primary); background: var(--tm-brand-primary-soft); color: var(--tm-brand-primary-dark); }
+    &.is-high { border-color: var(--tm-brand-secondary); background: var(--tm-brand-secondary-soft); color: var(--tm-brand-secondary-dark); }
+}

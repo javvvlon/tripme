@@ -1,0 +1,80 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-cms-points {
+    &__card {
+        margin-top: 24px;
+        padding: 20px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+
+        & + & { margin-top: 16px; }
+    }
+
+    &__card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    &__card-title {
+        margin: 0;
+        font-size: size(16);
+        font-weight: 700;
+        color: var(--tm-ink-1);
+    }
+
+    &__card-lead {
+        margin: 4px 0 0;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            padding: 10px 12px;
+            border-top: 1px solid var(--tm-border-2);
+            font-size: size(14);
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            border-top: 0;
+            font-size: size(12);
+            font-weight: 600;
+            color: var(--tm-ink-3);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .is-num { text-align: right; font-variant-numeric: tabular-nums; width: 180px; }
+        .is-actions { width: 240px; text-align: right; white-space: nowrap; }
+        .is-actions .tm-button + .tm-button { margin-left: 6px; }
+        .is-empty { color: var(--tm-ink-3); text-align: center; padding: 24px; }
+
+        .tm-input__field { text-align: inherit; }
+    }
+
+    &__rates {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+        align-items: end;
+        gap: 14px;
+    }
+
+    &__example {
+        margin: 12px 0 0;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+}
+
+@media #{$until-md} {
+    .tm-cms-points__rates { grid-template-columns: 1fr; }
+}

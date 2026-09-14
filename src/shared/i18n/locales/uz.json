@@ -260,7 +260,8 @@
       "leads": "Lidlar",
       "content": "Kontent",
       "orders": "Buyurtmalar",
-      "operators": "Turoperatorlar"
+      "operators": "Turoperatorlar",
+      "points": "TripMe points"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -286,7 +287,14 @@
         "leadMissing": "Lid topilmadi — oʻchirilgan boʻlishi mumkin.",
         "orderMissing": "Buyurtma topilmadi — oʻchirilgan boʻlishi mumkin.",
         "firstNameRequired": "Mijoz ismini kiriting.",
-        "phoneRequired": "Telefon raqamini kiriting."
+        "phoneRequired": "Telefon raqamini kiriting.",
+        "pointsBelowZero": "Balans manfiy bo‘la olmaydi.",
+        "tierName": "Darajaning nomi bo‘lishi kerak.",
+        "tierThreshold": "Chegara — nol yoki undan ko‘p ball.",
+        "tierDiscount": "Chegirma — 0 dan 100 foizgacha.",
+        "pointsRate": "Kurs — valyuta birligi uchun ballar soni.",
+        "tierMissing": "Daraja topilmadi.",
+        "customerMissing": "Mijoz topilmadi."
       }
     },
     "upload": {
@@ -674,6 +682,51 @@
         "apiSecret": "Secret",
         "note": "Eslatma"
       }
+    },
+    "points": {
+      "title": "TripMe points",
+      "lead": "Ro‘yxatdan o‘tgan mijozlar uchun sayohat ballari va chegirma darajalari.",
+      "loadFailed": "Ballar sozlamalarini yuklab bo‘lmadi.",
+      "tiers": {
+        "title": "Darajalar",
+        "lead": "Balans chegaraga yetganda mijoz darajaga ega bo‘ladi. Daraja chegirmasini menejer buyurtma narxida qo‘llaydi.",
+        "name": "Nomi",
+        "threshold": "Chegara, ball",
+        "discount": "Chegirma",
+        "add": "Daraja qo‘shish",
+        "create": "Yaratish",
+        "edit": "O‘zgartirish",
+        "empty": "Hozircha darajalar yo‘q.",
+        "confirmDelete": "«{name}» darajasi o‘chirilsinmi?",
+        "deleted": "Daraja o‘chirildi"
+      },
+      "rates": {
+        "title": "Hisoblash",
+        "lead": "Yakunlangan buyurtma narxining bir birligi nechta ball beradi.",
+        "per": "1 {currency} uchun ball",
+        "example": "Masalan: 1 000 USD buyurtma {points} ball beradi."
+      },
+      "customer": {
+        "title": "TripMe points",
+        "loadFailed": "Mijoz ballarini yuklab bo‘lmadi.",
+        "missing": "Ballar mavjud emas.",
+        "balance": "Balans",
+        "tier": "Daraja",
+        "discount": "Chegirma",
+        "next": "«{tier}» darajasigacha {points} ball qoldi.",
+        "applyHint": "Buyurtma narxiga {percent}% chegirma qo‘llang.",
+        "adjust": "Tuzatish",
+        "adjustTitle": "Ballarni tuzatish",
+        "adjustSubmit": "Qo‘llash",
+        "add": "Qo‘shish",
+        "take": "Ayirish",
+        "amount": "Ball",
+        "note": "Sabab",
+        "notePlaceholder": "Masalan: sharh uchun bonus",
+        "amountRequired": "Ball miqdorini kiriting.",
+        "adjusted": "Ballar yangilandi",
+        "adjustFailed": "Ballarni o‘zgartirib bo‘lmadi."
+      }
     }
   },
   "markdown": {
@@ -800,7 +853,8 @@
     "title": "Shaxsiy kabinet",
     "nav": {
       "orders": "Buyurtmalarim",
-      "profile": "Profil"
+      "profile": "Profil",
+      "points": "TripMe points"
     },
     "status": {
       "draft": "Rasmiylashtirilmoqda",
@@ -879,6 +933,26 @@
       "passwordChanged": "Parol o‘zgartirildi",
       "passwordFailed": "Parolni o‘zgartirib bo‘lmadi.",
       "wrongPassword": "Joriy parol noto‘g‘ri."
+    },
+    "points": {
+      "title": "TripMe points",
+      "lead": "Har bir sayohat uchun ball va keyingisiga chegirma.",
+      "seoTitle": "TripMe points — TripMe",
+      "loadFailed": "Ballarni yuklab bo‘lmadi.",
+      "balance": "Balansingiz",
+      "unit": "ball",
+      "noTier": "Darajasiz",
+      "discount": "Chegirmangiz — keyingi buyurtmaga {percent}%",
+      "noDiscount": "Chegirma birinchi daraja bilan paydo bo‘ladi",
+      "next": "Yana {points} ball — va {percent}% chegirmali «{tier}» darajasi",
+      "top": "Siz eng yuqori darajadasiz",
+      "how": "Bu qanday ishlaydi",
+      "howText": "Sayohat yakunlanganda ballar avtomatik hisoblanadi. Ball qancha ko‘p bo‘lsa, daraja va keyingi buyurtmaga chegirma shuncha yuqori.",
+      "from": "{points} balldan",
+      "history": "Tarix",
+      "noHistory": "Hozircha hisoblanmagan — birinchi yakunlangan sayohatdan keyin paydo bo‘ladi.",
+      "forOrder": "#{n} buyurtma bo‘yicha sayohat",
+      "adjustment": "Tuzatish"
     }
   }
 }

@@ -21,6 +21,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'customer' },
   },
   {
+    name: 'account-points',
+    path: '/account/points',
+    file: 'modules/account/views/points/Points.vue',
+    layout: 'account',
+    ssr: false,
+    meta: { middleware: 'customer' },
+  },
+  {
     name: 'account-profile',
     path: '/account/profile',
     file: 'modules/account/views/profile/Profile.vue',

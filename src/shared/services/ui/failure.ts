@@ -16,6 +16,14 @@ const KNOWN: Array<[RegExp, string]> = [
   [/^A first name is required$/i, 'cms.errors.guards.firstNameRequired'],
   [/^A phone number is required$/i, 'cms.errors.guards.phoneRequired'],
   [/^The current password is wrong$/i, 'account.profile.wrongPassword'],
+  [/^The balance cannot go below zero$/i, 'cms.errors.guards.pointsBelowZero'],
+  [/^An adjustment needs a non-zero amount$/i, 'cms.points.customer.amountRequired'],
+  [/^A tier needs a name$/i, 'cms.errors.guards.tierName'],
+  [/^A threshold must be zero or more points$/i, 'cms.errors.guards.tierThreshold'],
+  [/^A discount must be between 0 and 100 percent$/i, 'cms.errors.guards.tierDiscount'],
+  [/^Rate for \w+ must be a number of points per unit$/i, 'cms.errors.guards.pointsRate'],
+  [/^Tier not found$/i, 'cms.errors.guards.tierMissing'],
+  [/^Customer not found$/i, 'cms.errors.guards.customerMissing'],
 ]
 
 const TRANSITION = /^An order cannot go from (\w+) to (\w+)$/i
