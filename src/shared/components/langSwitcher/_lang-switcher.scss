@@ -32,6 +32,16 @@
         &:hover { background: rgba(255, 255, 255, .22); }
     }
 
+    &__code { display: none; font-weight: 600; letter-spacing: .04em; }
+
+    @media #{$until-sm} {
+        gap: 5px;
+        padding: 7px 10px;
+
+        &__name { display: none; }
+        &__code { display: inline; }
+    }
+
     &--onLight {
         background: var(--tm-surface-1);
         border: 1px solid var(--tm-border-1);

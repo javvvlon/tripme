@@ -97,6 +97,10 @@
                     <span>{{ t('search.dates.flexibleHint', { days: FLEX_DAYS }) }}</span>
                 </span>
             </label>
+
+            <button type="button" class="tm-tour-dates__done" @click="open = false">
+                {{ t('search.sheetDone') }}
+            </button>
         </div>
     </div>
 </template>

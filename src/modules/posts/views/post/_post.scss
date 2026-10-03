@@ -24,6 +24,7 @@
     }
 
     &__title {
+        overflow-wrap: anywhere;
         margin: 0;
         font-size: size(38);
         font-weight: 700;
@@ -32,6 +33,7 @@
     }
 
     &__lead {
+        overflow-wrap: anywhere;
         margin: 0;
         font-size: size(17);
         line-height: 1.6;
@@ -74,6 +76,7 @@
         font-size: size(17);
         line-height: 1.75;
         color: var(--tm-ink-2);
+        overflow-wrap: anywhere;
 
         > :first-child { margin-top: 0; }
 
@@ -151,10 +154,11 @@
             }
 
             &.is-full {
-                width: 100vw;
-                max-width: 1120px;
-                margin-inline: calc(50% - 50vw);
-                margin-left: max(calc(50% - 50vw), calc((100% - 1120px) / 2));
+                --bleed: min(1120px, calc(100vw - 48px));
+
+                width: var(--bleed);
+                max-width: none;
+                margin-inline: calc((100% - var(--bleed)) / 2);
 
                 img { border-radius: radius(lg); }
 
@@ -190,7 +194,24 @@
             font-size: size(14);
         }
 
+        table {
+            display: block;
+            max-width: 100%;
+            margin: 24px 0;
+            overflow-x: auto;
+            border-collapse: collapse;
+            overflow-wrap: normal;
+
+            th, td {
+                padding: 8px 12px;
+                border: 1px solid var(--tm-border-1);
+                text-align: left;
+            }
+        }
+
         pre {
+            max-width: 100%;
+            overflow-wrap: normal;
             padding: 16px 18px;
             border-radius: radius('md');
             background: var(--tm-surface-1);

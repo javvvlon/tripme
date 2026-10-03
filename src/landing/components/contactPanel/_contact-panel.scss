@@ -56,7 +56,9 @@
     }
 
     &__channel-value {
+        display: inline-block;
         margin: 0;
+        padding-block: 4px;
         color: var(--tm-ink-3);
         font-size: size(14);
         line-height: 1.5;

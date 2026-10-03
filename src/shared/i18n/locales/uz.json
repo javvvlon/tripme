@@ -34,7 +34,8 @@
     "faq": "Savollar",
     "contacts": "Aloqa",
     "sitemap": "Sayt xaritasi",
-    "homeShort": "Bosh sahifa"
+    "homeShort": "Bosh sahifa",
+    "blog": "Blog"
   },
   "search": {
     "modeLabel": "Nimani qidirmoqchisiz",
@@ -77,7 +78,10 @@
       "years": "{n} yosh",
       "more": "Qo‘shish: {what}",
       "less": "Ayirish: {what}"
-    }
+    },
+    "sheetDone": "Tayyor",
+    "edit": "O‘zgartirish",
+    "summaryEmpty": "Qayerga uchamiz?"
   },
   "home": {
     "hero": {
@@ -211,7 +215,7 @@
     "sortPriceAsc": "Avval arzon",
     "sortPriceDesc": "Avval qimmat",
     "sortRating": "Avval yuqori reytingli",
-    "priceFor": "{nights} va {rooms} xona uchun narx",
+    "priceFor": "{nights}, {guests} uchun narx",
     "loading": "Barcha operatorlarda qidirilmoqda…",
     "empty": "Hech narsa topilmadi. Sanalarni o‘zgartiring yoki filtrlarni kamaytiring.",
     "seoTitle": "Turlar — {destination} · TripMe",

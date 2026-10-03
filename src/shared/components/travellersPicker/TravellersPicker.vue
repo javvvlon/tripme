@@ -59,6 +59,10 @@
                     </label>
                 </div>
             </div>
+
+            <button type="button" class="tm-travellers__done" @click="open = false">
+                {{ t('search.sheetDone') }}
+            </button>
         </div>
     </div>
 </template>

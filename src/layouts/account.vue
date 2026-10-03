@@ -24,9 +24,12 @@
                             {{ t(item.labelKey) }}
                         </NuxtLink>
 
-                        <button type="button" class="tm-account__link tm-account__link--out" @click="signOut">
+                        <button
+                            type="button" class="tm-account__link tm-account__link--out"
+                            :aria-label="t('common.logout')" @click="signOut"
+                        >
                             <Icon name="logout" :size="17" />
-                            {{ t('common.logout') }}
+                            <span class="tm-account__link-text">{{ t('common.logout') }}</span>
                         </button>
                     </nav>
                 </aside>

@@ -41,6 +41,7 @@
             </div>
 
             <button
+                v-if="HEADER_NAV.length"
                 class="tm-site-header__burger"
                 :aria-expanded="open" :aria-label="t('nav.menu')"
                 @click="open = !open"

@@ -94,6 +94,34 @@
     opacity: 0;
 
     .tm-modal__panel { transform: translateY(8px) scale(.98); }
+
+    @media #{$until-sm} {
+        .tm-modal__panel { transform: translateY(40px); }
+    }
+}
+
+@media #{$until-sm} {
+    .tm-modal {
+        place-items: end stretch;
+        padding: 0;
+
+        &__panel {
+            max-width: none !important;
+            max-height: 92svh;
+            border-radius: radius('lg') radius('lg') 0 0;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        &__head { padding: 20px 52px 0 18px; }
+        &__close { top: 12px; right: 10px; width: 40px; height: 40px; }
+        &__body { padding: 16px 18px 20px; }
+
+        &__foot {
+            flex-direction: column-reverse;
+
+            .tm-button { width: 100%; }
+        }
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

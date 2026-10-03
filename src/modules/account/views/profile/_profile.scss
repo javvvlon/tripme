@@ -52,5 +52,9 @@
 }
 
 @media #{$until-sm} {
-    .tm-profile__row { grid-template-columns: 1fr; }
+    .tm-profile {
+        &__card { padding: 16px; }
+        &__row { grid-template-columns: 1fr; }
+        &__foot .tm-button { width: 100%; }
+    }
 }

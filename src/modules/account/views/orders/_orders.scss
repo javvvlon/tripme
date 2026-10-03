@@ -92,6 +92,7 @@
     }
 
     &__where {
+        overflow-wrap: anywhere;
         margin: 0;
         font-size: size(17);
         font-weight: 700;
@@ -137,5 +138,14 @@
 }
 
 @media #{$until-sm} {
-    .tm-my-orders__facts { grid-template-columns: 1fr; gap: 8px; }
+    .tm-my-orders {
+        &__card { padding: 16px; }
+
+        &__facts {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 14px;
+
+            > :first-child { grid-column: 1 / -1; }
+        }
+    }
 }

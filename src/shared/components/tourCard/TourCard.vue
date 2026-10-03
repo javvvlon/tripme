@@ -64,10 +64,7 @@
             <div>
                 <p class="tm-tour-card__price">{{ price }}</p>
                 <p class="tm-tour-card__price-note">
-                    {{ t('results.priceFor', {
-                        nights: t('search.nights', tour.get('nights')),
-                        rooms: tour.get('adults'),
-                    }) }}
+                    {{ t('results.priceFor', { nights: t('search.nights', tour.get('nights')), guests }) }}
                 </p>
 
                 <ClientOnly>
@@ -144,6 +141,14 @@ const hotelPage = computed(() => {
 })
 
 const price = computed(() => formatMoney(props.tour.get('price'), locale.value))
+
+const guests = computed(() => {
+  const parts = [t('search.adults', props.tour.get('adults'))]
+
+  if (props.tour.get('children')) parts.push(t('search.kids', props.tour.get('children')))
+
+  return parts.join(', ')
+})
 
 const summary = computed(() =>
   [props.tour.get('hotelName'), dates.value, price.value].filter(Boolean).join(' · '))

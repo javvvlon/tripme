@@ -143,7 +143,7 @@ useSeoMeta({
 @use '~/shared/styles/utils' as *;
 
 .tm-search-view {
-    padding: 24px 0 64px;
+    padding-block: 24px 64px;
 
     &__crumbs { margin-bottom: 18px; }
 
@@ -264,6 +264,10 @@ useSeoMeta({
     }
 
     @media #{$until-md} {
+        padding-block: 16px 48px;
+
+        &__crumbs { margin-bottom: 12px; }
+
         &__filters-toggle { display: flex; }
 
         &__layout:not(.is-filtering) .tm-search-view__filters { display: none; }

@@ -217,6 +217,21 @@
         }
     }
 
+    &__done {
+        display: none;
+        width: 100%;
+        height: 48px;
+        margin-top: 18px;
+        border: 0;
+        border-radius: radius('md');
+        background: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+        font: inherit;
+        font-size: size(16);
+        font-weight: 700;
+        cursor: pointer;
+    }
+
     &__flex {
         display: flex;
         align-items: flex-start;
@@ -250,8 +265,16 @@
 
 @media #{$until-sm} {
     .tm-tour-dates {
-        &__panel { width: min(360px, calc(100vw - 24px)); padding: 16px; }
+        &__panel {
+            @include bottom-sheet;
+            padding-top: 18px;
+            padding-inline: 18px;
+        }
+
         &__months { grid-template-columns: 1fr; }
-        &__nav { top: -2px; width: 30px; height: 30px; }
+        &__month + &__month { display: none; }
+        &__nav { top: -4px; width: 38px; height: 38px; }
+        &__day { font-size: size(15); }
+        &__done { display: block; }
     }
 }

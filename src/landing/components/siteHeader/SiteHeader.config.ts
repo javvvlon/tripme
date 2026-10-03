@@ -6,4 +6,7 @@ export interface IHeaderNavItem {
   labelKey: string
 }
 
-export const HEADER_NAV: IHeaderNavItem[] = []
+export const HEADER_NAV: IHeaderNavItem[] = [
+  { to: '/blog', labelKey: 'nav.blog' },
+  { to: '/contact', labelKey: 'nav.contacts' },
+]

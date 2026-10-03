@@ -34,7 +34,8 @@
     "faq": "FAQ",
     "contacts": "Contact us",
     "sitemap": "Site map",
-    "homeShort": "Home"
+    "homeShort": "Home",
+    "blog": "Blog"
   },
   "search": {
     "modeLabel": "What to search",
@@ -77,7 +78,10 @@
       "years": "{n} years",
       "more": "Add: {what}",
       "less": "Remove: {what}"
-    }
+    },
+    "sheetDone": "Done",
+    "edit": "Edit",
+    "summaryEmpty": "Where to?"
   },
   "home": {
     "hero": {
@@ -211,7 +215,7 @@
     "sortPriceAsc": "Cheapest first",
     "sortPriceDesc": "Most expensive first",
     "sortRating": "Highest rated first",
-    "priceFor": "price for {nights} and {rooms} room",
+    "priceFor": "price for {nights}, {guests}",
     "loading": "Searching every operator…",
     "empty": "Nothing found. Try different dates or remove some filters.",
     "seoTitle": "Tours — {destination} · TripMe",

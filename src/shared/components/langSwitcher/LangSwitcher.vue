@@ -5,7 +5,8 @@
         <select :id="id" :value="locale" @change="switchTo">
             <option v-for="l in locales" :key="l.code" :value="l.code">{{ l.name }}</option>
         </select>
-        <span aria-hidden="true">{{ currentName }}</span>
+        <span class="tm-lang-switcher__name" aria-hidden="true">{{ currentName }}</span>
+        <span class="tm-lang-switcher__code" aria-hidden="true">{{ locale.toUpperCase() }}</span>
         <Icon name="chevron" :size="14" />
     </div>
 </template>

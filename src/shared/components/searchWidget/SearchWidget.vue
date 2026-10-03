@@ -1,8 +1,25 @@
 <template>
     <div
         class="tm-search-widget"
-        :class="[`tm-search-widget--${variant}`, { 'tm-search-widget--untabbed': !showTabs }]"
+        :class="[`tm-search-widget--${variant}`, {
+            'tm-search-widget--untabbed': !showTabs,
+            'is-collapsed': variant === 'bar' && !expanded,
+        }]"
     >
+        <button
+            v-if="variant === 'bar'"
+            type="button" class="tm-search-widget__summary"
+            :aria-expanded="expanded"
+            @click="expanded = true"
+        >
+            <Icon name="search" :size="18" class="tm-search-widget__summary-icon" />
+            <span class="tm-search-widget__summary-text">
+                <strong>{{ summaryWhere }}</strong>
+                <span>{{ summaryWhen }}</span>
+            </span>
+            <span class="tm-search-widget__summary-edit">{{ t('search.edit') }}</span>
+        </button>
+
         <Tabs
             v-if="showTabs"
             v-model="mode" :items="modeTabs" variant="floating"
@@ -55,9 +72,15 @@ import { SEARCH_MODES } from './SearchWidget.config'
 
 const props = withDefaults(defineProps<ISearchWidgetProps>(), { variant: 'hero' })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-const { criteria, submit } = useSearchCriteria()
+const { criteria, submit, travellersLabel, nightsLabel } = useSearchCriteria()
+
+const route = useRoute()
+
+const expanded = ref(false)
+
+watch(() => route.fullPath, () => { expanded.value = false })
 
 const from = computed(() => criteria.from)
 const to = computed(() => criteria.to)
@@ -100,6 +123,33 @@ watch(maxAdults, (max) => {
 })
 
 const fieldVariant = computed(() => (props.variant === 'bar' ? 'bar' : 'panel'))
+
+const labelOf = (options: Array<{ value: string, label: string }>, value: string) =>
+  options.find(option => option.value === value)?.label ?? ''
+
+const summaryWhere = computed(() => {
+  const from = labelOf(departureOptions.value, criteria.from)
+  const to = labelOf(countryOptions.value, criteria.to)
+
+  if (!to) return t('search.summaryEmpty')
+
+  return from ? `${from} → ${to}` : to
+})
+
+const summaryWhen = computed(() => {
+  const parts: string[] = []
+
+  if (criteria.date) {
+    const day = new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' })
+      .format(new Date(`${criteria.date}T00:00:00`))
+
+    parts.push(criteria.flex ? `${day} ±${criteria.flex}` : day)
+  }
+
+  parts.push(nightsLabel.value, travellersLabel.value)
+
+  return parts.join(' · ')
+})
 
 const modeTabs = computed(() =>
   SEARCH_MODES.map(m => ({ value: m.value, label: t(m.labelKey), icon: m.icon })),

@@ -34,7 +34,8 @@
     "faq": "Вопросы",
     "contacts": "Контакты",
     "sitemap": "Карта сайта",
-    "homeShort": "Главная"
+    "homeShort": "Главная",
+    "blog": "Блог"
   },
   "search": {
     "modeLabel": "Что искать",
@@ -77,7 +78,10 @@
       "years": "{n} лет",
       "more": "Добавить: {what}",
       "less": "Убрать: {what}"
-    }
+    },
+    "sheetDone": "Готово",
+    "edit": "Изменить",
+    "summaryEmpty": "Куда летим?"
   },
   "home": {
     "hero": {
@@ -211,7 +215,7 @@
     "sortPriceAsc": "Сначала дешёвые",
     "sortPriceDesc": "Сначала дорогие",
     "sortRating": "Сначала с высоким рейтингом",
-    "priceFor": "цена за {nights} и {rooms} номер",
+    "priceFor": "цена за {nights}, {guests}",
     "loading": "Ищем туры у всех операторов…",
     "empty": "Ничего не нашлось. Попробуйте изменить даты или убрать часть фильтров.",
     "seoTitle": "Туры — {destination} · TripMe",

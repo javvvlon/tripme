@@ -59,6 +59,8 @@ const evenRows = computed(() => {
 function shapeOf(column: number): 'square' | 'wide' | 'fill' {
   const current = props.section.grid.columns[column]!
 
+  if (current.span === 12 && current.cells === 1) return 'wide'
+
   if (evenRows.value.get(current.row)) return 'square'
 
   return current.span >= 8 ? 'wide' : 'fill'

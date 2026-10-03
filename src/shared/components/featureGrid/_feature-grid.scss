@@ -26,6 +26,7 @@
     }
 
     &__title {
+        overflow-wrap: anywhere;
         margin: 0;
         font-size: size(16);
         font-weight: 700;
@@ -33,6 +34,7 @@
     }
 
     &__text {
+        overflow-wrap: anywhere;
         margin: 0;
         max-width: 32ch;
         font-size: size(14);
