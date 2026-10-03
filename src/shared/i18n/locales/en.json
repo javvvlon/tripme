@@ -116,7 +116,23 @@
     "sitemap": "Site map",
     "allCountries": "All countries",
     "allDirections": "All directions",
-    "city": "Tashkent"
+    "city": "Tashkent",
+    "company": "Company",
+    "about": "About us",
+    "blog": "Blog",
+    "contacts": "Contacts",
+    "contactUs": "Get in touch",
+    "hours": "Daily, 09:00 — 21:00",
+    "entity": "",
+    "socials": {
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "facebook": "Facebook"
+    },
+    "payments": {
+      "title": "Payment and security",
+      "note": "Payment happens on the bank’s secure page, with 3D Secure support. We accept:"
+    }
   },
   "country": {
     "turkey": "Turkey",

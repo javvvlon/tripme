@@ -116,7 +116,23 @@
     "sitemap": "Карта сайта",
     "allCountries": "Все страны",
     "allDirections": "Все направления",
-    "city": "Ташкент"
+    "city": "Ташкент",
+    "company": "Компания",
+    "about": "О компании",
+    "blog": "Блог",
+    "contacts": "Контакты",
+    "contactUs": "Связаться с нами",
+    "hours": "Ежедневно, 09:00 — 21:00",
+    "entity": "",
+    "socials": {
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "facebook": "Facebook"
+    },
+    "payments": {
+      "title": "Оплата и безопасность",
+      "note": "Оплата проходит на защищённой странице банка, с поддержкой 3D Secure. Мы принимаем:"
+    }
   },
   "country": {
     "turkey": "Турция",

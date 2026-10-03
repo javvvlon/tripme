@@ -116,7 +116,23 @@
     "sitemap": "Sayt xaritasi",
     "allCountries": "Barcha davlatlar",
     "allDirections": "Barcha yo‘nalishlar",
-    "city": "Toshkent"
+    "city": "Toshkent",
+    "company": "Kompaniya",
+    "about": "Kompaniya haqida",
+    "blog": "Blog",
+    "contacts": "Kontaktlar",
+    "contactUs": "Biz bilan bog‘laning",
+    "hours": "Har kuni, 09:00 — 21:00",
+    "entity": "",
+    "socials": {
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "facebook": "Facebook"
+    },
+    "payments": {
+      "title": "To‘lov va xavfsizlik",
+      "note": "To‘lov bankning himoyalangan sahifasida, 3D Secure qo‘llab-quvvatlanadi. Biz qabul qilamiz:"
+    }
   },
   "country": {
     "turkey": "Turkiya",
