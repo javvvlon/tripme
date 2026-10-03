@@ -7,12 +7,15 @@ import type {
   IContentItemRaw,
   IContentSectionRaw,
   IHomeContentRaw,
+  SectionVariant,
 } from '~/modules/content/contracts/blocks'
 import type { IPostRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
+const GRID_FREE: SectionVariant[] = ['features', 'faq']
+
 export interface IContentItem {
   uuid: string
   href: string | null
@@ -27,6 +30,7 @@ export interface IContentSection {
   uuid: string
   title: string
   link: string | null
+  variant: SectionVariant
   grid: IGrid
   items: IContentItem[]
 }
@@ -78,7 +82,7 @@ export class HomeContent extends Model<IHomeContent> {
               .sort((a, b) => a.position - b.position)
               .map(item => mapItem(item, locale))
               .filter((item): item is IContentItem => item !== null)
-        ).slice(0, grid.capacity)
+        ).slice(0, GRID_FREE.includes(section.variant) ? undefined : grid.capacity)
 
         if (!items.length) return null
 
@@ -86,6 +90,7 @@ export class HomeContent extends Model<IHomeContent> {
           uuid: section.uuid,
           title: pick(section.translations, locale)?.title ?? '',
           link: section.link,
+          variant: section.variant,
           grid,
           items,
         } satisfies IContentSection

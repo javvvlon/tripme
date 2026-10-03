@@ -427,11 +427,19 @@
       "variant": "Manba",
       "variants": {
         "list": "Ro'yxat",
-        "posts": "Blog maqolalari"
+        "posts": "Blog maqolalari",
+        "features": "Afzalliklar",
+        "faq": "Savol-javoblar"
       },
       "postsHint": "Hech nima tanlanmagan — oxirgi maqolalarni koʻrsatamiz.",
       "articles": "Maqolalar",
-      "articlesLatest": "Oxirgi chop etilganlar"
+      "articlesLatest": "Oxirgi chop etilganlar",
+      "variantHints": {
+        "list": "Tanlangan tartibdagi ro‘yxat kartalari.",
+        "posts": "Blog maqolalari kartalari.",
+        "features": "Afzalliklar qatori: ro‘yxatdan rasm, sarlavha va qisqa matn.",
+        "faq": "Akkordeon: element sarlavhasi — savol, tavsifi — javob."
+      }
     },
     "posts": {
       "title": "Maqolalar",

@@ -9,7 +9,11 @@
             </template>
         </SectionHead>
 
-        <div class="tm-content-section__grid" :style="gridStyle">
+        <FeatureGrid v-if="section.variant === 'features'" :items="section.items" />
+
+        <FaqList v-else-if="section.variant === 'faq'" :items="section.items" />
+
+        <div v-else class="tm-content-section__grid" :style="gridStyle">
             <div
                 v-for="(cells, column) in columns" :key="column"
                 class="tm-content-section__column"
@@ -28,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+import FaqList from '~/shared/components/faqList/FaqList.vue'
+import FeatureGrid from '~/shared/components/featureGrid/FeatureGrid.vue'
 import { distribute } from '~/shared/helpers/grid'
 import type { IContentSectionProps } from './ContentSection.d'
 

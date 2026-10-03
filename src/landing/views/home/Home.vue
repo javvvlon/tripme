@@ -1,7 +1,7 @@
 <template>
     <div>
         <Hero :banner="banner" />
-        <TrustBar />
+        <TrustBar v-if="!hasFeatures" />
 
         <ContentSection
             v-for="(section, i) in sections ?? []" :key="section.uuid"
@@ -23,6 +23,9 @@ const localePath = useLocalePath()
 const url = useRequestURL()
 
 const { banner, sections } = useHome()
+
+const hasFeatures = computed(() =>
+  (sections.value ?? []).some(section => section.variant === 'features'))
 
 useSeoMeta({
   title: () => t('home.seo.title'),

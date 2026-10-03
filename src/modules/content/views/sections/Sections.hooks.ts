@@ -129,7 +129,7 @@ export const useSections = () => {
     saved.value = false
 
     const incomplete = draft.value.find(section =>
-      !section.layoutId || (section.variant === 'list' && !section.listId))
+      !section.layoutId || (section.variant !== 'posts' && !section.listId))
 
     if (incomplete) {
       error.value = fail(t('cms.sections.pickRequired'))

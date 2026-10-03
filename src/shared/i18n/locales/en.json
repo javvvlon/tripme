@@ -427,11 +427,19 @@
       "variant": "Source",
       "variants": {
         "list": "List",
-        "posts": "Blog articles"
+        "posts": "Blog articles",
+        "features": "Features",
+        "faq": "Questions and answers"
       },
       "postsHint": "Nothing selected — the latest articles are shown.",
       "articles": "Articles",
-      "articlesLatest": "Latest published"
+      "articlesLatest": "Latest published",
+      "variantHints": {
+        "list": "Cards from a list in the chosen layout.",
+        "posts": "Blog article cards.",
+        "features": "A row of features: image, heading and a short text from a list.",
+        "faq": "An accordion: the item heading is the question, the description is the answer."
+      }
     },
     "posts": {
       "title": "Articles",

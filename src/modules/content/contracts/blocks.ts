@@ -7,7 +7,7 @@ import type { IPostRaw } from '~/modules/posts/contracts/posts'
 
 export const BADGE_TYPES = ['primary', 'secondary', 'sale'] as const
 
-export const SECTION_VARIANTS = ['list', 'posts'] as const
+export const SECTION_VARIANTS = ['list', 'posts', 'features', 'faq'] as const
 
 export type SectionVariant = typeof SECTION_VARIANTS[number]
 

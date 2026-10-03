@@ -58,11 +58,12 @@
                                 v-model="section.variant"
                                 :label="t('cms.sections.variant')"
                                 :options="variantOptions"
+                                :note="t(`cms.sections.variantHints.${section.variant}`)"
                             />
 
                             <Combobox
                                 variant="field"
-                                v-if="section.variant === 'list'"
+                                v-if="section.variant !== 'posts'"
                                 v-model="section.listId"
                                 :label="t('cms.sections.list')"
                                 :options="listOptions"
@@ -138,7 +139,7 @@ const localeTabs = computed(() => CONTENT_LOCALES.map(code => ({
 })))
 
 function overflow(section: IDraftSection): { items: number, capacity: number } | null {
-    if (section.variant === 'posts') return null
+    if (section.variant !== 'list') return null
 
     const capacity = capacityOf(section.layoutId)
     const items = itemsIn(section.listId)
