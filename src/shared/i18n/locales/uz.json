@@ -439,6 +439,17 @@
         "posts": "Blog maqolalari kartalari.",
         "features": "Afzalliklar qatori: ro‘yxatdan rasm, sarlavha va qisqa matn.",
         "faq": "Akkordeon: element sarlavhasi — savol, tavsifi — javob."
+      },
+      "layouts": {
+        "add": "+ Yangi tartib",
+        "title": "Yangi tartib",
+        "submit": "Yaratish",
+        "lead": "12 ustunli setka. Ustunlar «_» bilan, ustun ichidagi kataklar «.» bilan.",
+        "name": "Nomi",
+        "grid": "Setka",
+        "gridHint": "4_4_4 — uchtadan · 8_4 — keng va tor · 8_4.4.4 — yirik va uchta kichik · 4_4_4_4_4_4 — oltita",
+        "created": "Tartib yaratildi",
+        "failed": "Tartib yaratib bo‘lmadi."
       }
     },
     "posts": {
@@ -803,6 +814,12 @@
     "tour": {
       "heading": "Ushbu maqoladagi tur",
       "priceNote": "butun tur uchun"
+    },
+    "index": {
+      "title": "TripMe blogi",
+      "lead": "Yo‘nalishlar, marshrutlar va amaliy maslahatlar — har kuni u yerga sayohatchilarni jo‘natadigan odamlardan.",
+      "empty": "Hozircha maqolalar yo‘q — tez orada birinchisi paydo bo‘ladi.",
+      "seoTitle": "Blog — TripMe"
     }
   },
   "contact": {

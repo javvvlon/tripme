@@ -80,13 +80,19 @@
                                 :note="section.postIds.length ? undefined : t('cms.sections.postsHint')"
                             />
 
-                            <Combobox
-                                variant="field"
-                                v-model="section.layoutId"
-                                :label="t('cms.sections.layout')"
-                                :options="layoutOptions"
-                                :placeholder="t('cms.sections.layoutPlaceholder')"
-                            />
+                            <div class="tm-cms-sections__layout">
+                                <Combobox
+                                    variant="field"
+                                    v-model="section.layoutId"
+                                    :label="t('cms.sections.layout')"
+                                    :options="layoutOptions"
+                                    :placeholder="t('cms.sections.layoutPlaceholder')"
+                                />
+
+                                <button type="button" class="tm-cms-sections__layout-add" @click="openLayout">
+                                    {{ t('cms.sections.layouts.add') }}
+                                </button>
+                            </div>
 
                             <Input
                                 v-model="section.link"
@@ -101,7 +107,26 @@
                     </li>
                 </ol>
 
-                <Button type="button" variant="ghost" block class="tm-cms-sections__add" @click="add">
+        <Modal
+            v-model="newLayout.open"
+            :title="t('cms.sections.layouts.title')"
+            :description="t('cms.sections.layouts.lead')"
+            :confirm-label="t('cms.sections.layouts.submit')"
+            :busy="newLayout.saving"
+            :error="newLayout.error"
+            size="sm"
+            @confirm="submitLayout"
+        >
+            <Input v-model="newLayout.name" :label="t('cms.sections.layouts.name')" placeholder="Шесть в сетке" />
+            <Input
+                v-model="newLayout.grid"
+                :label="t('cms.sections.layouts.grid')"
+                :hint="t('cms.sections.layouts.gridHint')"
+                placeholder="4_4_4_4_4_4"
+            />
+        </Modal>
+
+        <Button type="button" variant="ghost" block class="tm-cms-sections__add" @click="add">
                     {{ t('cms.sections.add') }}
                 </Button>
 
@@ -120,6 +145,7 @@
 <script setup lang="ts">
 import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { useSections } from './Sections.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
@@ -130,6 +156,7 @@ const { t, locales } = useI18n()
 const {
     locale, draft, status, saving, saved, error,
     variantOptions, postOptions, listOptions, layoutOptions, capacityOf, itemsIn,
+    newLayout, openLayout, submitLayout,
     add, remove, move, submit,
 } = useSections()
 

@@ -439,6 +439,17 @@
         "posts": "Blog article cards.",
         "features": "A row of features: image, heading and a short text from a list.",
         "faq": "An accordion: the item heading is the question, the description is the answer."
+      },
+      "layouts": {
+        "add": "+ New layout",
+        "title": "New layout",
+        "submit": "Create",
+        "lead": "A 12-column grid. Columns are separated by “_”, cells inside a column by “.”.",
+        "name": "Name",
+        "grid": "Grid",
+        "gridHint": "4_4_4 — three across · 8_4 — wide and narrow · 8_4.4.4 — one large and three small · 4_4_4_4_4_4 — six",
+        "created": "Layout created",
+        "failed": "Could not create the layout."
       }
     },
     "posts": {
@@ -803,6 +814,12 @@
     "tour": {
       "heading": "The tour from this article",
       "priceNote": "for the whole trip"
+    },
+    "index": {
+      "title": "The TripMe blog",
+      "lead": "Destinations, routes and practical advice — from the people who send travellers there every day.",
+      "empty": "No articles yet — the first one is on its way.",
+      "seoTitle": "Blog — TripMe"
     }
   },
   "contact": {

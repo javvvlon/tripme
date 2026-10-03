@@ -29,8 +29,8 @@ const nextKey = () => `section-${++counter}`
 
 export const useSections = () => {
   const { t } = useI18n()
-  const { saved: cheer, fail, loadFailed } = useToast()
-  const { sections, lists, layouts, saveSections } = useContentRepository()
+  const { saved: cheer, fail, failed, loadFailed } = useToast()
+  const { sections, lists, layouts, createLayout, saveSections } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
@@ -42,7 +42,7 @@ export const useSections = () => {
 
   const loaded = ref(false)
 
-  const { data, status } = useAsyncData('cms:sections', async () => {
+  const { data, status, refresh } = useAsyncData('cms:sections', async () => {
     const [current, allLists, allLayouts, posts] = await Promise.all([sections(), lists(), layouts(), allPosts()])
 
     if (loaded.value) return { lists: allLists, layouts: allLayouts, posts }
@@ -88,6 +88,36 @@ export const useSections = () => {
     label: layout.name || layout.grid,
     hint: layout.grid,
   })))
+
+  const newLayout = reactive({ open: false, grid: '', name: '', saving: false, error: '' })
+
+  function openLayout() {
+    newLayout.grid = ''
+    newLayout.name = ''
+    newLayout.error = ''
+    newLayout.open = true
+  }
+
+  async function submitLayout() {
+    newLayout.saving = true
+    newLayout.error = ''
+
+    try {
+      const created = await createLayout(newLayout.grid.trim(), newLayout.name.trim())
+
+      await refresh()
+      newLayout.open = false
+      cheer(t('cms.sections.layouts.created'))
+
+      return created
+    }
+    catch (e) {
+      newLayout.error = failed(e, t('cms.sections.layouts.failed'))
+    }
+    finally {
+      newLayout.saving = false
+    }
+  }
 
   const capacityOf = (layoutId: string): number | null => {
     const layout = (data.value?.layouts ?? []).find(item => item.uuid === layoutId)
@@ -171,6 +201,7 @@ export const useSections = () => {
   return {
     locale, draft, status, saving, saved, error,
     variantOptions, postOptions, listOptions, layoutOptions, capacityOf, itemsIn,
+    newLayout, openLayout, submitLayout,
     add, remove, move, submit,
   }
 }

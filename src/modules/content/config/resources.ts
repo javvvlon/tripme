@@ -13,6 +13,8 @@ export const resource: IResource = {
     homeContent: { url: 'home/sections/', method: 'GET' },
 
     layouts: { url: 'layouts', method: 'GET' },
+    createLayout: { url: 'layouts', method: 'POST' },
+    deleteLayout: { url: 'layouts/:id', method: 'DELETE' },
     lists: { url: 'lists', method: 'GET' },
     list: { url: 'lists/:id', method: 'GET' },
     createList: { url: 'lists', method: 'POST' },

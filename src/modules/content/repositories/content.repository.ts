@@ -44,6 +44,16 @@ export const useContentRepository = () => {
     return response.data.items
   }
 
+  const createLayout = async (grid: string, name: string): Promise<IContentLayoutRaw> => {
+    const response = await http.call<IContentLayoutRaw>('Content', 'createLayout', {}, { grid, name } as AnyObject)
+
+    return response.data
+  }
+
+  const deleteLayout = async (id: string): Promise<void> => {
+    await http.call<void>('Content', 'deleteLayout', { id })
+  }
+
   const lists = async (): Promise<IListSummaryRaw[]> => {
     const response = await http.call<{ items: IListSummaryRaw[] }>('Content', 'lists')
 
@@ -137,7 +147,7 @@ export const useContentRepository = () => {
 
   return {
     banner, saveBanner, homeContent,
-    layouts, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, describeUpload,
+    layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, describeUpload,
     folders, createFolder, renameFolder, deleteFolder,
   }
 }

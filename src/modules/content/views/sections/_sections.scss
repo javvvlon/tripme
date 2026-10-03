@@ -139,3 +139,26 @@
         &__heading { order: 3; flex-basis: 100%; }
     }
 }
+
+.tm-cms-sections {
+    &__layout {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    &__layout-add {
+        align-self: flex-start;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-brand-secondary);
+        font: inherit;
+        font-size: size(12);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { color: var(--tm-brand-secondary-dark); }
+    }
+}
