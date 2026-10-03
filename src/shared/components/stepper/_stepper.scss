@@ -1,0 +1,48 @@
+@use '../../styles/utils' as *;
+
+.tm-stepper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--tm-surface-3);
+        color: var(--tm-ink-2);
+        cursor: pointer;
+        transition: background .15s, color .15s;
+
+        &:hover:not(:disabled) { background: var(--tm-border-1); }
+
+        &:disabled { opacity: .45; cursor: not-allowed; }
+
+        &--add {
+            background: var(--tm-brand-primary);
+            color: var(--tm-common-white);
+
+            &:hover:not(:disabled) { background: var(--tm-brand-primary-dark); }
+
+            &:disabled { background: var(--tm-surface-3); color: var(--tm-ink-4); }
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--tm-brand-primary);
+            outline-offset: 2px;
+        }
+    }
+
+    &__value {
+        min-width: 16px;
+        font-size: size(15);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+        color: var(--tm-ink-1);
+    }
+}

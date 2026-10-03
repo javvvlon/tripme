@@ -9,10 +9,16 @@ export const SEARCH_DEFAULTS: SearchCriteria = {
   from: '',
   to: '',
   date: '',
+  flex: 0,
   nights: 7,
   adults: 2,
   kids: 0,
+  kidAges: [],
 }
+
+export const FLEX_DAYS = 3
+
+export const DEFAULT_KID_AGE = 7
 
 function readString(value: unknown, fallback = ''): string {
   const v = Array.isArray(value) ? value[0] : value
@@ -24,10 +30,20 @@ function readInt(value: unknown, fallback: number): number {
   return Number.isFinite(v) ? v : fallback
 }
 
+function readAges(value: unknown, fallback: number[]): number[] {
+  const raw = readString(value)
+
+  if (!raw) return fallback
+
+  return raw.split(',').map(Number).filter(age => Number.isFinite(age) && age >= 0 && age <= 17)
+}
+
 export function readCriteria(
   query: Record<string, unknown>,
   seed: Partial<SearchCriteria> = {},
 ): SearchCriteria {
+  const ages = readAges(query.kids, seed.kidAges ?? SEARCH_DEFAULTS.kidAges)
+
   return {
     ...SEARCH_DEFAULTS,
     ...seed,
@@ -35,9 +51,11 @@ export function readCriteria(
     from: readString(query.from, seed.from ?? ''),
     to: readString(query.to, seed.to ?? ''),
     date: readString(query.date, seed.date ?? ''),
+    flex: readInt(query.flex, seed.flex ?? SEARCH_DEFAULTS.flex),
     nights: readInt(query.nights, seed.nights ?? SEARCH_DEFAULTS.nights),
     adults: readInt(query.adults, seed.adults ?? SEARCH_DEFAULTS.adults),
-    kids: readInt(query.kids, seed.kids ?? SEARCH_DEFAULTS.kids),
+    kids: ages.length,
+    kidAges: ages,
   }
 }
 
@@ -65,9 +83,10 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
     if (criteria.from) q.from = criteria.from
     if (criteria.to) q.to = criteria.to
     if (criteria.date) q.date = criteria.date
+    if (criteria.flex) q.flex = String(criteria.flex)
     if (criteria.nights !== SEARCH_DEFAULTS.nights) q.nights = String(criteria.nights)
     if (criteria.adults !== SEARCH_DEFAULTS.adults) q.adults = String(criteria.adults)
-    if (criteria.kids) q.kids = String(criteria.kids)
+    if (criteria.kidAges.length) q.kids = criteria.kidAges.join(',')
     return q
   })
 
@@ -81,7 +100,7 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
 
   const travellersLabel = computed(() => {
     const parts = [t('search.adults', criteria.adults)]
-    if (criteria.kids) parts.push(t('search.kids', criteria.kids))
+    if (criteria.kidAges.length) parts.push(t('search.kids', criteria.kidAges.length))
     return parts.join(', ')
   })
 

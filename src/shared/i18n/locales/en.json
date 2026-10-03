@@ -48,7 +48,7 @@
     "to": "Where",
     "toPlaceholder": "Country, city",
     "date": "Tour start date",
-    "datePlaceholder": "Choose date",
+    "datePlaceholder": "Choose dates",
     "duration": "Duration",
     "who": "Who",
     "submit": "Search tours",
@@ -57,7 +57,27 @@
     "adults": "0 adults | {n} adult | {n} adults | {n} adults",
     "kids": "0 children | {n} child | {n} children | {n} children",
     "noMatches": "Nothing found",
-    "referencesUnavailable": "Catalogue unavailable — the search service is not responding"
+    "referencesUnavailable": "Catalogue unavailable — the search service is not responding",
+    "dates": {
+      "label": "Tour dates",
+      "duration": "Duration",
+      "earlier": "Previous month",
+      "later": "Next month",
+      "flexible": "Flexible departure ±{days} days",
+      "flexibleHint": "We will show tours departing within {days} days of the chosen date"
+    },
+    "travellers": {
+      "adults": "Adults",
+      "adultsHint": "over 12 years",
+      "kids": "Children",
+      "kidsHint": "0 — {max} years",
+      "agesLead": "Children’s age on the departure date",
+      "child": "Child {n}",
+      "infant": "under one",
+      "years": "{n} years",
+      "more": "Add: {what}",
+      "less": "Remove: {what}"
+    }
   },
   "home": {
     "hero": {

@@ -48,7 +48,7 @@
     "to": "Qayerga",
     "toPlaceholder": "Davlat, shahar",
     "date": "Uchish sanasi",
-    "datePlaceholder": "Sanani tanlang",
+    "datePlaceholder": "Sanalarni tanlang",
     "duration": "Muddat",
     "who": "Kim boradi",
     "submit": "Turlarni qidirish",
@@ -57,7 +57,27 @@
     "adults": "0 katta yosh | {n} katta yosh | {n} katta yosh | {n} katta yosh",
     "kids": "0 bola | {n} bola | {n} bola | {n} bola",
     "noMatches": "Hech narsa topilmadi",
-    "referencesUnavailable": "Ma’lumotnoma mavjud emas — qidiruv xizmati javob bermayapti"
+    "referencesUnavailable": "Ma’lumotnoma mavjud emas — qidiruv xizmati javob bermayapti",
+    "dates": {
+      "label": "Tur sanalari",
+      "duration": "Davomiyligi",
+      "earlier": "Oldingi oy",
+      "later": "Keyingi oy",
+      "flexible": "Moslashuvchan jo‘nash ±{days} kun",
+      "flexibleHint": "Tanlangan sanadan {days} kun ichida jo‘naydigan turlarni ko‘rsatamiz"
+    },
+    "travellers": {
+      "adults": "Kattalar",
+      "adultsHint": "12 yoshdan katta",
+      "kids": "Bolalar",
+      "kidsHint": "0 — {max} yosh",
+      "agesLead": "Jo‘nash sanasidagi bolalar yoshi",
+      "child": "{n}-bola",
+      "infant": "bir yoshgacha",
+      "years": "{n} yosh",
+      "more": "Qo‘shish: {what}",
+      "less": "Ayirish: {what}"
+    }
   },
   "home": {
     "hero": {

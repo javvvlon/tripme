@@ -2,6 +2,7 @@ import { useToursRepository } from '~/search_engine/repositories'
 import type { Tour } from '~/search_engine/models/Tour'
 import { SearchMode, SearchSort } from '~/search_engine/contracts/search'
 import type { SearchRequest } from '~/search_engine/contracts/search'
+import { DEFAULT_KID_AGE } from '~/shared/composables/useSearchCriteria'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -46,6 +47,8 @@ export const useTourPicker = () => {
         nights: nights.value,
         adults: adults.value,
         kids: kids.value,
+        kidAges: Array.from({ length: kids.value }, () => DEFAULT_KID_AGE),
+        flex: 0,
         filters: {},
         page: 1,
         size: 20,

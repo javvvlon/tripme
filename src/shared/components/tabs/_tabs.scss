@@ -28,6 +28,32 @@
         }
     }
 
+    &--floating {
+        gap: 2px;
+        display: inline-flex;
+        padding: 6px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-md);
+
+        .tm-tabs__tab {
+            padding: 10px 20px;
+            border-radius: radius('pill');
+            font-size: size(15);
+            font-weight: 600;
+            color: var(--tm-ink-2);
+
+            &:hover { background: var(--tm-surface-2); }
+
+            &.is-active {
+                background: var(--tm-brand-primary);
+                color: var(--tm-common-white);
+
+                &:hover { background: var(--tm-brand-primary); }
+            }
+        }
+    }
+
     &--pill .tm-tabs__tab {
         padding: 8px 18px;
         border-radius: radius('pill');

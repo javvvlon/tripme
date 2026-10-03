@@ -1,4 +1,5 @@
 import { Intention } from '~/shared/helpers/intentions'
+import { addDays } from '~/shared/helpers/dates'
 import type { SearchRequest } from '~/search_engine/contracts/search'
 
 /**
@@ -12,7 +13,6 @@ export class SearchCriteriaIntention extends Intention<SearchRequest> {
     date: 'date',
     nights: 'nights',
     adults: 'adults',
-    kids: 'children',
   } as const
 
   public override toRequest(data: SearchRequest): Record<string, unknown> {
@@ -24,6 +24,8 @@ export class SearchCriteriaIntention extends Intention<SearchRequest> {
 
     const withFilters: Record<string, unknown> = {
       ...query,
+      children: data.kidAges.length ? data.kidAges.join(',') : undefined,
+      dateTo: data.flex && data.date ? addDays(data.date, data.flex) : undefined,
       stars: list(filters?.stars),
       meals: list(filters?.meals),
       resorts: list(filters?.resorts),
@@ -37,6 +39,9 @@ export class SearchCriteriaIntention extends Intention<SearchRequest> {
     delete withFilters.sort
     delete withFilters.size
     delete withFilters.page
+    delete withFilters.flex
+    delete withFilters.kids
+    delete withFilters.kidAges
 
     return Object.fromEntries(
       Object.entries(withFilters).filter(([, value]) =>

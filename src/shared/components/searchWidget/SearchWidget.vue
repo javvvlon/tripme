@@ -5,8 +5,9 @@
     >
         <Tabs
             v-if="showTabs"
-            v-model="mode" :items="modeTabs" variant="card"
+            v-model="mode" :items="modeTabs" variant="floating"
             :aria-label="t('search.modeLabel')"
+            class="tm-search-widget__tabs"
         />
 
         <form class="tm-search-widget__panel" @submit.prevent="submit">
@@ -22,33 +23,16 @@
                 :options="countryOptions" :variant="fieldVariant" clearable
                 :unavailable="unavailable"
             />
-            <DatePicker
-                v-model="criteria.date"
-                :label="t('search.date')" :placeholder="t('search.datePlaceholder')"
-                :calendar="calendar" :variant="fieldVariant"
+            <TourDates
+                v-model="dates"
+                :label="t('search.dates.label')" :placeholder="t('search.datePlaceholder')"
+                :calendar="calendar" :nights-options="nightsOptions" :variant="fieldVariant"
             />
-
-            <div class="tm-search-widget__select">
-                <label :for="`${id}-nights`">{{ t('search.duration') }}</label>
-                <div class="tm-search-widget__value">
-                    <select :id="`${id}-nights`" v-model.number="criteria.nights">
-                        <option v-for="n in nightsOptions" :key="n" :value="n">{{ t('search.nights', n) }}</option>
-                    </select>
-                    <span>{{ nightsLabel }}</span>
-                    <Icon name="chevron" :size="16" class="tm-search-widget__chevron" />
-                </div>
-            </div>
-
-            <div class="tm-search-widget__select">
-                <label :for="`${id}-adults`">{{ t('search.who') }}</label>
-                <div class="tm-search-widget__value">
-                    <select :id="`${id}-adults`" v-model.number="criteria.adults">
-                        <option v-for="n in maxAdults" :key="n" :value="n">{{ t('search.adults', n) }}</option>
-                    </select>
-                    <span>{{ travellersLabel }}</span>
-                    <Icon name="chevron" :size="16" class="tm-search-widget__chevron" />
-                </div>
-            </div>
+            <TravellersPicker
+                v-model="travellers"
+                :label="t('search.who')"
+                :max-adults="maxAdults" :variant="fieldVariant"
+            />
 
             <Button
                 type="submit" class="tm-search-widget__submit"
@@ -61,16 +45,19 @@
 </template>
 
 <script setup lang="ts">
+import TourDates from '~/shared/components/tourDates/TourDates.vue'
+import TravellersPicker from '~/shared/components/travellersPicker/TravellersPicker.vue'
 import type { SearchMode } from '~/search_engine/contracts/search'
+import type { ITourDates } from '~/shared/components/tourDates/TourDates.d'
+import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
 import type { ISearchWidgetProps } from './SearchWidget.d'
 import { SEARCH_MODES } from './SearchWidget.config'
 
 const props = withDefaults(defineProps<ISearchWidgetProps>(), { variant: 'hero' })
 
 const { t } = useI18n()
-const id = useId()
 
-const { criteria, submit, travellersLabel, nightsLabel } = useSearchCriteria()
+const { criteria, submit } = useSearchCriteria()
 
 const from = computed(() => criteria.from)
 const to = computed(() => criteria.to)
@@ -83,6 +70,24 @@ const {
   maxAdults,
   nightsOptions,
 } = useSearchReferences(from, to)
+
+const dates = computed<ITourDates>({
+  get: () => ({ date: criteria.date, nights: criteria.nights, flex: criteria.flex }),
+  set: (value) => {
+    criteria.date = value.date
+    criteria.nights = value.nights
+    criteria.flex = value.flex
+  },
+})
+
+const travellers = computed<ITravellers>({
+  get: () => ({ adults: criteria.adults, kidAges: criteria.kidAges }),
+  set: (value) => {
+    criteria.adults = value.adults
+    criteria.kidAges = value.kidAges
+    criteria.kids = value.kidAges.length
+  },
+})
 
 watch(nightsOptions, (options) => {
   if (options.length && !options.includes(criteria.nights)) {

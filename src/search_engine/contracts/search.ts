@@ -27,9 +27,11 @@ export interface SearchCriteria {
   from: string
   to: string
   date: string
+  flex: number
   nights: number
   adults: number
   kids: number
+  kidAges: number[]
 }
 
 export interface SearchFilters {
