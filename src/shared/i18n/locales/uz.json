@@ -64,8 +64,9 @@
       "duration": "Davomiyligi",
       "earlier": "Oldingi oy",
       "later": "Keyingi oy",
-      "flexible": "Moslashuvchan jo‘nash ±{days} kun",
-      "flexibleHint": "Tanlangan sanadan {days} kun ichida jo‘naydigan turlarni ko‘rsatamiz"
+      "pickStart": "Jo‘nash kunini tanlang",
+      "pickEnd": "Oraliq bo‘yicha qidirish uchun oxirgi jo‘nash kunini belgilang — {latest} dan kechiktirmay",
+      "rangeChosen": "{range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz"
     },
     "travellers": {
       "adults": "Kattalar",
@@ -232,7 +233,26 @@
     "programme": "Dastur",
     "fare": "Tarif",
     "filters": "Filtrlar",
-    "settling": "Eng yaqin uchish sanasi tanlanmoqda…"
+    "settling": "Eng yaqin uchish sanasi tanlanmoqda…",
+    "progress": "{total} ta operatordan {done} tasi javob berdi",
+    "progressWaiting": "Hali kutyapmiz: {names}",
+    "progressDone": "Barcha operatorlar javob berdi",
+    "daysTitle": "Jo‘nash kuni bo‘yicha narxlar",
+    "daysAll": "Barcha sanalar",
+    "daysCheapest": "Eng arzon",
+    "dayEmpty": "tur yo‘q",
+    "priceFrom": "{price} dan",
+    "departure": "Jo‘nash",
+    "returnOn": "qaytish {date}",
+    "perPerson": "≈ kishi boshiga {price}",
+    "showMore": "Yana {count} ta ko‘rsatish",
+    "dayFiltered": "Faqat {date} jo‘nash",
+    "clearDay": "Barcha sanalarni ko‘rsatish",
+    "operator": "Operator",
+    "failed": "Operatorlar javob bermadi. Bir daqiqadan so‘ng qayta urinib ko‘ring.",
+    "retry": "Qidiruvni takrorlash",
+    "sourcePrice": "operatorda {price}",
+    "headlineBare": "Turlar {destination}, {dates}"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",

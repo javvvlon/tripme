@@ -5,7 +5,6 @@ import type { Tour } from '~/search_engine/models/Tour'
  */
 export interface ITourCardProps {
   tour: Tour
-  eager?: boolean
   agentView?: boolean
   route?: { from: string, to: string }
 }

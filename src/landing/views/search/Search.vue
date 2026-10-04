@@ -31,6 +31,27 @@
             <div class="tm-search-view__results">
                 <ResultsHeader v-model:sort="sort" :title="headline" :sortable="tours.length > 0" />
 
+                <div v-if="streaming && progress.total" class="tm-search-view__progress" role="status">
+                    <span class="tm-search-view__progress-bar" aria-hidden="true">
+                        <span :style="{ width: `${Math.max(8, (progress.done / progress.total) * 100)}%` }" />
+                    </span>
+                    <span class="tm-search-view__progress-text">
+                        {{ t('results.progress', { done: progress.done, total: progress.total }) }}
+                        <ClientOnly>
+                            <template v-if="isStaff && progress.waiting.length">
+                                · {{ t('results.progressWaiting', { names: progress.waiting.join(', ') }) }}
+                            </template>
+                        </ClientOnly>
+                    </span>
+                </div>
+
+                <DayPrices
+                    v-if="criteria.dateTo && !settling"
+                    v-model="day"
+                    :from="criteria.date" :to="criteria.dateTo"
+                    :days="facets.days" :loading="streaming"
+                />
+
                 <div v-if="settling" class="tm-search-view__settling">
                     <Spinner />
                     <p>{{ t('results.settling') }}</p>
@@ -38,7 +59,10 @@
 
                 <ul v-else-if="busy" class="tm-search-view__list" :aria-busy="true" :aria-label="t('results.loading')">
                     <li v-for="n in 5" :key="n" class="tm-search-view__skeleton">
-                        <Skeleton height="100%" radius="md" class="tm-search-view__skeleton-media" />
+                        <div class="tm-search-view__skeleton-stub">
+                            <Skeleton width="60%" height="11px" />
+                            <Skeleton width="70%" height="30px" />
+                        </div>
                         <div class="tm-search-view__skeleton-body">
                             <Skeleton width="55%" height="18px" />
                             <Skeleton width="30%" height="13px" />
@@ -53,9 +77,9 @@
 
                 <template v-else-if="tours.length">
                     <ul class="tm-search-view__list">
-                        <li v-for="(tour, i) in tours" :key="tour.get('id')">
+                        <li v-for="tour in tours" :key="tour.get('id')" class="tm-search-view__item">
                             <TourCard
-                                :tour="tour" :eager="i === 0"
+                                :tour="tour"
                                 :agent-view="isStaff"
                                 :route="{ from: criteria.from, to: criteria.to }"
                             />
@@ -65,18 +89,23 @@
                     <div v-if="hasMore" ref="sentinel" class="tm-search-view__more">
                         <span v-if="loadingMore">{{ t('results.loadingMore') }}</span>
                         <Button v-else variant="ghost" @click="loadMore">
-                            {{ t('results.loadMore') }}
+                            {{ remaining > 0 ? t('results.showMore', { count: Math.min(remaining, RESULTS_PAGE_SIZE) }) : t('results.loadMore') }}
                         </Button>
                     </div>
 
-                    <p v-else class="tm-search-view__end">
-                        {{ t('results.end', { total: tours.length }) }}
+                    <p v-else-if="finished" class="tm-search-view__end">
+                        {{ t('results.end', { total }) }}
                     </p>
 
                     <p v-if="loadMoreError" class="tm-search-view__error" role="alert">
                         {{ t(loadMoreError) }}
                     </p>
                 </template>
+
+                <div v-else-if="failed" class="tm-search-view__status" role="alert">
+                    <p>{{ t('results.failed') }}</p>
+                    <Button variant="ghost" size="sm" icon="search" @click="refresh">{{ t('results.retry') }}</Button>
+                </div>
 
                 <p v-else class="tm-search-view__status">
                     {{ isSearchable ? t('results.empty') : t('results.chooseRoute') }}
@@ -89,6 +118,8 @@
 <script setup lang="ts">
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
+import DayPrices from '~/landing/components/dayPrices/DayPrices.vue'
+import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
 
@@ -98,9 +129,9 @@ const { label } = useCatalogLabel()
 const { isStaff } = useAuthSession()
 
 const {
-  criteria, filters, sort,
-  tours, facets, isSearchable, busy, settling,
-  hasMore, canLoadMore, loadingMore, loadMoreError, loadMore,
+  criteria, filters, sort, day,
+  tours, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
+  remaining, hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
 } = useSearch()
 
 const { sentinel } = useInfiniteScroll(loadMore, { enabled: canLoadMore })
@@ -111,15 +142,20 @@ const headline = computed(() => {
   if (!isSearchable.value) return t('results.prompt')
 
   const destination = label(criteria.value.to) || t('results.anywhere')
-  const dates = criteria.value.date
-    ? formatDateRange(criteria.value.date, criteria.value.nights, locale.value)
-    : ''
+  const { date, dateTo, nights } = criteria.value
+  const dates = !date
+    ? ''
+    : dateTo
+      ? `${formatDayRange(date, dateTo, locale.value)}, ${t('search.nights', nights)}`
+      : formatDateRange(date, nights, locale.value)
   const from = facets.value.priceFrom
   const cheapest = from
     ? formatMoney({ amount: from.amount, currency: from.currency as 'USD' | 'EUR' | 'UZS' }, locale.value)
     : ''
 
-  return t('results.headline', { destination, dates, price: cheapest })
+  return cheapest
+    ? t('results.headline', { destination, dates, price: cheapest })
+    : t('results.headlineBare', { destination, dates })
 })
 
 const breadcrumbs = computed(() => [
@@ -149,12 +185,14 @@ useSeoMeta({
 
     &__layout {
         display: grid;
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 280px minmax(0, 1fr);
         gap: 24px;
         align-items: start;
     }
 
     &__filters { position: sticky; top: 24px; }
+
+    &__results { min-width: 0; }
 
     &__list {
         display: flex;
@@ -162,15 +200,62 @@ useSeoMeta({
         gap: 14px;
     }
 
+    &__progress {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+    }
+
+    &__progress-bar {
+        position: relative;
+        flex: none;
+        width: 120px;
+        height: 4px;
+        overflow: hidden;
+        border-radius: radius('pill');
+        background: var(--tm-border-1);
+
+        span {
+            position: absolute;
+            inset: 0 auto 0 0;
+            border-radius: inherit;
+            background: var(--tm-brand-primary);
+            transition: width .4s ease;
+        }
+    }
+
+    &__progress-text { min-width: 0; }
+
+    &__item { animation: tm-search-item-in .35s ease both; }
+
+    @keyframes tm-search-item-in {
+        from { opacity: 0; transform: translateY(6px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &__item { animation: none; }
+    }
+
     &__skeleton {
         display: grid;
-        grid-template-columns: 240px 1fr 220px;
+        grid-template-columns: 128px 1fr 232px;
         gap: 0;
         min-height: 190px;
         background: var(--tm-surface-1);
         border: 1px solid var(--tm-border-1);
         border-radius: radius('lg');
         overflow: hidden;
+    }
+
+    &__skeleton-stub {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px;
+        background: var(--tm-surface-2);
     }
 
     &__skeleton-body,
@@ -187,7 +272,7 @@ useSeoMeta({
     }
 
     @media #{$until-lg} {
-        &__skeleton { grid-template-columns: 200px 1fr; }
+        &__skeleton { grid-template-columns: 116px 1fr; }
         &__skeleton-aside { grid-column: 1 / -1; border-left: 0; align-items: flex-start; }
     }
 
@@ -218,6 +303,9 @@ useSeoMeta({
     }
 
     &__status {
+        display: grid;
+        justify-items: center;
+        gap: 14px;
         padding: 40px;
         text-align: center;
         color: var(--tm-ink-3);
@@ -259,7 +347,7 @@ useSeoMeta({
     }
 
     @media #{$until-lg} {
-        &__layout { grid-template-columns: 1fr; }
+        &__layout { grid-template-columns: minmax(0, 1fr); }
         &__filters { position: static; }
     }
 

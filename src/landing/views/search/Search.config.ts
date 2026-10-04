@@ -13,6 +13,7 @@ export const EMPTY_FACETS: SearchFacets = {
   availability: [],
   priceFrom: null,
   priceBuckets: [],
+  days: [],
   priceMin: null,
   priceMax: null,
   currency: null,

@@ -54,13 +54,12 @@
                             v-for="day in month.days" :key="day.iso"
                             type="button"
                             class="tm-tour-dates__day"
-                            :class="{
-                                'is-selected': day.iso === model.date,
-                                'is-window': inWindow(day.iso),
-                            }"
+                            :class="dayState(day.iso)"
                             :disabled="day.disabled"
-                            :aria-pressed="day.iso === model.date"
+                            :aria-pressed="day.iso === model.date || day.iso === model.dateTo"
                             @click="pick(day.iso)"
+                            @mouseenter="hovered = day.iso"
+                            @mouseleave="hovered = ''"
                         >
                             {{ day.day }}
                         </button>
@@ -76,6 +75,11 @@
                 </button>
             </div>
 
+            <p class="tm-tour-dates__hint" aria-live="polite">
+                <Icon name="calendar" :size="15" />
+                <span>{{ hint }}</span>
+            </p>
+
             <p class="tm-tour-dates__section">{{ t('search.dates.duration') }}</p>
 
             <div class="tm-tour-dates__nights">
@@ -90,14 +94,6 @@
                 </button>
             </div>
 
-            <label class="tm-tour-dates__flex">
-                <input type="checkbox" :checked="Boolean(model.flex)" @change="toggleFlex">
-                <span>
-                    <strong>{{ t('search.dates.flexible', { days: FLEX_DAYS }) }}</strong>
-                    <span>{{ t('search.dates.flexibleHint', { days: FLEX_DAYS }) }}</span>
-                </span>
-            </label>
-
             <button type="button" class="tm-tour-dates__done" @click="open = false">
                 {{ t('search.sheetDone') }}
             </button>
@@ -107,8 +103,8 @@
 
 <script setup lang="ts">
 import Icon from '~/shared/components/icon/Icon.vue'
-import { FLEX_DAYS } from '~/shared/composables/useSearchCriteria'
-import { addDays, fromIso } from '~/shared/helpers/dates'
+import { MAX_RANGE_DAYS } from '~/shared/composables/useSearchCriteria'
+import { addDays } from '~/shared/helpers/dates'
 import { useCalendar } from './TourDates.hooks'
 import type { ITourDates, ITourDatesProps } from './TourDates.d'
 
@@ -127,31 +123,67 @@ const { months, weekdays, canGoBack, canGoOn, shift } = useCalendar(
     () => model.value.date,
 )
 
-const chosen = computed(() => {
-    if (!model.value.date) return ''
+const hovered = ref('')
 
-    const day = new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' })
-        .format(fromIso(model.value.date))
+const chosen = computed(() => formatDayRange(model.value.date, model.value.dateTo, locale.value))
 
-    return model.value.flex ? `${day} ±${model.value.flex}` : day
+const latest = computed(() => (model.value.date ? addDays(model.value.date, MAX_RANGE_DAYS) : ''))
+
+const awaitingEnd = computed(() => Boolean(model.value.date && !model.value.dateTo))
+
+const reachable = (iso: string): boolean =>
+    awaitingEnd.value && iso > model.value.date && iso <= latest.value
+
+const rangeEnd = computed(() => {
+    if (model.value.dateTo) return model.value.dateTo
+
+    return hovered.value && reachable(hovered.value) ? hovered.value : ''
 })
 
-const inWindow = (iso: string): boolean => {
-    if (!model.value.flex || !model.value.date) return false
+const dayState = (iso: string) => {
+    const { date } = model.value
+    const end = rangeEnd.value
 
-    return iso > model.value.date && iso <= addDays(model.value.date, model.value.flex)
+    return {
+        'is-start': iso === date,
+        'is-end': Boolean(end) && iso === end,
+        'is-range': Boolean(end) && iso > date && iso < end,
+        'is-ranged': Boolean(end) && iso === date,
+        'is-preview': !model.value.dateTo && Boolean(end) && iso > date && iso <= end,
+        'is-reachable': reachable(iso),
+    }
 }
+
+const span = computed(() => {
+    if (!model.value.date || !model.value.dateTo) return 1
+
+    return Math.round((Date.parse(model.value.dateTo) - Date.parse(model.value.date)) / 864e5) + 1
+})
+
+const hint = computed(() => {
+    if (!model.value.date) return t('search.dates.pickStart')
+
+    if (awaitingEnd.value) {
+        return t('search.dates.pickEnd', {
+            latest: formatDayRange(latest.value, '', locale.value),
+            days: MAX_RANGE_DAYS,
+        })
+    }
+
+    return t('search.dates.rangeChosen', { range: chosen.value, count: span.value }, span.value)
+})
 
 const pick = (iso: string) => {
-    model.value = { ...model.value, date: iso }
-}
+    if (reachable(iso)) {
+        model.value = { ...model.value, dateTo: iso }
+        return
+    }
 
-const toggleFlex = (event: Event) => {
-    model.value = { ...model.value, flex: (event.target as HTMLInputElement).checked ? FLEX_DAYS : 0 }
+    model.value = { ...model.value, date: iso, dateTo: '' }
 }
 
 const clear = () => {
-    model.value = { ...model.value, date: '', flex: 0 }
+    model.value = { ...model.value, date: '', dateTo: '' }
 }
 
 const onAway = (event: MouseEvent) => {

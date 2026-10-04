@@ -29,6 +29,16 @@ export function formatDateRange(startISO: string, nights: number, locale = 'ru')
   return `${format.format(start)} — ${format.format(end)}`
 }
 
+export function formatDayRange(fromISO: string, toISO = '', locale = 'ru'): string {
+  const from = new Date(`${fromISO}T00:00:00`)
+  if (Number.isNaN(from.getTime())) return ''
+
+  const format = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' })
+  const to = toISO && toISO > fromISO ? new Date(`${toISO}T00:00:00`) : null
+
+  return to ? format.formatRange(from, to) : format.format(from)
+}
+
 export function formatDistance(metres: number, locale = 'ru'): string {
   return metres >= 1000
     ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(metres / 1000)} km`

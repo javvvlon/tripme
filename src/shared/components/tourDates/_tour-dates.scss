@@ -128,7 +128,7 @@
     &__grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
+        gap: 4px 0;
     }
 
     &__weekdays {
@@ -168,12 +168,27 @@
             cursor: not-allowed;
         }
 
-        &.is-window { background: var(--tm-brand-primary-soft); color: var(--tm-brand-primary-dark); }
+        &.is-reachable { color: var(--tm-brand-primary-dark); }
 
-        &.is-selected {
+        &.is-range,
+        &.is-preview {
+            border-radius: 0;
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary-dark);
+        }
+
+        &.is-preview:hover:not(:disabled) { background: var(--tm-brand-primary-soft); }
+
+        &.is-start,
+        &.is-end {
             background: var(--tm-brand-primary);
             color: var(--tm-common-white);
+
+            &:hover:not(:disabled) { background: var(--tm-brand-primary-dark); }
         }
+
+        &.is-start.is-ranged { border-radius: radius('sm') 0 0 radius('sm'); }
+        &.is-end { border-radius: 0 radius('sm') radius('sm') 0; }
 
         &:focus-visible {
             outline: 2px solid var(--tm-brand-primary);
@@ -232,28 +247,19 @@
         cursor: pointer;
     }
 
-    &__flex {
+    &__hint {
         display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-top: 16px;
-        cursor: pointer;
+        align-items: center;
+        gap: 8px;
+        margin: 14px 0 0;
+        padding: 10px 12px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+        font-size: size(13);
+        line-height: 1.4;
 
-        input {
-            width: 18px;
-            height: 18px;
-            margin: 1px 0 0;
-            accent-color: var(--tm-brand-primary);
-            cursor: pointer;
-        }
-
-        > span {
-            display: flex;
-            flex-direction: column;
-
-            strong { font-size: size(14); font-weight: 600; }
-            span { font-size: size(12); color: var(--tm-ink-3); }
-        }
+        .tm-icon { flex: none; color: var(--tm-brand-primary); }
     }
 
     &--bar {

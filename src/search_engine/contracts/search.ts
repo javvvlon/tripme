@@ -27,7 +27,7 @@ export interface SearchCriteria {
   from: string
   to: string
   date: string
-  flex: number
+  dateTo: string
   nights: number
   adults: number
   kids: number
@@ -64,6 +64,12 @@ export interface FacetOption {
   count: number
 }
 
+export interface DayPrice {
+  date: string
+  price: { amount: number, currency: string }
+  count: number
+}
+
 export interface SearchFacets {
   suppliers: FacetOption[]
   stars: FacetOption[]
@@ -72,6 +78,7 @@ export interface SearchFacets {
   availability: FacetOption[]
   priceFrom: { amount: number, currency: string } | null
   priceBuckets: { from: number, to: number, count: number }[]
+  days: DayPrice[]
   priceMin: number | null
   priceMax: number | null
   currency: string | null

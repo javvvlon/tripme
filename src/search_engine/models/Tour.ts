@@ -72,7 +72,15 @@ export class Tour extends Model<ITour> {
     return this.get('hotelStars') ?? 0
   }
 
-  public location(): string {
+  public displayName(): string {
+    const name = this.get('hotelName').replace(/\s*\d\s*\*+\s*\+?\s*$/, '').trim()
+
+    if (name !== name.toUpperCase() || !/[A-Z]/.test(name)) return name
+
+    return name.toLowerCase().replace(/(^|[\s\-'(&/])(\p{L})/gu, (_, gap: string, letter: string) => gap + letter.toUpperCase())
+  }
+
+    public location(): string {
     return this.get('district') ?? ''
   }
 

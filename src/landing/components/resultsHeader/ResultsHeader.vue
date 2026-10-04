@@ -23,13 +23,12 @@ import { SearchSort } from '~/search_engine/contracts/search'
 
 defineProps<{ title: string, sortable?: boolean }>()
 
-const sort = defineModel<SearchSort>('sort', { default: SearchSort.Popular })
+const sort = defineModel<SearchSort>('sort', { default: SearchSort.PriceAsc })
 
 const { t } = useI18n()
 const id = useId()
 
 const sortOptions = computed(() => [
-  { value: SearchSort.Popular, label: t('results.sortPopular') },
   { value: SearchSort.PriceAsc, label: t('results.sortPriceAsc') },
   { value: SearchSort.PriceDesc, label: t('results.sortPriceDesc') },
   { value: SearchSort.RatingDesc, label: t('results.sortRating') },

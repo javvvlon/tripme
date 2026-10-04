@@ -1,4 +1,5 @@
 import { SearchMode } from '~/search_engine/contracts/search'
+import { addDays } from '~/shared/helpers/dates'
 import type { SearchCriteria } from '~/search_engine/contracts/search'
 
 /**
@@ -9,14 +10,14 @@ export const SEARCH_DEFAULTS: SearchCriteria = {
   from: '',
   to: '',
   date: '',
-  flex: 0,
+  dateTo: '',
   nights: 7,
   adults: 2,
   kids: 0,
   kidAges: [],
 }
 
-export const FLEX_DAYS = 3
+export const MAX_RANGE_DAYS = 7
 
 export const DEFAULT_KID_AGE = 7
 
@@ -38,11 +39,25 @@ function readAges(value: unknown, fallback: number[]): number[] {
   return raw.split(',').map(Number).filter(age => Number.isFinite(age) && age >= 0 && age <= 17)
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
+
+export function readRange(date: string, dateTo: string, legacyFlex = 0): string {
+  if (!date) return ''
+
+  const latest = addDays(date, MAX_RANGE_DAYS)
+  const end = ISO_DATE.test(dateTo) ? dateTo : legacyFlex > 0 ? addDays(date, legacyFlex) : ''
+
+  if (!end || end <= date) return ''
+
+  return end > latest ? latest : end
+}
+
 export function readCriteria(
   query: Record<string, unknown>,
   seed: Partial<SearchCriteria> = {},
 ): SearchCriteria {
   const ages = readAges(query.kids, seed.kidAges ?? SEARCH_DEFAULTS.kidAges)
+  const date = readString(query.date, seed.date ?? '')
 
   return {
     ...SEARCH_DEFAULTS,
@@ -50,8 +65,8 @@ export function readCriteria(
     mode: readString(query.mode, seed.mode ?? SEARCH_DEFAULTS.mode) as SearchMode,
     from: readString(query.from, seed.from ?? ''),
     to: readString(query.to, seed.to ?? ''),
-    date: readString(query.date, seed.date ?? ''),
-    flex: readInt(query.flex, seed.flex ?? SEARCH_DEFAULTS.flex),
+    date,
+    dateTo: readRange(date, readString(query.dateTo, seed.dateTo ?? ''), readInt(query.flex, 0)),
     nights: readInt(query.nights, seed.nights ?? SEARCH_DEFAULTS.nights),
     adults: readInt(query.adults, seed.adults ?? SEARCH_DEFAULTS.adults),
     kids: ages.length,
@@ -83,7 +98,7 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
     if (criteria.from) q.from = criteria.from
     if (criteria.to) q.to = criteria.to
     if (criteria.date) q.date = criteria.date
-    if (criteria.flex) q.flex = String(criteria.flex)
+    if (criteria.date && criteria.dateTo) q.dateTo = criteria.dateTo
     if (criteria.nights !== SEARCH_DEFAULTS.nights) q.nights = String(criteria.nights)
     if (criteria.adults !== SEARCH_DEFAULTS.adults) q.adults = String(criteria.adults)
     if (criteria.kidAges.length) q.kids = criteria.kidAges.join(',')

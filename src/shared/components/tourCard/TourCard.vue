@@ -1,38 +1,51 @@
 <template>
-    <article class="tm-tour-card" :class="{ 'is-stopped': tour.isStopped() }">
-        <div class="tm-tour-card__media">
-            <Photo :photo="photo" ratio="1 / 1" :eager="eager" sizes="(max-width: 1080px) 200px, 240px" />
-            <ClientOnly>
-                <Badge v-if="agentView" :tone="availabilityTone" class="tm-tour-card__badge">
-                    {{ t(`availability.${tour.get('availability')}`) }}
-                </Badge>
-            </ClientOnly>
+    <article class="tm-tour-card" :class="{ 'is-stopped': agentView && tour.isStopped() }">
+        <div class="tm-tour-card__stub">
+            <span class="tm-tour-card__stub-label">
+                <Icon name="plane" :size="13" />{{ t('results.departure') }}
+            </span>
+            <span class="tm-tour-card__stub-day">
+                <strong>{{ checkIn.day }}</strong>
+                <span class="tm-tour-card__stub-when">
+                    <span>{{ checkIn.month }}</span>
+                    <span>{{ checkIn.weekday }}</span>
+                </span>
+            </span>
+            <span class="tm-tour-card__stub-stay">
+                <span><Icon name="moon" :size="13" />{{ t('search.nights', tour.get('nights')) }}</span>
+                <span class="tm-tour-card__stub-back">{{ t('results.returnOn', { date: checkOut }) }}</span>
+            </span>
         </div>
 
         <div class="tm-tour-card__body">
-            <div class="tm-tour-card__head">
-                <h3 class="tm-tour-card__name">
-                    <NuxtLink v-if="hotelPage" :to="localePath(hotelPage)">
-                        {{ tour.get('hotelName') }}
-                    </NuxtLink>
-                    <span v-else>{{ tour.get('hotelName') }}</span>
-                </h3>
-                <Rating v-if="tour.stars()" :value="tour.stars()" />
+            <div class="tm-tour-card__kicker">
+                <Rating v-if="tour.stars()" :value="tour.stars()" :max="tour.stars()" :size="12" />
+                <span v-if="tour.location()" class="tm-tour-card__place">
+                    <Icon name="pin" :size="13" />{{ tour.location() }}
+                </span>
+                <ClientOnly>
+                    <Badge v-if="agentView" :tone="availabilityTone" class="tm-tour-card__badge">
+                        {{ t(`availability.${tour.get('availability')}`) }}
+                    </Badge>
+                </ClientOnly>
             </div>
 
-            <p v-if="tour.get('mealName')" class="tm-tour-card__meal">{{ tour.get('mealName') }}</p>
+            <h3 class="tm-tour-card__name">
+                <NuxtLink v-if="hotelPage" :to="localePath(hotelPage)">{{ tour.displayName() }}</NuxtLink>
+                <span v-else>{{ tour.displayName() }}</span>
+            </h3>
 
-            <div class="tm-tour-card__meta">
-                <span v-if="tour.location()" class="tm-tour-card__meta-item">
-                    <Icon name="pin" :size="14" />{{ tour.location() }}
-                </span>
-                <span class="tm-tour-card__meta-item">
-                    <Icon name="calendar" :size="14" />{{ dates }}
-                </span>
-                <span v-if="tour.get('roomName')" class="tm-tour-card__meta-item">
+            <ul class="tm-tour-card__facts">
+                <li v-if="tour.get('mealName')" class="tm-tour-card__fact tm-tour-card__fact--meal">
+                    <Icon name="check" :size="13" :stroke="2.4" />{{ tour.get('mealName') }}
+                </li>
+                <li v-if="tour.get('roomName')" class="tm-tour-card__fact">
                     <Icon name="bed" :size="14" />{{ tour.get('roomName') }}
-                </span>
-            </div>
+                </li>
+                <li v-if="tour.get('refundable') === false" class="tm-tour-card__fact tm-tour-card__fact--warn">
+                    {{ t('results.nonRefundable') }}
+                </li>
+            </ul>
 
             <ClientOnly>
                 <p v-if="agentView && stopReason" class="tm-tour-card__alert">
@@ -52,29 +65,25 @@
                         <dt>{{ t('results.fare') }}</dt>
                         <dd class="tm-tour-card__code">{{ tour.get('fare') }}</dd>
                     </div>
+
+                    <div class="tm-tour-card__spec">
+                        <dt>{{ t('results.operator') }}</dt>
+                        <dd>{{ tour.get('supplier').name }}</dd>
+                    </div>
                 </dl>
             </ClientOnly>
-
-            <p v-if="tour.get('refundable') === false" class="tm-tour-card__nonref">
-                {{ t('results.nonRefundable') }}
-            </p>
         </div>
 
         <div class="tm-tour-card__aside">
-            <div>
+            <div class="tm-tour-card__pricing">
                 <p class="tm-tour-card__price">{{ price }}</p>
                 <p class="tm-tour-card__price-note">
                     {{ t('results.priceFor', { nights: t('search.nights', tour.get('nights')), guests }) }}
                 </p>
-
-                <ClientOnly>
-                    <p v-if="agentView" class="tm-tour-card__supplier">
-                        <Icon name="briefcase" :size="13" />
-                        {{ tour.get('supplier').name }}
-                    </p>
-                </ClientOnly>
-
+                <p v-if="perPerson" class="tm-tour-card__per-person">{{ perPerson }}</p>
+                <p v-if="sourcePrice" class="tm-tour-card__source">{{ sourcePrice }}</p>
             </div>
+
             <div class="tm-tour-card__actions">
                 <ClientOnly>
                     <Button
@@ -87,9 +96,7 @@
                     >
                         {{ t('results.bookAtOperator') }}
                     </Button>
-                </ClientOnly>
 
-                <ClientOnly>
                     <Button
                         v-if="!agentView"
                         size="sm"
@@ -123,6 +130,7 @@ import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
+import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { BadgeTone } from '../badge/Badge.d'
 import type { ITourCardProps } from './TourCard.d'
@@ -140,7 +148,27 @@ const hotelPage = computed(() => {
   return routeExists(path) ? path : null
 })
 
-const price = computed(() => formatMoney(props.tour.get('price'), locale.value))
+const price = computed(() => formatMoney(props.tour.get('comparablePrice'), locale.value))
+
+const sourcePrice = computed(() => {
+  const source = props.tour.get('price')
+
+  return source.currency === props.tour.get('comparablePrice').currency
+    ? ''
+    : t('results.sourcePrice', { price: formatMoney(source, locale.value) })
+})
+
+const travellers = computed(() => props.tour.get('adults') + props.tour.get('children'))
+
+const perPerson = computed(() => {
+  if (travellers.value < 2) return ''
+
+  const { amount, currency } = props.tour.get('comparablePrice')
+
+  return t('results.perPerson', {
+    price: formatMoney({ amount: amount / travellers.value, currency }, locale.value),
+  })
+})
 
 const guests = computed(() => {
   const parts = [t('search.adults', props.tour.get('adults'))]
@@ -150,19 +178,31 @@ const guests = computed(() => {
   return parts.join(', ')
 })
 
+const checkIn = computed(() => {
+  const at = fromIso(props.tour.get('checkIn'))
+  const part = (options: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(locale.value, options).format(at)
+
+  return {
+    day: part({ day: 'numeric' }),
+    month: part({ month: 'short' }).replace('.', ''),
+    weekday: part({ weekday: 'short' }),
+  }
+})
+
+const checkOut = computed(() =>
+  formatDayRange(addDays(props.tour.get('checkIn'), props.tour.get('nights')), '', locale.value))
+
+const dates = computed(() =>
+  formatDateRange(props.tour.get('checkIn'), props.tour.get('nights'), locale.value))
+
 const summary = computed(() =>
-  [props.tour.get('hotelName'), dates.value, price.value].filter(Boolean).join(' · '))
+  [props.tour.displayName(), dates.value, price.value].filter(Boolean).join(' · '))
 
 const trip = computed<ILeadTrip>(() =>
   tripFromTour(props.tour, { from: props.route?.from ?? '', to: props.route?.to ?? '' }))
 
 const { asking, sending, sent, request } = useTourRequest(() => trip.value)
-
-const photo = computed(() => ({ src: null, alt: props.tour.get('hotelName') }))
-
-const dates = computed(() =>
-  formatDateRange(props.tour.get('checkIn'), props.tour.get('nights'), locale.value),
-)
 
 const stopReason = computed(() =>
   props.tour.isStopped() ? props.tour.get('availabilityNote') : null)

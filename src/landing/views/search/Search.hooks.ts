@@ -1,27 +1,34 @@
 import { useToursRepository } from '~/search_engine/repositories/tours.repository'
+import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
 import { SearchSort } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
-import type { SearchRequest } from '~/search_engine/contracts/search'
+import type { ISupplierStatus } from '~/search_engine/repositories/tours.repository'
+import type { SearchFacets, SearchRequest } from '~/search_engine/contracts/search'
 import { EMPTY_FACETS, RESULTS_PAGE_SIZE } from './Search.config'
 import type { IChosenDate } from './Search.config'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
+const priceOf = (tour: Tour): number => tour.get('comparablePrice').amount
+
+const SORTERS: Record<SearchSort, (a: Tour, b: Tour) => number> = {
+  [SearchSort.Popular]: (a, b) => priceOf(a) - priceOf(b),
+  [SearchSort.PriceAsc]: (a, b) => priceOf(a) - priceOf(b),
+  [SearchSort.PriceDesc]: (a, b) => priceOf(b) - priceOf(a),
+  [SearchSort.RatingDesc]: (a, b) => b.stars() - a.stars() || priceOf(a) - priceOf(b),
+}
+
 export const useSearch = () => {
-  const { search, soonestDeparture } = useToursRepository()
+  const { search, stream, soonestDeparture } = useToursRepository()
 
   const criteria = useAppliedCriteria()
   const route = useRoute()
   const router = useRouter()
 
   const { filters } = useSearchFilters()
-  const sort = ref<SearchSort>(SearchSort.Popular)
-
-  const extraPages = shallowRef<Tour[][]>([])
-  const page = ref(1)
-  const loadingMore = ref(false)
-  const loadMoreError = ref('')
+  const sort = ref<SearchSort>(SearchSort.PriceAsc)
+  const day = ref('')
 
   const isSearchable = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
@@ -38,10 +45,10 @@ export const useSearch = () => {
   const dateWasOurs = computed(() =>
     chosen.value?.lane === lane.value && chosen.value?.date === criteria.value.date)
 
-  const useDate = (day: string, asked = false) => {
-    chosen.value = { lane: lane.value, date: day, asked: asked || Boolean(chosen.value?.asked) }
+  const useDate = (date: string, asked = false) => {
+    chosen.value = { lane: lane.value, date, asked: asked || Boolean(chosen.value?.asked) }
 
-    return router.replace({ query: { ...route.query, date: day } })
+    return router.replace({ query: { ...route.query, date } })
   }
 
   watch(criteria, () => {
@@ -53,51 +60,53 @@ export const useSearch = () => {
   const request = computed<SearchRequest>(() => ({
     ...criteria.value,
     filters: { ...filters.value },
-    sort: sort.value,
+    sort: SearchSort.PriceAsc,
     page: 1,
     size: RESULTS_PAGE_SIZE,
   }))
 
-  const { data, pending, error, refresh } = useAsyncData(
-    'search-results',
-    async () => {
-      if (!isSearchable.value) {
-        return { date: '', tours: [] as Tour[], total: 0, facets: EMPTY_FACETS, statuses: [], hasMore: false }
-      }
+  const requestKey = computed(() =>
+    JSON.stringify(new SearchCriteriaIntention().toRequest(request.value)))
 
-      const results = await search(request.value, 1)
-
-      return {
-        date: criteria.value.date,
-        tours: results.items,
-        total: results.total,
-        facets: results.facets ?? EMPTY_FACETS,
-        statuses: results.statuses,
-        hasMore: results.hasMore,
-      }
-    },
-    { watch: [request] },
-  )
-
-  watch(data, () => {
-    extraPages.value = []
-    page.value = 1
-    loadMoreError.value = ''
-  })
-
+  const offers = shallowRef<Tour[]>([])
+  const facets = shallowRef<SearchFacets>(EMPTY_FACETS)
+  const statuses = shallowRef<ISupplierStatus[]>([])
+  const streaming = ref(isSearchable.value)
+  const finished = ref(false)
+  const hasMore = ref(false)
+  const failed = ref(false)
+  const page = ref(1)
+  const shown = ref(RESULTS_PAGE_SIZE)
+  const loadingMore = ref(false)
+  const loadMoreError = ref('')
   const seeking = ref(false)
 
-  watch(data, async (result) => {
-    if (!result || result.date !== criteria.value.date || result.tours.length) return
+  let stop: (() => void) | null = null
+  let ticket = 0
+
+  const merge = (incoming: Tour[]) => {
+    const byId = new Map(offers.value.map(tour => [tour.get('id'), tour]))
+
+    for (const tour of incoming) {
+      const seen = byId.get(tour.get('id'))
+
+      if (!seen || priceOf(tour) < priceOf(seen)) byId.set(tour.get('id'), tour)
+    }
+
+    offers.value = [...byId.values()]
+  }
+
+  const settle = async (forDate: string) => {
+    if (offers.value.length || forDate !== criteria.value.date) return
 
     if (!dateWasOurs.value || chosen.value?.asked || seeking.value) return
 
     seeking.value = true
 
     try {
-      const day = await soonestDeparture(request.value)
+      const next = await soonestDeparture(request.value)
 
-      if (day && day !== criteria.value.date) await useDate(day, true)
+      if (next && next !== criteria.value.date) await useDate(next, true)
       else if (chosen.value) chosen.value = { ...chosen.value, asked: true }
     }
     catch {
@@ -106,22 +115,119 @@ export const useSearch = () => {
     finally {
       seeking.value = false
     }
+  }
+
+  const finish = (mine: number, forDate: string) => {
+    if (mine !== ticket) return
+
+    streaming.value = false
+    finished.value = true
+    statuses.value = statuses.value.map(status =>
+      status.state === 'searching' ? { ...status, state: 'failed' } : status)
+
+    void settle(forDate)
+  }
+
+  const fallback = async (mine: number, forDate: string) => {
+    try {
+      const result = await search(request.value, 1)
+
+      if (mine !== ticket) return
+
+      merge(result.items)
+      facets.value = result.facets ?? EMPTY_FACETS
+      statuses.value = result.statuses
+      hasMore.value = result.hasMore
+    }
+    catch {
+      if (mine === ticket) failed.value = true
+    }
+    finally {
+      finish(mine, forDate)
+    }
+  }
+
+  const run = () => {
+    stop?.()
+    stop = null
+
+    const mine = ++ticket
+    const forDate = criteria.value.date
+
+    offers.value = []
+    facets.value = EMPTY_FACETS
+    statuses.value = []
+    finished.value = false
+    hasMore.value = false
+    failed.value = false
+    page.value = 1
+    shown.value = RESULTS_PAGE_SIZE
+    loadMoreError.value = ''
+    day.value = ''
+
+    if (!isSearchable.value) {
+      streaming.value = false
+      finished.value = true
+      return
+    }
+
+    streaming.value = true
+
+    stop = stream(
+      request.value,
+      (event) => {
+        if (mine !== ticket) return
+
+        statuses.value = event.statuses
+
+        if (event.type === 'offers') {
+          merge(event.items)
+          facets.value = event.facets
+        }
+
+        if (event.type === 'done') {
+          hasMore.value = event.hasMore
+          finish(mine, forDate)
+        }
+      },
+      (received) => {
+        if (mine !== ticket) return
+
+        if (received) finish(mine, forDate)
+        else void fallback(mine, forDate)
+      },
+    )
+  }
+
+  onMounted(run)
+  watch(requestKey, () => run())
+  onBeforeUnmount(() => {
+    ticket++
+    stop?.()
   })
 
-  const busy = computed(() => pending.value || seeking.value)
+  watch([sort, day], () => { shown.value = RESULTS_PAGE_SIZE })
 
-  const tours = computed<Tour[]>(() =>
-    [...((data.value?.tours ?? []) as unknown as Tour[]), ...extraPages.value.flat()])
-  const facets = computed(() => data.value?.facets ?? EMPTY_FACETS)
-  const statuses = computed(() => data.value?.statuses ?? [])
-  const total = computed(() => tours.value.length)
+  const sorted = computed(() => [...offers.value].sort(SORTERS[sort.value]))
 
-  const hasMore = computed(() =>
-    Boolean(data.value?.hasMore) && extraPages.value.every(p => p.length > 0))
+  const filtered = computed(() =>
+    day.value ? sorted.value.filter(tour => tour.get('checkIn') === day.value) : sorted.value)
 
-  const canLoadMore = computed(() => hasMore.value && !loadingMore.value && !pending.value)
+  const tours = computed(() => filtered.value.slice(0, shown.value))
+
+  const remaining = computed(() => filtered.value.length - tours.value.length)
+
+  const moreAvailable = computed(() => remaining.value > 0 || (finished.value && hasMore.value))
+
+  const canLoadMore = computed(() =>
+    remaining.value > 0 || (finished.value && hasMore.value && !loadingMore.value))
 
   async function loadMore() {
+    if (remaining.value > 0) {
+      shown.value += RESULTS_PAGE_SIZE
+      return
+    }
+
     if (!canLoadMore.value) return
 
     loadingMore.value = true
@@ -130,14 +236,12 @@ export const useSearch = () => {
     try {
       const next = page.value + 1
       const result = await search(request.value, next)
+      const before = offers.value.length
 
-      const seen = new Set(tours.value.map(tour => tour.get('id')))
-      const fresh = result.items.filter(tour => !seen.has(tour.get('id')))
-
-      extraPages.value = [...extraPages.value, fresh]
+      merge(result.items)
       page.value = next
-
-      if (!result.hasMore && data.value) data.value.hasMore = false
+      hasMore.value = result.hasMore && offers.value.length > before
+      shown.value += RESULTS_PAGE_SIZE
     }
     catch {
       loadMoreError.value = 'results.loadMoreFailed'
@@ -147,10 +251,24 @@ export const useSearch = () => {
     }
   }
 
+  const progress = computed(() => {
+    const total = statuses.value.length
+    const pending = statuses.value.filter(status => status.state === 'searching')
+
+    return { total, done: total - pending.length, waiting: pending.map(status => status.supplier.name) }
+  })
+
+  const waitingForFirst = computed(() => streaming.value && !offers.value.length)
+
+  const busy = computed(() => waitingForFirst.value || seeking.value)
+
+  const total = computed(() => filtered.value.length)
+
   return {
-    criteria, filters, sort,
-    tours, facets, total, statuses, settling, busy,
-    isSearchable, pending, error,
-    hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
+    criteria, filters, sort, day,
+    tours, facets, total, statuses, progress, settling, busy,
+    streaming, finished, failed, waitingForFirst,
+    isSearchable, remaining,
+    hasMore: moreAvailable, canLoadMore, loadingMore, loadMoreError, loadMore, refresh: run,
   }
 }

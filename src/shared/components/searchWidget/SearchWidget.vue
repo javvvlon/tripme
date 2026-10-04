@@ -95,11 +95,11 @@ const {
 } = useSearchReferences(from, to)
 
 const dates = computed<ITourDates>({
-  get: () => ({ date: criteria.date, nights: criteria.nights, flex: criteria.flex }),
+  get: () => ({ date: criteria.date, dateTo: criteria.dateTo, nights: criteria.nights }),
   set: (value) => {
     criteria.date = value.date
+    criteria.dateTo = value.dateTo
     criteria.nights = value.nights
-    criteria.flex = value.flex
   },
 })
 
@@ -139,12 +139,7 @@ const summaryWhere = computed(() => {
 const summaryWhen = computed(() => {
   const parts: string[] = []
 
-  if (criteria.date) {
-    const day = new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' })
-      .format(new Date(`${criteria.date}T00:00:00`))
-
-    parts.push(criteria.flex ? `${day} ±${criteria.flex}` : day)
-  }
+  if (criteria.date) parts.push(formatDayRange(criteria.date, criteria.dateTo, locale.value))
 
   parts.push(nightsLabel.value, travellersLabel.value)
 

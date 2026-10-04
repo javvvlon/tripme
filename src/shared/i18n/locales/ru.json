@@ -64,8 +64,9 @@
       "duration": "Длительность",
       "earlier": "Предыдущий месяц",
       "later": "Следующий месяц",
-      "flexible": "Гибкий вылет ±{days} дня",
-      "flexibleHint": "Покажем туры с вылетом в течение {days} дней от выбранной даты"
+      "pickStart": "Выберите день вылета",
+      "pickEnd": "Чтобы искать по диапазону, отметьте последний день вылета — не позже {latest}",
+      "rangeChosen": "{range}: {count} дней вылета — покажем самые дешёвые | {range}: {count} день вылета — покажем самые дешёвые | {range}: {count} дня вылета — покажем самые дешёвые | {range}: {count} дней вылета — покажем самые дешёвые"
     },
     "travellers": {
       "adults": "Взрослые",
@@ -232,7 +233,26 @@
     "programme": "Программа",
     "fare": "Тариф",
     "filters": "Фильтры",
-    "settling": "Подбираем ближайшую дату вылета…"
+    "settling": "Подбираем ближайшую дату вылета…",
+    "progress": "Опросили {done} из {total} операторов",
+    "progressWaiting": "Ещё ждём: {names}",
+    "progressDone": "Опросили всех операторов",
+    "daysTitle": "Цены по дню вылета",
+    "daysAll": "Все даты",
+    "daysCheapest": "Дешевле всего",
+    "dayEmpty": "нет туров",
+    "priceFrom": "от {price}",
+    "departure": "Вылет",
+    "returnOn": "обратно {date}",
+    "perPerson": "≈ {price} с человека",
+    "showMore": "Показать ещё {count}",
+    "dayFiltered": "Только вылет {date}",
+    "clearDay": "Показать все даты",
+    "operator": "Оператор",
+    "failed": "Операторы не ответили. Попробуйте ещё раз через минуту.",
+    "retry": "Повторить поиск",
+    "sourcePrice": "у оператора {price}",
+    "headlineBare": "Туры {destination}, {dates}"
   },
   "auth": {
     "mode": "Вход или регистрация",

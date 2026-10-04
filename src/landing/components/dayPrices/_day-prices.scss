@@ -1,0 +1,115 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-day-prices {
+    margin-bottom: 16px;
+
+    &__title {
+        margin: 0 0 8px;
+        font-size: size(13);
+        font-weight: 600;
+        color: var(--tm-ink-3);
+    }
+
+    &__track {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(84px, 1fr);
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: thin;
+    }
+
+    &__cell {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        min-width: 0;
+        padding: 9px 10px 10px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color .15s, background .15s, box-shadow .15s;
+
+        &:hover:not(:disabled) { border-color: var(--tm-ink-4); }
+
+        &:focus-visible {
+            outline: 2px solid var(--tm-brand-primary);
+            outline-offset: 2px;
+        }
+
+        &.is-on {
+            border-color: var(--tm-brand-primary);
+            background: var(--tm-brand-primary-soft);
+            box-shadow: inset 0 0 0 1px var(--tm-brand-primary);
+        }
+
+        &.is-cheapest:not(.is-on) { border-color: var(--tm-status-success-line); }
+
+        &:disabled {
+            background: var(--tm-surface-2);
+            cursor: not-allowed;
+
+            .tm-day-prices__date,
+            .tm-day-prices__price { color: var(--tm-ink-4); }
+        }
+
+    }
+
+    &__weekday {
+        font-size: size(12);
+        font-weight: 600;
+        color: var(--tm-ink-3);
+    }
+
+    &__date {
+        font-size: size(14);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    &__price {
+        margin-top: 2px;
+        font-size: size(13);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--tm-ink-2);
+        white-space: nowrap;
+
+        .is-cheapest & { color: var(--tm-status-success); }
+        .is-on & { color: var(--tm-brand-primary-dark); }
+    }
+
+    &__tag {
+        position: absolute;
+        top: -8px;
+        right: 8px;
+        padding: 1px 7px;
+        border-radius: radius('pill');
+        background: var(--tm-status-success);
+        color: var(--tm-common-white);
+        font-size: size(11);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    &__track:has(.tm-day-prices__tag) { padding-top: 9px; }
+
+    @media #{$until-md} {
+        &__track {
+            grid-auto-columns: 96px;
+            margin-inline: -24px;
+            padding-inline: 24px;
+            scroll-padding-inline: 24px;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar { display: none; }
+        }
+    }
+}

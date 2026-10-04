@@ -48,7 +48,7 @@ export const useTourPicker = () => {
         adults: adults.value,
         kids: kids.value,
         kidAges: Array.from({ length: kids.value }, () => DEFAULT_KID_AGE),
-        flex: 0,
+        dateTo: '',
         filters: {},
         page: 1,
         size: 20,

@@ -24,6 +24,20 @@ export interface ITourSearchResult {
   facets: SearchFacets | null
 }
 
+export type SearchStreamEvent =
+  | { type: 'start', statuses: ISupplierStatus[] }
+  | { type: 'offers', statuses: ISupplierStatus[], items: Tour[], facets: SearchFacets }
+  | { type: 'done', statuses: ISupplierStatus[], hasMore: boolean, total: number }
+
+interface ISearchStreamRaw {
+  type: SearchStreamEvent['type']
+  statuses: ISupplierStatus[]
+  items?: ITourRaw[]
+  facets?: SearchFacets
+  hasMore?: boolean
+  total?: number
+}
+
 interface ISearchResponseRaw {
   total: number
   page: number
@@ -61,6 +75,53 @@ export const useToursRepository = () => {
     }
   }
 
+  const stream = (
+    request: SearchRequest,
+    onEvent: (event: SearchStreamEvent) => void,
+    onError: (received: boolean) => void,
+  ): (() => void) => {
+    const params = new URLSearchParams(
+      Object.entries(new SearchCriteriaIntention().toRequest(request)).map(([k, v]) => [k, String(v)]),
+    )
+    const base = String(useRuntimeConfig().public.apiBase).replace(/\/+$/, '')
+    const source = new EventSource(`${base}/search/offers/stream?${params.toString()}`)
+
+    let received = false
+    let finished = false
+
+    source.onmessage = (message) => {
+      received = true
+
+      const raw = JSON.parse(message.data) as ISearchStreamRaw
+
+      if (raw.type === 'offers') {
+        onEvent({
+          type: 'offers',
+          statuses: raw.statuses,
+          items: (raw.items ?? []).map(item => Tour.fromRaw(item)),
+          facets: raw.facets!,
+        })
+      }
+      else if (raw.type === 'done') {
+        finished = true
+        source.close()
+        onEvent({ type: 'done', statuses: raw.statuses, hasMore: Boolean(raw.hasMore), total: raw.total ?? 0 })
+      }
+      else {
+        onEvent({ type: 'start', statuses: raw.statuses })
+      }
+    }
+
+    source.onerror = () => {
+      if (finished) return
+
+      source.close()
+      onError(received)
+    }
+
+    return () => source.close()
+  }
+
   const soonestDeparture = async (request: SearchRequest): Promise<string> => {
     const { from, to, nights, adults, kids } = request
 
@@ -78,5 +139,5 @@ export const useToursRepository = () => {
     return Tour.fromRaw(response.data)
   }
 
-  return { search, soonestDeparture, fetchOne }
+  return { search, stream, soonestDeparture, fetchOne }
 }

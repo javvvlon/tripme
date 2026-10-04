@@ -64,8 +64,9 @@
       "duration": "Duration",
       "earlier": "Previous month",
       "later": "Next month",
-      "flexible": "Flexible departure ±{days} days",
-      "flexibleHint": "We will show tours departing within {days} days of the chosen date"
+      "pickStart": "Choose a departure day",
+      "pickEnd": "To search a range, tap the last departure day — no later than {latest}",
+      "rangeChosen": "{range}: {count} departure days — cheapest first | {range}: {count} departure day — cheapest first | {range}: {count} departure days — cheapest first | {range}: {count} departure days — cheapest first"
     },
     "travellers": {
       "adults": "Adults",
@@ -232,7 +233,26 @@
     "programme": "Programme",
     "fare": "Fare code",
     "filters": "Filters",
-    "settling": "Finding the soonest departure…"
+    "settling": "Finding the soonest departure…",
+    "progress": "{done} of {total} operators answered",
+    "progressWaiting": "Still waiting for {names}",
+    "progressDone": "Every operator answered",
+    "daysTitle": "Prices by departure day",
+    "daysAll": "All dates",
+    "daysCheapest": "Cheapest",
+    "dayEmpty": "no tours",
+    "priceFrom": "from {price}",
+    "departure": "Departure",
+    "returnOn": "back {date}",
+    "perPerson": "≈ {price} per person",
+    "showMore": "Show {count} more",
+    "dayFiltered": "Departing {date} only",
+    "clearDay": "Show all dates",
+    "operator": "Operator",
+    "failed": "The operators did not answer. Try again in a minute.",
+    "retry": "Search again",
+    "sourcePrice": "{price} at the operator",
+    "headlineBare": "Tours {destination}, {dates}"
   },
   "auth": {
     "mode": "Sign in or sign up",

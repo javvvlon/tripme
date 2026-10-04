@@ -14,8 +14,8 @@ export interface ITourDatesProps {
 
 export interface ITourDates {
   date: string
+  dateTo: string
   nights: number
-  flex: number
 }
 
 export interface ICalendarDay {
