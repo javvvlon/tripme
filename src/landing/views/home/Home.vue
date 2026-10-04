@@ -5,6 +5,7 @@
 
         <ContentSection
             v-for="(section, i) in sections ?? []" :key="section.uuid"
+            :id="section.uuid === hotSection ? HOT_ANCHOR : undefined"
             :section="section" :eager="i === 0"
         />
 
@@ -17,12 +18,16 @@ import Hero from '~/landing/components/hero/Hero.vue'
 import TrustBar from '~/landing/components/trustBar/TrustBar.vue'
 import ContactPanel from '~/landing/components/contactPanel/ContactPanel.vue'
 import { useHome } from './Home.hooks'
+import { HOT_ANCHOR } from './Home.config'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const url = useRequestURL()
 
 const { banner, sections } = useHome()
+
+const hotSection = computed(() =>
+  (sections.value ?? []).find(section => section.variant === 'list')?.uuid ?? null)
 
 const hasFeatures = computed(() =>
   (sections.value ?? []).some(section => section.variant === 'features'))

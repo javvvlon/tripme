@@ -3,6 +3,7 @@
 .tm-content-section {
     @include container();
     margin-block: 64px;
+    scroll-margin-top: 24px;
 
     &__head { margin-bottom: 24px; }
 

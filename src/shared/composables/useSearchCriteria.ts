@@ -19,6 +19,8 @@ export const SEARCH_DEFAULTS: SearchCriteria = {
 
 export const MAX_RANGE_DAYS = 7
 
+export const HOME_DEPARTURE = 'tashkent'
+
 export const DEFAULT_KID_AGE = 7
 
 function readString(value: unknown, fallback = ''): string {
@@ -63,7 +65,7 @@ export function readCriteria(
     ...SEARCH_DEFAULTS,
     ...seed,
     mode: readString(query.mode, seed.mode ?? SEARCH_DEFAULTS.mode) as SearchMode,
-    from: readString(query.from, seed.from ?? ''),
+    from: readString(query.from, seed.from ?? HOME_DEPARTURE),
     to: readString(query.to, seed.to ?? ''),
     date,
     dateTo: readRange(date, readString(query.dateTo, seed.dateTo ?? ''), readInt(query.flex, 0)),

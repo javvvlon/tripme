@@ -3,6 +3,7 @@ import type {
   IHeroContent,
   IQuickSearch,
 } from '~/landing/contracts/content'
+import { HOME_DEPARTURE } from '~/shared/composables/useSearchCriteria'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -21,9 +22,11 @@ export const BENEFITS: IBenefit[] = [
   { id: 'docs', image: '/icon/notebook.png', width: 135, height: 122, titleKey: 'home.benefits.docs' },
 ]
 
+export const HOT_ANCHOR = 'hot'
+
 export const QUICK_SEARCHES: IQuickSearch[] = [
-  { id: 'beach', icon: 'wave', labelKey: 'home.quick.beach', to: '/search?theme=beach' },
-  { id: 'history', icon: 'landmark', labelKey: 'home.quick.history', to: '/search?theme=history' },
-  { id: 'kids', icon: 'kids', labelKey: 'home.quick.kids', to: '/search?theme=kids' },
-  { id: 'sale', icon: 'tag', labelKey: 'home.quick.sale', to: '/search?theme=sale' },
+  { id: 'beach', icon: 'wave', labelKey: 'home.quick.beach', to: `/search?from=${HOME_DEPARTURE}&to=egypt` },
+  { id: 'history', icon: 'landmark', labelKey: 'home.quick.history', to: `/search?from=${HOME_DEPARTURE}&to=georgia` },
+  { id: 'kids', icon: 'kids', labelKey: 'home.quick.kids', to: `/search?from=${HOME_DEPARTURE}&to=uae` },
+  { id: 'sale', icon: 'tag', labelKey: 'home.quick.sale', to: `/#${HOT_ANCHOR}` },
 ]
