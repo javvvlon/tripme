@@ -137,7 +137,8 @@
     "payments": {
       "title": "Payment and security",
       "note": "Payment happens on the bank’s secure page, with 3D Secure support. We accept:"
-    }
+    },
+    "agentStatus": "TRIPME LLC is a travel agent. Travel services are provided by the partner tour operators named in the contract. Prices on the site are for reference; payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment."
   },
   "country": {
     "turkey": "Turkey",
@@ -252,7 +253,9 @@
     "failed": "The operators did not answer. Try again in a minute.",
     "retry": "Search again",
     "sourcePrice": "{price} at the operator",
-    "headlineBare": "Tours {destination}, {dates}"
+    "headlineBare": "Tours {destination}, {dates}",
+    "currencyNote": "Dollar prices are for reference. Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+    "currencyRate": "Today 1 $ = {rate} UZS."
   },
   "auth": {
     "mode": "Sign in or sign up",
@@ -308,7 +311,8 @@
     "pattern": "That format is not valid",
     "fileType": "Only {kinds} are allowed",
     "fileSize": "That file is over {max}mb",
-    "fileDimensions": "No larger than {maxWidth}×{maxHeight}px — this one is {width}×{height}px"
+    "fileDimensions": "No larger than {maxWidth}×{maxHeight}px — this one is {width}×{height}px",
+    "consent": "Consent to the processing of personal data is required"
   },
   "cms": {
     "nav": {
@@ -354,7 +358,10 @@
         "tierDiscount": "The discount is between 0 and 100 percent.",
         "pointsRate": "A rate is a number of points per unit of currency.",
         "tierMissing": "Tier not found.",
-        "customerMissing": "Customer not found."
+        "customerMissing": "Customer not found.",
+        "cancelReason": "Give a reason for cancelling the order.",
+        "passportExpired": "The passport expires before the trip ends — the order cannot be confirmed.",
+        "passportShort": "The passport must stay valid 6 months after the trip ends — the order cannot be confirmed."
       }
     },
     "upload": {
@@ -637,7 +644,17 @@
         "lead": "Where to go back to see what the client picked.",
         "repeatSearch": "Repeat the search"
       },
-      "registered": "Registered customer"
+      "registered": "Registered customer",
+      "consentGiven": "Consent to data processing: {date}",
+      "sla": {
+        "minutes": "{n} min",
+        "hours": "{h} h {m} min",
+        "days": "{n} d",
+        "overdueHint": "No answer for more than {n} minutes",
+        "answered": "First answer after {wait}",
+        "waiting": "Waiting for an answer {wait}",
+        "waitingLate": "Waiting for an answer {wait} — the target is {n} minutes"
+      }
     },
     "orders": {
       "title": "Orders",
@@ -650,8 +667,8 @@
       "missing": "Order not found.",
       "delete": "Delete order",
       "createdOn": "Created {date}",
-      "passportShort": "The passport is valid for less than six months after departure — check the entry rules.",
-      "passportExpired": "The passport expires before departure.",
+      "passportShort": "The passport is valid for less than {n} months after the trip ends — the order cannot be confirmed.",
+      "passportExpired": "The passport expires before the trip ends.",
       "filters": {
         "all": "All statuses"
       },
@@ -698,7 +715,8 @@
         "paid": "Paid",
         "issued": "Issued",
         "travelling": "Travelling",
-        "completed": "Completed"
+        "completed": "Completed",
+        "cancelled": "Cancelled"
       },
       "confirmDelete": {
         "title": "Delete this order?",
@@ -730,6 +748,13 @@
           "title": "Delete this document?",
           "lead": "The file is removed for good. The order itself stays."
         }
+      },
+      "cancel": {
+        "done": "Order cancelled",
+        "reason": "Reason for cancelling",
+        "placeholder": "For example: the client changed their mind, the tour was withdrawn",
+        "confirm": "Cancel order",
+        "keep": "Keep order"
       }
     },
     "operators": {
@@ -948,7 +973,8 @@
       "paid": "Paid",
       "issued": "Documents ready",
       "travelling": "Travelling",
-      "completed": "Completed"
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     },
     "statusHint": {
       "draft": "Your manager is gathering the trip details. We will reach out if anything is missing.",
@@ -957,7 +983,8 @@
       "paid": "Payment received. We are preparing your travel documents.",
       "issued": "Your documents are issued and available below. Have a great trip!",
       "travelling": "You are on your trip. Your manager is one message away if you need anything.",
-      "completed": "The trip is over. Thank you for choosing TripMe!"
+      "completed": "The trip is over. Thank you for choosing TripMe!",
+      "cancelled": "This order was cancelled. If you have questions about a refund, write to your manager."
     },
     "documentKinds": {
       "offer": "Commercial offer",
@@ -1038,6 +1065,74 @@
       "noHistory": "Nothing yet — points appear after your first completed trip.",
       "forOrder": "Trip on order #{n}",
       "adjustment": "Adjustment"
+    }
+  },
+  "price": {
+    "uzsApprox": "≈ {amount} UZS"
+  },
+  "legalPage": {
+    "updated": "Version of {date}",
+    "pending": "This document is being prepared for publication. If you need it now, write to us and we will send the current version.",
+    "ask": "Contact us",
+    "agentStatus": "TRIPME LLC acts as a travel agent: we select and book travel services of partner tour operators. The services in a tour are provided by the tour operator named in the contract."
+  },
+  "consent": {
+    "text": "I agree to the processing of my personal data under the {policy}",
+    "policy": "privacy policy"
+  },
+  "quote": {
+    "title": "Travel proposal",
+    "lead": "Options in the proposal: {n}. Check the text before sending.",
+    "add": "Add to proposal",
+    "added": "In proposal",
+    "barTitle": "Proposal",
+    "barCount": "{n} of {max} options",
+    "forLead": "for {ref}",
+    "clear": "Clear",
+    "build": "Build proposal",
+    "fields": {
+      "client": "Client",
+      "clientPlaceholder": "Client name",
+      "language": "Language",
+      "passport": "Passport valid until",
+      "passportHint": "We check the 6-months-after-trip rule",
+      "includes": "Included in the price",
+      "includesHint": "Check against the operator terms",
+      "text": "Proposal text"
+    },
+    "passport": {
+      "expired": "{hotel}: the passport expires before the trip ends.",
+      "short": "{hotel}: the passport is valid for less than 6 months after the trip ends."
+    },
+    "markLead": "Move {ref} to \"Proposal sent\" after sending",
+    "copy": "Copy",
+    "copied": "Text copied",
+    "copyFailed": "Could not copy — select the text by hand",
+    "leadMarked": "{ref}: status \"Proposal sent\"",
+    "leadMarkFailed": "Could not update the lead status",
+    "includesDefault": "flights, accommodation, transfers, medical insurance",
+    "tier": {
+      "budget": "Budget",
+      "optimal": "Optimal",
+      "comfort": "Comfort"
+    },
+    "text": {
+      "title": "TripMe travel proposal",
+      "for": "For: {name}",
+      "route": "Route: {from} → {to}",
+      "party": "Travellers: {party}",
+      "variant": "Option {n}",
+      "variantTier": "Option {n} — {tier}",
+      "dates": "Dates: {from} – {to}, {nights}",
+      "meal": "Meals: {meal}",
+      "room": "Room: {room}",
+      "price": "Price: {price}",
+      "approxUzs": "≈ {amount} UZS",
+      "hotel": "About the hotel: {url}",
+      "includes": "Included: {includes}.",
+      "payment": "Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+      "validity": "Prices are valid as of {date} and may change until the booking is confirmed.",
+      "manager": "Your manager: {name}, TripMe"
     }
   }
 }

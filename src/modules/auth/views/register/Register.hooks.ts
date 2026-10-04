@@ -29,6 +29,7 @@ export const useRegister = () => {
         email: form.values.email.trim(),
         phoneNumber: toE164(form.values.phone),
         password: form.values.password,
+        consent: form.values.consent,
       })
 
       await authorize(tokens)

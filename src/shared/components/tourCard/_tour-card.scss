@@ -226,6 +226,14 @@
         font-variant-numeric: tabular-nums;
     }
 
+    &__uzs {
+        margin-top: 3px;
+        font-size: size(13);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--tm-ink-3);
+    }
+
     &__price-note {
         margin-top: 4px;
         font-size: size(12);

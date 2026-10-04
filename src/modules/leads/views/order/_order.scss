@@ -62,6 +62,42 @@
     }
 
     &__head ~ &__card,
+    &__cancelled,
+    &__cancel {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 16px 18px;
+        border: 1px solid var(--tm-status-danger-soft);
+        border-radius: radius('md');
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
+        font-size: size(14);
+    }
+
+    &__cancel-label { font-weight: 600; }
+
+    &__cancel-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font: inherit;
+        resize: vertical;
+    }
+
+    &__cancel-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &__cancelled ~ &__card,
+    &__cancel ~ &__card { margin-top: 24px; }
+
     &__saved ~ &__card { margin-top: 24px; }
 
     &__card ~ &__form,

@@ -17,4 +17,5 @@
     &.is-issued,
     &.is-travelling { border-color: var(--tm-status-success-line); background: var(--tm-status-success-soft); color: var(--tm-status-success); }
     &.is-completed { background: var(--tm-surface-2); color: var(--tm-ink-3); }
+    &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
 }

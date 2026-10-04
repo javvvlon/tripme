@@ -19,6 +19,21 @@ const SORTERS: Record<SearchSort, (a: Tour, b: Tour) => number> = {
   [SearchSort.RatingDesc]: (a, b) => b.stars() - a.stars() || priceOf(a) - priceOf(b),
 }
 
+const RETRY_DELAYS_MS = [1500, 4000]
+
+async function withRetry<T>(task: () => Promise<T>): Promise<T> {
+  for (const delay of RETRY_DELAYS_MS) {
+    try {
+      return await task()
+    }
+    catch {
+      await new Promise(resolve => setTimeout(resolve, delay))
+    }
+  }
+
+  return task()
+}
+
 export const useSearch = () => {
   const { search, stream, soonestDeparture } = useToursRepository()
 
@@ -130,7 +145,7 @@ export const useSearch = () => {
 
   const fallback = async (mine: number, forDate: string) => {
     try {
-      const result = await search(request.value, 1)
+      const result = await withRetry(() => search(request.value, 1))
 
       if (mine !== ticket) return
 
@@ -235,7 +250,7 @@ export const useSearch = () => {
 
     try {
       const next = page.value + 1
-      const result = await search(request.value, next)
+      const result = await withRetry(() => search(request.value, next))
       const before = offers.value.length
 
       merge(result.items)

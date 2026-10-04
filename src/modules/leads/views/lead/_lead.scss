@@ -42,6 +42,18 @@
         font-size: size(14);
     }
 
+    &__compliance {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        margin: 6px 0 0;
+        font-size: size(13);
+        color: var(--tm-ink-3);
+
+        .is-ok { color: var(--tm-status-success); font-weight: 600; }
+        .is-late { color: var(--tm-status-danger-dark); font-weight: 600; }
+    }
+
     &__head-actions {
         display: flex;
         align-items: center;
@@ -373,6 +385,7 @@
         &.is-paid,
         &.is-issued,
         &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
     }
 }
 

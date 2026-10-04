@@ -1,0 +1,60 @@
+@use '../../styles/utils' as *;
+
+.tm-consent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &__row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    &__box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+        border: 1.5px solid var(--tm-ink-4);
+        border-radius: 5px;
+        background: var(--tm-surface-1);
+        color: transparent;
+        transition: background .12s, border-color .12s, color .12s;
+    }
+
+    input:checked + &__box {
+        background: var(--tm-brand-primary);
+        border-color: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+    }
+
+    input:focus-visible + &__box {
+        outline: 3px solid var(--tm-brand-primary);
+        outline-offset: 2px;
+    }
+
+    &.is-invalid &__box { border-color: var(--tm-status-danger); }
+
+    &__text {
+        font-size: size(13);
+        line-height: 1.5;
+        color: var(--tm-ink-2);
+    }
+
+    &__link {
+        color: var(--tm-brand-secondary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    &__error {
+        margin: 0 0 0 28px;
+        font-size: size(12);
+        color: var(--tm-status-danger-dark);
+    }
+}

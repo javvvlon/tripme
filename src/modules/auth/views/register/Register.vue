@@ -68,6 +68,12 @@
                             />
                         </div>
 
+                        <ConsentCheck
+                            v-model="values.consent"
+                            :error="touched.consent ? errors.consent : undefined"
+                            @update:model-value="form.touch('consent')"
+                        />
+
                         <p v-if="error" class="tm-auth__error" role="alert">{{ error }}</p>
 
                         <Button type="submit" size="lg" block :disabled="pending">

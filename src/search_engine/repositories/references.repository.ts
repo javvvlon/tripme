@@ -2,6 +2,7 @@ import type {
   IReferenceItem,
   IRouteAnswer,
   IRouteConstraints,
+  IUzsRates,
 } from '~/search_engine/contracts/references'
 import type { AnyObject } from '~/shared/contracts/data'
 
@@ -42,5 +43,11 @@ export const useReferencesRepository = () => {
     return response.data ?? null
   }
 
-  return { fetchDepartures, fetchCountries, fetchConstraints }
+  const fetchRates = async (): Promise<IUzsRates | null> => {
+    const response = await http.call<IUzsRates>('References', 'fetchRates')
+
+    return response.data?.rates?.USD ? response.data : null
+  }
+
+  return { fetchDepartures, fetchCountries, fetchConstraints, fetchRates }
 }

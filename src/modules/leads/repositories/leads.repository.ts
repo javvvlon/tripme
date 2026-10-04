@@ -26,6 +26,7 @@ export interface ILeadPatchBody {
 
 export interface IOrderPatchBody {
   status: OrderStatus
+  cancel_reason: string
   traveller_name: string
   country: string
   hotel_name: string
@@ -55,6 +56,7 @@ export const useLeadsRepository = () => {
       last_name: draft.lastName.trim(),
       phone: toE164(draft.phone),
       comment: draft.comment.trim(),
+      consent: draft.consent === true,
       locale,
       trip,
     } as AnyObject)

@@ -62,6 +62,12 @@
                         />
                     </div>
 
+                    <ConsentCheck
+                        v-model="form.consent"
+                        :error="touched.consent ? errors.consent : ''"
+                        @update:model-value="validation.touch('consent')"
+                    />
+
                     <p v-if="error" class="tm-contact__error" role="alert">{{ error }}</p>
                     <p v-else-if="sent" class="tm-contact__sent" role="status">{{ t('contact.sent') }}</p>
 

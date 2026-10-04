@@ -54,6 +54,12 @@
                     :placeholder="t('lead.fields.commentPlaceholder')"
                 />
             </div>
+
+            <ConsentCheck
+                v-model="draft.consent"
+                :error="touched.consent ? errors.consent : ''"
+                @update:model-value="validation.touch('consent')"
+            />
         </template>
     </Modal>
 </template>

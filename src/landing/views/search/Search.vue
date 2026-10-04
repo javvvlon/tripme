@@ -1,5 +1,5 @@
 <template>
-    <div class="tm-search-view container-wide">
+    <div class="tm-search-view container-wide" :class="{ 'has-quote': isStaff && quoteCount }">
         <Breadcrumbs :items="breadcrumbs" class="tm-search-view__crumbs" />
 
         <button
@@ -30,6 +30,10 @@
 
             <div class="tm-search-view__results">
                 <ResultsHeader v-model:sort="sort" :title="headline" :sortable="tours.length > 0" />
+
+                <p v-if="isSearchable" class="tm-search-view__currency">
+                    {{ currencyNote }}
+                </p>
 
                 <div v-if="streaming && progress.total" class="tm-search-view__progress" role="status">
                     <span class="tm-search-view__progress-bar" aria-hidden="true">
@@ -112,6 +116,13 @@
                 </p>
             </div>
         </div>
+
+        <ClientOnly>
+            <template v-if="isStaff">
+                <QuoteBar :lead-ref="quoteLeadRef" />
+                <QuoteModal :destination="label(criteria.to)" :departure="label(criteria.from, 'city')" />
+            </template>
+        </ClientOnly>
     </div>
 </template>
 
@@ -119,6 +130,10 @@
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
 import DayPrices from '~/landing/components/dayPrices/DayPrices.vue'
+import QuoteBar from '~/modules/leads/components/quoteBar/QuoteBar.vue'
+import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
+import { useQuote } from '~/modules/leads/hooks/use-quote'
+import { useLeadsRepository } from '~/modules/leads/repositories'
 import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
@@ -137,6 +152,30 @@ const {
 const { sentinel } = useInfiniteScroll(loadMore, { enabled: canLoadMore })
 
 const filtersOpen = ref(false)
+
+const route = useRoute()
+const { count: quoteCount, leadId: quoteLead } = useQuote()
+const { one: fetchLead } = useLeadsRepository()
+const quoteLeadRef = ref('')
+
+watch(() => route.query.lead, (value) => {
+  if (typeof value === 'string' && value) quoteLead.value = value
+}, { immediate: true })
+
+watch([quoteLead, isStaff], async ([id, staff]) => {
+  quoteLeadRef.value = ''
+
+  if (!import.meta.client || !id || !staff) return
+
+  quoteLeadRef.value = (await fetchLead(id).catch(() => null))?.ref ?? ''
+}, { immediate: true })
+
+const { usdRate } = useUzsRates()
+
+const currencyNote = computed(() =>
+  [t('results.currencyNote'), usdRate.value ? t('results.currencyRate', { rate: usdRate.value }) : '']
+    .filter(Boolean)
+    .join(' '))
 
 const headline = computed(() => {
   if (!isSearchable.value) return t('results.prompt')
@@ -198,6 +237,15 @@ useSeoMeta({
         display: flex;
         flex-direction: column;
         gap: 14px;
+    }
+
+    &.has-quote { padding-bottom: 120px; }
+
+    &__currency {
+        margin: -6px 0 14px;
+        font-size: size(12);
+        line-height: 1.5;
+        color: var(--tm-ink-3);
     }
 
     &__progress {

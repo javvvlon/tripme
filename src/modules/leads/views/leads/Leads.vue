@@ -53,8 +53,15 @@
                     @click="go(lead)"
                     @keydown.enter="go(lead)"
                 >
-                    <td class="is-num tm-cms-leads__order">#{{ lead.order_id }}</td>
-                    <td class="is-muted">{{ shortDate(lead.created_at) }}</td>
+                    <td class="is-num tm-cms-leads__order">{{ lead.ref }}</td>
+                    <td class="is-muted">
+                        {{ shortDate(lead.created_at) }}
+                        <span
+                            v-if="response(lead).overdue && !response(lead).answered"
+                            class="tm-cms-leads__sla"
+                            :title="t('cms.leads.sla.overdueHint', { n: RESPONSE_SLA_MINUTES })"
+                        >{{ waitLabel(response(lead).minutes, t) }}</span>
+                    </td>
                     <td class="tm-cms-leads__strong">{{ [lead.first_name, lead.last_name].filter(Boolean).join(' ') }}</td>
                     <td class="is-muted">{{ lead.phone }}</td>
                     <td class="tm-cms-leads__truncate">{{ lead.hotel_name || '—' }}</td>
@@ -87,6 +94,8 @@ import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import ManualLeadModal from '~/modules/leads/components/manualLeadModal/ManualLeadModal.vue'
 import { useLeads } from './Leads.hooks'
 import { COLUMNS } from './Leads.config'
+import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
+import { leadResponse, waitLabel } from '~/modules/leads/helpers/compliance'
 import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
@@ -98,6 +107,14 @@ const {
     leads, status, error, query, sort, direction,
     rowOptions, counts, sortBy, change, refresh,
 } = useLeads()
+
+const now = ref(Date.now())
+let ticker: ReturnType<typeof setInterval> | null = null
+
+onMounted(() => { ticker = setInterval(() => { now.value = Date.now() }, 30_000) })
+onBeforeUnmount(() => { if (ticker) clearInterval(ticker) })
+
+const response = (lead: ILeadRaw) => leadResponse(lead, now.value)
 
 const go = (lead: ILeadRaw) => navigateTo(localePath(`/app/leads/${lead.uuid}`))
 

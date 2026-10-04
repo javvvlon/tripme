@@ -11,7 +11,7 @@
         <template v-else>
             <header class="tm-cms-order__head">
                 <div>
-                    <h1 class="tm-cms-order__number">#{{ order.order_no }}</h1>
+                    <h1 class="tm-cms-order__number">{{ order.ref }}</h1>
                     <p class="tm-cms-order__sub">
                         {{ t('cms.orders.createdOn', { date: fullDate(order.created_at) }) }}
                     </p>
@@ -32,6 +32,28 @@
             </header>
 
             <p v-if="saved" class="tm-cms-order__saved" role="status">{{ t('cms.saved') }}</p>
+
+            <section v-if="order.status === 'cancelled'" class="tm-cms-order__cancelled">
+                <strong>{{ t('cms.orders.cancel.done') }}</strong>
+                <span v-if="order.cancel_reason">{{ order.cancel_reason }}</span>
+            </section>
+
+            <section v-else-if="cancelling" class="tm-cms-order__cancel">
+                <label :for="cancelId" class="tm-cms-order__cancel-label">{{ t('cms.orders.cancel.reason') }}</label>
+                <textarea
+                    :id="cancelId" v-model="cancelReason"
+                    class="tm-cms-order__cancel-input" rows="2" maxlength="500"
+                    :placeholder="t('cms.orders.cancel.placeholder')"
+                />
+                <div class="tm-cms-order__cancel-actions">
+                    <Button size="sm" variant="danger" :disabled="saving || !cancelReason.trim()" @click="confirmCancel">
+                        {{ t('cms.orders.cancel.confirm') }}
+                    </Button>
+                    <Button size="sm" variant="ghost" :disabled="saving" @click="cancelling = false">
+                        {{ t('cms.orders.cancel.keep') }}
+                    </Button>
+                </div>
+            </section>
 
             <section class="tm-cms-order__card">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
@@ -221,6 +243,8 @@
 </template>
 
 <script setup lang="ts">
+import { passportProblem } from '~/modules/leads/helpers/compliance'
+import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
@@ -240,7 +264,10 @@ const {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove,
     documents, documentsLoading, working, generate, attach, dropDocument,
+    cancelling, cancelReason, confirmCancel,
 } = useOrder()
+
+const cancelId = useId()
 
 const links = computed(() => offerLinks(order.value?.trip as never))
 
@@ -272,15 +299,18 @@ const fullDate = (value: string | null | undefined): string =>
     formatDate(value, locale.value, { dateStyle: 'medium', timeStyle: 'short' })
 
 const passportWarning = computed(() => {
-    if (!draft.passportExpiresAt || !draft.checkIn) return ''
+    const problem = passportProblem({
+        return_date: draft.returnDate || null,
+        check_in: draft.checkIn || null,
+        nights: Number(draft.nights) || 0,
+        passport_expires_at: draft.passportExpiresAt || null,
+    })
 
-    const expires = new Date(draft.passportExpiresAt)
-    const departure = new Date(draft.checkIn)
-    const months = (expires.getTime() - departure.getTime()) / (1000 * 60 * 60 * 24 * 30)
+    if (!problem) return ''
 
-    if (months < 0) return t('cms.orders.passportExpired')
-
-    return months < 6 ? t('cms.orders.passportShort') : ''
+    return t(problem === 'expired' ? 'cms.orders.passportExpired' : 'cms.orders.passportShort', {
+        n: PASSPORT_MARGIN_MONTHS,
+    })
 })
 
 useSeoMeta({ title: () => t('cms.orders.title'), robots: 'noindex, nofollow' })

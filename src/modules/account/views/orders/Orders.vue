@@ -20,7 +20,7 @@
             <li v-for="order in orders" :key="order.uuid">
                 <NuxtLink :to="localePath(`/account/orders/${order.uuid}`)" class="tm-my-orders__card">
                     <div class="tm-my-orders__card-top">
-                        <span class="tm-my-orders__no">#{{ order.order_no }}</span>
+                        <span class="tm-my-orders__no">{{ order.ref }}</span>
                         <OrderStatusPill :status="order.status" />
                     </div>
 

@@ -134,7 +134,27 @@ export const useOrder = () => {
     }
   }
 
-  const change = (next: OrderStatus) => save({ status: next })
+  const cancelling = ref(false)
+  const cancelReason = ref('')
+
+  const change = (next: OrderStatus) => {
+    if (next === 'cancelled') {
+      cancelReason.value = ''
+      cancelling.value = true
+
+      return
+    }
+
+    return save({ status: next })
+  }
+
+  async function confirmCancel() {
+    if (!cancelReason.value.trim()) return
+
+    await save({ status: 'cancelled', cancel_reason: cancelReason.value.trim() })
+
+    if (order.value?.status === 'cancelled') cancelling.value = false
+  }
 
   const submit = () => save({
     traveller_name: draft.travellerName,
@@ -253,5 +273,6 @@ export const useOrder = () => {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove, refresh,
     documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
+    cancelling, cancelReason, confirmCancel,
   }
 }

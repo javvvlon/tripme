@@ -63,7 +63,7 @@
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
 
-        .is-no { width: 76px; }
+        .is-no { width: 118px; }
         .is-date { width: 116px; }
         .is-party { width: 72px; }
         .is-price { width: 100px; }
@@ -115,6 +115,7 @@
         &.is-paid,
         &.is-issued,
         &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
         &.is-completed { background: var(--tm-surface-2); color: var(--tm-ink-3); }
     }
 }

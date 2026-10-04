@@ -11,11 +11,12 @@ export interface IRegisterValues {
   phone: string
   password: string
   confirm: string
+  consent: boolean
 }
 
 export const useRegisterForm = () => {
   const values = reactive<IRegisterValues>({
-    firstName: '', lastName: '', email: '', phone: '', password: '', confirm: '',
+    firstName: '', lastName: '', email: '', phone: '', password: '', confirm: '', consent: false,
   })
 
   const validation = useValidation(values, {
@@ -25,6 +26,7 @@ export const useRegisterForm = () => {
     phone: [required(), custom<string, IRegisterValues>(value => isCompletePhone(value), 'validation.phone')],
     password: [required(), minLength(MIN_PASSWORD_LENGTH)],
     confirm: [required(), sameAs<IRegisterValues>('password')],
+    consent: [custom<boolean, IRegisterValues>(value => value === true, 'validation.consent')],
   })
 
   return { values, ...validation }

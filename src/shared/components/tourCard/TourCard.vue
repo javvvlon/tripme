@@ -56,9 +56,9 @@
 
             <ClientOnly>
                 <dl v-if="agentView" class="tm-tour-card__specs">
-                    <div v-if="tour.get('programme')" class="tm-tour-card__spec">
+                    <div v-if="programme" class="tm-tour-card__spec">
                         <dt>{{ t('results.programme') }}</dt>
-                        <dd>{{ tour.get('programme') }}</dd>
+                        <dd>{{ programme }}</dd>
                     </div>
 
                     <div v-if="tour.get('fare')" class="tm-tour-card__spec">
@@ -77,6 +77,7 @@
         <div class="tm-tour-card__aside">
             <div class="tm-tour-card__pricing">
                 <p class="tm-tour-card__price">{{ price }}</p>
+                <p v-if="priceUzs" class="tm-tour-card__uzs">{{ priceUzs }}</p>
                 <p class="tm-tour-card__price-note">
                     {{ t('results.priceFor', { nights: t('search.nights', tour.get('nights')), guests }) }}
                 </p>
@@ -86,6 +87,18 @@
 
             <div class="tm-tour-card__actions">
                 <ClientOnly>
+                    <Button
+                        v-if="agentView"
+                        size="sm"
+                        :variant="inQuote ? 'secondary' : 'ghost'"
+                        :icon="inQuote ? 'check' : 'plus'"
+                        :disabled="!inQuote && quoteFull"
+                        :aria-pressed="inQuote"
+                        @click="toggleQuote(tour)"
+                    >
+                        {{ inQuote ? t('quote.added') : t('quote.add') }}
+                    </Button>
+
                     <Button
                         v-if="agentView && tour.canBook()"
                         :href="tour.get('bookingUrl')!"
@@ -130,6 +143,7 @@ import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
+import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { BadgeTone } from '../badge/Badge.d'
@@ -149,6 +163,17 @@ const hotelPage = computed(() => {
 })
 
 const price = computed(() => formatMoney(props.tour.get('comparablePrice'), locale.value))
+
+const { has: quoted, toggle: toggleQuote, full: quoteFull } = useQuote()
+
+const inQuote = computed(() => quoted(props.tour))
+
+const programme = computed(() =>
+  (props.tour.get('programme') ?? '').replace(/<[^>]*>?/g, ' ').replace(/\s+/g, ' ').trim())
+
+const { approxUzs } = useUzsRates()
+
+const priceUzs = computed(() => approxUzs(props.tour.get('comparablePrice')))
 
 const sourcePrice = computed(() => {
   const source = props.tour.get('price')

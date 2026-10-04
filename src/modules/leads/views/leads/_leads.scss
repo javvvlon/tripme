@@ -60,8 +60,8 @@
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
 
-        .is-order { width: 68px; }
-        .is-date { width: 78px; }
+        .is-order { width: 108px; }
+        .is-date { width: 84px; }
         .is-stay { width: 118px; }
         .is-phone { width: 126px; }
         .is-party { width: 62px; }
@@ -109,6 +109,19 @@
     &__order {
         color: var(--tm-brand-secondary);
         font-weight: 700;
+        white-space: nowrap;
+    }
+
+    &__sla {
+        display: table;
+        margin-top: 3px;
+        padding: 1px 7px;
+        border-radius: radius('pill');
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
+        font-size: size(11);
+        font-weight: 700;
+        white-space: nowrap;
     }
 
     &__strong {
@@ -150,7 +163,7 @@
 
             th, td { padding: 10px 8px; }
 
-            .is-order { width: 64px; }
+            .is-order { width: 104px; }
             .is-status { width: auto; }
         }
     }

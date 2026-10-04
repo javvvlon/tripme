@@ -34,6 +34,7 @@ export interface IPointsTransaction {
   reason: 'order' | 'adjustment'
   order_id: string | null
   order_no: number | null
+  order_ref: string | null
   note: string
   created_at: string
 }

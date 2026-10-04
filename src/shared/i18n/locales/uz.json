@@ -137,7 +137,8 @@
     "payments": {
       "title": "To‘lov va xavfsizlik",
       "note": "To‘lov bankning himoyalangan sahifasida, 3D Secure qo‘llab-quvvatlanadi. Biz qabul qilamiz:"
-    }
+    },
+    "agentStatus": "«TRIPME» MChJ — turagent. Turistik xizmatlarni shartnomada ko‘rsatilgan hamkor turoperatorlar ko‘rsatadi. Saytdagi narxlar ma’lumot uchun; to‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi."
   },
   "country": {
     "turkey": "Turkiya",
@@ -252,7 +253,9 @@
     "failed": "Operatorlar javob bermadi. Bir daqiqadan so‘ng qayta urinib ko‘ring.",
     "retry": "Qidiruvni takrorlash",
     "sourcePrice": "operatorda {price}",
-    "headlineBare": "Turlar {destination}, {dates}"
+    "headlineBare": "Turlar {destination}, {dates}",
+    "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+    "currencyRate": "Bugun 1 $ = {rate} so‘m."
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
@@ -308,7 +311,8 @@
     "pattern": "Format noto'g'ri",
     "fileType": "Faqat {kinds} mumkin",
     "fileSize": "Fayl {max} MB dan katta",
-    "fileDimensions": "{maxWidth}×{maxHeight}px dan katta bo‘lmasin — bu {width}×{height}px"
+    "fileDimensions": "{maxWidth}×{maxHeight}px dan katta bo‘lmasin — bu {width}×{height}px",
+    "consent": "Shaxsiy ma’lumotlarni qayta ishlashga rozilik kerak"
   },
   "cms": {
     "nav": {
@@ -354,7 +358,10 @@
         "tierDiscount": "Chegirma — 0 dan 100 foizgacha.",
         "pointsRate": "Kurs — valyuta birligi uchun ballar soni.",
         "tierMissing": "Daraja topilmadi.",
-        "customerMissing": "Mijoz topilmadi."
+        "customerMissing": "Mijoz topilmadi.",
+        "cancelReason": "Buyurtmani bekor qilish sababini kiriting.",
+        "passportExpired": "Pasport sayohat tugashidan oldin muddati tugaydi — buyurtmani tasdiqlab bo‘lmaydi.",
+        "passportShort": "Pasport sayohat tugaganidan keyin yana 6 oy amal qilishi kerak — buyurtmani tasdiqlab bo‘lmaydi."
       }
     },
     "upload": {
@@ -637,7 +644,17 @@
         "lead": "Mijoz tanlagan narsani koʻrish uchun qayerga qaytish kerak.",
         "repeatSearch": "Qidiruvni takrorlash"
       },
-      "registered": "Ro‘yxatdan o‘tgan mijoz"
+      "registered": "Ro‘yxatdan o‘tgan mijoz",
+      "consentGiven": "Ma’lumotlarni qayta ishlashga rozilik: {date}",
+      "sla": {
+        "minutes": "{n} daq",
+        "hours": "{h} soat {m} daq",
+        "days": "{n} kun",
+        "overdueHint": "{n} daqiqadan ortiq javob yo‘q",
+        "answered": "Birinchi javob {wait} ichida",
+        "waiting": "Javob kutmoqda: {wait}",
+        "waitingLate": "Javob kutmoqda: {wait} — me’yor {n} daqiqa"
+      }
     },
     "orders": {
       "title": "Buyurtmalar",
@@ -650,8 +667,8 @@
       "missing": "Buyurtma topilmadi.",
       "delete": "Buyurtmani oʻchirish",
       "createdOn": "{date} da yaratilgan",
-      "passportShort": "Pasport uchishdan keyin olti oydan kam amal qiladi — talablarni tekshiring.",
-      "passportExpired": "Pasport uchish sanasidan oldin tugaydi.",
+      "passportShort": "Pasport sayohat tugaganidan keyin {n} oydan kam amal qiladi — buyurtmani tasdiqlab bo‘lmaydi.",
+      "passportExpired": "Pasport sayohat tugashidan oldin muddati tugaydi.",
       "filters": {
         "all": "Barcha holatlar"
       },
@@ -698,7 +715,8 @@
         "paid": "Toʻlangan",
         "issued": "Rasmiylashtirilgan",
         "travelling": "Sayohatda",
-        "completed": "Yakunlangan"
+        "completed": "Yakunlangan",
+        "cancelled": "Bekor qilingan"
       },
       "confirmDelete": {
         "title": "Buyurtma oʻchirilsinmi?",
@@ -730,6 +748,13 @@
           "title": "Hujjat oʻchirilsinmi?",
           "lead": "Fayl butunlay oʻchiriladi. Buyurtmaning oʻzi qoladi."
         }
+      },
+      "cancel": {
+        "done": "Buyurtma bekor qilindi",
+        "reason": "Bekor qilish sababi",
+        "placeholder": "Masalan: mijoz fikridan qaytdi, tur sotuvdan olindi",
+        "confirm": "Buyurtmani bekor qilish",
+        "keep": "Bekor qilmaslik"
       }
     },
     "operators": {
@@ -948,7 +973,8 @@
       "paid": "To‘langan",
       "issued": "Hujjatlar tayyor",
       "travelling": "Sayohatda",
-      "completed": "Yakunlangan"
+      "completed": "Yakunlangan",
+      "cancelled": "Bekor qilingan"
     },
     "statusHint": {
       "draft": "Menejer sayohat tafsilotlarini yig‘moqda. Biror narsa yetishmasa — siz bilan bog‘lanamiz.",
@@ -957,7 +983,8 @@
       "paid": "To‘lov qabul qilindi. Sayohat hujjatlarini tayyorlayapmiz.",
       "issued": "Hujjatlar tayyor va quyida mavjud. Oq yo‘l!",
       "travelling": "Siz sayohatdasiz. Biror narsa kerak bo‘lsa — menejeringiz aloqada.",
-      "completed": "Sayohat yakunlandi. TripMe’ni tanlaganingiz uchun rahmat!"
+      "completed": "Sayohat yakunlandi. TripMe’ni tanlaganingiz uchun rahmat!",
+      "cancelled": "Buyurtma bekor qilindi. Pulni qaytarish bo‘yicha savollar bo‘lsa — menejeringizga yozing."
     },
     "documentKinds": {
       "offer": "Tijorat taklifi",
@@ -1038,6 +1065,74 @@
       "noHistory": "Hozircha hisoblanmagan — birinchi yakunlangan sayohatdan keyin paydo bo‘ladi.",
       "forOrder": "#{n} buyurtma bo‘yicha sayohat",
       "adjustment": "Tuzatish"
+    }
+  },
+  "price": {
+    "uzsApprox": "≈ {amount} so‘m"
+  },
+  "legalPage": {
+    "updated": "{date} tahriri",
+    "pending": "Hujjat nashrga tayyorlanmoqda. Hozir kerak bo‘lsa, bizga yozing — amaldagi tahririni yuboramiz.",
+    "ask": "Biz bilan bog‘lanish",
+    "agentStatus": "«TRIPME» MChJ turagent sifatida faoliyat yuritadi: biz hamkor turoperatorlarning turistik xizmatlarini tanlaymiz va bron qilamiz. Tur tarkibidagi xizmatlarni shartnomada ko‘rsatilgan turoperator ko‘rsatadi."
+  },
+  "consent": {
+    "text": "Shaxsiy ma’lumotlarimni {policy} asosida qayta ishlashga roziman",
+    "policy": "maxfiylik siyosati"
+  },
+  "quote": {
+    "title": "Tijorat taklifi",
+    "lead": "Taklifdagi variantlar: {n}. Yuborishdan oldin matnni tekshiring.",
+    "add": "TT ga",
+    "added": "TT da",
+    "barTitle": "TT",
+    "barCount": "{max} tadan {n} ta variant",
+    "forLead": "{ref} uchun",
+    "clear": "Tozalash",
+    "build": "TT tayyorlash",
+    "fields": {
+      "client": "Mijoz",
+      "clientPlaceholder": "Mijoz ismi",
+      "language": "Til",
+      "passport": "Pasport amal qilish muddati",
+      "passportHint": "Sayohatdan keyin 6 oy qoidasini tekshiramiz",
+      "includes": "Narxga kiritilgan",
+      "includesHint": "Turoperator shartlari bilan solishtiring",
+      "text": "Taklif matni"
+    },
+    "passport": {
+      "expired": "{hotel}: pasport sayohat tugashidan oldin muddati tugaydi.",
+      "short": "{hotel}: pasport sayohat tugaganidan keyin 6 oydan kam amal qiladi."
+    },
+    "markLead": "Yuborilgandan keyin {ref} ni «TT yuborildi» holatiga o‘tkazish",
+    "copy": "Nusxa olish",
+    "copied": "Matndan nusxa olindi",
+    "copyFailed": "Nusxa olib bo‘lmadi — matnni qo‘lda belgilang",
+    "leadMarked": "{ref}: «TT yuborildi» holati",
+    "leadMarkFailed": "Lid holatini yangilab bo‘lmadi",
+    "includesDefault": "parvoz, yashash, transfer, tibbiy sug‘urta",
+    "tier": {
+      "budget": "Tejamkor",
+      "optimal": "Optimal",
+      "comfort": "Komfort"
+    },
+    "text": {
+      "title": "TripMe tijorat taklifi",
+      "for": "Kimga: {name}",
+      "route": "Yo‘nalish: {from} → {to}",
+      "party": "Sayyohlar: {party}",
+      "variant": "{n}-variant",
+      "variantTier": "{n}-variant — {tier}",
+      "dates": "Sanalar: {from} – {to}, {nights}",
+      "meal": "Ovqatlanish: {meal}",
+      "room": "Xona: {room}",
+      "price": "Narxi: {price}",
+      "approxUzs": "≈ {amount} so‘m",
+      "hotel": "Mehmonxona haqida: {url}",
+      "includes": "Kiritilgan: {includes}.",
+      "payment": "To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+      "validity": "Narxlar {date} holatiga dolzarb va bron tasdiqlangunga qadar o‘zgarishi mumkin.",
+      "manager": "Menejeringiz: {name}, TripMe"
     }
   }
 }

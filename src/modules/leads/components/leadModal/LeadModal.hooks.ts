@@ -11,7 +11,7 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
   const { submit: send } = useLeadsRepository()
   const { user } = useAuthSession()
 
-  const draft = reactive<ILeadDraft>({ firstName: '', lastName: '', phone: '', comment: '' })
+  const draft = reactive<ILeadDraft>({ firstName: '', lastName: '', phone: '', comment: '', consent: false })
 
   const sending = ref(false)
   const sent = ref(false)
@@ -21,6 +21,7 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
     firstName: [required()],
     lastName: [required()],
     phone: [required(), custom(value => isCompletePhone(String(value ?? '')), 'validation.phone')],
+    consent: [custom(value => value === true, 'validation.consent')],
   })
 
   function reset() {
@@ -28,6 +29,7 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
     draft.lastName = user.value?.get('lastName') ?? ''
     draft.phone = phoneDigits(user.value?.get('phoneNumber') ?? '')
     draft.comment = ''
+    draft.consent = false
 
     sent.value = false
     error.value = ''

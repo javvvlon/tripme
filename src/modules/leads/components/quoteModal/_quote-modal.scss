@@ -1,0 +1,90 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-quote {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    &__row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    &__label {
+        font-size: size(13);
+        font-weight: 600;
+        color: var(--tm-ink-2);
+    }
+
+    &__langs {
+        display: inline-flex;
+        gap: 4px;
+        padding: 3px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        align-self: flex-start;
+    }
+
+    &__lang {
+        padding: 7px 14px;
+        border: 0;
+        border-radius: radius('pill');
+        background: transparent;
+        color: var(--tm-ink-3);
+        font: inherit;
+        font-size: size(13);
+        font-weight: 700;
+        cursor: pointer;
+
+        &.is-on {
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary-dark);
+        }
+    }
+
+    &__issues {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0;
+        padding: 10px 14px 10px 30px;
+        border-radius: radius('sm');
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
+        font-size: size(13);
+    }
+
+    &__text {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-1);
+        font: inherit;
+        font-size: size(13);
+        line-height: 1.55;
+        resize: vertical;
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    @media #{$until-sm} {
+        &__row { grid-template-columns: minmax(0, 1fr); }
+
+        &__actions > * { flex: 1 1 100%; }
+    }
+}

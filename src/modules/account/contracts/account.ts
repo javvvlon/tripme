@@ -6,6 +6,7 @@ import type { IOrderDocument, OrderStatus } from '~/modules/leads/contracts/lead
 export interface ICustomerOrder {
   uuid: string
   order_no: number
+  ref: string
   status: OrderStatus
   country: string
   hotel_name: string

@@ -11,10 +11,14 @@
         <template v-else>
             <header class="tm-cms-lead__head">
                 <div>
-                    <h1 class="tm-cms-lead__number">#{{ lead.order_id }}</h1>
+                    <h1 class="tm-cms-lead__number">{{ lead.ref }}</h1>
                     <p class="tm-cms-lead__sub">
                         {{ t(`cms.leads.channels.${lead.channel}`) }} · {{ fullDate(lead.created_at) }}
                         <template v-if="lead.user_id"> · {{ t('cms.leads.registered') }}</template>
+                    </p>
+                    <p class="tm-cms-lead__compliance">
+                        <span :class="response.overdue ? 'is-late' : 'is-ok'">{{ responseText }}</span>
+                        <span v-if="lead.consent_at">{{ t('cms.leads.consentGiven', { date: fullDate(lead.consent_at) }) }}</span>
                     </p>
                 </div>
 
@@ -41,9 +45,8 @@
 
                 <div class="tm-cms-lead__offer-links">
                     <Button
-                        v-if="links.search"
                         size="sm" variant="secondary" icon="search"
-                        :to="links.search"
+                        :to="pickToursLink"
                     >
                         {{ t('cms.leads.offer.repeatSearch') }}
                     </Button>
@@ -156,7 +159,7 @@
                 <ul v-else class="tm-cms-lead__order-list">
                     <li v-for="order in orders" :key="order.uuid">
                         <NuxtLink :to="localePath(`/app/orders/${order.uuid}`)" class="tm-cms-lead__order">
-                            <span class="tm-cms-lead__order-no">#{{ order.order_no }}</span>
+                            <span class="tm-cms-lead__order-no">{{ order.ref }}</span>
 
                             <span class="tm-cms-lead__order-main">
                                 <span class="tm-cms-lead__order-hotel">{{ order.hotel_name || '—' }}</span>
@@ -187,6 +190,8 @@ import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
+import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
+import { leadResponse, waitLabel } from '~/modules/leads/helpers/compliance'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
@@ -224,6 +229,35 @@ const extras = computed(() =>
         .filter(entry => entry.value))
 
 useSeoMeta({ title: () => t('cms.leads.title'), robots: 'noindex, nofollow' })
+
+const now = ref(Date.now())
+let ticker: ReturnType<typeof setInterval> | null = null
+
+onMounted(() => { ticker = setInterval(() => { now.value = Date.now() }, 30_000) })
+onBeforeUnmount(() => { if (ticker) clearInterval(ticker) })
+
+const response = computed(() => (lead.value
+    ? leadResponse(lead.value, now.value)
+    : { minutes: 0, overdue: false, answered: false }))
+
+const responseText = computed(() => {
+    const wait = waitLabel(response.value.minutes, t)
+
+    if (response.value.answered) return t('cms.leads.sla.answered', { wait })
+
+    return response.value.overdue
+        ? t('cms.leads.sla.waitingLate', { wait, n: RESPONSE_SLA_MINUTES })
+        : t('cms.leads.sla.waiting', { wait })
+})
+
+const pickToursLink = computed(() => {
+    if (!lead.value) return ''
+
+    const base = links.value.search || '/search?'
+    const joiner = base.endsWith('?') ? '' : '&'
+
+    return `${base}${joiner}lead=${lead.value.uuid}`
+})
 </script>
 
 <style lang="scss">

@@ -190,6 +190,14 @@
         padding-bottom: 18px;
     }
 
+    &__agent {
+        margin: 0;
+        padding-bottom: 18px;
+        font-size: size(12);
+        line-height: 1.6;
+        color: var(--tm-ink-4);
+    }
+
     &__entity,
     &__copyright {
         color: var(--tm-ink-3);

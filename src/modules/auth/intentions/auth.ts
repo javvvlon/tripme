@@ -18,6 +18,7 @@ export class AuthSignupIntention extends Intention<IAuthSignupData> {
     email: 'email',
     phoneNumber: 'phone_number',
     password: 'password',
+    consent: 'consent',
   } as const
 }
 

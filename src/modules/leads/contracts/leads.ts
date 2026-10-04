@@ -4,7 +4,7 @@
 export const LEAD_STATUSES = ['new', 'in_progress', 'quote_sent', 'won', 'rejected'] as const
 
 export const ORDER_STATUSES = [
-  'draft', 'requested', 'confirmed', 'paid', 'issued', 'travelling', 'completed',
+  'draft', 'requested', 'confirmed', 'paid', 'issued', 'travelling', 'completed', 'cancelled',
 ] as const
 
 export type OrderStatus = typeof ORDER_STATUSES[number]
@@ -19,6 +19,14 @@ export type LeadSort = typeof LEAD_SORTS[number]
 export type SortDirection = 'asc' | 'desc'
 
 export type LeadStatus = typeof LEAD_STATUSES[number]
+
+export const LEAD_TRANSITIONS: Record<LeadStatus, LeadStatus[]> = {
+  new: ['in_progress', 'quote_sent', 'rejected'],
+  in_progress: ['quote_sent', 'won', 'rejected'],
+  quote_sent: ['in_progress', 'won', 'rejected'],
+  won: ['in_progress', 'rejected'],
+  rejected: [],
+}
 
 export interface ILeadTrip {
   hotel_name: string
@@ -37,6 +45,9 @@ export interface ILeadTrip {
 export interface ILeadRaw {
   uuid: string
   order_id: number
+  ref: string
+  first_response_at: string | null
+  consent_at: string | null
   source: 'site' | 'manual'
   status: LeadStatus
   reject_reason: string
@@ -74,6 +85,7 @@ export interface ILeadDraft {
   lastName: string
   phone: string
   comment: string
+  consent?: boolean
 }
 
 export interface ILeadManualDraft {
@@ -93,6 +105,8 @@ export const emptyManualDraft = (): ILeadManualDraft => ({
 export interface IOrderRaw {
   uuid: string
   order_no: number
+  ref: string
+  cancel_reason: string
   lead_id: string
   status: OrderStatus
   traveller_name: string
@@ -126,14 +140,21 @@ export interface IOrderEvent {
 }
 
 export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  draft: ['requested'],
-  requested: ['confirmed', 'draft'],
-  confirmed: ['paid', 'requested'],
-  paid: ['issued'],
-  issued: ['travelling'],
+  draft: ['requested', 'cancelled'],
+  requested: ['confirmed', 'draft', 'cancelled'],
+  confirmed: ['paid', 'requested', 'cancelled'],
+  paid: ['issued', 'cancelled'],
+  issued: ['travelling', 'cancelled'],
   travelling: ['completed'],
   completed: [],
+  cancelled: [],
 }
+
+export const PASSPORT_CHECKED: OrderStatus[] = ['confirmed', 'paid', 'issued', 'travelling']
+
+export const PASSPORT_MARGIN_MONTHS = 6
+
+export const RESPONSE_SLA_MINUTES = 15
 
 export type DocumentKind = 'offer' | 'invoice' | 'attachment'
 

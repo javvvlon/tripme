@@ -12,6 +12,7 @@ export interface IAuthSignupData {
   email: string
   phoneNumber: string
   password: string
+  consent: boolean
 }
 
 export interface IAuthTokens {

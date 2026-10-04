@@ -10,7 +10,7 @@ export const useContactForm = () => {
   const http = useHttp()
   const { user } = useAuthSession()
 
-  const form = reactive({ firstName: '', lastName: '', phone: '', message: '' })
+  const form = reactive({ firstName: '', lastName: '', phone: '', message: '', consent: false })
 
   const prefill = () => {
     form.firstName = user.value?.get('firstName') ?? ''
@@ -28,6 +28,7 @@ export const useContactForm = () => {
     firstName: [required()],
     phone: [required(), custom(value => isCompletePhone(String(value ?? '')), 'validation.phone')],
     message: [maxLength(MESSAGE_MAX)],
+    consent: [custom(value => value === true, 'validation.consent')],
   })
 
   async function submit() {
@@ -44,11 +45,13 @@ export const useContactForm = () => {
         last_name: form.lastName,
         phone: toE164(form.phone),
         message: form.message,
+        consent: form.consent,
       })
 
       sent.value = true
       prefill()
       form.message = ''
+      form.consent = false
       validation.reset()
     }
     catch {

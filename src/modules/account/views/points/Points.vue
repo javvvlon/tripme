@@ -64,8 +64,8 @@
                     <li v-for="item in data.history" :key="item.id" class="tm-my-points__row">
                         <div class="tm-my-points__row-text">
                             <strong class="tm-my-points__row-title">
-                                <template v-if="item.reason === 'order' && item.order_no">
-                                    {{ t('account.points.forOrder', { n: item.order_no }) }}
+                                <template v-if="item.reason === 'order' && item.order_ref">
+                                    {{ t('account.points.forOrder', { n: item.order_ref }) }}
                                 </template>
                                 <template v-else>{{ item.note || t('account.points.adjustment') }}</template>
                             </strong>

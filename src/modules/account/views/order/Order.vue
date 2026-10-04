@@ -16,7 +16,7 @@
         <template v-else>
             <header class="tm-my-order__head">
                 <div>
-                    <p class="tm-my-order__no">{{ t('account.order.number', { n: order.order_no }) }}</p>
+                    <p class="tm-my-order__no">{{ t('account.order.number', { n: order.ref }) }}</p>
                     <h1 class="tm-my-order__title">
                         {{ order.hotel_name || order.country || t('account.orders.untitled') }}
                     </h1>
@@ -128,7 +128,7 @@ const weight = (bytes: number): string =>
         : `${Math.max(1, Math.round(bytes / 1024))} KB`
 
 useSeoMeta({
-  title: () => (order.value ? t('account.order.seoTitle', { n: order.value.order_no }) : t('account.orders.seoTitle')),
+  title: () => (order.value ? t('account.order.seoTitle', { n: order.value.ref }) : t('account.orders.seoTitle')),
   robots: 'noindex, nofollow',
 })
 </script>

@@ -24,6 +24,9 @@ const KNOWN: Array<[RegExp, string]> = [
   [/^Rate for \w+ must be a number of points per unit$/i, 'cms.errors.guards.pointsRate'],
   [/^Tier not found$/i, 'cms.errors.guards.tierMissing'],
   [/^Customer not found$/i, 'cms.errors.guards.customerMissing'],
+  [/^A cancelled order needs a reason$/i, 'cms.errors.guards.cancelReason'],
+  [/^The passport expires before the trip ends$/i, 'cms.errors.guards.passportExpired'],
+  [/^The passport must stay valid \d+ months after the trip ends$/i, 'cms.errors.guards.passportShort'],
 ]
 
 const TRANSITION = /^An order cannot go from (\w+) to (\w+)$/i

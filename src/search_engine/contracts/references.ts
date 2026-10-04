@@ -28,3 +28,10 @@ export interface IRouteConstraints {
   currencies: string[]
   calendar: ICalendarMask | null
 }
+
+export interface IUzsRates {
+  base: 'UZS'
+  date: string | null
+  rates: Record<string, number>
+  source: string
+}

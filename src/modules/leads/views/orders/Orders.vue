@@ -47,7 +47,7 @@
                     @click="go(order)"
                     @keydown.enter="go(order)"
                 >
-                    <td class="is-num tm-cms-orders__no">#{{ order.order_no }}</td>
+                    <td class="is-num tm-cms-orders__no">{{ order.ref }}</td>
                     <td class="tm-cms-orders__strong">{{ order.traveller_name || '—' }}</td>
 
                     <td class="tm-cms-orders__truncate">
