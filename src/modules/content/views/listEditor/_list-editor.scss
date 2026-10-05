@@ -78,7 +78,8 @@
         gap: 16px;
     }
 
-    &__image {
+    &__image,
+    &__wide {
         grid-column: 1 / -1;
     }
 

@@ -5,7 +5,23 @@
         </label>
 
         <div class="tm-input__control">
+            <textarea
+                v-if="rows"
+                :id="id"
+                v-model="model"
+                :rows="rows"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                :required="required"
+                :aria-invalid="error ? 'true' : undefined"
+                :aria-describedby="describedBy"
+                class="tm-input__field tm-input__field--multiline"
+                :class="{ 'tm-input__field--invalid': error }"
+                @blur="emit('blur')"
+            />
+
             <input
+                v-else
                 :id="id"
                 v-model="model"
                 :type="resolvedType"

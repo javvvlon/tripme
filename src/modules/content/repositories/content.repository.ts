@@ -1,5 +1,7 @@
 import { Banner } from '~/modules/content/models/Banner'
 import { HomeContent } from '~/modules/content/models/HomeContent'
+import { EditableSection } from '~/modules/content/models/EditableSection'
+import { SectionsIntention } from '~/modules/content/intentions/sections'
 import { BannerIntention } from '~/modules/content/intentions/banner'
 import type { IBannerRaw, BannerDraft, ContentLocale } from '~/modules/content/contracts/content'
 import type {
@@ -7,11 +9,13 @@ import type {
   IContentListRaw,
   IEditableSectionRaw,
   IHomeContentRaw,
+  ISectionDraft,
   IListSummaryRaw,
   IMediaFolderRaw,
   IStoredFileRaw,
 } from '~/modules/content/contracts/blocks'
 import type { AnyObject } from '~/shared/contracts/data'
+import type { IPostRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -80,10 +84,10 @@ export const useContentRepository = () => {
     await http.call<void>('Content', 'deleteList', { id })
   }
 
-  const sections = async (): Promise<IEditableSectionRaw[]> => {
+  const sections = async (): Promise<EditableSection[]> => {
     const response = await http.call<{ items: IEditableSectionRaw[] }>('Content', 'sections')
 
-    return response.data.items
+    return response.data.items.map(raw => EditableSection.fromRaw(raw))
   }
 
   const upload = async (file: File): Promise<string> => {
@@ -141,13 +145,23 @@ export const useContentRepository = () => {
     await http.call<void>('Content', 'renameUpload', {}, { url, ...changes })
   }
 
-  const saveSections = async (items: AnyObject[]): Promise<void> => {
-    await http.call<void>('Content', 'saveSections', {}, { items })
+  const previewHome = (
+    sections: Array<ISectionDraft & { key: string }>,
+    context: { layouts: IContentLayoutRaw[], lists: IContentListRaw[], posts: IPostRaw[] },
+    locale: ContentLocale,
+  ): HomeContent =>
+    HomeContent.forLocale(
+      new SectionsIntention().toPreview(sections, context.layouts, context.lists, context.posts),
+      locale,
+    )
+
+  const saveSections = async (sections: ISectionDraft[]): Promise<void> => {
+    await http.call<void>('Content', 'saveSections', {}, new SectionsIntention().toRequest(sections) as AnyObject)
   }
 
   return {
     banner, saveBanner, homeContent,
-    layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, upload, library, removeUpload, describeUpload,
+    layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, previewHome, upload, library, removeUpload, describeUpload,
     folders, createFolder, renameFolder, deleteFolder,
   }
 }

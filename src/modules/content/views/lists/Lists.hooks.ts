@@ -1,4 +1,5 @@
 import { useContentRepository } from '~/modules/content/repositories'
+import type { SectionKind } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -11,15 +12,24 @@ export const useLists = () => {
 
   const error = ref('')
   const busy = ref(false)
+  const choosing = ref(false)
+  const kind = ref<SectionKind>('cards')
 
   const { data, status, refresh } = useAsyncData('cms:lists', () => lists(), { default: () => [] })
+
+  const choose = () => {
+    kind.value = 'cards'
+    choosing.value = true
+  }
 
   async function create() {
     busy.value = true
     error.value = ''
 
     try {
-      const { uuid } = await createList({ name: t('cms.lists.untitled'), items: [] })
+      const { uuid } = await createList({ name: t('cms.lists.untitled'), kind: kind.value, items: [] })
+
+      choosing.value = false
 
       await navigateTo(useLocalePath()(`/app/content/lists/${uuid}`))
     }
@@ -49,5 +59,5 @@ export const useLists = () => {
     }
   }
 
-  return { lists: data, status, error, busy, create, remove, refresh }
+  return { lists: data, status, error, busy, choosing, kind, choose, create, remove, refresh }
 }

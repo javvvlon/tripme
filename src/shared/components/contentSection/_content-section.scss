@@ -19,24 +19,5 @@
 
         &:hover { text-decoration: underline; }
     }
-
-    &__grid {
-        display: grid;
-        gap: 24px;
-    }
-
-    &__column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        min-width: 0;
-
-        > * { flex: 1; }
-    }
 }
 
-@media #{$until-md} {
-    .tm-content-section__column {
-        grid-column: span 12 !important;
-    }
-}

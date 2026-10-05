@@ -44,6 +44,12 @@
 
         &--revealable { padding-right: 44px; }
 
+        &--multiline {
+            min-height: 0;
+            line-height: 1.5;
+            resize: vertical;
+        }
+
         &--invalid {
             border-color: var(--tm-status-danger);
 

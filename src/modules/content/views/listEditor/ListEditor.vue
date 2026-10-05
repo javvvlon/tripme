@@ -15,6 +15,10 @@
                 <Input :id="nameId" v-model="name" :placeholder="t('cms.lists.namePlaceholder')" />
             </FormRow>
 
+            <FormRow :label="t('cms.lists.kind')" :hint="t(`cms.blocks.kindHints.${kind}`)">
+                <Tabs v-model="kind" :items="kindTabs" variant="segment" :aria-label="t('cms.lists.kind')" />
+            </FormRow>
+
             <ol class="tm-list-editor__items">
                 <li v-for="(item, index) in items" :key="item.key" class="tm-list-editor__item">
                     <header class="tm-list-editor__item-head">
@@ -48,24 +52,28 @@
                     <div class="tm-list-editor__fields">
                         <Input
                             v-model="item.translations[locale].title"
-                            :label="t('cms.lists.itemTitle')"
-                            :placeholder="t('cms.lists.itemTitlePlaceholder')"
+                            :label="t(kind === 'faq' ? 'cms.lists.question' : 'cms.lists.itemTitle')"
+                            :placeholder="t(kind === 'faq' ? 'cms.lists.questionPlaceholder' : 'cms.lists.itemTitlePlaceholder')"
+                            :class="{ 'tm-list-editor__wide': kind === 'faq' }"
                         />
 
                         <Input
                             v-model="item.translations[locale].description"
-                            :label="t('cms.lists.itemDescription')"
-                            :placeholder="t('cms.lists.itemDescriptionPlaceholder')"
+                            :label="t(kind === 'faq' ? 'cms.lists.answer' : 'cms.lists.itemDescription')"
+                            :placeholder="t(kind === 'faq' ? 'cms.lists.answerPlaceholder' : 'cms.lists.itemDescriptionPlaceholder')"
+                            :rows="kind === 'faq' ? 4 : undefined"
+                            :class="{ 'tm-list-editor__wide': kind === 'faq' }"
                         />
 
                         <Input
+                            v-if="fields.link"
                             v-model="item.link"
                             :label="t('cms.lists.itemLink')"
                             :hint="t('cms.lists.itemLinkHint')"
                             placeholder="/search?from=tashkent&to=egypt"
                         />
 
-                        <div class="tm-list-editor__image">
+                        <div v-if="fields.image" class="tm-list-editor__image">
                             <span class="tm-list-editor__image-label">{{ t('cms.lists.itemImage') }}</span>
 
                             <FileUpload
@@ -84,6 +92,7 @@
                         </div>
 
                         <Input
+                            v-if="fields.badge"
                             v-model="item.translations[locale].badgeLabel"
                             :label="t('cms.lists.badgeLabel')"
                             :hint="t('cms.lists.badgeHint')"
@@ -91,6 +100,7 @@
                         />
 
                         <Combobox
+                            v-if="fields.badge"
                             v-model="item.badgeType"
                             :label="t('cms.lists.badgeType')"
                             :options="badgeOptions"
@@ -99,7 +109,7 @@
                         />
                     </div>
 
-                    <p v-if="item.badgeType && !item.translations[locale].badgeLabel.trim()" class="tm-list-editor__note">
+                    <p v-if="fields.badge && item.badgeType && !item.translations[locale].badgeLabel.trim()" class="tm-list-editor__note">
                         {{ t('cms.lists.badgeNeedsLabel') }}
                     </p>
                 </li>
@@ -130,13 +140,13 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import { useListEditor } from './ListEditor.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
-import { BADGE_TYPES } from '~/modules/content/contracts/blocks'
+import { BADGE_TYPES, BLOCKS, SECTION_KINDS } from '~/modules/content/contracts/blocks'
 
 const { t, locales } = useI18n()
 const route = useRoute()
 
 const {
-  locale, name, items, status, saving, saved, error, uploading,
+  locale, name, kind, fields, items, status, saving, saved, error, uploading,
   add, remove, move, submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
 } = useListEditor(String(route.params.id))
 
@@ -145,6 +155,12 @@ const nameId = useId()
 const badgeOptions = computed(() => BADGE_TYPES.map(type => ({
   value: type,
   label: t(`cms.lists.badgeTypes.${type}`),
+})))
+
+const kindTabs = computed(() => SECTION_KINDS.map(value => ({
+  value,
+  label: t(`cms.blocks.kinds.${value}`),
+  icon: BLOCKS[value].icon,
 })))
 
 const localeTabs = computed(() => CONTENT_LOCALES.map(code => ({

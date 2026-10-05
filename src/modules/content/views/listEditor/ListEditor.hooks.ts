@@ -1,7 +1,8 @@
 import { useContentRepository } from '~/modules/content/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import type { BadgeType } from '~/modules/content/contracts/blocks'
+import { BLOCKS } from '~/modules/content/contracts/blocks'
+import type { BadgeType, SectionKind } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -30,6 +31,8 @@ export const useListEditor = (id: string) => {
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const name = ref('')
+  const kind = ref<SectionKind>('cards')
+  const savedKind = ref<SectionKind>('cards')
   const items = ref<IDraftItem[]>([])
 
   const uploading = ref<string | null>(null)
@@ -48,6 +51,8 @@ export const useListEditor = (id: string) => {
     loaded.value = true
 
     name.value = raw.name
+    kind.value = raw.kind ?? 'cards'
+    savedKind.value = kind.value
     items.value = raw.items.map(item => ({
       key: item.uuid,
       imageUrl: item.image_url ?? '',
@@ -143,6 +148,8 @@ export const useListEditor = (id: string) => {
     items.value = next
   }
 
+  const fields = computed(() => BLOCKS[kind.value].item)
+
   const missingTitles = computed(() =>
     items.value.filter(item => !CONTENT_LOCALES.some(code => item.translations[code].title.trim())))
 
@@ -165,10 +172,11 @@ export const useListEditor = (id: string) => {
     try {
       await updateList(id, {
         name: name.value.trim(),
+        kind: kind.value,
         items: items.value.map(item => ({
-          image_url: item.imageUrl.trim() || null,
-          link: item.link.trim() || null,
-          badge_type: item.badgeType || null,
+          image_url: fields.value.image ? item.imageUrl.trim() || null : null,
+          link: fields.value.link ? item.link.trim() || null : null,
+          badge_type: fields.value.badge ? item.badgeType || null : null,
           translations: CONTENT_LOCALES.map(code => ({
             locale: code,
             title: item.translations[code].title,
@@ -178,11 +186,12 @@ export const useListEditor = (id: string) => {
         })),
       })
 
+      savedKind.value = kind.value
       saved.value = true
       cheer()
     }
     catch {
-      error.value = fail(t('cms.errors.save'))
+      error.value = fail(t(kind.value === savedKind.value ? 'cms.errors.save' : 'cms.lists.kindLocked'))
     }
     finally {
       saving.value = false
@@ -192,7 +201,7 @@ export const useListEditor = (id: string) => {
   const back = () => navigateTo(localePath('/app/content/lists'))
 
   return {
-    locale, name, items, status, saving, saved, error, uploading,
+    locale, name, kind, fields, items, status, saving, saved, error, uploading,
     add, remove, move, submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
   }
 }

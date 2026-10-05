@@ -1,0 +1,22 @@
+@use '../../styles/utils' as *;
+
+.tm-card-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+
+        > * { flex: 1; }
+    }
+}
+
+@media #{$until-md} {
+    .tm-card-grid__column {
+        grid-column: span 12 !important;
+    }
+}

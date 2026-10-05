@@ -2,20 +2,19 @@ import { Model } from '~/shared/helpers/model'
 import { parseGrid } from '~/shared/helpers/grid'
 import type { IGrid } from '~/shared/helpers/grid'
 import type { ContentLocale } from '~/modules/content/contracts/content'
+import { BLOCKS, isSectionKind } from '~/modules/content/contracts/blocks'
 import type {
   BadgeType,
   IContentItemRaw,
   IContentSectionRaw,
   IHomeContentRaw,
-  SectionVariant,
+  SectionKind,
 } from '~/modules/content/contracts/blocks'
 import type { IPostRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-const GRID_FREE: SectionVariant[] = ['features', 'faq']
-
 export interface IContentItem {
   uuid: string
   href: string | null
@@ -30,8 +29,9 @@ export interface IContentSection {
   uuid: string
   title: string
   link: string | null
-  variant: SectionVariant
-  grid: IGrid
+  anchor: string | null
+  kind: SectionKind
+  grid: IGrid | null
   items: IContentItem[]
 }
 
@@ -62,11 +62,14 @@ export class HomeContent extends Model<IHomeContent> {
     const sections = [...(raw?.sections ?? [])]
       .sort((a, b) => a.position - b.position)
       .map((section) => {
-        const grid = parseGrid(layouts.get(section.layout_id)?.grid)
+        if (!isSectionKind(section.kind)) return null
 
-        if (!grid) return null
+        const block = BLOCKS[section.kind]
+        const grid = block.layout ? parseGrid(layouts.get(section.layout_id ?? '')?.grid) : null
 
-        const fromPosts = section.variant === 'posts'
+        if (block.layout && !grid) return null
+
+        const fromPosts = section.source === 'posts'
         const list = fromPosts ? null : lists.get(section.list_id ?? '')
 
         if (!fromPosts && !list) return null
@@ -82,15 +85,16 @@ export class HomeContent extends Model<IHomeContent> {
               .sort((a, b) => a.position - b.position)
               .map(item => mapItem(item, locale))
               .filter((item): item is IContentItem => item !== null)
-        ).slice(0, GRID_FREE.includes(section.variant) ? undefined : grid.capacity)
+        ).slice(0, grid?.capacity)
 
         if (!items.length) return null
 
         return {
           uuid: section.uuid,
           title: pick(section.translations, locale)?.title ?? '',
-          link: section.link,
-          variant: section.variant,
+          link: block.link ? section.link : null,
+          anchor: section.anchor,
+          kind: section.kind,
           grid,
           items,
         } satisfies IContentSection

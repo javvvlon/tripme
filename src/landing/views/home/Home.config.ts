@@ -1,5 +1,4 @@
 import type {
-  IBenefit,
   IHeroContent,
   IQuickSearch,
 } from '~/landing/contracts/content'
@@ -14,13 +13,6 @@ export const HERO: IHeroContent = {
   titleKey: 'home.hero.title',
   subtitleKey: 'home.hero.subtitle',
 }
-
-export const BENEFITS: IBenefit[] = [
-  { id: 'price', image: '/icon/win.png', width: 130, height: 121, titleKey: 'home.benefits.price' },
-  { id: 'support', image: '/icon/chat.png', width: 135, height: 121, titleKey: 'home.benefits.support' },
-  { id: 'years', image: '/icon/medal.png', width: 124, height: 121, titleKey: 'home.benefits.years' },
-  { id: 'docs', image: '/icon/notebook.png', width: 135, height: 122, titleKey: 'home.benefits.docs' },
-]
 
 export const HOT_ANCHOR = 'hot'
 

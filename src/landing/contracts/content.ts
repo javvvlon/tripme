@@ -11,14 +11,6 @@ export interface IHeroContent {
   subtitleKey: string
 }
 
-export interface IBenefit {
-  id: string
-  image: string
-  width: number
-  height: number
-  titleKey: string
-}
-
 export interface IQuickSearch {
   id: string
   icon: string

@@ -11,4 +11,5 @@ export interface IInputProps {
   disabled?: boolean
   required?: boolean
   revealable?: boolean
+  rows?: number
 }

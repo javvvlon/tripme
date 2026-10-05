@@ -4,10 +4,22 @@
 
 
         <div class="tm-cms-lists__actions">
-            <Button size="md" :disabled="busy" @click="create">
+            <Button size="md" :disabled="busy" @click="choose">
                 {{ t('cms.lists.create') }}
             </Button>
         </div>
+
+        <Modal
+            v-model="choosing"
+            :title="t('cms.lists.chooseKind')"
+            :description="t('cms.lists.chooseKindLead')"
+            :confirm-label="t('cms.lists.createConfirm')"
+            :busy="busy"
+            size="sm"
+            @confirm="create"
+        >
+            <KindPicker v-model="kind" :label="t('cms.lists.kind')" />
+        </Modal>
 
         <EditorSkeleton v-if="status === 'pending'" variant="rows" />
 
@@ -16,9 +28,11 @@
         <ul v-else class="tm-cms-lists__grid">
             <li v-for="list in lists" :key="list.uuid" class="tm-cms-lists__row">
                 <NuxtLink :to="localePath(`/app/content/lists/${list.uuid}`)" class="tm-cms-lists__name">
-                    <Icon name="list" :size="18" />
+                    <Icon :name="BLOCKS[list.kind]?.icon ?? 'list'" :size="18" />
                     {{ list.name }}
                 </NuxtLink>
+
+                <span class="tm-cms-lists__kind">{{ t(`cms.blocks.kinds.${list.kind}`) }}</span>
 
                 <span class="tm-cms-lists__count">
                     {{ t('cms.lists.items', { count: list.items_count }) }}
@@ -38,12 +52,15 @@
 
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import KindPicker from '~/modules/content/components/kindPicker/KindPicker.vue'
+import Modal from '~/shared/components/modal/Modal.vue'
+import { BLOCKS } from '~/modules/content/contracts/blocks'
 import { useLists } from './Lists.hooks'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-const { lists, status, error, busy, create, remove } = useLists()
+const { lists, status, error, busy, choosing, kind, choose, create, remove } = useLists()
 
 useSeoMeta({ title: () => t('cms.lists.title'), robots: 'noindex, nofollow' })
 </script>

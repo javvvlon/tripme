@@ -89,12 +89,6 @@
       "title": "Win the trip of your dreams",
       "subtitle": "Tours from Tashkent to 40 countries — every operator's price, compared at once"
     },
-    "benefits": {
-      "price": "Best price guarantee",
-      "support": "24/7 customer support",
-      "years": "Over 19 years in tourism",
-      "docs": "Fast issuance of documents"
-    },
     "quick": {
       "beach": "Ocean and beaches",
       "history": "Historical places",
@@ -397,7 +391,7 @@
     "back": "Back",
     "lists": {
       "title": "Lists",
-      "lead": "The sets of cards that sections display.",
+      "lead": "Item sets for sections: cards, features, questions and answers.",
       "create": "New list",
       "untitled": "Untitled",
       "empty": "No lists yet.",
@@ -437,49 +431,87 @@
       "confirmDelete": {
         "title": "Delete this list?",
         "lead": "It disappears from every section using it."
-      }
+      },
+      "kind": "List type",
+      "chooseKind": "New list",
+      "chooseKindLead": "Which kind of section is this list for? The item fields depend on it.",
+      "createConfirm": "Create",
+      "kindLocked": "This list is on the page — replace it in its section first, then change the type.",
+      "question": "Question",
+      "questionPlaceholder": "For example, How do I pay for a tour?",
+      "answer": "Answer",
+      "answerPlaceholder": "A short, clear answer"
     },
     "sections": {
-      "title": "Home sections",
-      "lead": "What appears below the search, and in what order.",
-      "add": "Add section",
+      "title": "Home page sections",
+      "lead": "What shows under the search and in which order.",
+      "mode": "Mode",
+      "modes": {
+        "edit": "Editor",
+        "preview": "Preview"
+      },
+      "previewLanguage": "Preview language",
+      "previewEmpty": "“{title}” is empty for now — the site will not show it.",
+      "empty": "No sections yet — add the first one.",
+      "add": "Add a section",
+      "addTitle": "New section",
+      "addLead": "Choose how the section looks. You can change the type later.",
+      "addConfirm": "Add",
       "remove": "Remove section",
-      "published": "Published",
+      "removedNote": "Section “{title}” removed.",
+      "undo": "Undo",
+      "shown": "Live",
+      "hidden": "Hidden",
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "drag": "Drag to reorder",
+      "type": "Type",
+      "source": "Where cards come from",
       "heading": "Heading",
       "headingPlaceholder": "For example, Hot destinations",
-      "link": "“See all” link",
-      "linkHint": "Empty means no link.",
+      "untitled": "Untitled",
+      "missing": "Missing: {locales}",
       "list": "List",
       "listPlaceholder": "Choose a list",
-      "layout": "Layout",
-      "layoutPlaceholder": "Choose a layout",
-      "overflow": "The list holds {items} items and the layout fits {capacity} — the rest will not show.",
-      "pickRequired": "Choose a list and a layout for every section",
-      "titleRequired": "Every section needs a heading in at least one language",
-      "variant": "Source",
-      "variants": {
-        "list": "List",
-        "posts": "Blog articles",
-        "features": "Features",
-        "faq": "Questions and answers"
-      },
-      "postsHint": "Nothing selected — the latest articles are shown.",
-      "articles": "Articles",
+      "noLists": "No “{kind}” lists yet — create one.",
+      "editList": "Open list",
+      "createList": "Create a list",
+      "noList": "no list chosen",
+      "articles": "Posts",
       "articlesLatest": "Latest published",
-      "variantHints": {
-        "list": "Cards from a list in the chosen layout.",
-        "posts": "Blog article cards.",
-        "features": "A row of features: image, heading and a short text from a list.",
-        "faq": "An accordion: the item heading is the question, the description is the answer."
+      "postsHint": "Nothing chosen — the latest posts will show.",
+      "pickedArticles": "posts: {count}",
+      "latestArticles": "latest posts",
+      "layout": "Layout",
+      "noLayout": "no layout",
+      "overflow": "The list has {items} items but the layout fits {capacity} — the rest will not show.",
+      "link": "“See all” link",
+      "linkHint": "Leave empty for no link.",
+      "anchor": "Anchor",
+      "anchorHint": "To link to the section: /#hot. The “On sale” quick link points at hot.",
+      "problems": {
+        "title": "No heading",
+        "list": "No list chosen",
+        "layout": "No layout chosen",
+        "anchor": "Anchor “{anchor}” is taken"
+      },
+      "changes": "Changes",
+      "unsaved": "You have unsaved changes",
+      "discard": "Discard",
+      "leave": {
+        "title": "Leave without saving?",
+        "lead": "Your changes to the sections will be lost.",
+        "confirm": "Leave"
       },
       "layouts": {
-        "add": "+ New layout",
-        "title": "New layout",
+        "custom": "Custom grid",
+        "title": "Custom layout",
         "submit": "Create",
         "lead": "A 12-column grid. Columns are separated by “_”, cells inside a column by “.”.",
         "name": "Name",
+        "namePlaceholder": "For example, Six in a grid",
         "grid": "Grid",
-        "gridHint": "4_4_4 — three across · 8_4 — wide and narrow · 8_4.4.4 — one large and three small · 4_4_4_4_4_4 — six",
+        "gridHint": "4_4_4 — three in a row · 8_4 — wide and narrow · 8_4.4.4 — one large, three small · 4_4_4_4_4_4 — six",
         "created": "Layout created",
         "failed": "Could not create the layout."
       }
@@ -922,6 +954,22 @@
       "unknown": "Not set",
       "noCategory": "No category",
       "footnote": "Revenue is the period’s paid orders without cancellations, in dollars at the Central Bank of Uzbekistan rate; the sum amount is approximate. Margin will appear once orders record their cost."
+    },
+    "blocks": {
+      "kinds": {
+        "cards": "Cards",
+        "features": "Features",
+        "faq": "Questions and answers"
+      },
+      "kindHints": {
+        "cards": "Cards in a layout of your choice — from a list or from blog posts.",
+        "features": "A row of short selling points: icon, title, a few words.",
+        "faq": "An accordion: each question opens into its answer."
+      },
+      "sources": {
+        "list": "List",
+        "posts": "Blog posts"
+      }
     }
   },
   "markdown": {
@@ -1101,8 +1149,8 @@
     },
     "order": {
       "back": "Back to orders",
-      "seoTitle": "Order #{n} — TripMe",
-      "number": "Order #{n}",
+      "seoTitle": "Order {n} — TripMe",
+      "number": "Order {n}",
       "loadFailed": "Could not load the order.",
       "missingTitle": "Order not found",
       "missingText": "The link may be outdated, or the order belongs to another account.",
@@ -1154,7 +1202,7 @@
       "from": "from {points} points",
       "history": "History",
       "noHistory": "Nothing yet — points appear after your first completed trip.",
-      "forOrder": "Trip on order #{n}",
+      "forOrder": "Trip on order {n}",
       "adjustment": "Adjustment"
     }
   },

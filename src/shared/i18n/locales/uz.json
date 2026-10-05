@@ -89,12 +89,6 @@
       "title": "Orzuingizdagi sayohatni yutib oling",
       "subtitle": "Toshkentdan 40 davlatga turlar — barcha operatorlar narxini bir joyda taqqoslaymiz"
     },
-    "benefits": {
-      "price": "Eng yaxshi narx kafolati",
-      "support": "24/7 qo‘llab-quvvatlash",
-      "years": "Turizmda 19 yildan ortiq tajriba",
-      "docs": "Hujjatlar tez rasmiylashtiriladi"
-    },
     "quick": {
       "beach": "Okean va plyajlar",
       "history": "Tarixiy joylar",
@@ -397,7 +391,7 @@
     "back": "Orqaga",
     "lists": {
       "title": "Ro‘yxatlar",
-      "lead": "Bo‘limlar ko‘rsatadigan kartochkalar to‘plami.",
+      "lead": "Bo‘limlar uchun elementlar to‘plami: kartochkalar, afzalliklar, savol-javoblar.",
       "create": "Yangi ro‘yxat",
       "untitled": "Nomsiz",
       "empty": "Hozircha ro‘yxatlar yo‘q.",
@@ -437,51 +431,89 @@
       "confirmDelete": {
         "title": "Roʻyxat oʻchirilsinmi?",
         "lead": "Roʻyxat u ishlatilgan boʻlimlardan yoʻqoladi."
-      }
+      },
+      "kind": "Ro‘yxat turi",
+      "chooseKind": "Yangi ro‘yxat",
+      "chooseKindLead": "Bu ro‘yxat qaysi bo‘lim uchun? Element maydonlari turiga bog‘liq.",
+      "createConfirm": "Yaratish",
+      "kindLocked": "Ro‘yxat bo‘limda ishlatilmoqda — avval u yerda almashtiring, keyin turini o‘zgartiring.",
+      "question": "Savol",
+      "questionPlaceholder": "Masalan, Turni qanday to‘lash mumkin?",
+      "answer": "Javob",
+      "answerPlaceholder": "Qisqa va tushunarli javob"
     },
     "sections": {
       "title": "Bosh sahifa bo‘limlari",
-      "lead": "Qidiruv ostida nima va qanday tartibda ko‘rinadi.",
+      "lead": "Qidiruv ostida nima va qaysi tartibda ko‘rsatiladi.",
+      "mode": "Rejim",
+      "modes": {
+        "edit": "Muharrir",
+        "preview": "Ko‘rish"
+      },
+      "previewLanguage": "Ko‘rish tili",
+      "previewEmpty": "«{title}» hozircha bo‘sh — saytda ko‘rinmaydi.",
+      "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",
       "add": "Bo‘lim qo‘shish",
+      "addTitle": "Yangi bo‘lim",
+      "addLead": "Bo‘lim qanday ko‘rinishini tanlang. Turini keyin ham o‘zgartirish mumkin.",
+      "addConfirm": "Qo‘shish",
       "remove": "Bo‘limni o‘chirish",
-      "published": "Chop etilgan",
+      "removedNote": "«{title}» bo‘limi o‘chirildi.",
+      "undo": "Qaytarish",
+      "shown": "Saytda",
+      "hidden": "Yashirin",
+      "expand": "Ochish",
+      "collapse": "Yig‘ish",
+      "drag": "Tartibni o‘zgartirish uchun torting",
+      "type": "Turi",
+      "source": "Kartochkalar manbasi",
       "heading": "Sarlavha",
-      "headingPlaceholder": "Masalan, Yonayotgan yo‘nalishlar",
-      "link": "«Barchasini ko‘rish» havolasi",
-      "linkHint": "Bo‘sh — havola bo‘lmaydi.",
+      "headingPlaceholder": "Masalan, Qaynoq yo‘nalishlar",
+      "untitled": "Sarlavhasiz",
+      "missing": "Tarjima yo‘q: {locales}",
       "list": "Ro‘yxat",
       "listPlaceholder": "Ro‘yxatni tanlang",
-      "layout": "Joylashuv",
-      "layoutPlaceholder": "Joylashuvni tanlang",
-      "overflow": "Ro‘yxatda {items} element, joylashuv {capacity} tasini sig‘diradi — qolgani ko‘rinmaydi.",
-      "pickRequired": "Har bir bo‘limda ro‘yxat va joylashuvni tanlang",
-      "titleRequired": "Har bir bo‘limda kamida bitta tilda sarlavha bo‘lishi kerak",
-      "variant": "Manba",
-      "variants": {
-        "list": "Ro'yxat",
-        "posts": "Blog maqolalari",
-        "features": "Afzalliklar",
-        "faq": "Savol-javoblar"
-      },
-      "postsHint": "Hech nima tanlanmagan — oxirgi maqolalarni koʻrsatamiz.",
+      "noLists": "«{kind}» turidagi ro‘yxat yo‘q — yarating.",
+      "editList": "Ro‘yxatni ochish",
+      "createList": "Ro‘yxat yaratish",
+      "noList": "ro‘yxat tanlanmagan",
       "articles": "Maqolalar",
-      "articlesLatest": "Oxirgi chop etilganlar",
-      "variantHints": {
-        "list": "Tanlangan tartibdagi ro‘yxat kartalari.",
-        "posts": "Blog maqolalari kartalari.",
-        "features": "Afzalliklar qatori: ro‘yxatdan rasm, sarlavha va qisqa matn.",
-        "faq": "Akkordeon: element sarlavhasi — savol, tavsifi — javob."
+      "articlesLatest": "So‘nggi chop etilganlar",
+      "postsHint": "Hech narsa tanlanmagan — so‘nggi maqolalar ko‘rsatiladi.",
+      "pickedArticles": "maqolalar: {count}",
+      "latestArticles": "so‘nggi maqolalar",
+      "layout": "Joylashuv",
+      "noLayout": "joylashuvsiz",
+      "overflow": "Ro‘yxatda {items} ta element bor, joylashuv esa {capacity} tasini sig‘diradi — qolganlari ko‘rinmaydi.",
+      "link": "«Hammasini ko‘rish» havolasi",
+      "linkHint": "Bo‘sh — havola bo‘lmaydi.",
+      "anchor": "Langar",
+      "anchorHint": "Bo‘limga havola uchun: /#hot. «Chegirmali» tezkor havolasi hot ga olib boradi.",
+      "problems": {
+        "title": "Sarlavha yo‘q",
+        "list": "Ro‘yxat tanlanmagan",
+        "layout": "Joylashuv tanlanmagan",
+        "anchor": "«{anchor}» langari band"
+      },
+      "changes": "O‘zgarishlar",
+      "unsaved": "Saqlanmagan o‘zgarishlar bor",
+      "discard": "Bekor qilish",
+      "leave": {
+        "title": "Saqlamasdan chiqasizmi?",
+        "lead": "Bo‘limlardagi o‘zgarishlar yo‘qoladi.",
+        "confirm": "Chiqish"
       },
       "layouts": {
-        "add": "+ Yangi tartib",
-        "title": "Yangi tartib",
+        "custom": "O‘z to‘ri",
+        "title": "O‘z joylashuvi",
         "submit": "Yaratish",
-        "lead": "12 ustunli setka. Ustunlar «_» bilan, ustun ichidagi kataklar «.» bilan.",
+        "lead": "12 ustunli to‘r. Ustunlar «_» bilan, ustun ichidagi kataklar «.» bilan ajratiladi.",
         "name": "Nomi",
-        "grid": "Setka",
-        "gridHint": "4_4_4 — uchtadan · 8_4 — keng va tor · 8_4.4.4 — yirik va uchta kichik · 4_4_4_4_4_4 — oltita",
-        "created": "Tartib yaratildi",
-        "failed": "Tartib yaratib bo‘lmadi."
+        "namePlaceholder": "Masalan, Oltita to‘rda",
+        "grid": "To‘r",
+        "gridHint": "4_4_4 — qatorda uchta · 8_4 — keng va tor · 8_4.4.4 — katta va uchta kichik · 4_4_4_4_4_4 — oltita",
+        "created": "Joylashuv yaratildi",
+        "failed": "Joylashuvni yaratib bo‘lmadi."
       }
     },
     "posts": {
@@ -922,6 +954,22 @@
       "unknown": "Ko‘rsatilmagan",
       "noCategory": "Toifasiz",
       "footnote": "Tushum — davrdagi bekor qilinmagan to‘langan buyurtmalar, O‘zR MB kursi bo‘yicha dollarda; so‘mdagi summa taxminiy. Marja buyurtmalarda tannarx paydo bo‘lganda ko‘rinadi."
+    },
+    "blocks": {
+      "kinds": {
+        "cards": "Kartochkalar",
+        "features": "Afzalliklar",
+        "faq": "Savol-javoblar"
+      },
+      "kindHints": {
+        "cards": "O‘z joylashuviga ega kartochkalar — ro‘yxatdan yoki blog maqolalaridan.",
+        "features": "Qisqa afzalliklar qatori: belgi, sarlavha va bir-ikki so‘z.",
+        "faq": "Akkordeon: savol bosilganda javob ochiladi."
+      },
+      "sources": {
+        "list": "Ro‘yxat",
+        "posts": "Blog maqolalari"
+      }
     }
   },
   "markdown": {
@@ -1101,8 +1149,8 @@
     },
     "order": {
       "back": "Buyurtmalarga",
-      "seoTitle": "Buyurtma #{n} — TripMe",
-      "number": "Buyurtma #{n}",
+      "seoTitle": "Buyurtma {n} — TripMe",
+      "number": "Buyurtma {n}",
       "loadFailed": "Buyurtmani yuklab bo‘lmadi.",
       "missingTitle": "Buyurtma topilmadi",
       "missingText": "Havola eskirgan yoki buyurtma boshqa hisobga tegishli bo‘lishi mumkin.",
@@ -1154,7 +1202,7 @@
       "from": "{points} balldan",
       "history": "Tarix",
       "noHistory": "Hozircha hisoblanmagan — birinchi yakunlangan sayohatdan keyin paydo bo‘ladi.",
-      "forOrder": "#{n} buyurtma bo‘yicha sayohat",
+      "forOrder": "{n} buyurtma bo‘yicha sayohat",
       "adjustment": "Tuzatish"
     }
   },

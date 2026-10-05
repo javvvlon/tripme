@@ -42,6 +42,16 @@
         &:hover { color: var(--tm-cms-accent); }
     }
 
+    &__kind {
+        padding: 3px 10px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+        font-size: size(12);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
     &__count {
         color: var(--tm-ink-3);
         font-size: size(14);
