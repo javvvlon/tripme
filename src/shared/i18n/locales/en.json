@@ -325,7 +325,8 @@
       "content": "Content",
       "orders": "Orders",
       "operators": "Operators",
-      "points": "TripMe points"
+      "points": "TripMe points",
+      "analytics": "Analytics"
     },
     "roles": {
       "CLIENT": "Client",
@@ -831,6 +832,96 @@
         "adjusted": "Points updated",
         "adjustFailed": "Could not change the points."
       }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "periodLabel": "Period",
+      "period": "{from} – {to} · compared with {prevFrom} – {prevTo}",
+      "presets": {
+        "7": "7 days",
+        "30": "30 days",
+        "90": "90 days",
+        "365": "Year"
+      },
+      "vsPrevious": "vs previous period",
+      "new": "new",
+      "kpi": {
+        "leads": "New leads",
+        "conversion": "Lead to payment",
+        "paidOrders": "Paid orders: {n}",
+        "revenue": "Revenue",
+        "average": "Average order",
+        "response": "First answer (median)",
+        "withinSla": "{pct} within {n} minutes"
+      },
+      "trendDaily": "Leads per day",
+      "trendWeekly": "Leads per week",
+      "weekOf": "Week of {date}",
+      "tip": {
+        "leads": "Leads: {n}",
+        "paid": "Paid: {n}",
+        "revenue": "Revenue: {amount}",
+        "orders": "Orders: {n}"
+      },
+      "funnel": {
+        "title": "Funnel",
+        "leads": "Leads",
+        "answered": "Answered",
+        "deal": "Deal",
+        "paid": "Paid",
+        "completed": "Trip completed",
+        "fromPrevious": "{pct} of the previous step",
+        "note": "Leads of the period and how many reached each step. Percentages are of all leads in the period."
+      },
+      "attention": {
+        "title": "Needs attention",
+        "calm": "All clear right now",
+        "unanswered": "No answer for over {n} minutes",
+        "departures": "Departing within 7 days, with problems",
+        "stuck": "Request with the operator over 48 hours",
+        "cancellations": "Cancellations in the period"
+      },
+      "problems": {
+        "unpaid": "not paid",
+        "passport_missing": "no passport",
+        "passport_short": "passport < 6 months",
+        "passport_expired": "passport expires"
+      },
+      "hours": "{n} h",
+      "mix": {
+        "title": "What sells",
+        "destinations": "Destinations",
+        "operators": "Tour operators",
+        "stars": "Hotel category",
+        "hotels": "Top hotels"
+      },
+      "channels": {
+        "title": "Channels",
+        "channel": "Channel",
+        "leads": "Leads",
+        "paid": "Paid",
+        "conversion": "Conversion"
+      },
+      "rejections": {
+        "title": "Rejection reasons",
+        "none": "No rejections in the period",
+        "noReason": "No reason"
+      },
+      "managers": {
+        "title": "Managers",
+        "name": "Manager",
+        "leads": "Leads",
+        "response": "Answer",
+        "conversion": "Conversion",
+        "paid": "Paid",
+        "revenue": "Revenue",
+        "unassigned": "Unassigned"
+      },
+      "empty": "No data for this period",
+      "noSales": "No paid orders in the period",
+      "unknown": "Not set",
+      "noCategory": "No category",
+      "footnote": "Revenue is the period’s paid orders without cancellations, in dollars at the Central Bank of Uzbekistan rate; the sum amount is approximate. Margin will appear once orders record their cost."
     }
   },
   "markdown": {

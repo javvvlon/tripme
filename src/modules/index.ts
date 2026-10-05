@@ -8,6 +8,7 @@ import { PostsModule } from './posts'
 import { LeadsModule } from './leads'
 import { OperatorsModule } from './operators'
 import { PointsModule } from './points'
+import { AnalyticsModule } from './analytics'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -22,4 +23,5 @@ export const modules: IModule[] = [
   LeadsModule,
   OperatorsModule,
   PointsModule,
+  AnalyticsModule,
 ]

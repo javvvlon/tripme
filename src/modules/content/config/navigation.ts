@@ -5,6 +5,12 @@ import type { INavNode } from '../../../shared/helpers/navigation'
  */
 export const CMS_NAVIGATION: INavNode[] = [
   {
+    key: 'analytics',
+    labelKey: 'cms.nav.analytics',
+    icon: 'pie',
+    to: '/app/analytics',
+  },
+  {
     key: 'leads',
     labelKey: 'cms.nav.leads',
     icon: 'users',

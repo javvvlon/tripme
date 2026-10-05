@@ -325,7 +325,8 @@
       "content": "Kontent",
       "orders": "Buyurtmalar",
       "operators": "Turoperatorlar",
-      "points": "TripMe points"
+      "points": "TripMe points",
+      "analytics": "Analitika"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -831,6 +832,96 @@
         "adjusted": "Ballar yangilandi",
         "adjustFailed": "Ballarni o‘zgartirib bo‘lmadi."
       }
+    },
+    "analytics": {
+      "title": "Analitika",
+      "periodLabel": "Davr",
+      "period": "{from} – {to} · {prevFrom} – {prevTo} bilan solishtirish",
+      "presets": {
+        "7": "7 kun",
+        "30": "30 kun",
+        "90": "90 kun",
+        "365": "Yil"
+      },
+      "vsPrevious": "oldingi davrga",
+      "new": "yangi",
+      "kpi": {
+        "leads": "Yangi lidlar",
+        "conversion": "To‘lovga konversiya",
+        "paidOrders": "To‘langan buyurtmalar: {n}",
+        "revenue": "Tushum",
+        "average": "O‘rtacha chek",
+        "response": "Birinchi javob (mediana)",
+        "withinSla": "{pct} — {n} daqiqa ichida"
+      },
+      "trendDaily": "Kunlar bo‘yicha lidlar",
+      "trendWeekly": "Haftalar bo‘yicha lidlar",
+      "weekOf": "{date} dan boshlangan hafta",
+      "tip": {
+        "leads": "Lidlar: {n}",
+        "paid": "To‘langan: {n}",
+        "revenue": "Tushum: {amount}",
+        "orders": "Buyurtmalar: {n}"
+      },
+      "funnel": {
+        "title": "Voronka",
+        "leads": "Lidlar",
+        "answered": "Javob olgan",
+        "deal": "Bitim",
+        "paid": "To‘langan",
+        "completed": "Sayohat yakunlangan",
+        "fromPrevious": "oldingi qadamdan {pct}",
+        "note": "Davrdagi lidlar va ularning har bir qadamga yetganlari. Foiz — davrdagi barcha lidlardan."
+      },
+      "attention": {
+        "title": "E’tibor talab qiladi",
+        "calm": "Hozir hammasi joyida",
+        "unanswered": "{n} daqiqadan ortiq javobsiz",
+        "departures": "Yaqin 7 kunda uchish — muammolar bor",
+        "stuck": "Operatorda 48 soatdan ortiq so‘rov",
+        "cancellations": "Davrdagi bekor qilishlar"
+      },
+      "problems": {
+        "unpaid": "to‘lanmagan",
+        "passport_missing": "pasport yo‘q",
+        "passport_short": "pasport < 6 oy",
+        "passport_expired": "pasport muddati tugaydi"
+      },
+      "hours": "{n} soat",
+      "mix": {
+        "title": "Nima sotilmoqda",
+        "destinations": "Yo‘nalishlar",
+        "operators": "Turoperatorlar",
+        "stars": "Mehmonxona toifasi",
+        "hotels": "Top mehmonxonalar"
+      },
+      "channels": {
+        "title": "Kanallar",
+        "channel": "Kanal",
+        "leads": "Lidlar",
+        "paid": "To‘langan",
+        "conversion": "Konversiya"
+      },
+      "rejections": {
+        "title": "Rad etish sabablari",
+        "none": "Davrda rad etishlar yo‘q",
+        "noReason": "Sababsiz"
+      },
+      "managers": {
+        "title": "Menejerlar",
+        "name": "Menejer",
+        "leads": "Lidlar",
+        "response": "Javob",
+        "conversion": "Konversiya",
+        "paid": "To‘langan",
+        "revenue": "Tushum",
+        "unassigned": "Tayinlanmagan"
+      },
+      "empty": "Bu davr uchun ma’lumot yo‘q",
+      "noSales": "Davrda to‘langan buyurtmalar yo‘q",
+      "unknown": "Ko‘rsatilmagan",
+      "noCategory": "Toifasiz",
+      "footnote": "Tushum — davrdagi bekor qilinmagan to‘langan buyurtmalar, O‘zR MB kursi bo‘yicha dollarda; so‘mdagi summa taxminiy. Marja buyurtmalarda tannarx paydo bo‘lganda ko‘rinadi."
     }
   },
   "markdown": {
