@@ -46,6 +46,9 @@
 
             <div class="tm-quote__actions">
                 <Button icon="doc" @click="copy">{{ t('quote.copy') }}</Button>
+                <Button v-if="pdf" variant="secondary" icon="doc" :disabled="pdfBusy" @click="emit('pdf')">
+                    {{ pdfBusy ? t('cms.orders.documents.making') : t('quote.pdf') }}
+                </Button>
                 <Button variant="secondary" icon="telegram" @click="share('telegram')">Telegram</Button>
                 <Button variant="secondary" icon="phone" @click="share('whatsapp')">WhatsApp</Button>
             </div>
@@ -60,6 +63,10 @@ import type { IQuoteModalProps, QuoteLanguage } from './QuoteModal.d'
 
 const props = defineProps<IQuoteModalProps>()
 
+const opened = defineModel<boolean>({ default: false })
+
+const emit = defineEmits<{ pdf: [] }>()
+
 const LANGUAGES: QuoteLanguage[] = ['ru', 'uz', 'en']
 
 const { t } = useI18n()
@@ -67,8 +74,8 @@ const textId = useId()
 
 const {
     language, client, passport, includes, text, lead, markLead, canMarkLead,
-    passportIssues, tours, opened, copy, share,
-} = useQuoteModal(props)
+    passportIssues, tours, copy, share,
+} = useQuoteModal(props, opened)
 </script>
 
 <style lang="scss">

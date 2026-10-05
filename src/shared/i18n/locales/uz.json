@@ -1133,6 +1133,7 @@
       "payment": "To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
       "validity": "Narxlar {date} holatiga dolzarb va bron tasdiqlangunga qadar o‘zgarishi mumkin.",
       "manager": "Menejeringiz: {name}, TripMe"
-    }
+    },
+    "pdf": "PDF ni buyurtmaga saqlash"
   }
 }

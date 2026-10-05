@@ -1,5 +1,7 @@
 import { passportProblem } from './compliance'
-import type { Tour } from '~/search_engine/models/Tour'
+import { Availability, Tour } from '~/search_engine/models/Tour'
+import type { CurrencyCode } from '~/search_engine/contracts/search'
+import type { ILeadTrip, IOrderRaw } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -21,6 +23,44 @@ export interface IQuoteOptions {
   manager: string
   uzsRate: number | null
   today: string
+}
+
+const textOf = (value: unknown): string | null =>
+  typeof value === 'string' && value.trim() ? value.trim() : null
+
+export function tourFromOrder(order: IOrderRaw): Tour {
+  const trip = (order.trip ?? {}) as Partial<ILeadTrip> & Record<string, unknown>
+  const money = {
+    amount: Number(order.price_amount ?? trip.price_amount ?? 0),
+    currency: (order.price_currency || textOf(trip.price_currency) || 'USD') as CurrencyCode,
+  }
+
+  return new Tour({
+    id: `order:${order.uuid}`,
+    supplier: { id: textOf(trip.supplier_id) ?? '', name: order.supplier_name || textOf(trip.supplier_name) || '' },
+    hotelName: order.hotel_name || textOf(trip.hotel_name) || '',
+    hotelStars: Number(trip.hotel_stars) || null,
+    hotelSupplierCode: textOf(trip.hotel_code) ?? '',
+    hotelSlug: null,
+    hotelUrl: textOf(trip.hotel_url),
+    bookingUrl: textOf(trip.booking_url),
+    district: textOf(trip.district),
+    checkIn: order.check_in || textOf(trip.check_in) || '',
+    nights: order.nights || Number(trip.nights) || 0,
+    mealCode: textOf(trip.meal_code),
+    mealName: textOf(trip.meal_name),
+    roomName: textOf(trip.room_name),
+    adults: order.adults,
+    children: order.children,
+    price: money,
+    comparablePrice: money,
+    availability: (textOf(trip.availability) as Availability | null) ?? Availability.Unknown,
+    availabilityNote: null,
+    flightNote: null,
+    refundable: typeof trip.refundable === 'boolean' ? trip.refundable : null,
+    programme: textOf(trip.programme),
+    fare: textOf(trip.fare),
+  })
 }
 
 export function tiersFor(count: number): QuoteTier[] {
@@ -100,16 +140,20 @@ export function buildQuote(options: IQuoteOptions): string {
     lines.push('')
     lines.push(heading)
     lines.push(`${tour.displayName()}${stars}${place}`)
-    lines.push(t('quote.text.dates', {
-      from: day(tour.get('checkIn'), locale),
-      to: day(tour.get('checkIn'), locale, tour.get('nights')),
-      nights: t('search.nights', { n: tour.get('nights') }, tour.get('nights')),
-    }))
+    if (tour.get('checkIn')) {
+      lines.push(t('quote.text.dates', {
+        from: day(tour.get('checkIn'), locale),
+        to: day(tour.get('checkIn'), locale, tour.get('nights')),
+        nights: t('search.nights', { n: tour.get('nights') }, tour.get('nights')),
+      }))
+    }
 
     if (tour.get('mealName')) lines.push(t('quote.text.meal', { meal: tour.get('mealName') }))
     if (tour.get('roomName')) lines.push(t('quote.text.room', { room: tour.get('roomName') }))
 
-    lines.push(t('quote.text.price', { price: `${money(price.amount, price.currency, locale)}${uzs}` }))
+    if (price.amount > 0) {
+      lines.push(t('quote.text.price', { price: `${money(price.amount, price.currency, locale)}${uzs}` }))
+    }
 
     if (tour.get('hotelUrl')) lines.push(t('quote.text.hotel', { url: tour.get('hotelUrl') }))
   })

@@ -120,7 +120,11 @@
         <ClientOnly>
             <template v-if="isStaff">
                 <QuoteBar :lead-ref="quoteLeadRef" />
-                <QuoteModal :destination="label(criteria.to)" :departure="label(criteria.from, 'city')" />
+                <QuoteModal
+                    v-model="quoteOpen"
+                    :tours="quoteTours" :lead-id="quoteLead"
+                    :destination="label(criteria.to)" :departure="label(criteria.from, 'city')"
+                />
             </template>
         </ClientOnly>
     </div>
@@ -154,7 +158,7 @@ const { sentinel } = useInfiniteScroll(loadMore, { enabled: canLoadMore })
 const filtersOpen = ref(false)
 
 const route = useRoute()
-const { count: quoteCount, leadId: quoteLead } = useQuote()
+const { count: quoteCount, leadId: quoteLead, tours: quoteTours, opened: quoteOpen } = useQuote()
 const { one: fetchLead } = useLeadsRepository()
 const quoteLeadRef = ref('')
 

@@ -1,6 +1,5 @@
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useLeadsRepository } from '~/modules/leads/repositories'
-import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { LEAD_TRANSITIONS } from '~/modules/leads/contracts/leads'
 import { buildQuote, byPrice, quotePassportIssues } from '~/modules/leads/helpers/quote'
 import type { ILeadRaw } from '~/modules/leads/contracts/leads'
@@ -9,11 +8,11 @@ import type { IQuoteModalProps, QuoteLanguage } from './QuoteModal.d'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const useQuoteModal = (props: IQuoteModalProps) => {
+export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => {
   const { t, locale } = useI18n()
   const { $i18n } = useNuxtApp()
   const { user } = useAuthSession()
-  const { tours, leadId, opened, clear } = useQuote()
+  const tours = computed(() => props.tours)
   const { one, setStatus } = useLeadsRepository()
   const { rates } = useUzsRates()
   const toast = useToast()
@@ -43,9 +42,11 @@ export const useQuoteModal = (props: IQuoteModalProps) => {
     if (!open) return
 
     lead.value = null
+    client.value = ''
+    passport.value = props.passport ?? ''
 
-    if (leadId.value) {
-      lead.value = await one(leadId.value).catch(() => null)
+    if (props.leadId) {
+      lead.value = await one(props.leadId).catch(() => null)
       client.value = lead.value ? [lead.value.first_name, lead.value.last_name].filter(Boolean).join(' ') : ''
     }
   }, { immediate: true })
@@ -138,6 +139,6 @@ export const useQuoteModal = (props: IQuoteModalProps) => {
 
   return {
     language, client, passport, includes, text, lead, markLead, canMarkLead,
-    passportIssues, tours, opened, clear, copy, share,
+    passportIssues, tours, copy, share,
   }
 }

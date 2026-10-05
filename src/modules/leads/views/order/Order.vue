@@ -163,9 +163,9 @@
                     <Button
                         size="sm" variant="secondary" icon="doc"
                         :disabled="Boolean(working)"
-                        @click="generate('offer')"
+                        @click="quoteOpen = true"
                     >
-                        {{ working === 'offer' ? t('cms.orders.documents.making') : t('cms.orders.documents.offer') }}
+                        {{ t('cms.orders.documents.offer') }}
                     </Button>
 
                     <Button
@@ -239,11 +239,28 @@
                 </ol>
             </section>
         </template>
+
+        <ClientOnly>
+            <QuoteModal
+                v-if="order"
+                v-model="quoteOpen"
+                :tours="quoteTours"
+                :lead-id="order.lead_id"
+                :passport="order.passport_expires_at"
+                :destination="quoteDestination"
+                :departure="quoteDeparture"
+                pdf
+                :pdf-busy="working === 'offer'"
+                @pdf="generate('offer')"
+            />
+        </ClientOnly>
     </div>
 </template>
 
 <script setup lang="ts">
 import { passportProblem } from '~/modules/leads/helpers/compliance'
+import { tourFromOrder } from '~/modules/leads/helpers/quote'
+import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
@@ -268,6 +285,17 @@ const {
 } = useOrder()
 
 const cancelId = useId()
+
+const { label } = useCatalogLabel()
+
+const quoteOpen = ref(false)
+
+const quoteTours = computed(() => (order.value ? [tourFromOrder(order.value)] : []))
+
+const quoteDestination = computed(() =>
+    label(String(order.value?.trip?.route_to ?? '')) || order.value?.country || '')
+
+const quoteDeparture = computed(() => label(String(order.value?.trip?.route_from ?? ''), 'city'))
 
 const links = computed(() => offerLinks(order.value?.trip as never))
 

@@ -1133,6 +1133,7 @@
       "payment": "Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
       "validity": "Prices are valid as of {date} and may change until the booking is confirmed.",
       "manager": "Your manager: {name}, TripMe"
-    }
+    },
+    "pdf": "Save PDF to the order"
   }
 }
