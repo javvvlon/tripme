@@ -440,7 +440,9 @@
       "question": "Savol",
       "questionPlaceholder": "Masalan, Turni qanday to‘lash mumkin?",
       "answer": "Javob",
-      "answerPlaceholder": "Qisqa va tushunarli javob"
+      "answerPlaceholder": "Qisqa va tushunarli javob",
+      "settings": "Roʻyxat sozlamalari",
+      "untitledItem": "Sarlavhasiz"
     },
     "sections": {
       "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",

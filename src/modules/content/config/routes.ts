@@ -42,6 +42,6 @@ export const routes: IModuleRoute[] = [
     file: 'modules/content/views/listEditor/ListEditor.vue',
     layout: 'cms',
     ssr: false,
-    meta: { middleware: 'auth' },
+    meta: { middleware: 'auth', wide: true },
   },
 ]

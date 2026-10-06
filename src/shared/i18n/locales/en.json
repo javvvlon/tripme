@@ -440,7 +440,9 @@
       "question": "Question",
       "questionPlaceholder": "For example, How do I pay for a tour?",
       "answer": "Answer",
-      "answerPlaceholder": "A short, clear answer"
+      "answerPlaceholder": "A short, clear answer",
+      "settings": "List settings",
+      "untitledItem": "Untitled"
     },
     "sections": {
       "empty": "No sections yet — add the first one.",

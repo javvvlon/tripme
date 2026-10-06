@@ -22,6 +22,9 @@ const blankTranslations = () => Object.fromEntries(
 let counter = 0
 const nextKey = () => `draft-${++counter}`
 
+const snapshot = (name: string, kind: ListKind, items: IDraftItem[]) =>
+  JSON.stringify({ name, kind, items: items.map(({ key: _key, ...rest }) => rest) })
+
 export const useListEditor = (id: string) => {
   const { t } = useI18n()
   const { saved: cheer, fail, loadFailed } = useToast()
@@ -36,6 +39,8 @@ export const useListEditor = (id: string) => {
   const items = ref<IDraftItem[]>([])
 
   const uploading = ref<string | null>(null)
+  const selected = ref<string | null>(null)
+  const pristine = ref('')
 
   const saving = ref(false)
   const saved = ref(false)
@@ -71,22 +76,65 @@ export const useListEditor = (id: string) => {
       },
     }))
 
+    pristine.value = snapshot(name.value, kind.value, items.value)
+
     return true
   })
 
+  const dirty = computed(() => loaded.value && snapshot(name.value, kind.value, items.value) !== pristine.value)
+
+  const current = computed(() => items.value.find(item => item.key === selected.value) ?? null)
+
+  const select = (key: string | null) => {
+    selected.value = key
+  }
+
   const add = () => {
-    items.value = [...items.value, {
+    const item: IDraftItem = {
       key: nextKey(),
       imageUrl: '',
       link: '',
       badgeType: '',
       translations: blankTranslations(),
-    }]
+    }
+
+    items.value = [...items.value, item]
+    selected.value = item.key
+  }
+
+  const duplicate = (key: string) => {
+    const index = items.value.findIndex(item => item.key === key)
+    const source = items.value[index]
+
+    if (!source) return
+
+    const copy: IDraftItem = { ...structuredClone(toRaw(source)), key: nextKey() }
+    const next = [...items.value]
+
+    next.splice(index + 1, 0, copy)
+    items.value = next
+    selected.value = copy.key
   }
 
   const remove = (key: string) => {
     items.value = items.value.filter(item => item.key !== key)
+
+    if (selected.value === key) selected.value = null
   }
+
+  const moveTo = (key: string, to: number) => {
+    const from = items.value.findIndex(item => item.key === key)
+
+    if (from < 0 || from === to || to < 0 || to >= items.value.length) return
+
+    const next = [...items.value]
+    const [moved] = next.splice(from, 1)
+
+    next.splice(to, 0, moved!)
+    items.value = next
+  }
+
+  const missingIn = (code: ContentLocale) => items.value.some(item => !item.translations[code].title.trim())
 
   async function pickImage(key: string, file: File | null) {
     if (!file) return
@@ -163,6 +211,7 @@ export const useListEditor = (id: string) => {
     }
 
     if (missingTitles.value.length) {
+      selected.value = missingTitles.value[0]!.key
       error.value = fail(t('cms.lists.titleRequired'))
       return
     }
@@ -187,6 +236,7 @@ export const useListEditor = (id: string) => {
       })
 
       savedKind.value = kind.value
+      pristine.value = snapshot(name.value, kind.value, items.value)
       saved.value = true
       cheer()
     }
@@ -200,8 +250,18 @@ export const useListEditor = (id: string) => {
 
   const back = () => navigateTo(localePath('/app/content/lists'))
 
+  const reset = () => {
+    const saved = JSON.parse(pristine.value) as { name: string, kind: ListKind, items: Array<Omit<IDraftItem, 'key'>> }
+
+    name.value = saved.name
+    kind.value = saved.kind
+    items.value = saved.items.map(item => ({ ...item, key: nextKey() }))
+    selected.value = null
+  }
+
   return {
-    locale, name, kind, fields, items, status, saving, saved, error, uploading,
-    add, remove, move, submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
+    locale, name, kind, fields, items, status, saving, saved, error, uploading, selected, current, dirty,
+    add, duplicate, remove, move, moveTo, select, reset, missingIn, missingTitles,
+    submit, back, pickImage, clearImage, discardImage, useStored, mediaLibrary,
   }
 }

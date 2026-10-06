@@ -440,7 +440,9 @@
       "question": "Вопрос",
       "questionPlaceholder": "Например, Как оплатить тур?",
       "answer": "Ответ",
-      "answerPlaceholder": "Короткий понятный ответ"
+      "answerPlaceholder": "Короткий понятный ответ",
+      "settings": "Настройки списка",
+      "untitledItem": "Без заголовка"
     },
     "sections": {
       "empty": "Секций пока нет — добавьте первую.",
