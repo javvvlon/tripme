@@ -93,6 +93,26 @@ export function markdownToEditorHtml(source: string | null | undefined): string 
     .replace(/%%tm-video-(\d+)%%/g, (_, index: string) => `@[video](${videos[Number(index)] ?? ''})`)
 }
 
+const ENTITIES: Record<string, string> = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&nbsp;': ' ',
+}
+
+export function markdownToText(source: string | null | undefined): string {
+  if (!source?.trim()) return ''
+
+  return renderMarkdown(source)
+    .replace(/<(br|\/p|\/li|\/h\d)[^>]*>/g, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&(amp|lt|gt|quot|#39|nbsp);/g, entity => ENTITIES[entity] ?? entity)
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export function excerptFrom(source: string | null | undefined, limit = 200): string {
   if (!source?.trim()) return ''
 

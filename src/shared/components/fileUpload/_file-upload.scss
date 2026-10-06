@@ -129,4 +129,17 @@
         white-space: nowrap;
         border: 0;
     }
+
+    &__broken {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        max-width: 240px;
+        margin: 0;
+        color: var(--tm-status-warning);
+        font-size: size(13);
+        line-height: 1.45;
+        text-align: center;
+    }
 }

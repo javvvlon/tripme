@@ -13,7 +13,7 @@
             </h3>
 
             <div v-show="open === i" :id="`${id}-${i}`" class="tm-faq__answer">
-                <p>{{ item.description }}</p>
+                <div class="tm-faq__text" v-html="renderMarkdown(item.description)" />
 
                 <NuxtLink v-if="item.link" :to="localePath(item.link)" class="tm-faq__link">
                     {{ t('common.readMore') }}
@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import Icon from '~/shared/components/icon/Icon.vue'
+import { renderMarkdown } from '~/shared/helpers/markdown'
 import type { IContentItem } from '~/modules/content/models/PageContent'
 
 defineProps<{ items: IContentItem[] }>()

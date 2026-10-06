@@ -8,7 +8,11 @@
             @drop.prevent="onDrop"
         >
             <template v-if="shown">
-                <img class="tm-file-upload__preview" :src="shown" alt="" width="240" height="120">
+                <p v-if="broken" class="tm-file-upload__broken">
+                    <Icon name="image" :size="20" />
+                    {{ t('cms.upload.missing') }}
+                </p>
+                <img v-else class="tm-file-upload__preview" :src="shown" alt="" width="240" height="120" @error="broken = true">
 
                 <div class="tm-file-upload__actions">
                     <button
@@ -101,6 +105,10 @@ const cleared = ref(false)
 const shown = computed(() => preview.value ?? (cleared.value ? null : props.current) ?? null)
 
 const stored = computed(() => (cleared.value ? null : props.current ?? null))
+
+const broken = ref(false)
+
+watch(shown, () => { broken.value = false })
 
 watch(upload.error, value => { error.value = value })
 watch(upload.file, value => { file.value = value })

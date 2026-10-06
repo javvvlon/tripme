@@ -61,7 +61,7 @@
 
                         <template v-if="kind === 'cards'">
                             <span class="tm-list-studio__photo">
-                                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy">
+                                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy" @error="hideBroken">
                                 <Icon v-else name="image" :size="28" />
                             </span>
                             <Badge v-if="item.badgeType && item.translations[locale].badgeLabel.trim()" :tone="item.badgeType" class="tm-list-studio__badge">
@@ -70,23 +70,23 @@
                             <Icon v-if="item.link" name="link" :size="15" class="tm-list-studio__linked" />
                             <span class="tm-list-studio__caption">
                                 <strong>{{ titleOf(item) }}</strong>
-                                <span v-if="item.translations[locale].description">{{ item.translations[locale].description }}</span>
+                                <span v-if="item.translations[locale].description">{{ markdownToText(item.translations[locale].description) }}</span>
                             </span>
                         </template>
 
                         <template v-else-if="kind === 'features'">
                             <span class="tm-list-studio__icon">
-                                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy">
+                                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy" @error="hideBroken">
                                 <Icon v-else name="star" :size="24" />
                             </span>
                             <strong class="tm-list-studio__name">{{ titleOf(item) }}</strong>
-                            <span class="tm-list-studio__text">{{ item.translations[locale].description }}</span>
+                            <span class="tm-list-studio__text">{{ markdownToText(item.translations[locale].description) }}</span>
                         </template>
 
                         <template v-else>
                             <span class="tm-list-studio__qa">
                                 <strong class="tm-list-studio__name">{{ titleOf(item) }}</strong>
-                                <span class="tm-list-studio__text">{{ item.translations[locale].description }}</span>
+                                <span class="tm-list-studio__text">{{ markdownToText(item.translations[locale].description) }}</span>
                             </span>
                             <Icon name="chevron" :size="18" class="tm-list-studio__fold" />
                         </template>
@@ -122,12 +122,18 @@
                             :placeholder="t(kind === 'faq' ? 'cms.lists.questionPlaceholder' : 'cms.lists.itemTitlePlaceholder')"
                         />
 
-                        <Input
-                            v-model="current.translations[locale].description"
-                            :label="`${t(kind === 'faq' ? 'cms.lists.answer' : 'cms.lists.itemDescription')} · ${locale.toUpperCase()}`"
-                            :placeholder="t(kind === 'faq' ? 'cms.lists.answerPlaceholder' : 'cms.lists.itemDescriptionPlaceholder')"
-                            :rows="kind === 'faq' ? 6 : 3"
-                        />
+                        <div class="tm-list-studio__field">
+                            <span class="tm-list-studio__label">
+                                {{ t(kind === 'faq' ? 'cms.lists.answer' : 'cms.lists.itemDescription') }} · {{ locale.toUpperCase() }}
+                            </span>
+                            <RichEditor
+                                :key="current.key"
+                                v-model="current.translations[locale].description"
+                                compact
+                                :placeholder="t(kind === 'faq' ? 'cms.lists.answerPlaceholder' : 'cms.lists.itemDescriptionPlaceholder')"
+                            />
+                            <span v-if="kind !== 'faq'" class="tm-list-studio__help">{{ t('cms.lists.descriptionPlain') }}</span>
+                        </div>
 
                         <div v-if="fields.image" class="tm-list-studio__field">
                             <span class="tm-list-studio__label">{{ t('cms.lists.itemImage') }}</span>
@@ -162,13 +168,26 @@
                             />
                             <div class="tm-list-studio__field">
                                 <span class="tm-list-studio__label">{{ t('cms.lists.badgeType') }}</span>
-                                <Tabs
-                                    :model-value="current.badgeType || 'none'"
-                                    :items="badgeTabs"
-                                    variant="segment"
-                                    :aria-label="t('cms.lists.badgeType')"
-                                    @update:model-value="value => (current!.badgeType = value === 'none' ? '' : value as BadgeType)"
-                                />
+                                <div class="tm-list-studio__chips" role="radiogroup" :aria-label="t('cms.lists.badgeType')">
+                                    <button
+                                        type="button" role="radio" class="tm-list-studio__chip"
+                                        :class="{ 'is-active': !current.badgeType }"
+                                        :aria-checked="!current.badgeType"
+                                        @click="current!.badgeType = ''"
+                                    >
+                                        {{ t('cms.lists.badgeNone') }}
+                                    </button>
+                                    <button
+                                        v-for="type in BADGE_TYPES" :key="type"
+                                        type="button" role="radio" class="tm-list-studio__chip"
+                                        :class="{ 'is-active': current.badgeType === type }"
+                                        :aria-checked="current.badgeType === type"
+                                        :title="t(`cms.lists.badgeTypes.${type}`)"
+                                        @click="current!.badgeType = type"
+                                    >
+                                        <Badge :tone="type">{{ current.translations[locale].badgeLabel.trim() || t(`cms.lists.badgeTypes.${type}`) }}</Badge>
+                                    </button>
+                                </div>
                             </div>
                             <p v-if="current.badgeType && !current.translations[locale].badgeLabel.trim()" class="tm-list-studio__note">
                                 {{ t('cms.lists.badgeNeedsLabel') }}
@@ -221,11 +240,13 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import LangSwitch from '~/modules/content/components/langSwitch/LangSwitch.vue'
 import Badge from '~/shared/components/badge/Badge.vue'
 import KindPicker from '~/modules/content/components/kindPicker/KindPicker.vue'
+import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
+import { markdownToText } from '~/shared/helpers/markdown'
 import { useListEditor } from './ListEditor.hooks'
 import type { IDraftItem } from './ListEditor.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import { BADGE_TYPES, BLOCKS, LIST_KINDS } from '~/modules/content/contracts/blocks'
-import type { BadgeType, ListKind } from '~/modules/content/contracts/blocks'
+import type { ListKind } from '~/modules/content/contracts/blocks'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -241,10 +262,9 @@ const titleOf = (item: IDraftItem) =>
   || CONTENT_LOCALES.map(code => item.translations[code].title.trim()).find(Boolean)
   || t('cms.lists.untitledItem')
 
-const badgeTabs = computed(() => [
-  { value: 'none', label: t('cms.lists.badgeNone') },
-  ...BADGE_TYPES.map(type => ({ value: type, label: t(`cms.lists.badgeTypes.${type}`) })),
-])
+const hideBroken = (event: Event) => {
+  (event.target as HTMLImageElement).hidden = true
+}
 
 const dragging = ref<string | null>(null)
 

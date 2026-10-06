@@ -364,7 +364,8 @@
       "orDrop": "or drag and drop",
       "replace": "Replace",
       "remove": "Remove",
-      "library": "From library"
+      "library": "From library",
+      "missing": "The file is missing. Upload the image again or pick one from the gallery."
     },
     "banner": {
       "title": "Banner",
@@ -442,7 +443,8 @@
       "answer": "Answer",
       "answerPlaceholder": "A short, clear answer",
       "settings": "List settings",
-      "untitledItem": "Untitled"
+      "untitledItem": "Untitled",
+      "descriptionPlain": "Cards show this text briefly, without formatting."
     },
     "sections": {
       "empty": "No sections yet — add the first one.",

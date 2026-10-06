@@ -364,7 +364,8 @@
       "orDrop": "yoki faylni tashlang",
       "replace": "Almashtirish",
       "remove": "O‘chirish",
-      "library": "Galereyadan"
+      "library": "Galereyadan",
+      "missing": "Fayl mavjud emas — rasmni qayta yuklang yoki galereyadan tanlang."
     },
     "banner": {
       "title": "Banner",
@@ -442,7 +443,8 @@
       "answer": "Javob",
       "answerPlaceholder": "Qisqa va tushunarli javob",
       "settings": "Roʻyxat sozlamalari",
-      "untitledItem": "Sarlavhasiz"
+      "untitledItem": "Sarlavhasiz",
+      "descriptionPlain": "Kartochkada matn bezaksiz va qisqa koʻrsatiladi."
     },
     "sections": {
       "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",
