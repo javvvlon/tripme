@@ -185,17 +185,25 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 20px;
+        gap: 16px 48px;
         padding-top: 18px;
         padding-bottom: 18px;
     }
 
+    &__rights {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        gap: 2px;
+    }
+
     &__agent {
+        max-width: 96ch;
         margin: 0;
-        padding-bottom: 18px;
         font-size: size(12);
         line-height: 1.6;
         color: var(--tm-ink-4);
+        text-align: right;
     }
 
     &__entity,
@@ -229,5 +237,7 @@
             align-items: flex-start;
             gap: 8px;
         }
+
+        &__agent { text-align: left; }
     }
 }
