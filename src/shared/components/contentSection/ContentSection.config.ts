@@ -11,6 +11,8 @@ import CtaStrip from '~/shared/components/ctaStrip/CtaStrip.vue'
 import QuoteBlock from '~/shared/components/quoteBlock/QuoteBlock.vue'
 import RichText from '~/shared/components/richText/RichText.vue'
 import PostSpotlight from '~/shared/components/postSpotlight/PostSpotlight.vue'
+import Hero from '~/landing/components/hero/Hero.vue'
+import ContactPanel from '~/landing/components/contactPanel/ContactPanel.vue'
 import type { SectionKind } from '~/modules/content/contracts/blocks'
 import type { IContentSection } from '~/modules/content/models/PageContent'
 
@@ -30,6 +32,8 @@ export const BLOCK_VIEWS: Record<SectionKind, Component> = {
   quote: QuoteBlock,
   text: RichText,
   spotlight: PostSpotlight,
+  search: Hero,
+  contact: ContactPanel,
 }
 
 export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: boolean) => Record<string, unknown>> = {
@@ -74,6 +78,8 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
   }),
   text: section => ({ body: section.body }),
   spotlight: (section, eager) => ({ items: section.items, eager }),
+  search: section => ({ banner: { title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl } }),
+  contact: () => ({}),
 }
 
-export const OWN_HEADING: SectionKind[] = ['hero', 'banner', 'media', 'cta', 'quote']
+export const OWN_HEADING: SectionKind[] = ['hero', 'banner', 'media', 'cta', 'quote', 'search', 'contact']

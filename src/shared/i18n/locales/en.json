@@ -311,8 +311,7 @@
   "cms": {
     "nav": {
       "label": "Site sections",
-      "banner": "Banner",
-      "sections": "Sections",
+      "sections": "Home page",
       "lists": "Lists",
       "posts": "Articles",
       "leads": "Leads",
@@ -473,7 +472,8 @@
         "list": "No list chosen",
         "layout": "No layout chosen",
         "anchor": "Anchor “{anchor}” is taken",
-        "body": "No text"
+        "body": "No text",
+        "single": "A page can hold only one block of this type"
       },
       "discard": "Discard",
       "leave": {
@@ -508,7 +508,9 @@
         "cta": "For example, Not sure where to go?",
         "quote": "For example, Anna Kim",
         "text": "For example, About us",
-        "spotlight": "For example, Reading now"
+        "spotlight": "For example, Reading now",
+        "search": "Leave empty to show the standard heading",
+        "contact": ""
       },
       "image": "Background photo",
       "imageHint": "Optional. A wide photo, PNG, JPG or WebP up to 8 MB — the text sits on top.",
@@ -1070,7 +1072,9 @@
         "cta": "CTA strip",
         "quote": "Quote",
         "text": "Text",
-        "spotlight": "Lead + list"
+        "spotlight": "Lead + list",
+        "search": "Search",
+        "contact": "Contacts"
       },
       "kindHints": {
         "cards": "Cards in a layout of your choice — from a list or from blog posts.",
@@ -1084,7 +1088,9 @@
         "cta": "A bold strip with a call to action and a button.",
         "quote": "A review or quote: the text, the author and a photo.",
         "text": "Free text with headings, lists and images.",
-        "spotlight": "Magazine block: one large article and a list of the next ones."
+        "spotlight": "Magazine block: one large article and a list of the next ones.",
+        "search": "The first screen with tour search: heading, subtitle and photo.",
+        "contact": "Contacts and the enquiry form."
       },
       "sources": {
         "list": "List",
@@ -1094,8 +1100,8 @@
     },
     "pages": {
       "home": {
-        "title": "Home page sections",
-        "lead": "What shows under the search and in which order."
+        "title": "Home page",
+        "lead": "The whole home page: search, blocks and contacts, in the order visitors see them."
       },
       "blog": {
         "title": "Blog page",

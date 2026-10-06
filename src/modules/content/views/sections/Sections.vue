@@ -65,7 +65,7 @@
             <aside v-show="!clean" class="tm-builder__left">
                 <section class="tm-builder__group">
                     <h2 class="tm-builder__heading">{{ t('cms.builder.blocks') }}</h2>
-                    <BlockPalette :kinds="kinds" :label="t('cms.builder.blocks')" @add="addBlock" />
+                    <BlockPalette :kinds="paletteKinds" :label="t('cms.builder.blocks')" @add="addBlock" />
                 </section>
 
                 <section class="tm-builder__group">
@@ -153,6 +153,7 @@
                         />
 
                         <Input
+                            v-if="BLOCKS[current.kind].title"
                             v-model="current.titles[locale]"
                             :label="`${fieldLabel(current, 'title')} · ${locale.toUpperCase()}`"
                             :placeholder="t(`cms.sections.headingPlaceholders.${current.kind}`)"
@@ -333,7 +334,7 @@
                     </div>
 
                     <footer class="tm-builder__inspector-foot">
-                        <Button type="button" variant="ghost" size="sm" icon="copy" @click="onAction(current.key, 'duplicate')">
+                        <Button v-if="!SINGLE_KINDS.includes(current.kind)" type="button" variant="ghost" size="sm" icon="copy" @click="onAction(current.key, 'duplicate')">
                             {{ t('cms.builder.actions.duplicate') }}
                         </Button>
                         <Button type="button" variant="danger-quiet" size="sm" icon="trash" @click="onAction(current.key, 'remove')">
@@ -411,7 +412,7 @@ import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SPOTLIGHT_SIZES } from '~/modules/content/contracts/blocks'
+import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES } from '~/modules/content/contracts/blocks'
 import { excerptFrom } from '~/shared/helpers/markdown'
 import { DEVICES } from '~/modules/content/contracts/builder'
 import type { BlockField, BlockOption, ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
@@ -444,6 +445,9 @@ const splashSteps = computed(() => [1, 2, 3, 4].map(n => t(`cms.builder.splash.s
 const device = ref<DeviceKind>('desktop')
 const clean = ref(false)
 
+const paletteKinds = computed(() => kinds.filter(kind =>
+  !SINGLE_KINDS.includes(kind) || !draft.value.some(section => section.kind === kind)))
+
 const livePath = computed(() => localePath(page === 'blog' ? '/blog' : '/'))
 
 const focusBlock = (key: string) => {
@@ -471,7 +475,9 @@ const onAction = (key: string, action: BlockAction) => {
   switch (action) {
     case 'up': move(index, index - 1); break
     case 'down': move(index, index + 1); break
-    case 'duplicate': reveal(duplicate(key)); break
+    case 'duplicate':
+      if (!SINGLE_KINDS.includes(draft.value[index]!.kind)) reveal(duplicate(key))
+      break
     case 'toggle': toggleHidden(key); break
     case 'remove': remove(key); break
   }

@@ -311,8 +311,7 @@
   "cms": {
     "nav": {
       "label": "Sayt bo‘limlari",
-      "banner": "Banner",
-      "sections": "Bo‘limlar",
+      "sections": "Bosh sahifa",
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
       "leads": "Lidlar",
@@ -473,7 +472,8 @@
         "list": "Ro‘yxat tanlanmagan",
         "layout": "Joylashuv tanlanmagan",
         "anchor": "«{anchor}» langari band",
-        "body": "Matn yoʻq"
+        "body": "Matn yoʻq",
+        "single": "Sahifada bunday blok faqat bitta boʻlishi mumkin"
       },
       "discard": "Bekor qilish",
       "leave": {
@@ -508,7 +508,9 @@
         "cta": "Masalan, Qayerga borishni bilmayapsizmi?",
         "quote": "Masalan, Anna Kim",
         "text": "Masalan, Biz haqimizda",
-        "spotlight": "Masalan, Hozir oʻqishyapti"
+        "spotlight": "Masalan, Hozir oʻqishyapti",
+        "search": "Boʻsh boʻlsa — standart sarlavha koʻrsatiladi",
+        "contact": ""
       },
       "image": "Fon rasmi",
       "imageHint": "Ixtiyoriy. Keng rasm, PNG, JPG yoki WebP, 8 MB gacha — matn ustiga tushadi.",
@@ -1070,7 +1072,9 @@
         "cta": "CTA-chiziq",
         "quote": "Iqtibos",
         "text": "Matn",
-        "spotlight": "Asosiy + roʻyxat"
+        "spotlight": "Asosiy + roʻyxat",
+        "search": "Qidiruv",
+        "contact": "Kontaktlar"
       },
       "kindHints": {
         "cards": "O‘z joylashuviga ega kartochkalar — ro‘yxatdan yoki blog maqolalaridan.",
@@ -1084,7 +1088,9 @@
         "cta": "Chaqiriq va tugmali yorqin chiziq.",
         "quote": "Fikr yoki iqtibos: matn, muallif va rasm.",
         "text": "Sarlavha, roʻyxat va rasmli erkin matn.",
-        "spotlight": "Jurnal bloki: katta maqola va keyingilari roʻyxati."
+        "spotlight": "Jurnal bloki: katta maqola va keyingilari roʻyxati.",
+        "search": "Tur qidiruvi bilan birinchi ekran: sarlavha, kichik sarlavha va rasm.",
+        "contact": "Kontaktlar va aloqa formasi."
       },
       "sources": {
         "list": "Ro‘yxat",
@@ -1094,8 +1100,8 @@
     },
     "pages": {
       "home": {
-        "title": "Bosh sahifa bo‘limlari",
-        "lead": "Qidiruv ostida nima va qaysi tartibda ko‘rsatiladi."
+        "title": "Bosh sahifa",
+        "lead": "Butun bosh sahifa: qidiruv, bloklar va kontaktlar — tashrif buyuruvchilar koʻradigan tartibda."
       },
       "blog": {
         "title": "Blog sahifasi",

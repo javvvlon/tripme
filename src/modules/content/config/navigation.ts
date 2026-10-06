@@ -39,7 +39,6 @@ export const CMS_NAVIGATION: INavNode[] = [
     labelKey: 'cms.nav.content',
     icon: 'folder',
     children: [
-      { key: 'content.banner', labelKey: 'cms.nav.banner', to: '/app/content/banner' },
       { key: 'content.sections', labelKey: 'cms.nav.sections', to: '/app/content/sections' },
       { key: 'content.blog', labelKey: 'cms.nav.blogPage', to: '/app/content/blog' },
       { key: 'content.posts', labelKey: 'cms.nav.posts', to: '/app/posts' },

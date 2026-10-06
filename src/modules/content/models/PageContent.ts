@@ -78,6 +78,8 @@ const ruleOf = (section: IContentSectionRaw) => BLOCKS[isSectionKind(section.kin
 const isVisible = (kind: SectionKind, translation: ISectionTranslationRaw | null, items: number): boolean => {
   const rule = BLOCKS[kind]
 
+  if (rule.alwaysShown) return true
+
   if (rule.bodyRequired) return Boolean(translation?.body?.trim())
 
   if (rule.sources.includes('none')) return Boolean(translation?.title?.trim())

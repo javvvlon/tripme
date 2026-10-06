@@ -1,10 +1,8 @@
-import { Banner } from '~/modules/content/models/Banner'
 import { PageContent } from '~/modules/content/models/PageContent'
 import { PageMeta } from '~/modules/content/models/PageMeta'
 import { EditableSection } from '~/modules/content/models/EditableSection'
 import { SectionsIntention } from '~/modules/content/intentions/sections'
-import { BannerIntention } from '~/modules/content/intentions/banner'
-import type { IBannerRaw, BannerDraft, ContentLocale } from '~/modules/content/contracts/content'
+import type { ContentLocale } from '~/modules/content/contracts/content'
 import type {
   IContentLayoutRaw,
   IContentListRaw,
@@ -26,19 +24,6 @@ import type { IPostRaw } from '~/modules/posts/contracts/posts'
  */
 export const useContentRepository = () => {
   const http = useHttp()
-
-  const banner = async (): Promise<Banner> => {
-    const response = await http.call<IBannerRaw>('Content', 'banner')
-
-    return Banner.fromRaw(response.data)
-  }
-
-  const saveBanner = async (draft: BannerDraft): Promise<Banner> => {
-    const body = new BannerIntention().toRequest(draft)
-    const response = await http.call<IBannerRaw>('Content', 'saveBanner', {}, body as AnyObject)
-
-    return Banner.fromRaw(response.data)
-  }
 
   const pageContent = async (page: ContentPage, locale: ContentLocale): Promise<PageContent> => {
     const response = await http.call<IPageContentRaw>('Content', 'pageContent', { page })
@@ -175,7 +160,7 @@ export const useContentRepository = () => {
   }
 
   return {
-    banner, saveBanner, pageContent, pageMeta, savePageMeta,
+    pageContent, pageMeta, savePageMeta,
     layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, previewPage, upload, library, removeUpload, describeUpload,
     folders, createFolder, renameFolder, deleteFolder,
   }

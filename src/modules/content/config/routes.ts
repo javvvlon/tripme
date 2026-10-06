@@ -5,14 +5,6 @@ import type { IModuleRoute } from '../../../shared/bootstrap/contracts'
  */
 export const routes: IModuleRoute[] = [
   {
-    name: 'cms-home-banner',
-    path: '/app/content/banner',
-    file: 'modules/content/views/banner/Banner.vue',
-    layout: 'cms',
-    ssr: false,
-    meta: { middleware: 'auth' },
-  },
-  {
     name: 'cms-home-sections',
     path: '/app/content/sections',
     file: 'modules/content/views/sections/Sections.vue',

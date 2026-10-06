@@ -17,17 +17,16 @@ export const useHome = () => {
       try {
         const home = await pageContent('home', locale.value as ContentLocale)
 
-        return { banner: home.get('banner'), sections: home.get('sections') }
+        return { sections: home.get('sections') }
       }
       catch {
-        return { banner: null, sections: [] }
+        return { sections: [] }
       }
     },
-    { watch: [locale], default: () => ({ banner: null, sections: [] }) },
+    { watch: [locale], default: () => ({ sections: [] }) },
   )
 
-  const banner = computed(() => content.value?.banner ?? null)
   const sections = computed(() => content.value?.sections ?? [])
 
-  return { banner, sections }
+  return { sections }
 }

@@ -8,6 +8,14 @@ html:has(.tm-frame) body {
 
 html:has(.tm-frame) .tm-blank { min-height: 0; }
 
+.tm-frame .tm-hero {
+    min-height: 600px;
+    margin-top: 0;
+}
+
+.tm-frame .tm-content-section.is-search,
+.tm-frame .tm-content-section.is-contact { pointer-events: none; }
+
 .tm-frame {
     --tm-frame-zoom: 1;
 

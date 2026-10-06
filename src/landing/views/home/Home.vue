@@ -1,13 +1,14 @@
 <template>
     <div>
-        <Hero :banner="banner" />
-
         <ContentSection
-            v-for="(section, i) in sections ?? []" :key="section.uuid"
-            :section="section" :eager="i === 0"
+            v-for="(section, i) in sections" :key="section.uuid"
+            :section="section" :eager="i < 2"
         />
 
-        <ContactPanel />
+        <template v-if="!sections.length">
+            <Hero :banner="null" />
+            <ContactPanel />
+        </template>
     </div>
 </template>
 
@@ -20,7 +21,7 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const url = useRequestURL()
 
-const { banner, sections } = useHome()
+const { sections } = useHome()
 
 useSeoMeta({
   title: () => t('home.seo.title'),

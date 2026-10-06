@@ -17,7 +17,7 @@ export const LIST_KINDS = ['cards', 'features', 'faq'] as const
 
 export type ListKind = typeof LIST_KINDS[number]
 
-export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight'] as const
+export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight', 'search', 'contact'] as const
 
 export type SectionKind = typeof SECTION_KINDS[number]
 
@@ -70,6 +70,8 @@ export interface IBlock {
   cta: boolean
   options: BlockOption[]
   labels: Partial<Record<BlockField, string>>
+  title: boolean
+  alwaysShown: boolean
   item: IItemFields
 }
 
@@ -86,6 +88,8 @@ const PLAIN = {
   bodyRequired: false,
   options: [] as BlockOption[],
   labels: {},
+  title: true,
+  alwaysShown: false,
 }
 
 const STANDALONE = {
@@ -235,7 +239,29 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     options: ['listSize'],
     item: NO_ITEMS,
   },
+  search: {
+    ...STANDALONE,
+    kind: 'search',
+    icon: 'search',
+    pages: ['home'],
+    link: false,
+    titleRequired: false,
+    subtitle: true,
+    image: true,
+    alwaysShown: true,
+  },
+  contact: {
+    ...STANDALONE,
+    kind: 'contact',
+    icon: 'phone',
+    link: false,
+    titleRequired: false,
+    title: false,
+    alwaysShown: true,
+  },
 }
+
+export const SINGLE_KINDS: SectionKind[] = ['search', 'contact']
 
 export const defaultSettings = (kind?: SectionKind): ISectionSettings => ({
   imageUrl: '',

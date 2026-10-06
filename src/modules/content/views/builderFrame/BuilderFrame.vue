@@ -45,7 +45,7 @@
                         <Icon name="grip" :size="16" :stroke="2.4" />
                     </span>
                     <button
-                        v-for="tool in TOOLS" :key="tool.action"
+                        v-for="tool in TOOLS.filter(item => item.action !== 'duplicate' || !SINGLE_KINDS.includes(block.kind))" :key="tool.action"
                         type="button" class="tm-frame__tool"
                         :class="{ 'is-danger': tool.action === 'remove' }"
                         :disabled="(tool.action === 'up' && index === 0) || (tool.action === 'down' && index === blocks.length - 1)"
@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { BLOCKS } from '~/modules/content/contracts/blocks'
+import { BLOCKS, SINGLE_KINDS } from '~/modules/content/contracts/blocks'
 import type { BlockAction } from '~/modules/content/contracts/builder'
 import { useBuilderFrame } from './BuilderFrame.hooks'
 

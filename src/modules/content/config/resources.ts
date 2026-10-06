@@ -7,8 +7,6 @@ export const resource: IResource = {
   name: 'Content',
   prefix: 'cms',
   resources: {
-    banner: { url: 'home/banner/', method: 'GET' },
-    saveBanner: { url: 'home/banner/', method: 'PUT' },
 
     pageContent: { url: 'pages/:page', method: 'GET' },
 
