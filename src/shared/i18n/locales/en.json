@@ -577,7 +577,6 @@
       "clean": "Preview without outlines (Esc to go back)",
       "openLive": "Open the page on the site",
       "blocks": "Blocks",
-      "blocksHint": "Drag a block onto the page, or click it to add it after the selected one.",
       "outline": "Outline",
       "canvas": "Page",
       "close": "Close",
@@ -592,12 +591,6 @@
         "remove": "Delete"
       },
       "pageSettings": "Page settings",
-      "pageSettingsHint": "Select a block on the page to edit it.",
-      "tips": {
-        "add": "Drag blocks from the left to any spot on the page.",
-        "move": "Reorder by dragging the handle, on the page or in the outline.",
-        "edit": "Click a block and its settings open on the right. The switch at the top picks the text language."
-      },
       "emptyBlock": "This block is empty. Fill it in on the right.",
       "dropHere": "Drop a block here",
       "emptyPage": "The page is empty. Drop the first block here",

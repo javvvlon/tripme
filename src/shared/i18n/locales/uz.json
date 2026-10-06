@@ -577,7 +577,6 @@
       "clean": "Ramkasiz koʻrish (Esc — qaytish)",
       "openLive": "Sahifani saytda ochish",
       "blocks": "Bloklar",
-      "blocksHint": "Blokni sahifaga sudrab qoʻying yoki bosing — u tanlangan blokdan keyin qoʻshiladi.",
       "outline": "Tuzilma",
       "canvas": "Sahifa",
       "close": "Yopish",
@@ -592,12 +591,6 @@
         "remove": "Oʻchirish"
       },
       "pageSettings": "Sahifa sozlamalari",
-      "pageSettingsHint": "Blokni oʻzgartirish uchun uni sahifada tanlang.",
-      "tips": {
-        "add": "Chapdagi bloklarni sahifaning istalgan joyiga sudrab qoʻyish mumkin.",
-        "move": "Tartib dastagidan sudrab oʻzgartiriladi — sahifada yoki «Tuzilma»da.",
-        "edit": "Blokni bosing — sozlamalari oʻngda ochiladi. Matn tili — yuqoridagi almashtirgich."
-      },
       "emptyBlock": "Blok hozircha boʻsh — uni oʻngdagi panelda toʻldiring.",
       "dropHere": "Blokni shu yerga sudrab qoʻying",
       "emptyPage": "Sahifa boʻsh — birinchi blokni shu yerga sudrab qoʻying",

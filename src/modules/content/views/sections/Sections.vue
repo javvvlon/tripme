@@ -65,7 +65,6 @@
             <aside v-show="!clean" class="tm-builder__left">
                 <section class="tm-builder__group">
                     <h2 class="tm-builder__heading">{{ t('cms.builder.blocks') }}</h2>
-                    <p class="tm-builder__help">{{ t('cms.builder.blocksHint') }}</p>
                     <BlockPalette :kinds="kinds" :label="t('cms.builder.blocks')" @add="addBlock" />
                 </section>
 
@@ -348,7 +347,6 @@
                         <span class="tm-builder__kind"><Icon name="settings" :size="20" /></span>
                         <div>
                             <strong>{{ t('cms.builder.pageSettings') }}</strong>
-                            <span>{{ t('cms.builder.pageSettingsHint') }}</span>
                         </div>
                     </header>
 
@@ -367,12 +365,6 @@
                             :rows="3"
                         />
                     </div>
-
-                    <ul class="tm-builder__tips">
-                        <li><Icon name="plus" :size="16" />{{ t('cms.builder.tips.add') }}</li>
-                        <li><Icon name="grip" :size="16" />{{ t('cms.builder.tips.move') }}</li>
-                        <li><Icon name="pencil" :size="16" />{{ t('cms.builder.tips.edit') }}</li>
-                    </ul>
                 </template>
             </aside>
         </div>

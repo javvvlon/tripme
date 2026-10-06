@@ -8,7 +8,7 @@
             @dragstart="start(kind, $event)"
             @click="emit('add', kind)"
         >
-            <span class="tm-palette__icon"><Icon :name="BLOCKS[kind].icon" :size="20" /></span>
+            <span class="tm-palette__icon"><Icon :name="BLOCKS[kind].icon" :size="17" /></span>
             <span class="tm-palette__name">{{ t(`cms.blocks.kinds.${kind}`) }}</span>
             <Icon name="plus" :size="16" class="tm-palette__plus" />
         </button>
