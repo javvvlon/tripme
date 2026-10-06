@@ -5,6 +5,12 @@ import FaqList from '~/shared/components/faqList/FaqList.vue'
 import FeatureGrid from '~/shared/components/featureGrid/FeatureGrid.vue'
 import FeaturedPost from '~/shared/components/featuredPost/FeaturedPost.vue'
 import PostFeed from '~/shared/components/postFeed/PostFeed.vue'
+import PromoBanner from '~/shared/components/promoBanner/PromoBanner.vue'
+import MediaText from '~/shared/components/mediaText/MediaText.vue'
+import CtaStrip from '~/shared/components/ctaStrip/CtaStrip.vue'
+import QuoteBlock from '~/shared/components/quoteBlock/QuoteBlock.vue'
+import RichText from '~/shared/components/richText/RichText.vue'
+import PostSpotlight from '~/shared/components/postSpotlight/PostSpotlight.vue'
 import type { SectionKind } from '~/modules/content/contracts/blocks'
 import type { IContentSection } from '~/modules/content/models/PageContent'
 
@@ -18,6 +24,12 @@ export const BLOCK_VIEWS: Record<SectionKind, Component> = {
   features: FeatureGrid,
   faq: FaqList,
   feed: PostFeed,
+  banner: PromoBanner,
+  media: MediaText,
+  cta: CtaStrip,
+  quote: QuoteBlock,
+  text: RichText,
+  spotlight: PostSpotlight,
 }
 
 export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: boolean) => Record<string, unknown>> = {
@@ -27,6 +39,41 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
   features: section => ({ items: section.items }),
   faq: section => ({ items: section.items }),
   feed: section => ({ items: section.items, pageSize: section.pageSize }),
+  banner: (section, eager) => ({
+    title: section.title,
+    eyebrow: section.eyebrow,
+    text: section.subtitle,
+    ctaLabel: section.ctaLabel,
+    link: section.link,
+    imageUrl: section.imageUrl,
+    look: section.style,
+    tone: section.tone,
+    eager,
+  }),
+  media: (section, eager) => ({
+    title: section.title,
+    body: section.body,
+    ctaLabel: section.ctaLabel,
+    link: section.link,
+    imageUrl: section.imageUrl,
+    side: section.imageSide,
+    eager,
+  }),
+  cta: section => ({
+    title: section.title,
+    text: section.subtitle,
+    ctaLabel: section.ctaLabel,
+    link: section.link,
+    tone: section.tone,
+  }),
+  quote: section => ({
+    quote: section.body,
+    author: section.title || null,
+    role: section.subtitle,
+    imageUrl: section.imageUrl,
+  }),
+  text: section => ({ body: section.body }),
+  spotlight: (section, eager) => ({ items: section.items, eager }),
 }
 
-export const OWN_HEADING: SectionKind[] = ['hero']
+export const OWN_HEADING: SectionKind[] = ['hero', 'banner', 'media', 'cta', 'quote']

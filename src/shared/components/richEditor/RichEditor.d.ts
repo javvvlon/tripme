@@ -3,20 +3,20 @@
  */
 import type { IMediaFile } from '~/shared/components/mediaLibrary/MediaLibrary.d'
 
-export interface IMarkdownEditorProps {
-  label?: string
-  hint?: string
+export interface IRichEditorProps {
   placeholder?: string
-  rows?: number
+  hint?: string
   disabled?: boolean
+  compact?: boolean
   uploader?: (file: File) => Promise<string>
   library?: (query?: string, folder?: string) => Promise<IMediaFile[]>
 }
 
-export interface IMarkdownAction {
+export interface IRichTool {
   key: string
-  icon: string
-  before: string
-  after: string
-  block?: boolean
+  icon?: string
+  text?: string
+  compact?: boolean
 }
+
+export type RichAsk = 'link' | 'video' | null

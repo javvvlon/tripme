@@ -444,34 +444,14 @@
       "answerPlaceholder": "A short, clear answer"
     },
     "sections": {
-      "title": "Home page sections",
-      "lead": "What shows under the search and in which order.",
-      "mode": "Mode",
-      "modes": {
-        "edit": "Editor",
-        "preview": "Preview"
-      },
-      "previewLanguage": "Preview language",
-      "previewEmpty": "“{title}” is empty for now — the site will not show it.",
       "empty": "No sections yet — add the first one.",
-      "add": "Add a section",
-      "addTitle": "New section",
-      "addLead": "Choose how the section looks. You can change the type later.",
-      "addConfirm": "Add",
-      "remove": "Remove section",
       "removedNote": "Section “{title}” removed.",
       "undo": "Undo",
       "shown": "Live",
       "hidden": "Hidden",
-      "expand": "Expand",
-      "collapse": "Collapse",
       "drag": "Drag to reorder",
-      "type": "Type",
       "source": "Where cards come from",
       "heading": "Heading",
-      "headingPlaceholder": "For example, Hot destinations",
-      "untitled": "Untitled",
-      "missing": "Missing: {locales}",
       "list": "List",
       "listPlaceholder": "Choose a list",
       "noLists": "No “{kind}” lists yet — create one.",
@@ -481,8 +461,6 @@
       "articles": "Posts",
       "articlesLatest": "Latest published",
       "postsHint": "Nothing chosen — the latest posts will show.",
-      "pickedArticles": "posts: {count}",
-      "latestArticles": "latest posts",
       "layout": "Layout",
       "noLayout": "no layout",
       "overflow": "The list has {items} items but the layout fits {capacity} — the rest will not show.",
@@ -494,10 +472,9 @@
         "title": "No heading",
         "list": "No list chosen",
         "layout": "No layout chosen",
-        "anchor": "Anchor “{anchor}” is taken"
+        "anchor": "Anchor “{anchor}” is taken",
+        "body": "No text"
       },
-      "changes": "Changes",
-      "unsaved": "You have unsaved changes",
       "discard": "Discard",
       "leave": {
         "title": "Leave without saving?",
@@ -525,7 +502,13 @@
         "cards": "For example, Hot destinations",
         "features": "For example, Why TripMe",
         "faq": "For example, Questions and answers",
-        "feed": "For example, All posts"
+        "feed": "For example, All posts",
+        "banner": "For example, Maldives −20% until end of October",
+        "media": "For example, How we pick a hotel",
+        "cta": "For example, Not sure where to go?",
+        "quote": "For example, Anna Kim",
+        "text": "For example, About us",
+        "spotlight": "For example, Reading now"
       },
       "image": "Background photo",
       "imageHint": "Optional. A wide photo, PNG, JPG or WebP up to 8 MB — the text sits on top.",
@@ -535,14 +518,95 @@
       "pageSize": "Posts at first",
       "pageSizeHint": "The rest come with “Show more”.",
       "excludeFeatured": "Don’t repeat the featured post in the feed",
-      "withImage": "with photo",
-      "noImage": "no photo",
       "feedSummary": "{n} at a time",
       "anchorHintBlog": "To link to the block: /blog#name. Latin letters, digits and hyphens.",
       "language": "Language",
       "notFilled": "Not filled in",
       "featuredAuto": "Automatic",
-      "featuredPick": "Pick a post"
+      "featuredPick": "Pick a post",
+      "eyebrow": "Label",
+      "eyebrowPlaceholder": "For example, Special offer",
+      "body": "Text",
+      "bodyPlaceholder": "Write the block text…",
+      "ctaLabel": "Button text",
+      "ctaLabelPlaceholder": "For example, See tours",
+      "ctaLink": "Button link",
+      "ctaLinkHint": "A site page (/search) or a full https://… address",
+      "options": {
+        "style": "Look",
+        "tone": "Colour",
+        "imageSide": "Photo",
+        "listSize": "Articles in the list"
+      },
+      "optionValues": {
+        "style": {
+          "card": "Card",
+          "wide": "Full width"
+        },
+        "tone": {
+          "light": "Light",
+          "brand": "Brand",
+          "dark": "Dark"
+        },
+        "imageSide": {
+          "left": "Left",
+          "right": "Right"
+        }
+      },
+      "fieldLabels": {
+        "author": "Author (optional)",
+        "role": "Who they are",
+        "quote": "Quote",
+        "photo": "Author photo",
+        "picture": "Photo"
+      },
+      "placeholders": {
+        "role": "For example, went to Turkey in May",
+        "quote": "For example, The best holiday in years — every detail was thought through."
+      }
+    },
+    "builder": {
+      "unsaved": "Unsaved changes",
+      "saved": "All changes saved",
+      "device": "Screen width",
+      "devices": {
+        "desktop": "Desktop",
+        "tablet": "Tablet",
+        "mobile": "Phone"
+      },
+      "clean": "Preview without outlines (Esc to go back)",
+      "openLive": "Open the page on the site",
+      "blocks": "Blocks",
+      "blocksHint": "Drag a block onto the page, or click it to add it after the selected one.",
+      "outline": "Outline",
+      "canvas": "Page",
+      "close": "Close",
+      "shownHint": "Visitors see this block once you save.",
+      "hiddenHint": "The block is kept but not shown on the site.",
+      "actions": {
+        "up": "Move up",
+        "down": "Move down",
+        "duplicate": "Duplicate",
+        "toggle": "Hide",
+        "show": "Show",
+        "remove": "Delete"
+      },
+      "pageSettings": "Page settings",
+      "pageSettingsHint": "Select a block on the page to edit it.",
+      "tips": {
+        "add": "Drag blocks from the left to any spot on the page.",
+        "move": "Reorder by dragging the handle, on the page or in the outline.",
+        "edit": "Click a block and its settings open on the right. The switch at the top picks the text language."
+      },
+      "emptyBlock": "This block is empty. Fill it in on the right.",
+      "dropHere": "Drop a block here",
+      "emptyPage": "The page is empty. Drop the first block here",
+      "splash": {
+        "step1": "Loading blocks…",
+        "step2": "Assembling the page…",
+        "step3": "Fetching articles…",
+        "step4": "Almost there…"
+      }
     },
     "posts": {
       "title": "Articles",
@@ -573,8 +637,8 @@
         "excerptPlaceholder": "One or two sentences for the card and search",
         "excerptHint": "Shown on the card in a list and in search results.",
         "body": "Body",
-        "bodyPlaceholder": "## Subheading\n\nThe article body in Markdown…",
-        "bodyHint": "Markdown: **bold**, _italic_, ## headings, - lists, [links](https://).",
+        "bodyPlaceholder": "Start writing the article…",
+        "bodyHint": "Select text to format it. Paste images or drop them straight into the text.",
         "state": "State",
         "image": "Cover",
         "badgeType": "Badge type",
@@ -1007,7 +1071,13 @@
         "faq": "Questions and answers",
         "hero": "Header",
         "featured": "Featured post",
-        "feed": "Post feed"
+        "feed": "Post feed",
+        "banner": "Banner",
+        "media": "Image + text",
+        "cta": "CTA strip",
+        "quote": "Quote",
+        "text": "Text",
+        "spotlight": "Lead + list"
       },
       "kindHints": {
         "cards": "Cards in a layout of your choice — from a list or from blog posts.",
@@ -1015,7 +1085,13 @@
         "faq": "An accordion: each question opens into its answer.",
         "hero": "The page title, a subtitle and, if you like, a full-width photo.",
         "featured": "One post as a large card — the one you pick or the latest.",
-        "feed": "Every published post in a grid with a “Show more” button."
+        "feed": "Every published post in a grid with a “Show more” button.",
+        "banner": "A promo with a label, heading, button and photo, as a card or full width.",
+        "media": "A photo on the left or right with formatted text and a button.",
+        "cta": "A bold strip with a call to action and a button.",
+        "quote": "A review or quote: the text, the author and a photo.",
+        "text": "Free text with headings, lists and images.",
+        "spotlight": "Magazine block: one large article and a list of the next ones."
       },
       "sources": {
         "list": "List",
@@ -1041,25 +1117,39 @@
       }
     }
   },
-  "markdown": {
-    "bold": "Bold",
-    "italic": "Italic",
-    "heading": "Heading",
-    "quote": "Quote",
-    "bullet": "List",
-    "link": "Link",
-    "write": "Write",
-    "preview": "Preview",
-    "image": "Insert image",
-    "video": "Insert video",
-    "videoPlaceholder": "A YouTube, Vimeo or .mp4 link",
-    "insert": "Insert",
+  "richEditor": {
+    "toolbar": "Formatting",
+    "caption": "Photo caption (optional)",
+    "remove": "Remove",
+    "linkPlaceholder": "https://… or /tours/maldives",
+    "apply": "Apply",
+    "unlink": "Remove link",
+    "align": {
+      "left": "Left, text wraps",
+      "center": "Centred",
+      "right": "Right, text wraps",
+      "full": "Full width"
+    },
+    "tools": {
+      "h2": "Heading",
+      "h3": "Subheading",
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strikethrough",
+      "link": "Link",
+      "bullet": "Bulleted list",
+      "ordered": "Numbered list",
+      "quote": "Quote",
+      "divider": "Divider",
+      "image": "Insert image",
+      "video": "Insert video",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
     "uploading": "Uploading the image…",
     "uploadFailed": "The image could not be uploaded.",
-    "alignHint": "Wrap text around it: ![caption](url \"left\"), \"right\", or \"full\" for full width.",
-    "library": "Uploaded images",
-    "libraryEmpty": "Nothing uploaded yet.",
-    "upload": "Upload new"
+    "videoPlaceholder": "A YouTube, Vimeo or .mp4 link",
+    "insert": "Insert"
   },
   "post": {
     "readMore": "Read at the source",

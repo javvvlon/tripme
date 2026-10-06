@@ -39,7 +39,7 @@
             </template>
         </Sidebar>
 
-        <main class="tm-cms__main">
+        <main class="tm-cms__main" :class="{ 'is-wide': route.meta.wide }">
             <Breadcrumbs :items="crumbs" class="tm-cms__crumbs" />
 
             <div class="tm-cms__content">

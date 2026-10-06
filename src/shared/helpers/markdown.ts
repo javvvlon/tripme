@@ -22,7 +22,7 @@ function attribute(value: string): string {
   return value.replace(/"/g, '&quot;')
 }
 
-function embedFor(url: string): string {
+export function embedFor(url: string): string {
   const youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{6,})/)
 
   if (youtube) {
@@ -75,6 +75,24 @@ export function renderMarkdown(source: string | null | undefined): string {
   )
 }
 
+export function markdownToEditorHtml(source: string | null | undefined): string {
+  if (!source?.trim()) return ''
+
+  const videos: string[] = []
+
+  const withPlaceholders = escapeHtml(source).replace(VIDEO_PATTERN, (_, url: string) => {
+    videos.push(url)
+
+    return `%%tm-video-${videos.length - 1}%%`
+  })
+
+  const html = marked.parse(withPlaceholders, { async: false, gfm: true, breaks: true })
+
+  return html
+    .replace(/<p>\s*%%tm-video-(\d+)%%\s*<\/p>/g, (_, index: string) => `<div data-video="${attribute(videos[Number(index)] ?? '')}"></div>`)
+    .replace(/%%tm-video-(\d+)%%/g, (_, index: string) => `@[video](${videos[Number(index)] ?? ''})`)
+}
+
 export function excerptFrom(source: string | null | undefined, limit = 200): string {
   if (!source?.trim()) return ''
 
@@ -83,6 +101,7 @@ export function excerptFrom(source: string | null | undefined, limit = 200): str
     .replace(VIDEO_PATTERN, ' ')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\\([\\`*_{}[\]()#+\-.!>~|])/g, '$1')
     .replace(/[#>*_`~-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()

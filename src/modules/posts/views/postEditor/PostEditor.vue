@@ -38,7 +38,7 @@
                         <div class="tm-post-editor__field">
                             <span class="tm-post-editor__label">{{ t('cms.posts.fields.body') }}</span>
 
-                            <MarkdownEditor
+                            <RichEditor
                                 v-model="draft.translations[locale].body"
                                 :uploader="uploadInline"
                                 :library="mediaLibrary"
@@ -146,7 +146,7 @@
 <script setup lang="ts">
 import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
-import MarkdownEditor from '~/shared/components/markdownEditor/MarkdownEditor.vue'
+import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import TourOffer from '~/modules/leads/components/tourOffer/TourOffer.vue'

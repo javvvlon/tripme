@@ -68,17 +68,25 @@ export class SectionsIntention {
         locale,
         title: section.titles[locale],
         subtitle: block.subtitle ? section.subtitles[locale] : null,
+        eyebrow: block.eyebrow ? section.eyebrows[locale] : null,
+        body: block.body ? section.bodies[locale] : null,
+        cta_label: block.cta ? section.ctaLabels[locale] : null,
       })),
     }
   }
 
   private settings(section: ISectionDraft): ISectionSettingsRaw {
     const block = BLOCKS[section.kind]
+    const { settings } = section
 
-    if (block.image) return { image_url: section.settings.imageUrl.trim() || null }
+    if (block.feed) return { page_size: settings.pageSize, exclude_featured: settings.excludeFeatured }
 
-    if (block.feed) return { page_size: section.settings.pageSize, exclude_featured: section.settings.excludeFeatured }
-
-    return {}
+    return {
+      ...(block.image ? { image_url: settings.imageUrl.trim() || null } : {}),
+      ...(block.options.includes('style') ? { style: settings.style } : {}),
+      ...(block.options.includes('tone') ? { tone: settings.tone } : {}),
+      ...(block.options.includes('imageSide') ? { image_side: settings.imageSide } : {}),
+      ...(block.options.includes('listSize') ? { list_size: settings.listSize } : {}),
+    }
   }
 }

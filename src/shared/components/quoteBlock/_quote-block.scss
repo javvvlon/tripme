@@ -1,0 +1,59 @@
+@use '../../styles/utils' as *;
+
+.tm-quote-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+
+    &__mark { color: var(--tm-brand-primary); }
+
+    &__text {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-family: var(--tm-font-display-primary);
+        font-size: size(28);
+        font-weight: 600;
+        line-height: 1.4;
+        white-space: pre-line;
+        text-wrap: balance;
+    }
+
+    &__by {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        text-align: left;
+
+        > span {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        strong {
+            color: var(--tm-ink-1);
+            font-size: size(15);
+        }
+
+        span span {
+            color: var(--tm-ink-3);
+            font-size: size(13);
+        }
+    }
+
+    &__photo {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 0 3px var(--tm-surface-1), 0 0 0 4px var(--tm-border-1);
+    }
+}
+
+@media #{$until-md} {
+    .tm-quote-block__text { font-size: size(21); }
+}

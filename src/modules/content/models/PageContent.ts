@@ -5,10 +5,14 @@ import type { ContentLocale } from '~/modules/content/contracts/content'
 import { BLOCKS, isSectionKind } from '~/modules/content/contracts/blocks'
 import type {
   BadgeType,
+  BannerStyle,
+  BlockTone,
+  ImageSide,
   ContentPage,
   IContentItemRaw,
   IContentSectionRaw,
   IPageContentRaw,
+  ISectionTranslationRaw,
   SectionKind,
 } from '~/modules/content/contracts/blocks'
 import type { IPostRaw } from '~/modules/posts/contracts/posts'
@@ -32,6 +36,12 @@ export interface IContentSection {
   uuid: string
   title: string
   subtitle: string | null
+  eyebrow: string | null
+  body: string | null
+  ctaLabel: string | null
+  style: BannerStyle
+  tone: BlockTone
+  imageSide: ImageSide
   imageUrl: string | null
   pageSize: number
   link: string | null
@@ -60,6 +70,20 @@ export interface IPageContent {
 }
 
 const DEFAULT_PAGE_SIZE = 9
+
+const DEFAULT_SPOTLIGHT = 4
+
+const ruleOf = (section: IContentSectionRaw) => BLOCKS[isSectionKind(section.kind) ? section.kind : 'cards']
+
+const isVisible = (kind: SectionKind, translation: ISectionTranslationRaw | null, items: number): boolean => {
+  const rule = BLOCKS[kind]
+
+  if (rule.bodyRequired) return Boolean(translation?.body?.trim())
+
+  if (rule.sources.includes('none')) return Boolean(translation?.title?.trim())
+
+  return items > 0
+}
 
 export class PageContent extends Model<IPageContent> {
   public static forLocale(raw: IPageContentRaw, locale: ContentLocale): PageContent {
@@ -99,6 +123,16 @@ export class PageContent extends Model<IPageContent> {
           : latest.filter(item => item.uuid !== featuredId)
       }
 
+      if (section.kind === 'spotlight') {
+        const picked = section.post_ids?.length
+          ? section.post_ids.map(id => postItems.get(id)).filter((item): item is IContentItem => Boolean(item))
+          : latest
+
+        return picked.slice(0, 1 + (section.settings?.list_size ?? DEFAULT_SPOTLIGHT))
+      }
+
+      if (ruleOf(section).sources.includes('none')) return []
+
       if (section.source === 'posts') {
         return (section.post_ids?.length
           ? section.post_ids
@@ -132,12 +166,18 @@ export class PageContent extends Model<IPageContent> {
         const translation = pick(section.translations, locale)
         const items = itemsOf(section, grid?.capacity)
 
-        if (section.kind === 'hero' ? !translation?.title?.trim() : !items.length) return null
+        if (!isVisible(section.kind, translation, items.length)) return null
 
         return {
           uuid: section.uuid,
           title: translation?.title ?? '',
           subtitle: translation?.subtitle?.trim() || null,
+          eyebrow: translation?.eyebrow?.trim() || null,
+          body: translation?.body?.trim() || null,
+          ctaLabel: translation?.cta_label?.trim() || null,
+          style: section.settings?.style ?? 'card',
+          tone: section.settings?.tone ?? (section.kind === 'cta' ? 'brand' : 'light'),
+          imageSide: section.settings?.image_side ?? 'left',
           imageUrl: section.settings?.image_url ?? null,
           pageSize: section.settings?.page_size ?? DEFAULT_PAGE_SIZE,
           link: block.link ? section.link : null,

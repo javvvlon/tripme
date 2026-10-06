@@ -2,10 +2,10 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { usePostsRepository } from '~/modules/posts/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
-import { BLOCKS, kindsFor } from '~/modules/content/contracts/blocks'
+import { BLOCKS, defaultSettings, kindsFor } from '~/modules/content/contracts/blocks'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import type { ContentPage, IContentListRaw, IPageMetaDraft, ISectionDraft, ISectionSettings, SectionKind } from '~/modules/content/contracts/blocks'
-import type { IContentSection } from '~/modules/content/models/PageContent'
+import type { ContentPage, IContentListRaw, IPageMetaDraft, ISectionDraft, SectionKind } from '~/modules/content/contracts/blocks'
+import type { IBuilderContext } from '~/modules/content/contracts/builder'
 import type { EditableSection } from '~/modules/content/models/EditableSection'
 import type { IGrid } from '~/shared/helpers/grid'
 
@@ -29,8 +29,6 @@ const blankTitles = () => Object.fromEntries(
 let counter = 0
 const nextKey = () => `section-${++counter}`
 
-const blankSettings = (): ISectionSettings => ({ imageUrl: '', pageSize: 9, excludeFeatured: true })
-
 const blankMeta = (): IPageMetaDraft => ({
   seo: Object.fromEntries(CONTENT_LOCALES.map(locale => [locale, { title: '', description: '' }])) as IPageMetaDraft['seo'],
 })
@@ -42,6 +40,9 @@ const toDraft = (section: EditableSection): IDraftSection => {
     ...draft,
     titles: { ...draft.titles },
     subtitles: { ...draft.subtitles },
+    eyebrows: { ...draft.eyebrows },
+    bodies: { ...draft.bodies },
+    ctaLabels: { ...draft.ctaLabels },
     settings: { ...draft.settings },
     postIds: [...draft.postIds],
     key: uuid,
@@ -57,7 +58,7 @@ export const useSections = (page: ContentPage) => {
   const { t } = useI18n()
   const { saved: cheer, fail, failed } = useToast()
   const {
-    sections, lists, list, layouts, createLayout, saveSections, previewPage,
+    sections, lists, list, layouts, createLayout, saveSections,
     pageMeta, savePageMeta, upload, removeUpload,
   } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
@@ -71,11 +72,9 @@ export const useSections = (page: ContentPage) => {
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = ref<IDraftSection[]>([])
   const pristine = ref('[]')
-  const open = ref<string | null>(null)
+  const selected = ref<string | null>(null)
   const removed = ref<{ section: IDraftSection, index: number } | null>(null)
-  const mode = ref<'edit' | 'preview'>('edit')
   const fullLists = ref<IContentListRaw[]>([])
-  const previewing = ref(false)
 
   const saving = ref(false)
   const error = ref('')
@@ -139,14 +138,21 @@ export const useSections = (page: ContentPage) => {
     return { items, capacity }
   }
 
-  const missingLocales = (section: IDraftSection): ContentLocale[] =>
-    CONTENT_LOCALES.filter(code => !section.titles[code].trim())
+  const missingLocales = (section: IDraftSection): ContentLocale[] => {
+    const texts = BLOCKS[section.kind].bodyRequired ? section.bodies : section.titles
+
+    return CONTENT_LOCALES.filter(code => !texts[code].trim())
+  }
 
   const problemOf = (section: IDraftSection): string | null => {
     const block = BLOCKS[section.kind]
 
-    if (block.titleRequired && missingLocales(section).length === CONTENT_LOCALES.length) {
+    if (block.titleRequired && CONTENT_LOCALES.every(code => !section.titles[code].trim())) {
       return t('cms.sections.problems.title')
+    }
+
+    if (block.bodyRequired && missingLocales(section).length === CONTENT_LOCALES.length) {
+      return t('cms.sections.problems.body')
     }
 
     if (section.source === 'list' && !section.listId) return t('cms.sections.problems.list')
@@ -162,22 +168,15 @@ export const useSections = (page: ContentPage) => {
     return null
   }
 
-  const setKind = (section: IDraftSection, kind: SectionKind) => {
-    const block = BLOCKS[kind]
+  const problems = computed<Record<string, string>>(() => Object.fromEntries(
+    draft.value
+      .map(section => [section.key, problemOf(section)] as const)
+      .filter((entry): entry is readonly [string, string] => entry[1] !== null),
+  ))
 
-    section.kind = kind
-    section.source = block.sources.includes(section.source) ? section.source : block.sources[0]!
+  const selectedSection = computed(() => draft.value.find(section => section.key === selected.value) ?? null)
 
-    if (!listOptions(kind).some(option => option.value === section.listId)) {
-      section.listId = listOptions(kind)[0]?.value ?? ''
-    }
-
-    if (block.layout && !section.layoutId) section.layoutId = layoutChoices.value[0]?.uuid ?? ''
-
-    if (block.pickPost) section.postIds = section.postIds.slice(0, 1)
-  }
-
-  const add = (kind: SectionKind) => {
+  const add = (kind: SectionKind, index = draft.value.length): string => {
     const section: IDraftSection = {
       key: nextKey(),
       kind,
@@ -187,14 +186,44 @@ export const useSections = (page: ContentPage) => {
       postIds: [],
       listId: listOptions(kind)[0]?.value ?? '',
       layoutId: BLOCKS[kind].layout ? (layoutChoices.value[0]?.uuid ?? '') : '',
-      isPublished: false,
+      isPublished: true,
       titles: blankTitles(),
       subtitles: blankTitles(),
-      settings: blankSettings(),
+      eyebrows: blankTitles(),
+      bodies: blankTitles(),
+      ctaLabels: blankTitles(),
+      settings: defaultSettings(kind),
     }
 
-    draft.value = [...draft.value, section]
-    open.value = section.key
+    const next = [...draft.value]
+    next.splice(Math.max(0, Math.min(index, next.length)), 0, section)
+    draft.value = next
+    selected.value = section.key
+
+    return section.key
+  }
+
+  const duplicate = (key: string): string | null => {
+    const index = draft.value.findIndex(section => section.key === key)
+    const source = draft.value[index]
+
+    if (!source) return null
+
+    const { key: _key, ...rest } = source
+    const copy: IDraftSection = { ...structuredClone(toRaw(rest)), anchor: '', key: nextKey() }
+    const next = [...draft.value]
+
+    next.splice(index + 1, 0, copy)
+    draft.value = next
+    selected.value = copy.key
+
+    return copy.key
+  }
+
+  const toggleHidden = (key: string) => {
+    const section = draft.value.find(item => item.key === key)
+
+    if (section) section.isPublished = !section.isPublished
   }
 
   const remove = (key: string) => {
@@ -205,7 +234,7 @@ export const useSections = (page: ContentPage) => {
     removed.value = { section: draft.value[index]!, index }
     draft.value = draft.value.filter(section => section.key !== key)
 
-    if (open.value === key) open.value = null
+    if (selected.value === key) selected.value = null
   }
 
   const undoRemove = () => {
@@ -226,8 +255,12 @@ export const useSections = (page: ContentPage) => {
     draft.value = next
   }
 
-  const toggle = (key: string) => {
-    open.value = open.value === key ? null : key
+  const moveTo = (key: string, to: number) => {
+    move(draft.value.findIndex(section => section.key === key), to)
+  }
+
+  const select = (key: string | null) => {
+    selected.value = key
   }
 
   const newLayout = reactive({ open: false, grid: '', name: '', saving: false, error: '', for: '' })
@@ -260,13 +293,15 @@ export const useSections = (page: ContentPage) => {
     }
   }
 
-  async function loadPreview() {
+  const loadingLists = new Set<string>()
+
+  async function loadLists() {
     const wanted = [...new Set(draft.value.filter(section => section.source === 'list' && section.listId).map(section => section.listId))]
-    const missing = wanted.filter(id => !fullLists.value.some(item => item.uuid === id))
+    const missing = wanted.filter(id => !loadingLists.has(id) && !fullLists.value.some(item => item.uuid === id))
 
     if (!missing.length) return
 
-    previewing.value = true
+    missing.forEach(id => loadingLists.add(id))
 
     try {
       fullLists.value = [...fullLists.value, ...await Promise.all(missing.map(id => list(id)))]
@@ -275,25 +310,17 @@ export const useSections = (page: ContentPage) => {
       failed(e)
     }
     finally {
-      previewing.value = false
+      missing.forEach(id => loadingLists.delete(id))
     }
   }
 
-  watch([mode, () => draft.value.map(section => section.listId).join()], () => {
-    if (mode.value === 'preview') void loadPreview()
-  })
+  watch(() => draft.value.map(section => section.listId).join(), () => void loadLists(), { immediate: true })
 
-  const preview = computed<Map<string, IContentSection>>(() => {
-    if (mode.value !== 'preview') return new Map()
-
-    const content = previewPage(page, draft.value, {
-      layouts: data.value?.layouts ?? [],
-      lists: fullLists.value,
-      posts: (data.value?.posts ?? []).filter(post => post.is_published),
-    }, locale.value)
-
-    return new Map(content.get('sections').map(section => [section.uuid, section]))
-  })
+  const context = computed<IBuilderContext>(() => ({
+    layouts: data.value?.layouts ?? [],
+    lists: fullLists.value,
+    posts: (data.value?.posts ?? []).filter(post => post.is_published),
+  }))
 
   const dragging = ref<string | null>(null)
   const grabbed = ref<string | null>(null)
@@ -355,7 +382,7 @@ export const useSections = (page: ContentPage) => {
     draft.value = saved.sections.map(section => ({ ...section, key: nextKey() }))
     meta.value = saved.meta
     removed.value = null
-    open.value = null
+    selected.value = null
     error.value = ''
   }
 
@@ -365,7 +392,7 @@ export const useSections = (page: ContentPage) => {
     const broken = draft.value.find(section => problemOf(section))
 
     if (broken) {
-      open.value = broken.key
+      selected.value = broken.key
       error.value = fail(problemOf(broken)!)
       return
     }
@@ -391,11 +418,11 @@ export const useSections = (page: ContentPage) => {
 
   return {
     page, kinds, meta, uploading, mediaLibrary, pickImage, discardImage,
-    locale, mode, draft, status, saving, error, dirty, open, removed, preview, previewing,
+    locale, draft, status, saving, error, dirty, selected, selectedSection, removed, context, problems,
     dragging, grabbed, startDrag, dragOver, endDrag,
     postOptions, listOptions, layoutChoices, listName, layoutName,
     overflow, missingLocales, problemOf,
     newLayout, openLayout, submitLayout,
-    setKind, add, remove, undoRemove, move, toggle, reset, submit,
+    add, duplicate, toggleHidden, remove, undoRemove, move, moveTo, select, reset, submit,
   }
 }

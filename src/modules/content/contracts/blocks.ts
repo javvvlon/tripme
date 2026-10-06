@@ -17,7 +17,7 @@ export const LIST_KINDS = ['cards', 'features', 'faq'] as const
 
 export type ListKind = typeof LIST_KINDS[number]
 
-export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed'] as const
+export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight'] as const
 
 export type SectionKind = typeof SECTION_KINDS[number]
 
@@ -26,6 +26,24 @@ export const SECTION_SOURCES = ['list', 'posts', 'none'] as const
 export type SectionSource = typeof SECTION_SOURCES[number]
 
 export const FEED_PAGE_SIZES = [6, 9, 12, 18, 24] as const
+
+export const SPOTLIGHT_SIZES = [3, 4, 5, 6] as const
+
+export const BANNER_STYLES = ['card', 'wide'] as const
+
+export type BannerStyle = typeof BANNER_STYLES[number]
+
+export const BLOCK_TONES = ['light', 'brand', 'dark'] as const
+
+export type BlockTone = typeof BLOCK_TONES[number]
+
+export const IMAGE_SIDES = ['left', 'right'] as const
+
+export type ImageSide = typeof IMAGE_SIDES[number]
+
+export type BlockOption = 'style' | 'tone' | 'imageSide' | 'listSize'
+
+export type BlockField = 'title' | 'subtitle' | 'body' | 'image'
 
 export interface IItemFields {
   image: boolean
@@ -42,16 +60,41 @@ export interface IBlock {
   layout: boolean
   link: boolean
   titleRequired: boolean
+  bodyRequired: boolean
   subtitle: boolean
   image: boolean
   pickPost: boolean
   feed: boolean
+  eyebrow: boolean
+  body: false | 'rich' | 'plain'
+  cta: boolean
+  options: BlockOption[]
+  labels: Partial<Record<BlockField, string>>
   item: IItemFields
 }
 
 const NO_ITEMS: IItemFields = { image: false, description: false, link: false, badge: false }
 
-const PLAIN = { subtitle: false, image: false, pickPost: false, feed: false }
+const PLAIN = {
+  subtitle: false,
+  image: false,
+  pickPost: false,
+  feed: false,
+  eyebrow: false,
+  body: false as const,
+  cta: false,
+  bodyRequired: false,
+  options: [] as BlockOption[],
+  labels: {},
+}
+
+const STANDALONE = {
+  ...PLAIN,
+  pages: ['home', 'blog'] as ContentPage[],
+  sources: ['none'] as SectionSource[],
+  layout: false,
+  item: NO_ITEMS,
+}
 
 export const BLOCKS: Record<SectionKind, IBlock> = {
   hero: {
@@ -124,7 +167,85 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     feed: true,
     item: NO_ITEMS,
   },
+  banner: {
+    ...STANDALONE,
+    kind: 'banner',
+    icon: 'megaphone',
+    link: true,
+    titleRequired: true,
+    eyebrow: true,
+    subtitle: true,
+    image: true,
+    cta: true,
+    options: ['style', 'tone'],
+    labels: { image: 'picture' },
+  },
+  media: {
+    ...STANDALONE,
+    kind: 'media',
+    icon: 'columns',
+    link: true,
+    titleRequired: true,
+    image: true,
+    body: 'rich',
+    cta: true,
+    options: ['imageSide'],
+    labels: { image: 'picture' },
+  },
+  cta: {
+    ...STANDALONE,
+    kind: 'cta',
+    icon: 'cursor',
+    link: true,
+    titleRequired: true,
+    subtitle: true,
+    cta: true,
+    options: ['tone'],
+  },
+  quote: {
+    ...STANDALONE,
+    kind: 'quote',
+    icon: 'quote',
+    link: false,
+    titleRequired: false,
+    bodyRequired: true,
+    body: 'plain',
+    subtitle: true,
+    image: true,
+    labels: { title: 'author', subtitle: 'role', body: 'quote', image: 'photo' },
+  },
+  text: {
+    ...STANDALONE,
+    kind: 'text',
+    icon: 'doc',
+    link: false,
+    titleRequired: false,
+    bodyRequired: true,
+    body: 'rich',
+  },
+  spotlight: {
+    ...PLAIN,
+    kind: 'spotlight',
+    icon: 'layers',
+    pages: ['home', 'blog'],
+    sources: ['posts'],
+    layout: false,
+    link: true,
+    titleRequired: false,
+    options: ['listSize'],
+    item: NO_ITEMS,
+  },
 }
+
+export const defaultSettings = (kind?: SectionKind): ISectionSettings => ({
+  imageUrl: '',
+  pageSize: 9,
+  excludeFeatured: true,
+  style: 'card',
+  tone: kind === 'cta' ? 'brand' : 'light',
+  imageSide: 'left',
+  listSize: 4,
+})
 
 export const kindsFor = (page: ContentPage): SectionKind[] =>
   SECTION_KINDS.filter(kind => BLOCKS[kind].pages.includes(page))
@@ -168,6 +289,19 @@ export interface ISectionSettingsRaw {
   image_url?: string | null
   page_size?: number
   exclude_featured?: boolean
+  style?: BannerStyle
+  tone?: BlockTone
+  image_side?: ImageSide
+  list_size?: number
+}
+
+export interface ISectionTranslationRaw {
+  locale: ContentLocale
+  title: string
+  subtitle?: string | null
+  eyebrow?: string | null
+  body?: string | null
+  cta_label?: string | null
 }
 
 export interface IContentSectionRaw {
@@ -175,7 +309,7 @@ export interface IContentSectionRaw {
   kind: SectionKind
   source: SectionSource
   settings?: ISectionSettingsRaw
-  translations: Array<{ locale: ContentLocale, title: string, subtitle?: string | null }>
+  translations: ISectionTranslationRaw[]
   link: string | null
   anchor: string | null
   post_ids: string[]
@@ -236,6 +370,10 @@ export interface ISectionSettings {
   imageUrl: string
   pageSize: number
   excludeFeatured: boolean
+  style: BannerStyle
+  tone: BlockTone
+  imageSide: ImageSide
+  listSize: number
 }
 
 export interface ISectionDraft {
@@ -249,6 +387,9 @@ export interface ISectionDraft {
   isPublished: boolean
   titles: Record<ContentLocale, string>
   subtitles: Record<ContentLocale, string>
+  eyebrows: Record<ContentLocale, string>
+  bodies: Record<ContentLocale, string>
+  ctaLabels: Record<ContentLocale, string>
   settings: ISectionSettings
 }
 

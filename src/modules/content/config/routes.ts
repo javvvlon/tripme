@@ -18,7 +18,7 @@ export const routes: IModuleRoute[] = [
     file: 'modules/content/views/sections/Sections.vue',
     layout: 'cms',
     ssr: false,
-    meta: { middleware: 'auth' },
+    meta: { middleware: 'auth', wide: true },
   },
   {
     name: 'cms-blog-page',
@@ -26,7 +26,15 @@ export const routes: IModuleRoute[] = [
     file: 'modules/content/views/sections/Sections.vue',
     layout: 'cms',
     ssr: false,
-    meta: { middleware: 'auth', contentPage: 'blog' },
+    meta: { middleware: 'auth', contentPage: 'blog', wide: true },
+  },
+  {
+    name: 'cms-builder-frame',
+    path: '/app/content/frame',
+    file: 'modules/content/views/builderFrame/BuilderFrame.vue',
+    layout: 'blank',
+    ssr: false,
+    meta: { middleware: 'auth' },
   },
   {
     name: 'cms-lists',
