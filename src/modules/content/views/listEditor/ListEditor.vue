@@ -140,7 +140,7 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import { useListEditor } from './ListEditor.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
-import { BADGE_TYPES, BLOCKS, SECTION_KINDS } from '~/modules/content/contracts/blocks'
+import { BADGE_TYPES, BLOCKS, LIST_KINDS } from '~/modules/content/contracts/blocks'
 
 const { t, locales } = useI18n()
 const route = useRoute()
@@ -157,7 +157,7 @@ const badgeOptions = computed(() => BADGE_TYPES.map(type => ({
   label: t(`cms.lists.badgeTypes.${type}`),
 })))
 
-const kindTabs = computed(() => SECTION_KINDS.map(value => ({
+const kindTabs = computed(() => LIST_KINDS.map(value => ({
   value,
   label: t(`cms.blocks.kinds.${value}`),
   icon: BLOCKS[value].icon,

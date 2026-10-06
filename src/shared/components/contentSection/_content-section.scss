@@ -7,6 +7,10 @@
 
     &__head { margin-bottom: 24px; }
 
+    &.is-hero { margin-block: 44px 32px; }
+
+    &.is-featured { margin-block: 32px; }
+
     &__link {
         display: inline-flex;
         align-items: center;

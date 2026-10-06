@@ -10,12 +10,6 @@ import type { AnyObject } from '~/shared/contracts/data'
 export const usePostsRepository = () => {
   const http = useHttp()
 
-  const feed = async (locale: ContentLocale, limit?: number): Promise<Post[]> => {
-    const response = await http.call<IPostRaw[]>('Posts', 'feed', limit ? { limit } : {})
-
-    return Post.listForLocale(response.data, locale)
-  }
-
   const bySlug = async (slug: string, locale: ContentLocale): Promise<Post | null> => {
     const response = await http.call<IPostRaw>('Posts', 'post', { slug })
 
@@ -52,5 +46,5 @@ export const usePostsRepository = () => {
     await http.call<void>('Posts', 'deletePost', { id })
   }
 
-  return { feed, bySlug, all, one, create, update, remove }
+  return { bySlug, all, one, create, update, remove }
 }

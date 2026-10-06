@@ -5,9 +5,10 @@ import type { ContentLocale } from '~/modules/content/contracts/content'
 import { BLOCKS, isSectionKind } from '~/modules/content/contracts/blocks'
 import type {
   BadgeType,
+  ContentPage,
   IContentItemRaw,
   IContentSectionRaw,
-  IHomeContentRaw,
+  IPageContentRaw,
   SectionKind,
 } from '~/modules/content/contracts/blocks'
 import type { IPostRaw } from '~/modules/posts/contracts/posts'
@@ -23,11 +24,16 @@ export interface IContentItem {
   imageUrl: string | null
   link: string | null
   badge: { label: string, type: BadgeType } | null
+  author: string | null
+  publishedAt: string | null
 }
 
 export interface IContentSection {
   uuid: string
   title: string
+  subtitle: string | null
+  imageUrl: string | null
+  pageSize: number
   link: string | null
   anchor: string | null
   kind: SectionKind
@@ -41,13 +47,22 @@ export interface IHomeBanner {
   imageUrl: string | null
 }
 
-export interface IHomeContent {
+export interface IPageSeo {
+  title: string
+  description: string
+}
+
+export interface IPageContent {
+  page: ContentPage
   banner: IHomeBanner | null
+  seo: IPageSeo | null
   sections: IContentSection[]
 }
 
-export class HomeContent extends Model<IHomeContent> {
-  public static forLocale(raw: IHomeContentRaw, locale: ContentLocale): HomeContent {
+const DEFAULT_PAGE_SIZE = 9
+
+export class PageContent extends Model<IPageContent> {
+  public static forLocale(raw: IPageContentRaw, locale: ContentLocale): PageContent {
     const postItems = new Map(
       (raw?.posts ?? [])
         .map(post => [post.uuid, postAsItem(post, locale)] as const)
@@ -59,8 +74,53 @@ export class HomeContent extends Model<IHomeContent> {
     const lists = new Map((raw?.lists ?? []).map(list => [list.uuid, list]))
     const layouts = new Map((raw?.layouts ?? []).map(layout => [layout.uuid, layout]))
 
-    const sections = [...(raw?.sections ?? [])]
-      .sort((a, b) => a.position - b.position)
+    const ordered = [...(raw?.sections ?? [])].sort((a, b) => a.position - b.position)
+
+    const featuredId = (() => {
+      const featured = ordered.find(section => section.kind === 'featured')
+
+      if (!featured) return null
+
+      return (featured.post_ids?.[0] && postItems.has(featured.post_ids[0]) ? featured.post_ids[0] : latest[0]?.uuid) ?? null
+    })()
+
+    const itemsOf = (section: IContentSectionRaw, capacity: number | undefined): IContentItem[] => {
+      if (section.kind === 'hero') return []
+
+      if (section.kind === 'featured') {
+        const item = featuredId ? postItems.get(featuredId) : null
+
+        return item ? [item] : []
+      }
+
+      if (section.kind === 'feed') {
+        return section.settings?.exclude_featured === false
+          ? latest
+          : latest.filter(item => item.uuid !== featuredId)
+      }
+
+      if (section.source === 'posts') {
+        return (section.post_ids?.length
+          ? section.post_ids
+              .map(id => postItems.get(id))
+              .filter((item): item is IContentItem => Boolean(item))
+          : latest
+        ).slice(0, capacity)
+      }
+
+      const list = lists.get(section.list_id ?? '')
+
+      if (!list) return []
+
+      return list.items
+        .slice()
+        .sort((a, b) => a.position - b.position)
+        .map(item => mapItem(item, locale))
+        .filter((item): item is IContentItem => item !== null)
+        .slice(0, capacity)
+    }
+
+    const sections = ordered
       .map((section) => {
         if (!isSectionKind(section.kind)) return null
 
@@ -69,29 +129,17 @@ export class HomeContent extends Model<IHomeContent> {
 
         if (block.layout && !grid) return null
 
-        const fromPosts = section.source === 'posts'
-        const list = fromPosts ? null : lists.get(section.list_id ?? '')
+        const translation = pick(section.translations, locale)
+        const items = itemsOf(section, grid?.capacity)
 
-        if (!fromPosts && !list) return null
-
-        const items = (fromPosts
-          ? (section.post_ids?.length
-              ? section.post_ids
-                  .map(id => postItems.get(id))
-                  .filter((item): item is IContentItem => Boolean(item))
-              : latest)
-          : list!.items
-              .slice()
-              .sort((a, b) => a.position - b.position)
-              .map(item => mapItem(item, locale))
-              .filter((item): item is IContentItem => item !== null)
-        ).slice(0, grid?.capacity)
-
-        if (!items.length) return null
+        if (section.kind === 'hero' ? !translation?.title?.trim() : !items.length) return null
 
         return {
           uuid: section.uuid,
-          title: pick(section.translations, locale)?.title ?? '',
+          title: translation?.title ?? '',
+          subtitle: translation?.subtitle?.trim() || null,
+          imageUrl: section.settings?.image_url ?? null,
+          pageSize: section.settings?.page_size ?? DEFAULT_PAGE_SIZE,
           link: block.link ? section.link : null,
           anchor: section.anchor,
           kind: section.kind,
@@ -115,7 +163,14 @@ export class HomeContent extends Model<IHomeContent> {
         }
       : null
 
-    return new HomeContent({ banner, sections })
+    const seo = raw?.seo?.[locale]
+
+    return new PageContent({
+      page: raw?.page ?? 'home',
+      banner,
+      seo: seo?.title?.trim() ? { title: seo.title, description: seo.description ?? '' } : null,
+      sections,
+    })
   }
 
   public isEmpty(): boolean {
@@ -145,6 +200,8 @@ function mapItem(raw: IContentItemRaw, locale: ContentLocale): IContentItem | nu
     imageUrl: raw.image_url,
     link: raw.link,
     badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
+    author: null,
+    publishedAt: null,
   }
 }
 
@@ -163,6 +220,8 @@ function postAsItem(raw: IPostRaw, locale: ContentLocale): IContentItem | null {
     imageUrl: raw.image_url,
     link: raw.link,
     badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
+    author: [raw.author?.first_name, raw.author?.last_name].filter(Boolean).join(' ') || null,
+    publishedAt: raw.published_at,
   }
 }
 

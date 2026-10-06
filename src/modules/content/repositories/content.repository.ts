@@ -1,5 +1,6 @@
 import { Banner } from '~/modules/content/models/Banner'
-import { HomeContent } from '~/modules/content/models/HomeContent'
+import { PageContent } from '~/modules/content/models/PageContent'
+import { PageMeta } from '~/modules/content/models/PageMeta'
 import { EditableSection } from '~/modules/content/models/EditableSection'
 import { SectionsIntention } from '~/modules/content/intentions/sections'
 import { BannerIntention } from '~/modules/content/intentions/banner'
@@ -8,7 +9,10 @@ import type {
   IContentLayoutRaw,
   IContentListRaw,
   IEditableSectionRaw,
-  IHomeContentRaw,
+  ContentPage,
+  IPageContentRaw,
+  IPageMetaDraft,
+  PageSeoRaw,
   ISectionDraft,
   IListSummaryRaw,
   IMediaFolderRaw,
@@ -36,10 +40,20 @@ export const useContentRepository = () => {
     return Banner.fromRaw(response.data)
   }
 
-  const homeContent = async (locale: ContentLocale): Promise<HomeContent> => {
-    const response = await http.call<IHomeContentRaw>('Content', 'homeContent')
+  const pageContent = async (page: ContentPage, locale: ContentLocale): Promise<PageContent> => {
+    const response = await http.call<IPageContentRaw>('Content', 'pageContent', { page })
 
-    return HomeContent.forLocale(response.data, locale)
+    return PageContent.forLocale(response.data, locale)
+  }
+
+  const pageMeta = async (page: ContentPage): Promise<PageMeta> => {
+    const response = await http.call<{ seo: PageSeoRaw }>('Content', 'pageMeta', { page })
+
+    return PageMeta.fromRaw(response.data)
+  }
+
+  const savePageMeta = async (page: ContentPage, meta: IPageMetaDraft): Promise<void> => {
+    await http.call<void>('Content', 'savePageMeta', { page }, new SectionsIntention().metaRequest(meta) as AnyObject)
   }
 
   const layouts = async (): Promise<IContentLayoutRaw[]> => {
@@ -84,8 +98,8 @@ export const useContentRepository = () => {
     await http.call<void>('Content', 'deleteList', { id })
   }
 
-  const sections = async (): Promise<EditableSection[]> => {
-    const response = await http.call<{ items: IEditableSectionRaw[] }>('Content', 'sections')
+  const sections = async (page: ContentPage): Promise<EditableSection[]> => {
+    const response = await http.call<{ items: IEditableSectionRaw[] }>('Content', 'sections', { page })
 
     return response.data.items.map(raw => EditableSection.fromRaw(raw))
   }
@@ -145,23 +159,24 @@ export const useContentRepository = () => {
     await http.call<void>('Content', 'renameUpload', {}, { url, ...changes })
   }
 
-  const previewHome = (
+  const previewPage = (
+    page: ContentPage,
     sections: Array<ISectionDraft & { key: string }>,
     context: { layouts: IContentLayoutRaw[], lists: IContentListRaw[], posts: IPostRaw[] },
     locale: ContentLocale,
-  ): HomeContent =>
-    HomeContent.forLocale(
-      new SectionsIntention().toPreview(sections, context.layouts, context.lists, context.posts),
+  ): PageContent =>
+    PageContent.forLocale(
+      new SectionsIntention().toPreview(page, sections, context.layouts, context.lists, context.posts),
       locale,
     )
 
-  const saveSections = async (sections: ISectionDraft[]): Promise<void> => {
-    await http.call<void>('Content', 'saveSections', {}, new SectionsIntention().toRequest(sections) as AnyObject)
+  const saveSections = async (page: ContentPage, sections: ISectionDraft[]): Promise<void> => {
+    await http.call<void>('Content', 'saveSections', { page }, new SectionsIntention().toRequest(sections) as AnyObject)
   }
 
   return {
-    banner, saveBanner, homeContent,
-    layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, previewHome, upload, library, removeUpload, describeUpload,
+    banner, saveBanner, pageContent, pageMeta, savePageMeta,
+    layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, previewPage, upload, library, removeUpload, describeUpload,
     folders, createFolder, renameFolder, deleteFolder,
   }
 }

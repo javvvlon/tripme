@@ -1,5 +1,5 @@
 import { useContentRepository } from '~/modules/content/repositories'
-import type { SectionKind } from '~/modules/content/contracts/blocks'
+import type { ListKind } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -13,7 +13,7 @@ export const useLists = () => {
   const error = ref('')
   const busy = ref(false)
   const choosing = ref(false)
-  const kind = ref<SectionKind>('cards')
+  const kind = ref<ListKind>('cards')
 
   const { data, status, refresh } = useAsyncData('cms:lists', () => lists(), { default: () => [] })
 

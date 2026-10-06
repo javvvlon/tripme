@@ -1,28 +1,31 @@
-import { usePostsRepository } from '~/modules/posts/repositories'
+import { useContentRepository } from '~/modules/content/repositories'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import type { IPostAttributes } from '~/modules/posts/models/Post'
+import type { IContentSection, IPageSeo } from '~/modules/content/models/PageContent'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useBlog = () => {
-  const { feed } = usePostsRepository()
+  const { pageContent } = useContentRepository()
   const { locale } = useI18n()
 
   const { data, status } = useAsyncData(
-    () => `blog-feed-${locale.value}`,
+    () => `blog-page-${locale.value}`,
     async () => {
-      const found = await feed(locale.value as ContentLocale).catch(() => [])
+      try {
+        const page = await pageContent('blog', locale.value as ContentLocale)
 
-      return found.map(post => post.toObject())
+        return { sections: page.get('sections'), seo: page.get('seo') }
+      }
+      catch {
+        return { sections: [] as IContentSection[], seo: null as IPageSeo | null }
+      }
     },
-    { watch: [locale], default: () => [] as IPostAttributes[] },
+    { watch: [locale], default: () => ({ sections: [] as IContentSection[], seo: null as IPageSeo | null }) },
   )
 
-  const posts = computed(() => data.value ?? [])
+  const sections = computed(() => data.value?.sections ?? [])
+  const seo = computed(() => data.value?.seo ?? null)
 
-  const lead = computed(() => posts.value[0] ?? null)
-  const rest = computed(() => posts.value.slice(1))
-
-  return { posts, lead, rest, status }
+  return { sections, seo, status }
 }

@@ -2,7 +2,7 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import { BLOCKS } from '~/modules/content/contracts/blocks'
-import type { BadgeType, SectionKind } from '~/modules/content/contracts/blocks'
+import type { BadgeType, ListKind } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -31,8 +31,8 @@ export const useListEditor = (id: string) => {
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const name = ref('')
-  const kind = ref<SectionKind>('cards')
-  const savedKind = ref<SectionKind>('cards')
+  const kind = ref<ListKind>('cards')
+  const savedKind = ref<ListKind>('cards')
   const items = ref<IDraftItem[]>([])
 
   const uploading = ref<string | null>(null)

@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import Icon from '~/shared/components/icon/Icon.vue'
-import type { IContentItem } from '~/modules/content/models/HomeContent'
+import type { IContentItem } from '~/modules/content/models/PageContent'
 
 defineProps<{ items: IContentItem[] }>()
 

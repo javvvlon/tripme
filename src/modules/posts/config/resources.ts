@@ -7,7 +7,6 @@ export const resource: IResource = {
   name: 'Posts',
   prefix: '',
   resources: {
-    feed: { url: 'posts', method: 'GET', params: ['limit'] },
     post: { url: 'posts/:slug', method: 'GET' },
 
     adminPosts: { url: 'cms/posts', method: 'GET' },

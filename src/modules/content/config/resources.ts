@@ -10,7 +10,7 @@ export const resource: IResource = {
     banner: { url: 'home/banner/', method: 'GET' },
     saveBanner: { url: 'home/banner/', method: 'PUT' },
 
-    homeContent: { url: 'home/sections/', method: 'GET' },
+    pageContent: { url: 'pages/:page', method: 'GET' },
 
     layouts: { url: 'layouts', method: 'GET' },
     createLayout: { url: 'layouts', method: 'POST' },
@@ -20,8 +20,10 @@ export const resource: IResource = {
     createList: { url: 'lists', method: 'POST' },
     updateList: { url: 'lists/:id', method: 'PUT' },
     deleteList: { url: 'lists/:id', method: 'DELETE' },
-    sections: { url: 'sections', method: 'GET' },
-    saveSections: { url: 'sections', method: 'PUT' },
+    sections: { url: 'pages/:page/sections', method: 'GET' },
+    saveSections: { url: 'pages/:page/sections', method: 'PUT' },
+    pageMeta: { url: 'pages/:page/meta', method: 'GET' },
+    savePageMeta: { url: 'pages/:page/meta', method: 'PUT' },
     upload: { url: 'uploads', method: 'POST' },
     library: { url: 'uploads', method: 'GET', params: ['q', 'folder'] },
     folders: { url: 'media/folders', method: 'GET' },

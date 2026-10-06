@@ -320,7 +320,8 @@
       "orders": "Orders",
       "operators": "Operators",
       "points": "TripMe points",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "blogPage": "Blog page"
     },
     "roles": {
       "CLIENT": "Client",
@@ -514,7 +515,30 @@
         "gridHint": "4_4_4 — three in a row · 8_4 — wide and narrow · 8_4.4.4 — one large, three small · 4_4_4_4_4_4 — six",
         "created": "Layout created",
         "failed": "Could not create the layout."
-      }
+      },
+      "headingOptional": "Heading (optional)",
+      "subtitle": "Subtitle",
+      "subtitlePlaceholder": "A line or two under the heading",
+      "headingPlaceholders": {
+        "hero": "For example, The TripMe blog",
+        "featured": "For example, Post of the week",
+        "cards": "For example, Hot destinations",
+        "features": "For example, Why TripMe",
+        "faq": "For example, Questions and answers",
+        "feed": "For example, All posts"
+      },
+      "image": "Background photo",
+      "imageHint": "Optional. A wide photo, PNG, JPG or WebP up to 8 MB — the text sits on top.",
+      "featuredPost": "Post",
+      "featuredLatest": "The latest",
+      "featuredHint": "“The latest” changes by itself when a new post comes out.",
+      "pageSize": "Posts at first",
+      "pageSizeHint": "The rest come with “Show more”.",
+      "excludeFeatured": "Don’t repeat the featured post in the feed",
+      "withImage": "with photo",
+      "noImage": "no photo",
+      "feedSummary": "{n} at a time",
+      "anchorHintBlog": "To link to the block: /blog#name. Latin letters, digits and hyphens."
     },
     "posts": {
       "title": "Articles",
@@ -556,11 +580,6 @@
         "linkHint": "Optional: a link to the original source.",
         "author": "Author"
       },
-      "view": {
-        "label": "List view",
-        "tile": "List",
-        "card": "Cards"
-      },
       "tour": {
         "title": "Tour in this article",
         "lead": "Find an offer — readers see it as a card with a request button.",
@@ -569,6 +588,28 @@
       "confirmDelete": {
         "title": "Delete this article?",
         "lead": "Its page stops opening and sections built from it empty out."
+      },
+      "count": "{total} in total, {live} published.",
+      "search": "Search posts",
+      "searchPlaceholder": "Title, address or author…",
+      "noMatches": "Nothing found.",
+      "columns": {
+        "cover": "Cover",
+        "title": "Post",
+        "author": "Author",
+        "status": "Status",
+        "published": "Published",
+        "updated": "Updated",
+        "languages": "Languages"
+      },
+      "legal": "Legal page",
+      "withTour": "With a tour",
+      "translated": "Title filled in",
+      "notTranslated": "Not translated",
+      "filters": {
+        "all": "All posts",
+        "published": "Published",
+        "draft": "Drafts"
       }
     },
     "leads": {
@@ -959,16 +1000,40 @@
       "kinds": {
         "cards": "Cards",
         "features": "Features",
-        "faq": "Questions and answers"
+        "faq": "Questions and answers",
+        "hero": "Header",
+        "featured": "Featured post",
+        "feed": "Post feed"
       },
       "kindHints": {
         "cards": "Cards in a layout of your choice — from a list or from blog posts.",
         "features": "A row of short selling points: icon, title, a few words.",
-        "faq": "An accordion: each question opens into its answer."
+        "faq": "An accordion: each question opens into its answer.",
+        "hero": "The page title, a subtitle and, if you like, a full-width photo.",
+        "featured": "One post as a large card — the one you pick or the latest.",
+        "feed": "Every published post in a grid with a “Show more” button."
       },
       "sources": {
         "list": "List",
-        "posts": "Blog posts"
+        "posts": "Blog posts",
+        "none": "—"
+      }
+    },
+    "pages": {
+      "home": {
+        "title": "Home page sections",
+        "lead": "What shows under the search and in which order."
+      },
+      "blog": {
+        "title": "Blog page",
+        "lead": "Which blocks make up /blog and in which order."
+      },
+      "seo": {
+        "title": "Page in search and social",
+        "lead": "Title and description for Google and link previews.",
+        "metaTitle": "Title",
+        "metaDescription": "Description",
+        "length": "{n} of ~{max} characters"
       }
     }
   },
@@ -1007,7 +1072,8 @@
       "title": "The TripMe blog",
       "lead": "Destinations, routes and practical advice — from the people who send travellers there every day.",
       "empty": "No articles yet — the first one is on its way.",
-      "seoTitle": "Blog — TripMe"
+      "seoTitle": "Blog — TripMe",
+      "more": "Show more · {count}"
     }
   },
   "contact": {

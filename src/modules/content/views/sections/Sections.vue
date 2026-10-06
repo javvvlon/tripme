@@ -1,7 +1,7 @@
 <template>
     <div class="tm-cms-sections">
         <header class="tm-cms-sections__top">
-            <SectionHead :level="1" :title="t('cms.sections.title')" :sub="t('cms.sections.lead')" />
+            <SectionHead :level="1" :title="t(`cms.pages.${page}.title`)" :sub="t(`cms.pages.${page}.lead`)" />
 
             <div class="tm-cms-sections__modes">
                 <Tabs
@@ -16,6 +16,30 @@
         <EditorSkeleton v-if="status === 'pending'" variant="cards" />
 
         <template v-else-if="mode === 'edit'">
+            <details v-if="meta" class="tm-cms-sections__seo">
+                <summary>
+                    <Icon name="search" :size="16" />
+                    <span>{{ t('cms.pages.seo.title') }}</span>
+                    <span class="tm-cms-sections__seo-hint">{{ t('cms.pages.seo.lead') }}</span>
+                </summary>
+
+                <div class="tm-cms-sections__seo-grid">
+                    <template v-for="code in CONTENT_LOCALES" :key="code">
+                        <Input
+                            v-model="meta.seo[code].title"
+                            :label="`${t('cms.pages.seo.metaTitle')} · ${code.toUpperCase()}`"
+                            :hint="t('cms.pages.seo.length', { n: meta.seo[code].title.length, max: 60 })"
+                        />
+                        <Input
+                            v-model="meta.seo[code].description"
+                            :label="`${t('cms.pages.seo.metaDescription')} · ${code.toUpperCase()}`"
+                            :hint="t('cms.pages.seo.length', { n: meta.seo[code].description.length, max: 160 })"
+                            :rows="2"
+                        />
+                    </template>
+                </div>
+            </details>
+
             <p v-if="!draft.length" class="tm-cms-sections__empty">{{ t('cms.sections.empty') }}</p>
 
             <ol class="tm-cms-sections__list">
@@ -60,7 +84,7 @@
                         <span v-if="problemOf(section)" class="tm-cms-sections__flag tm-cms-sections__flag--danger">
                             {{ problemOf(section) }}
                         </span>
-                        <span v-else-if="missingLocales(section).length" class="tm-cms-sections__flag">
+                        <span v-else-if="partlyTranslated(section)" class="tm-cms-sections__flag">
                             {{ t('cms.sections.missing', { locales: missingLocales(section).map(code => code.toUpperCase()).join(', ') }) }}
                         </span>
 
@@ -96,8 +120,64 @@
                             <Input
                                 v-for="code in CONTENT_LOCALES" :key="code"
                                 v-model="section.titles[code]"
-                                :label="`${t('cms.sections.heading')} · ${code.toUpperCase()}`"
-                                :placeholder="t('cms.sections.headingPlaceholder')"
+                                :label="`${t(BLOCKS[section.kind].titleRequired ? 'cms.sections.heading' : 'cms.sections.headingOptional')} · ${code.toUpperCase()}`"
+                                :placeholder="t(`cms.sections.headingPlaceholders.${section.kind}`)"
+                            />
+                        </div>
+
+                        <div v-if="BLOCKS[section.kind].subtitle" class="tm-cms-sections__titles">
+                            <Input
+                                v-for="code in CONTENT_LOCALES" :key="code"
+                                v-model="section.subtitles[code]"
+                                :label="`${t('cms.sections.subtitle')} · ${code.toUpperCase()}`"
+                                :placeholder="t('cms.sections.subtitlePlaceholder')"
+                                :rows="3"
+                            />
+                        </div>
+
+                        <div v-if="BLOCKS[section.kind].image" class="tm-cms-sections__field">
+                            <span class="tm-cms-sections__label">{{ t('cms.sections.image') }}</span>
+                            <FileUpload
+                                :accept="['image/png', 'image/jpeg', 'image/webp']"
+                                :max-size="8 * 1024 * 1024"
+                                :current="section.settings.imageUrl || null"
+                                :hint="uploading === section.key ? t('cms.lists.uploading') : t('cms.sections.imageHint')"
+                                :disabled="uploading === section.key"
+                                :library="mediaLibrary"
+                                override
+                                @update:model-value="file => file && pickImage(section, file)"
+                                @pick="url => (section.settings.imageUrl = url)"
+                                @clear="section.settings.imageUrl = ''"
+                                @discard="discardImage"
+                            />
+                        </div>
+
+                        <Combobox
+                            v-if="BLOCKS[section.kind].pickPost"
+                            :model-value="section.postIds[0] ?? ''"
+                            variant="field"
+                            :label="t('cms.sections.featuredPost')"
+                            :options="[{ value: '', label: t('cms.sections.featuredLatest') }, ...postOptions]"
+                            :note="t('cms.sections.featuredHint')"
+                            @update:model-value="value => (section.postIds = value ? [value] : [])"
+                        />
+
+                        <div v-if="BLOCKS[section.kind].feed" class="tm-cms-sections__pair">
+                            <div class="tm-cms-sections__field">
+                                <span class="tm-cms-sections__label">{{ t('cms.sections.pageSize') }}</span>
+                                <Tabs
+                                    :model-value="String(section.settings.pageSize)"
+                                    :items="FEED_PAGE_SIZES.map(size => ({ value: String(size), label: String(size) }))"
+                                    variant="segment"
+                                    :aria-label="t('cms.sections.pageSize')"
+                                    @update:model-value="value => (section.settings.pageSize = Number(value))"
+                                />
+                                <span class="tm-cms-sections__help">{{ t('cms.sections.pageSizeHint') }}</span>
+                            </div>
+                            <Checkbox
+                                v-model="section.settings.excludeFeatured"
+                                :label="t('cms.sections.excludeFeatured')"
+                                class="tm-cms-sections__check"
                             />
                         </div>
 
@@ -129,7 +209,7 @@
                         </div>
 
                         <MultiSelect
-                            v-else
+                            v-else-if="section.source === 'posts' && !BLOCKS[section.kind].pickPost && !BLOCKS[section.kind].feed"
                             v-model="section.postIds"
                             :label="t('cms.sections.articles')"
                             :options="postOptions"
@@ -163,7 +243,7 @@
                             <Input
                                 v-model="section.anchor"
                                 :label="t('cms.sections.anchor')"
-                                :hint="t('cms.sections.anchorHint')"
+                                :hint="t(page === 'home' ? 'cms.sections.anchorHint' : 'cms.sections.anchorHintBlog')"
                                 placeholder="hot"
                             />
                         </div>
@@ -229,7 +309,7 @@
             size="sm"
             @confirm="confirmAdd"
         >
-            <KindPicker v-model="newKind" :label="t('cms.sections.type')" />
+            <KindPicker v-model="newKind" :kinds="kinds" :label="t('cms.sections.type')" />
         </Modal>
 
         <Modal
@@ -285,25 +365,29 @@ import LayoutPicker from '~/modules/content/components/layoutPicker/LayoutPicker
 import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
-import { BLOCKS, SECTION_KINDS } from '~/modules/content/contracts/blocks'
-import type { SectionKind } from '~/modules/content/contracts/blocks'
+import { BLOCKS, FEED_PAGE_SIZES } from '~/modules/content/contracts/blocks'
+import type { ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
 import { useSections } from './Sections.hooks'
 import type { IDraftSection } from './Sections.hooks'
 
 const { t, locales } = useI18n()
 const localePath = useLocalePath()
 
+const route = useRoute()
+const page = (route.meta.contentPage as ContentPage | undefined) ?? 'home'
+
 const {
+  kinds, meta, uploading, mediaLibrary, pickImage, discardImage,
   locale, mode, draft, status, saving, dirty, open, removed, preview, previewing,
   dragging, grabbed, startDrag, dragOver, endDrag,
   postOptions, listOptions, layoutChoices, listName, layoutName,
   overflow, missingLocales, problemOf,
   newLayout, openLayout, submitLayout,
   setKind, add, remove, undoRemove, move, toggle, reset, submit,
-} = useSections()
+} = useSections(page)
 
 const adding = ref(false)
-const newKind = ref<SectionKind>('cards')
+const newKind = ref<SectionKind>(kinds[0]!)
 
 const confirmAdd = () => {
   add(newKind.value)
@@ -320,7 +404,7 @@ const modeTabs = computed(() => [
   { value: 'preview', label: t('cms.sections.modes.preview'), icon: 'eye' },
 ])
 
-const kindTabs = computed(() => SECTION_KINDS.map(kind => ({
+const kindTabs = computed(() => kinds.map(kind => ({
   value: kind,
   label: t(`cms.blocks.kinds.${kind}`),
   icon: BLOCKS[kind].icon,
@@ -334,12 +418,24 @@ const sourceTabs = (kind: SectionKind) => BLOCKS[kind].sources.map(source => ({
 const headingOf = (section: IDraftSection) =>
   section.titles[locale.value].trim()
   || CONTENT_LOCALES.map(code => section.titles[code].trim()).find(Boolean)
-  || t('cms.sections.untitled')
+  || (BLOCKS[section.kind].titleRequired ? t('cms.sections.untitled') : t(`cms.blocks.kinds.${section.kind}`))
 
 const summaryOf = (section: IDraftSection) => {
   const parts = [t(`cms.blocks.kinds.${section.kind}`)]
+  const block = BLOCKS[section.kind]
 
-  if (section.source === 'posts') {
+  if (block.image) {
+    parts.push(section.settings.imageUrl ? t('cms.sections.withImage') : t('cms.sections.noImage'))
+  }
+  else if (block.pickPost) {
+    const picked = postOptions.value.find(option => option.value === section.postIds[0])
+
+    parts.push(picked?.label ?? t('cms.sections.featuredLatest'))
+  }
+  else if (block.feed) {
+    parts.push(t('cms.sections.feedSummary', { n: section.settings.pageSize }))
+  }
+  else if (section.source === 'posts') {
     parts.push(section.postIds.length
       ? t('cms.sections.pickedArticles', { count: section.postIds.length })
       : t('cms.sections.latestArticles'))
@@ -353,6 +449,12 @@ const summaryOf = (section: IDraftSection) => {
   return parts.join(' · ')
 }
 
+const partlyTranslated = (section: IDraftSection) => {
+  const missing = missingLocales(section).length
+
+  return missing > 0 && (BLOCKS[section.kind].titleRequired || missing < CONTENT_LOCALES.length)
+}
+
 const { ask } = useConfirm()
 
 onBeforeRouteLeave(async () => {
@@ -361,7 +463,7 @@ onBeforeRouteLeave(async () => {
   return ask({ title: t('cms.sections.leave.title'), description: t('cms.sections.leave.lead'), confirmLabel: t('cms.sections.leave.confirm') })
 })
 
-useSeoMeta({ title: () => t('cms.sections.title'), robots: 'noindex, nofollow' })
+useSeoMeta({ title: () => t(`cms.pages.${page}.title`), robots: 'noindex, nofollow' })
 </script>
 
 <style lang="scss">

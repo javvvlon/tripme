@@ -1,11 +1,9 @@
-import type { IGrid } from '~/shared/helpers/grid'
 import type { IContentItem } from '~/modules/content/models/PageContent'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export interface ICardGridProps {
+export interface IPostFeedProps {
   items: IContentItem[]
-  grid: IGrid | null
-  eager?: boolean
+  pageSize: number
 }

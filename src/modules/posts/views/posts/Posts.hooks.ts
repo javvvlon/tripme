@@ -1,4 +1,8 @@
 import { usePostsRepository } from '~/modules/posts/repositories'
+import { CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
+import { TEXT_SORTS } from './Posts.config'
+import type { PostFilter, PostSort } from './Posts.config'
+import type { IPostAdminRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -21,10 +25,6 @@ const TRANSLITERATION: Record<string, string> = {
   ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya', ў: 'o', қ: 'q', ғ: 'g', ҳ: 'h',
 }
 
-const VIEW_KEY = 'tm:cms:posts:view'
-
-export type PostsView = 'tile' | 'card'
-
 export const usePosts = () => {
   const { t } = useI18n()
   const { failed, saved: cheer, fail, loadFailed } = useToast()
@@ -35,20 +35,71 @@ export const usePosts = () => {
   const error = ref('')
   const busy = ref(false)
 
-  const view = ref<PostsView>('tile')
-
-  onMounted(() => {
-    const stored = localStorage.getItem(VIEW_KEY)
-
-    if (stored === 'tile' || stored === 'card') view.value = stored
-  })
-
-  watch(view, next => localStorage.setItem(VIEW_KEY, next))
+  const query = ref('')
+  const filter = ref<PostFilter>('all')
+  const sort = ref<PostSort>('updated')
+  const direction = ref<'asc' | 'desc'>('desc')
 
   const creating = ref(false)
   const draft = reactive({ title: '', slug: '', touched: false })
 
-  const { data, status, refresh } = useAsyncData('cms:posts', () => all(), { default: () => [] })
+  const { data, status, refresh } = useAsyncData('cms:posts', () => all(), { default: () => [] as IPostAdminRaw[] })
+
+  const titleOf = (post: IPostAdminRaw): string =>
+    preferredTranslation(post.translations, translation => Boolean(translation.title))?.title ?? ''
+
+  const authorOf = (post: IPostAdminRaw): string =>
+    `${post.author?.first_name ?? ''} ${post.author?.last_name ?? ''}`.trim()
+
+  const languagesOf = (post: IPostAdminRaw) => CONTENT_LOCALES.map(locale => ({
+    locale,
+    filled: post.translations.some(translation => translation.locale === locale && Boolean(translation.title?.trim())),
+  }))
+
+  const SORT_VALUE: Record<PostSort, (post: IPostAdminRaw) => string | number> = {
+    title: post => titleOf(post).toLowerCase(),
+    author: post => authorOf(post).toLowerCase(),
+    status: post => (post.is_published ? 0 : 1),
+    published: post => (post.published_at ? Date.parse(post.published_at) : 0),
+    updated: post => Date.parse(post.updated_at),
+  }
+
+  const rows = computed(() => {
+    const needle = query.value.trim().toLowerCase()
+    const value = SORT_VALUE[sort.value]
+    const sign = direction.value === 'asc' ? 1 : -1
+
+    return (data.value ?? [])
+      .filter(post => filter.value === 'all' || post.is_published === (filter.value === 'published'))
+      .filter(post => !needle
+        || post.slug.includes(needle)
+        || authorOf(post).toLowerCase().includes(needle)
+        || post.translations.some(translation => translation.title?.toLowerCase().includes(needle)))
+      .sort((a, b) => {
+        const left = value(a)
+        const right = value(b)
+
+        if (left === right) return 0
+
+        return (left > right ? 1 : -1) * sign
+      })
+  })
+
+  const counts = computed(() => {
+    const posts = data.value ?? []
+
+    return { total: posts.length, live: posts.filter(post => post.is_published).length }
+  })
+
+  function sortBy(column: PostSort) {
+    if (sort.value === column) {
+      direction.value = direction.value === 'asc' ? 'desc' : 'asc'
+      return
+    }
+
+    sort.value = column
+    direction.value = TEXT_SORTS.includes(column) ? 'asc' : 'desc'
+  }
 
   const slugIsValid = computed(() => SLUG_PATTERN.test(draft.slug))
   const canCreate = computed(() => Boolean(draft.title.trim()) && slugIsValid.value)
@@ -104,5 +155,9 @@ export const usePosts = () => {
     }
   }
 
-  return { posts: data, status, error, busy, view, creating, draft, canCreate, slugIsValid, open, submit, remove, refresh }
+  return {
+    posts: rows, counts, status, error, busy, creating, draft, canCreate, slugIsValid,
+    query, filter, sort, direction, sortBy, titleOf, authorOf, languagesOf,
+    open, submit, remove, refresh,
+  }
 }

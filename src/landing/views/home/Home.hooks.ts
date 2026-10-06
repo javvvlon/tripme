@@ -6,7 +6,7 @@ import type { ContentLocale } from '~/modules/content/contracts/content'
  */
 
 export const useHome = () => {
-  const { homeContent } = useContentRepository()
+  const { pageContent } = useContentRepository()
   const { locale } = useI18n()
 
   useDepartures()
@@ -15,7 +15,7 @@ export const useHome = () => {
     'home-sections',
     async () => {
       try {
-        const home = await homeContent(locale.value as ContentLocale)
+        const home = await pageContent('home', locale.value as ContentLocale)
 
         return { banner: home.get('banner'), sections: home.get('sections') }
       }

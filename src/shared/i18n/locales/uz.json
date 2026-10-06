@@ -320,7 +320,8 @@
       "orders": "Buyurtmalar",
       "operators": "Turoperatorlar",
       "points": "TripMe points",
-      "analytics": "Analitika"
+      "analytics": "Analitika",
+      "blogPage": "Blog sahifasi"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -514,7 +515,30 @@
         "gridHint": "4_4_4 — qatorda uchta · 8_4 — keng va tor · 8_4.4.4 — katta va uchta kichik · 4_4_4_4_4_4 — oltita",
         "created": "Joylashuv yaratildi",
         "failed": "Joylashuvni yaratib bo‘lmadi."
-      }
+      },
+      "headingOptional": "Sarlavha (ixtiyoriy)",
+      "subtitle": "Kichik sarlavha",
+      "subtitlePlaceholder": "Sarlavha ostidagi bir-ikki qator",
+      "headingPlaceholders": {
+        "hero": "Masalan, TripMe blogi",
+        "featured": "Masalan, Hafta maqolasi",
+        "cards": "Masalan, Qaynoq yo‘nalishlar",
+        "features": "Masalan, Nega TripMe",
+        "faq": "Masalan, Savol-javoblar",
+        "feed": "Masalan, Barcha maqolalar"
+      },
+      "image": "Fon rasmi",
+      "imageHint": "Ixtiyoriy. Keng rasm, PNG, JPG yoki WebP, 8 MB gacha — matn ustiga tushadi.",
+      "featuredPost": "Maqola",
+      "featuredLatest": "Eng yangisi",
+      "featuredHint": "«Eng yangisi» yangi maqola chiqqanda o‘zi almashadi.",
+      "pageSize": "Birdaniga maqolalar",
+      "pageSizeHint": "Qolganlari «Yana ko‘rsatish» tugmasi orqali.",
+      "excludeFeatured": "Asosiy maqolani lentada takrorlamaslik",
+      "withImage": "rasm bilan",
+      "noImage": "rasmsiz",
+      "feedSummary": "{n} tadan",
+      "anchorHintBlog": "Blokka havola uchun: /blog#nom. Lotin harflari, raqamlar va chiziqchalar."
     },
     "posts": {
       "title": "Maqolalar",
@@ -556,11 +580,6 @@
         "linkHint": "Ixtiyoriy: asl manbaga havola.",
         "author": "Muallif"
       },
-      "view": {
-        "label": "Roʻyxat koʻrinishi",
-        "tile": "Roʻyxat",
-        "card": "Kartalar"
-      },
       "tour": {
         "title": "Maqoladagi tur",
         "lead": "Taklifni toping — oʻquvchi uni ariza tugmasi bilan karta koʻrinishida koʻradi.",
@@ -569,6 +588,28 @@
       "confirmDelete": {
         "title": "Maqola oʻchirilsinmi?",
         "lead": "Maqola sahifasi ochilmay qoladi, boʻlimlar esa boʻshaydi."
+      },
+      "count": "Jami {total}, chop etilgan — {live}.",
+      "search": "Maqolalarni qidirish",
+      "searchPlaceholder": "Sarlavha, manzil yoki muallif…",
+      "noMatches": "Hech narsa topilmadi.",
+      "columns": {
+        "cover": "Muqova",
+        "title": "Maqola",
+        "author": "Muallif",
+        "status": "Holat",
+        "published": "Chop etilgan",
+        "updated": "O‘zgartirilgan",
+        "languages": "Tillar"
+      },
+      "legal": "Huquqiy sahifa",
+      "withTour": "Tur bilan",
+      "translated": "Sarlavha to‘ldirilgan",
+      "notTranslated": "Tarjima yo‘q",
+      "filters": {
+        "all": "Barcha maqolalar",
+        "published": "Chop etilganlar",
+        "draft": "Qoralamalar"
       }
     },
     "leads": {
@@ -959,16 +1000,40 @@
       "kinds": {
         "cards": "Kartochkalar",
         "features": "Afzalliklar",
-        "faq": "Savol-javoblar"
+        "faq": "Savol-javoblar",
+        "hero": "Sarlavha bloki",
+        "featured": "Asosiy maqola",
+        "feed": "Maqolalar lentasi"
       },
       "kindHints": {
         "cards": "O‘z joylashuviga ega kartochkalar — ro‘yxatdan yoki blog maqolalaridan.",
         "features": "Qisqa afzalliklar qatori: belgi, sarlavha va bir-ikki so‘z.",
-        "faq": "Akkordeon: savol bosilganda javob ochiladi."
+        "faq": "Akkordeon: savol bosilganda javob ochiladi.",
+        "hero": "Sahifa sarlavhasi, kichik sarlavha va xohlasangiz to‘liq kenglikdagi rasm.",
+        "featured": "Bitta maqola katta kartochkada — tanlangan yoki eng yangisi.",
+        "feed": "Barcha chop etilgan maqolalar «Yana ko‘rsatish» tugmasi bilan."
       },
       "sources": {
         "list": "Ro‘yxat",
-        "posts": "Blog maqolalari"
+        "posts": "Blog maqolalari",
+        "none": "—"
+      }
+    },
+    "pages": {
+      "home": {
+        "title": "Bosh sahifa bo‘limlari",
+        "lead": "Qidiruv ostida nima va qaysi tartibda ko‘rsatiladi."
+      },
+      "blog": {
+        "title": "Blog sahifasi",
+        "lead": "/blog sahifasi qaysi bloklardan va qaysi tartibda yig‘ilgan."
+      },
+      "seo": {
+        "title": "Qidiruv va ijtimoiy tarmoqlarda sahifa",
+        "lead": "Google va havola ko‘rinishi uchun sarlavha va tavsif.",
+        "metaTitle": "Sarlavha",
+        "metaDescription": "Tavsif",
+        "length": "{n} / ~{max} belgi"
       }
     }
   },
@@ -1007,7 +1072,8 @@
       "title": "TripMe blogi",
       "lead": "Yo‘nalishlar, marshrutlar va amaliy maslahatlar — har kuni u yerga sayohatchilarni jo‘natadigan odamlardan.",
       "empty": "Hozircha maqolalar yo‘q — tez orada birinchisi paydo bo‘ladi.",
-      "seoTitle": "Blog — TripMe"
+      "seoTitle": "Blog — TripMe",
+      "more": "Yana ko‘rsatish · {count}"
     }
   },
   "contact": {

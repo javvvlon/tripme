@@ -2,10 +2,10 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { usePostsRepository } from '~/modules/posts/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
-import { BLOCKS } from '~/modules/content/contracts/blocks'
+import { BLOCKS, kindsFor } from '~/modules/content/contracts/blocks'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import type { IContentListRaw, ISectionDraft, SectionKind } from '~/modules/content/contracts/blocks'
-import type { IContentSection } from '~/modules/content/models/HomeContent'
+import type { ContentPage, IContentListRaw, IPageMetaDraft, ISectionDraft, ISectionSettings, SectionKind } from '~/modules/content/contracts/blocks'
+import type { IContentSection } from '~/modules/content/models/PageContent'
 import type { EditableSection } from '~/modules/content/models/EditableSection'
 import type { IGrid } from '~/shared/helpers/grid'
 
@@ -29,19 +29,44 @@ const blankTitles = () => Object.fromEntries(
 let counter = 0
 const nextKey = () => `section-${++counter}`
 
+const blankSettings = (): ISectionSettings => ({ imageUrl: '', pageSize: 9, excludeFeatured: true })
+
+const blankMeta = (): IPageMetaDraft => ({
+  seo: Object.fromEntries(CONTENT_LOCALES.map(locale => [locale, { title: '', description: '' }])) as IPageMetaDraft['seo'],
+})
+
 const toDraft = (section: EditableSection): IDraftSection => {
   const { uuid, ...draft } = section.toObject()
 
-  return { ...draft, titles: { ...draft.titles }, postIds: [...draft.postIds], key: uuid }
+  return {
+    ...draft,
+    titles: { ...draft.titles },
+    subtitles: { ...draft.subtitles },
+    settings: { ...draft.settings },
+    postIds: [...draft.postIds],
+    key: uuid,
+  }
 }
 
-const snapshot = (sections: IDraftSection[]) => JSON.stringify(sections.map(({ key: _key, ...rest }) => rest))
+const snapshot = (sections: IDraftSection[], meta: IPageMetaDraft | null) =>
+  JSON.stringify({ sections: sections.map(({ key: _key, ...rest }) => rest), meta })
 
-export const useSections = () => {
+export const PAGES_WITH_SEO: ContentPage[] = ['blog']
+
+export const useSections = (page: ContentPage) => {
   const { t } = useI18n()
   const { saved: cheer, fail, failed } = useToast()
-  const { sections, lists, list, layouts, createLayout, saveSections, previewHome } = useContentRepository()
+  const {
+    sections, lists, list, layouts, createLayout, saveSections, previewPage,
+    pageMeta, savePageMeta, upload, removeUpload,
+  } = useContentRepository()
   const { all: allPosts } = usePostsRepository()
+  const { mediaLibrary } = useMediaLibrary()
+
+  const hasSeo = PAGES_WITH_SEO.includes(page)
+  const kinds = kindsFor(page)
+  const meta = ref<IPageMetaDraft | null>(hasSeo ? blankMeta() : null)
+  const uploading = ref<string | null>(null)
 
   const locale = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
   const draft = ref<IDraftSection[]>([])
@@ -57,19 +82,22 @@ export const useSections = () => {
 
   const loaded = ref(false)
 
-  const { data, status, refresh } = useAsyncData('cms:sections', async () => {
-    const [current, allLists, allLayouts, posts] = await Promise.all([sections(), lists(), layouts(), allPosts()])
+  const { data, status, refresh } = useAsyncData(`cms:sections:${page}`, async () => {
+    const [current, allLists, allLayouts, posts, seo] = await Promise.all([
+      sections(page), lists(), layouts(), allPosts(), hasSeo ? pageMeta(page) : Promise.resolve(null),
+    ])
 
     if (!loaded.value) {
       loaded.value = true
       draft.value = current.map(toDraft)
-      pristine.value = snapshot(draft.value)
+      meta.value = seo ? structuredClone(seo.toObject()) : meta.value
+      pristine.value = snapshot(draft.value, meta.value)
     }
 
     return { lists: allLists, layouts: allLayouts, posts }
   }, { default: () => ({ lists: [], layouts: [], posts: [] }) })
 
-  const dirty = computed(() => snapshot(draft.value) !== pristine.value)
+  const dirty = computed(() => snapshot(draft.value, meta.value) !== pristine.value)
 
   const postOptions = computed(() => (data.value?.posts ?? []).map(post => ({
     value: post.uuid,
@@ -117,7 +145,9 @@ export const useSections = () => {
   const problemOf = (section: IDraftSection): string | null => {
     const block = BLOCKS[section.kind]
 
-    if (missingLocales(section).length === CONTENT_LOCALES.length) return t('cms.sections.problems.title')
+    if (block.titleRequired && missingLocales(section).length === CONTENT_LOCALES.length) {
+      return t('cms.sections.problems.title')
+    }
 
     if (section.source === 'list' && !section.listId) return t('cms.sections.problems.list')
 
@@ -143,6 +173,8 @@ export const useSections = () => {
     }
 
     if (block.layout && !section.layoutId) section.layoutId = layoutChoices.value[0]?.uuid ?? ''
+
+    if (block.pickPost) section.postIds = section.postIds.slice(0, 1)
   }
 
   const add = (kind: SectionKind) => {
@@ -157,6 +189,8 @@ export const useSections = () => {
       layoutId: BLOCKS[kind].layout ? (layoutChoices.value[0]?.uuid ?? '') : '',
       isPublished: false,
       titles: blankTitles(),
+      subtitles: blankTitles(),
+      settings: blankSettings(),
     }
 
     draft.value = [...draft.value, section]
@@ -252,7 +286,7 @@ export const useSections = () => {
   const preview = computed<Map<string, IContentSection>>(() => {
     if (mode.value !== 'preview') return new Map()
 
-    const content = previewHome(draft.value, {
+    const content = previewPage(page, draft.value, {
       layouts: data.value?.layouts ?? [],
       lists: fullLists.value,
       posts: (data.value?.posts ?? []).filter(post => post.is_published),
@@ -289,8 +323,37 @@ export const useSections = () => {
     grabbed.value = null
   }
 
+  let pendingUpload: Promise<unknown> = Promise.resolve()
+
+  async function pickImage(section: IDraftSection, file: File | null) {
+    if (!file) return
+
+    uploading.value = section.key
+
+    let settle = () => {}
+    pendingUpload = new Promise((resolve) => { settle = () => resolve(undefined) })
+
+    try {
+      section.settings.imageUrl = await upload(file)
+    }
+    catch {
+      fail(t('cms.lists.uploadFailed'))
+    }
+    finally {
+      uploading.value = null
+      settle()
+    }
+  }
+
+  const discardImage = (url: string) => {
+    void pendingUpload.then(() => removeUpload(url))
+  }
+
   const reset = () => {
-    draft.value = JSON.parse(pristine.value).map((section: Omit<IDraftSection, 'key'>) => ({ ...section, key: nextKey() }))
+    const saved = JSON.parse(pristine.value) as { sections: Array<Omit<IDraftSection, 'key'>>, meta: IPageMetaDraft | null }
+
+    draft.value = saved.sections.map(section => ({ ...section, key: nextKey() }))
+    meta.value = saved.meta
     removed.value = null
     open.value = null
     error.value = ''
@@ -310,9 +373,11 @@ export const useSections = () => {
     saving.value = true
 
     try {
-      await saveSections(draft.value)
+      await saveSections(page, draft.value)
 
-      pristine.value = snapshot(draft.value)
+      if (meta.value) await savePageMeta(page, meta.value)
+
+      pristine.value = snapshot(draft.value, meta.value)
       removed.value = null
       cheer()
     }
@@ -325,6 +390,7 @@ export const useSections = () => {
   }
 
   return {
+    page, kinds, meta, uploading, mediaLibrary, pickImage, discardImage,
     locale, mode, draft, status, saving, error, dirty, open, removed, preview, previewing,
     dragging, grabbed, startDrag, dragOver, endDrag,
     postOptions, listOptions, layoutChoices, listName, layoutName,

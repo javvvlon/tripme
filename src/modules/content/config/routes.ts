@@ -21,6 +21,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'auth' },
   },
   {
+    name: 'cms-blog-page',
+    path: '/app/content/blog',
+    file: 'modules/content/views/sections/Sections.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', contentPage: 'blog' },
+  },
+  {
     name: 'cms-lists',
     path: '/app/content/lists',
     file: 'modules/content/views/lists/Lists.vue',

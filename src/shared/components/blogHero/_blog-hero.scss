@@ -1,0 +1,63 @@
+@use '../../styles/utils' as *;
+
+.tm-blog-hero {
+    position: relative;
+    overflow: hidden;
+
+    &__text { position: relative; }
+
+    &__title {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(38);
+        font-weight: 800;
+        letter-spacing: -.025em;
+        text-wrap: balance;
+    }
+
+    &__lead {
+        max-width: 60ch;
+        margin: 10px 0 0;
+        color: var(--tm-ink-3);
+        font-size: size(16);
+    }
+
+    &.has-image {
+        display: flex;
+        align-items: flex-end;
+        min-height: 320px;
+        padding: 40px;
+        border-radius: radius('lg');
+        background: var(--tm-common-night);
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, .65) 100%);
+        }
+
+        .tm-blog-hero__text { z-index: 1; }
+        .tm-blog-hero__title { color: var(--tm-common-white); }
+        .tm-blog-hero__lead { color: rgba(255, 255, 255, .85); }
+    }
+
+    &__image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media #{$until-md} {
+    .tm-blog-hero {
+        &__title { font-size: size(28); }
+
+        &.has-image {
+            min-height: 240px;
+            padding: 24px 20px;
+        }
+    }
+}

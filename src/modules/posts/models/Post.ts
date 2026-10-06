@@ -60,12 +60,6 @@ export class Post extends Model<IPostAttributes> {
     })
   }
 
-  static listForLocale(raw: IPostRaw[], locale: ContentLocale): Post[] {
-    return raw
-      .map(item => Post.forLocale(item, locale))
-      .filter((item): item is Post => item !== null)
-  }
-
   static toDraft(raw: IPostAdminRaw): IPostDraft {
     const translations = {} as Record<ContentLocale, IPostTranslationDraft>
 
