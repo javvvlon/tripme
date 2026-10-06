@@ -538,7 +538,11 @@
       "withImage": "with photo",
       "noImage": "no photo",
       "feedSummary": "{n} at a time",
-      "anchorHintBlog": "To link to the block: /blog#name. Latin letters, digits and hyphens."
+      "anchorHintBlog": "To link to the block: /blog#name. Latin letters, digits and hyphens.",
+      "language": "Language",
+      "notFilled": "Not filled in",
+      "featuredAuto": "Automatic",
+      "featuredPick": "Pick a post"
     },
     "posts": {
       "title": "Articles",

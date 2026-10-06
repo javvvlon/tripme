@@ -538,7 +538,11 @@
       "withImage": "rasm bilan",
       "noImage": "rasmsiz",
       "feedSummary": "{n} tadan",
-      "anchorHintBlog": "Blokka havola uchun: /blog#nom. Lotin harflari, raqamlar va chiziqchalar."
+      "anchorHintBlog": "Blokka havola uchun: /blog#nom. Lotin harflari, raqamlar va chiziqchalar.",
+      "language": "Til",
+      "notFilled": "To‘ldirilmagan",
+      "featuredAuto": "Avtomatik",
+      "featuredPick": "Maqolani tanlash"
     },
     "posts": {
       "title": "Maqolalar",

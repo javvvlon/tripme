@@ -46,6 +46,10 @@
 
         <ul v-if="open" :id="`${id}-menu`" class="tm-combobox__menu" role="listbox">
             <li v-for="(option, i) in filtered" :key="option.value">
+                <span
+                    v-if="option.group && option.group !== filtered[i - 1]?.group"
+                    class="tm-combobox__group" role="presentation"
+                >{{ option.group }}</span>
                 <button
                     type="button" role="option"
                     class="tm-combobox__option"

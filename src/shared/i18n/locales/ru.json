@@ -538,7 +538,11 @@
       "withImage": "с фото",
       "noImage": "без фото",
       "feedSummary": "по {n}",
-      "anchorHintBlog": "Чтобы ссылаться на блок: /blog#имя. Латиница, цифры и дефисы."
+      "anchorHintBlog": "Чтобы ссылаться на блок: /blog#имя. Латиница, цифры и дефисы.",
+      "language": "Язык",
+      "notFilled": "Не заполнено",
+      "featuredAuto": "Автоматически",
+      "featuredPick": "Выбрать статью"
     },
     "posts": {
       "title": "Статьи",

@@ -23,20 +23,28 @@
                     <span class="tm-cms-sections__seo-hint">{{ t('cms.pages.seo.lead') }}</span>
                 </summary>
 
-                <div class="tm-cms-sections__seo-grid">
-                    <template v-for="code in CONTENT_LOCALES" :key="code">
+                <div class="tm-cms-sections__seo-body">
+                    <LangSwitch
+                        v-model="seoLang"
+                        :label="t('cms.sections.language')"
+                        :missing="CONTENT_LOCALES.filter(code => !meta!.seo[code].title.trim())"
+                        :missing-hint="t('cms.sections.notFilled')"
+                        class="tm-cms-sections__lang"
+                    />
+
+                    <div class="tm-cms-sections__seo-grid">
                         <Input
-                            v-model="meta.seo[code].title"
-                            :label="`${t('cms.pages.seo.metaTitle')} · ${code.toUpperCase()}`"
-                            :hint="t('cms.pages.seo.length', { n: meta.seo[code].title.length, max: 60 })"
+                            v-model="meta.seo[seoLang].title"
+                            :label="t('cms.pages.seo.metaTitle')"
+                            :hint="t('cms.pages.seo.length', { n: meta.seo[seoLang].title.length, max: 60 })"
                         />
                         <Input
-                            v-model="meta.seo[code].description"
-                            :label="`${t('cms.pages.seo.metaDescription')} · ${code.toUpperCase()}`"
-                            :hint="t('cms.pages.seo.length', { n: meta.seo[code].description.length, max: 160 })"
+                            v-model="meta.seo[seoLang].description"
+                            :label="t('cms.pages.seo.metaDescription')"
+                            :hint="t('cms.pages.seo.length', { n: meta.seo[seoLang].description.length, max: 160 })"
                             :rows="2"
                         />
-                    </template>
+                    </div>
                 </div>
             </details>
 
@@ -88,6 +96,16 @@
                             {{ t('cms.sections.missing', { locales: missingLocales(section).map(code => code.toUpperCase()).join(', ') }) }}
                         </span>
 
+                        <LangSwitch
+                            v-if="open === section.key"
+                            :model-value="langOf(section.key)"
+                            :label="t('cms.sections.language')"
+                            :missing="missingFor(section)"
+                            :missing-hint="t('cms.sections.notFilled')"
+                            class="tm-cms-sections__lang"
+                            @update:model-value="code => (langs[section.key] = code)"
+                        />
+
                         <button
                             type="button" role="switch" class="tm-cms-sections__switch"
                             :aria-checked="section.isPublished"
@@ -116,24 +134,19 @@
                             />
                         </div>
 
-                        <div class="tm-cms-sections__titles">
-                            <Input
-                                v-for="code in CONTENT_LOCALES" :key="code"
-                                v-model="section.titles[code]"
-                                :label="`${t(BLOCKS[section.kind].titleRequired ? 'cms.sections.heading' : 'cms.sections.headingOptional')} · ${code.toUpperCase()}`"
-                                :placeholder="t(`cms.sections.headingPlaceholders.${section.kind}`)"
-                            />
-                        </div>
+                        <Input
+                            v-model="section.titles[langOf(section.key)]"
+                            :label="`${t(BLOCKS[section.kind].titleRequired ? 'cms.sections.heading' : 'cms.sections.headingOptional')} · ${langOf(section.key).toUpperCase()}`"
+                            :placeholder="t(`cms.sections.headingPlaceholders.${section.kind}`)"
+                        />
 
-                        <div v-if="BLOCKS[section.kind].subtitle" class="tm-cms-sections__titles">
-                            <Input
-                                v-for="code in CONTENT_LOCALES" :key="code"
-                                v-model="section.subtitles[code]"
-                                :label="`${t('cms.sections.subtitle')} · ${code.toUpperCase()}`"
-                                :placeholder="t('cms.sections.subtitlePlaceholder')"
-                                :rows="3"
-                            />
-                        </div>
+                        <Input
+                            v-if="BLOCKS[section.kind].subtitle"
+                            v-model="section.subtitles[langOf(section.key)]"
+                            :label="`${t('cms.sections.subtitle')} · ${langOf(section.key).toUpperCase()}`"
+                            :placeholder="t('cms.sections.subtitlePlaceholder')"
+                            :rows="3"
+                        />
 
                         <div v-if="BLOCKS[section.kind].image" class="tm-cms-sections__field">
                             <span class="tm-cms-sections__label">{{ t('cms.sections.image') }}</span>
@@ -157,7 +170,7 @@
                             :model-value="section.postIds[0] ?? ''"
                             variant="field"
                             :label="t('cms.sections.featuredPost')"
-                            :options="[{ value: '', label: t('cms.sections.featuredLatest') }, ...postOptions]"
+                            :options="featuredOptions"
                             :note="t('cms.sections.featuredHint')"
                             @update:model-value="value => (section.postIds = value ? [value] : [])"
                         />
@@ -364,7 +377,9 @@ import KindPicker from '~/modules/content/components/kindPicker/KindPicker.vue'
 import LayoutPicker from '~/modules/content/components/layoutPicker/LayoutPicker.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
-import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
+import type { ContentLocale } from '~/modules/content/contracts/content'
+import LangSwitch from '~/modules/content/components/langSwitch/LangSwitch.vue'
 import { BLOCKS, FEED_PAGE_SIZES } from '~/modules/content/contracts/blocks'
 import type { ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
 import { useSections } from './Sections.hooks'
@@ -448,6 +463,20 @@ const summaryOf = (section: IDraftSection) => {
 
   return parts.join(' · ')
 }
+
+const featuredOptions = computed(() => [
+  { value: '', label: t('cms.sections.featuredLatest'), group: t('cms.sections.featuredAuto') },
+  ...postOptions.value.map(option => ({ ...option, group: t('cms.sections.featuredPick') })),
+])
+
+const langs = reactive<Record<string, ContentLocale>>({})
+
+const langOf = (key: string): ContentLocale => langs[key] ?? CMS_DEFAULT_LOCALE
+
+const seoLang = ref<ContentLocale>(CMS_DEFAULT_LOCALE)
+
+const missingFor = (section: IDraftSection): ContentLocale[] =>
+  partlyTranslated(section) ? missingLocales(section) : []
 
 const partlyTranslated = (section: IDraftSection) => {
   const missing = missingLocales(section).length
