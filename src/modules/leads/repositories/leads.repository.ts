@@ -1,7 +1,7 @@
 import { toE164 } from '~/shared/helpers/phone'
 import type {
-  ILeadDraft, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderRaw,
-  LeadSort, LeadStatus, OrderStatus, SortDirection,
+  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderRaw,
+  IStaffMember, LeadSort, LeadStatus, ManagerFilter, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
 
@@ -62,12 +62,15 @@ export const useLeadsRepository = () => {
     } as AnyObject)
   }
 
-  const all = async (query: { q?: string, sort?: LeadSort, dir?: SortDirection } = {}): Promise<ILeadRaw[]> => {
+  const all = async (
+    query: { q?: string, sort?: LeadSort, dir?: SortDirection, manager?: ManagerFilter } = {},
+  ): Promise<ILeadRaw[]> => {
     const params: Record<string, string> = {}
 
     if (query.q) params.q = query.q
     if (query.sort) params.sort = query.sort
     if (query.dir) params.dir = query.dir
+    if (query.manager && query.manager !== 'all') params.manager = query.manager
 
     const response = await http.call<ILeadRaw[]>('Leads', 'adminLeads', params)
 
@@ -78,6 +81,24 @@ export const useLeadsRepository = () => {
     const response = await http.call<ILeadRaw>('Leads', 'adminLead', { id })
 
     return response.data
+  }
+
+  const history = async (id: string): Promise<ILeadEvent[]> => {
+    const response = await http.call<ILeadEvent[]>('Leads', 'leadHistory', { id })
+
+    return response.data ?? []
+  }
+
+  const take = async (id: string): Promise<ILeadRaw> => {
+    const response = await http.call<ILeadRaw>('Leads', 'takeLead', { id })
+
+    return response.data
+  }
+
+  const staff = async (): Promise<IStaffMember[]> => {
+    const response = await http.call<IStaffMember[]>('Leads', 'staff')
+
+    return response.data ?? []
   }
 
   const create = async (draft: ILeadManualDraft, trip: ILeadTrip): Promise<ILeadRaw> => {
@@ -111,11 +132,12 @@ export const useLeadsRepository = () => {
     await http.call<void>('Leads', 'deleteLead', { id })
   }
 
-  const orders = async (query: { q?: string, status?: string } = {}): Promise<IOrderRaw[]> => {
+  const orders = async (query: { q?: string, status?: string, manager?: ManagerFilter } = {}): Promise<IOrderRaw[]> => {
     const params: Record<string, string> = {}
 
     if (query.q) params.q = query.q
     if (query.status) params.status = query.status
+    if (query.manager && query.manager !== 'all') params.manager = query.manager
 
     const response = await http.call<IOrderRaw[]>('Leads', 'orders', params)
 
@@ -195,7 +217,7 @@ export const useLeadsRepository = () => {
   }
 
   return {
-    submit, all, one, create, patch, setStatus, remove,
+    submit, all, one, history, take, staff, create, patch, setStatus, remove,
     orders, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
     orderDocuments, generateDocument, attachDocument, removeDocument,
   }

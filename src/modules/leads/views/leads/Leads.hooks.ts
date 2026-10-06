@@ -1,4 +1,5 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
 import type { ILeadRaw, LeadSort, LeadStatus, SortDirection } from '~/modules/leads/contracts/leads'
 
@@ -9,6 +10,7 @@ export const useLeads = () => {
   const { t } = useI18n()
   const { fail, loadFailed } = useToast()
   const { all, setStatus } = useLeadsRepository()
+  const { managerFilter, filterOptions, elevated, me } = useManagers('leads')
 
   const query = ref('')
   const sort = ref<LeadSort>('order')
@@ -27,8 +29,8 @@ export const useLeads = () => {
 
   const { data, status, refresh } = useAsyncData(
     'cms:leads',
-    () => all({ q: debounced.value, sort: sort.value, dir: direction.value }),
-    { default: () => [] as ILeadRaw[], watch: [debounced, sort, direction] },
+    () => all({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value }),
+    { default: () => [] as ILeadRaw[], watch: [debounced, sort, direction, managerFilter] },
   )
 
   const rowOptions = computed(() =>
@@ -72,6 +74,7 @@ export const useLeads = () => {
 
   return {
     leads: data, status, error, query, sort, direction,
+    managerFilter, filterOptions, elevated, me,
     rowOptions, counts, sortBy, change, refresh,
   }
 }

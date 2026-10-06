@@ -237,6 +237,7 @@
         }
 
         .is-late { color: var(--tm-status-danger-dark); font-weight: 600; }
+        .is-muted { color: var(--tm-ink-4); }
     }
 
     @media #{$until-lg} {

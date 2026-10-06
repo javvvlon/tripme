@@ -970,6 +970,45 @@
         "list": "Ro‘yxat",
         "posts": "Blog maqolalari"
       }
+    },
+    "ownership": {
+      "column": "Menejer",
+      "queue": "Navbat",
+      "queueTitle": "Bo‘sh lid",
+      "you": "Siz",
+      "yours": "Bu lidni siz olib boryapsiz",
+      "queueHint": "Lidni hali hech kim olmagan. Uni oling — u sizniki bo‘ladi va boshqa agentlar uni ko‘rmay qoladi.",
+      "yoursHint": "Lid va uning buyurtmalarini siz va rahbarlar ko‘radi.",
+      "theirsHint": "Lidni boshqa menejer olib bormoqda.",
+      "reassignHint": "Xodim ta’tilda bo‘lsa yoki yuklama notekis bo‘lsa, lidni boshqa xodimga o‘tkazing.",
+      "take": "Ishga olish",
+      "taken": "Lid endi sizniki",
+      "assign": "O‘tkazish",
+      "assignPlaceholder": "Xodimni tanlang",
+      "assigned": "Lid o‘tkazildi",
+      "roles": {
+        "AGENT": "Agent",
+        "MANAGER": "Rahbar",
+        "ADMIN": "Administrator"
+      },
+      "filter": {
+        "label": "Menejer",
+        "all": "Barcha menejerlar",
+        "mine": "Meniki",
+        "none": "Menejersiz",
+        "queue": "Navbat",
+        "allMine": "Barcha mavjudlar"
+      },
+      "history": {
+        "title": "Tarix",
+        "empty": "Hozircha hech narsa bo‘lmadi.",
+        "created": "Lid yaratildi",
+        "createdFor": "Lid yaratildi, {name} olib boradi",
+        "taken": "{name} lidni ishga oldi",
+        "assigned": "Lid o‘tkazildi: {from} → {to}",
+        "orderAssigned": "{order} buyurtmasi o‘tkazildi: {to}",
+        "status": "Holat: {from} → {to}"
+      }
     }
   },
   "markdown": {

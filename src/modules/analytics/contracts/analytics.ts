@@ -24,10 +24,19 @@ export interface IAnalyticsChannel {
   conversion: number | null
 }
 
+export interface IAnalyticsStatusSplit {
+  new: number
+  inProgress: number
+  quoteSent: number
+  won: number
+  rejected: number
+}
+
 export interface IAnalyticsManager {
   id: string | null
   name: string
   leads: number
+  statuses: IAnalyticsStatusSplit
   responseMedianMinutes: number | null
   conversion: number | null
   paidOrders: number

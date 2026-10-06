@@ -116,6 +116,9 @@
                             <tr>
                                 <th scope="col">{{ t('cms.analytics.managers.name') }}</th>
                                 <th scope="col" class="is-num">{{ t('cms.analytics.managers.leads') }}</th>
+                                <th v-for="column in STATUS_COLUMNS" :key="column.key" scope="col" class="is-num">
+                                    {{ t(`cms.leads.status.${column.status}`) }}
+                                </th>
                                 <th scope="col" class="is-num">{{ t('cms.analytics.managers.response') }}</th>
                                 <th scope="col" class="is-num">{{ t('cms.analytics.managers.conversion') }}</th>
                                 <th scope="col" class="is-num">{{ t('cms.analytics.managers.paid') }}</th>
@@ -126,6 +129,12 @@
                             <tr v-for="row in data.managers" :key="row.id ?? 'none'">
                                 <td>{{ row.name || t('cms.analytics.managers.unassigned') }}</td>
                                 <td class="is-num">{{ row.leads }}</td>
+                                <td
+                                    v-for="column in STATUS_COLUMNS" :key="column.key"
+                                    class="is-num" :class="{ 'is-muted': !row.statuses[column.key] }"
+                                >
+                                    {{ row.statuses[column.key] ?? 0 }}
+                                </td>
                                 <td class="is-num" :class="{ 'is-late': (row.responseMedianMinutes ?? 0) > RESPONSE_SLA_MINUTES }">
                                     {{ row.responseMedianMinutes === null ? '—' : waitLabel(row.responseMedianMinutes, t) }}
                                 </td>
@@ -145,6 +154,7 @@
 </template>
 
 <script setup lang="ts">
+import { STATUS_COLUMNS } from './Analytics.config'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import BarList from '~/modules/analytics/components/barList/BarList.vue'
 import TrendChart from '~/modules/analytics/components/trendChart/TrendChart.vue'

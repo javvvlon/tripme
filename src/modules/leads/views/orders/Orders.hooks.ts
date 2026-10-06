@@ -1,4 +1,5 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { ORDER_STATUSES } from '~/modules/leads/contracts/leads'
 import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 
@@ -8,6 +9,7 @@ import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 export const useOrders = () => {
   const { t } = useI18n()
   const { orders: all } = useLeadsRepository()
+  const { managerFilter, filterOptions: managerOptions, me } = useManagers('orders')
 
   const query = ref('')
   const filter = ref('')
@@ -24,8 +26,8 @@ export const useOrders = () => {
 
   const { data, status, refresh } = useAsyncData(
     'cms:orders',
-    () => all({ q: debounced.value, status: filter.value }),
-    { default: () => [] as IOrderRaw[], watch: [debounced, filter] },
+    () => all({ q: debounced.value, status: filter.value, manager: managerFilter.value }),
+    { default: () => [] as IOrderRaw[], watch: [debounced, filter, managerFilter] },
   )
 
   const filterOptions = computed(() => [
@@ -46,5 +48,5 @@ export const useOrders = () => {
     if (timer) clearTimeout(timer)
   })
 
-  return { orders: data, status, error, query, filter, filterOptions, counts, refresh }
+  return { orders: data, status, error, query, filter, filterOptions, managerFilter, managerOptions, me, counts, refresh }
 }

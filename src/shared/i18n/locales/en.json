@@ -970,6 +970,45 @@
         "list": "List",
         "posts": "Blog posts"
       }
+    },
+    "ownership": {
+      "column": "Manager",
+      "queue": "Queue",
+      "queueTitle": "Unclaimed lead",
+      "you": "You",
+      "yours": "You are handling this lead",
+      "queueHint": "Nobody has taken this lead yet. Take it and it becomes yours; other agents stop seeing it.",
+      "yoursHint": "You and the managers can see this lead and its orders.",
+      "theirsHint": "Another manager is handling this lead.",
+      "reassignHint": "Hand the lead to someone else if they are away or the load is uneven.",
+      "take": "Take it",
+      "taken": "The lead is yours now",
+      "assign": "Hand over",
+      "assignPlaceholder": "Choose a person",
+      "assigned": "Lead handed over",
+      "roles": {
+        "AGENT": "Agent",
+        "MANAGER": "Manager",
+        "ADMIN": "Administrator"
+      },
+      "filter": {
+        "label": "Manager",
+        "all": "All managers",
+        "mine": "Mine",
+        "none": "No manager",
+        "queue": "Queue",
+        "allMine": "Everything I can see"
+      },
+      "history": {
+        "title": "History",
+        "empty": "Nothing has happened yet.",
+        "created": "Lead created",
+        "createdFor": "Lead created, handled by {name}",
+        "taken": "{name} took the lead",
+        "assigned": "Lead handed over: {from} → {to}",
+        "orderAssigned": "Order {order} handed over: {to}",
+        "status": "Status: {from} → {to}"
+      }
     }
   },
   "markdown": {
