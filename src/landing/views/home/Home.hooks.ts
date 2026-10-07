@@ -12,7 +12,7 @@ export const useHome = () => {
   useDepartures()
 
   const { data: content } = useAsyncData(
-    'home-sections',
+    () => `home-sections-${locale.value}`,
     async () => {
       try {
         const home = await pageContent('home', locale.value as ContentLocale)
@@ -23,7 +23,7 @@ export const useHome = () => {
         return { sections: [] }
       }
     },
-    { watch: [locale], default: () => ({ sections: [] }) },
+    { default: () => ({ sections: [] }) },
   )
 
   const sections = computed(() => content.value?.sections ?? [])
