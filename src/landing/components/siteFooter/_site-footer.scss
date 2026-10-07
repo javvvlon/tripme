@@ -134,6 +134,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        min-width: 52px;
         height: 34px;
         padding: 0 12px;
         border: 1px solid var(--tm-border-1);
@@ -144,7 +145,11 @@
         font-weight: 700;
         letter-spacing: .01em;
 
-        img { display: block; width: auto; }
+        img {
+            display: block;
+            width: auto;
+            max-width: 64px;
+        }
     }
 
     &__contacts {

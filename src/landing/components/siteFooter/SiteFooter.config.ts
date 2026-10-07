@@ -23,6 +23,7 @@ export interface IPaymentMethod {
   id: string
   label: string
   image?: string
+  height?: number
 }
 
 export const FOOTER_COLUMNS: readonly IFooterColumn[] = [
@@ -65,9 +66,9 @@ export const FOOTER_SOCIALS: readonly IFooterSocial[] = [
 ] as const
 
 export const PAYMENT_METHODS: readonly IPaymentMethod[] = [
-  { id: 'uzcard', label: 'Uzcard' },
-  { id: 'humo', label: 'Humo' },
-  { id: 'visa', label: 'Visa' },
-  { id: 'mastercard', label: 'Mastercard' },
+  { id: 'uzcard', label: 'Uzcard', image: '/icon/paywalls/uzcard.svg', height: 18 },
+  { id: 'humo', label: 'Humo', image: '/icon/paywalls/humo.svg', height: 10 },
+  { id: 'visa', label: 'Visa', image: '/icon/paywalls/visa.svg', height: 12 },
+  { id: 'mastercard', label: 'Mastercard', image: '/icon/paywalls/mastercard.svg', height: 18 },
   { id: 'secure', label: '3D Secure' },
 ] as const
