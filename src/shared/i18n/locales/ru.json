@@ -315,13 +315,19 @@
       "lists": "Списки",
       "posts": "Статьи",
       "leads": "Лиды",
-      "content": "Контент",
       "orders": "Заказы",
       "operators": "Туроператоры",
       "points": "TripMe points",
       "analytics": "Аналитика",
       "blogPage": "Страница блога",
-      "openSite": "Открыть сайт"
+      "openSite": "Открыть сайт",
+      "groups": {
+        "work": "Работа",
+        "site": "Сайт",
+        "settings": "Настройки"
+      },
+      "collapse": "Свернуть меню",
+      "expand": "Развернуть меню"
     },
     "roles": {
       "CLIENT": "Клиент",

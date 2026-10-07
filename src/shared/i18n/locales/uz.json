@@ -315,13 +315,19 @@
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
       "leads": "Lidlar",
-      "content": "Kontent",
       "orders": "Buyurtmalar",
       "operators": "Turoperatorlar",
       "points": "TripMe points",
       "analytics": "Analitika",
       "blogPage": "Blog sahifasi",
-      "openSite": "Saytni ochish"
+      "openSite": "Saytni ochish",
+      "groups": {
+        "work": "Ish",
+        "site": "Sayt",
+        "settings": "Sozlamalar"
+      },
+      "collapse": "Menyuni yigʻish",
+      "expand": "Menyuni yoyish"
     },
     "roles": {
       "CLIENT": "Mijoz",

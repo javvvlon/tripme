@@ -21,7 +21,7 @@
         height: 36px;
         border-radius: 50%;
         overflow: hidden;
-        background: var(--tm-cms-panel-active);
+        background: var(--tm-brand-primary-soft);
 
         img {
             width: 100%;
@@ -31,7 +31,7 @@
     }
 
     &__initials {
-        color: var(--tm-cms-panel-ink);
+        color: var(--tm-brand-primary-dark);
         font-size: size(14);
         font-weight: 700;
         letter-spacing: .02em;
@@ -53,13 +53,13 @@
     }
 
     &__name {
-        color: var(--tm-cms-panel-ink);
+        color: var(--tm-ink-1);
         font-size: size(14);
         font-weight: 700;
     }
 
     &__role {
-        color: var(--tm-cms-panel-ink-dim);
+        color: var(--tm-ink-3);
         font-size: size(13);
     }
 
@@ -72,14 +72,14 @@
         border: 0;
         border-radius: radius('sm');
         background: transparent;
-        color: var(--tm-cms-panel-ink-dim);
+        color: var(--tm-ink-3);
         cursor: pointer;
 
         &:hover {
-            background: var(--tm-cms-panel-hover);
-            color: var(--tm-cms-panel-ink);
+            background: color-mix(in srgb, var(--tm-ink-1) 5%, transparent);
+            color: var(--tm-ink-1);
         }
 
-        @include focus-ring(var(--tm-cms-panel-ink));
+        @include focus-ring(var(--tm-ink-1));
     }
 }

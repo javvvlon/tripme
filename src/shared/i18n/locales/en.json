@@ -315,13 +315,19 @@
       "lists": "Lists",
       "posts": "Articles",
       "leads": "Leads",
-      "content": "Content",
       "orders": "Orders",
       "operators": "Operators",
       "points": "TripMe points",
       "analytics": "Analytics",
       "blogPage": "Blog page",
-      "openSite": "Open the site"
+      "openSite": "Open the site",
+      "groups": {
+        "work": "Work",
+        "site": "Site",
+        "settings": "Settings"
+      },
+      "collapse": "Collapse menu",
+      "expand": "Expand menu"
     },
     "roles": {
       "CLIENT": "Client",

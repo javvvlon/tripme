@@ -1,53 +1,30 @@
 <template>
-    <div class="tm-navbar-item">
-        <component
-            :is="tag" v-bind="attrs"
-            class="tm-navbar-item__control"
-            :class="{ 'is-active': active, 'is-disabled': disabled }"
-        >
-            <Icon v-if="icon" :name="icon" :size="18" class="tm-navbar-item__icon" />
+    <component
+        :is="disabled ? 'span' : NuxtLink"
+        v-bind="disabled ? { 'aria-disabled': 'true' } : { to: localePath(to ?? '') }"
+        class="tm-navbar-item"
+        :class="{ 'is-active': active, 'is-disabled': disabled }"
+        :title="label"
+        :aria-current="active ? 'page' : undefined"
+    >
+        <span class="tm-navbar-item__icon">
+            <Icon v-if="icon" :name="icon" :size="18" />
+            <span v-if="badge" class="tm-navbar-item__dot" aria-hidden="true" />
+        </span>
 
-            <span class="tm-navbar-item__label">{{ label }}</span>
+        <span class="tm-navbar-item__label">{{ label }}</span>
 
-            <Icon
-                v-if="expandable"
-                name="chevron" :size="15"
-                class="tm-navbar-item__chevron" :class="{ 'is-open': expanded }"
-            />
-        </component>
-
-        <div v-if="$slots.default" v-show="expanded" class="tm-navbar-item__children">
-            <slot />
-        </div>
-    </div>
+        <span v-if="badge" class="tm-navbar-item__badge" :class="{ 'is-accent': accent }">{{ badge }}</span>
+    </component>
 </template>
 
 <script setup lang="ts">
-import { resolveComponent } from 'vue'
+import { NuxtLink } from '#components'
 import type { INavbarItemProps } from './NavbarItem.d'
 
-const props = defineProps<INavbarItemProps>()
-
-const expanded = defineModel<boolean>('expanded', { default: false })
+defineProps<INavbarItemProps>()
 
 const localePath = useLocalePath()
-
-const tag = computed(() => {
-  if (props.disabled) return 'span'
-
-  return props.to ? resolveComponent('NuxtLink') : 'button'
-})
-
-const attrs = computed(() => {
-  if (props.disabled) return { 'aria-disabled': 'true' }
-  if (props.to) return { to: localePath(props.to) }
-
-  return {
-    'type': 'button',
-    'aria-expanded': String(expanded.value),
-    'onClick': () => { expanded.value = !expanded.value },
-  }
-})
 </script>
 
 <style lang="scss">
