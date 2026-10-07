@@ -109,13 +109,13 @@ const toggleCollapsed = () => {
   catch {}
 }
 
-const { all: allLeads } = useLeadsRepository()
+const { page: leadsPage } = useLeadsRepository()
 
 const newLeads = ref(0)
 
 const countNewLeads = async () => {
   try {
-    newLeads.value = (await allLeads()).filter(lead => lead.status === 'new').length
+    newLeads.value = (await leadsPage({ status: 'new' }, { page: 1, perPage: 25 })).counts.fresh
   }
   catch {
     newLeads.value = 0

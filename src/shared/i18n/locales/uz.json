@@ -1444,5 +1444,14 @@
       "manager": "Menejeringiz: {name}, TripMe"
     },
     "pdf": "PDF ni buyurtmaga saqlash"
+  },
+  "pagination": {
+    "label": "Sahifalar",
+    "shown": "{total} tadan {from}–{to} koʻrsatilmoqda",
+    "empty": "Hech narsa topilmadi",
+    "previous": "Oldingi sahifa",
+    "next": "Keyingi sahifa",
+    "page": "{n}-sahifa",
+    "perPage": "Sahifada"
   }
 }

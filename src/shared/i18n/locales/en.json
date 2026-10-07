@@ -1444,5 +1444,14 @@
       "manager": "Your manager: {name}, TripMe"
     },
     "pdf": "Save PDF to the order"
+  },
+  "pagination": {
+    "label": "Pages",
+    "shown": "Showing {from}–{to} of {total}",
+    "empty": "Nothing found",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {n}",
+    "perPage": "Per page"
   }
 }

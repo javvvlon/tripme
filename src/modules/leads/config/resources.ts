@@ -9,13 +9,13 @@ export const resource: IResource = {
   resources: {
     submit: { url: 'leads', method: 'POST' },
 
-    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status', 'q', 'sort', 'dir'] },
+    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status', 'q', 'sort', 'dir', 'page', 'per_page'] },
     adminLead: { url: 'cms/leads/:id', method: 'GET' },
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },
     deleteLead: { url: 'cms/leads/:id', method: 'DELETE' },
 
-    orders: { url: 'cms/orders', method: 'GET', params: ['q', 'status'] },
+    orders: { url: 'cms/orders', method: 'GET', params: ['q', 'status', 'page', 'per_page'] },
     leadOrders: { url: 'cms/leads/:id/orders', method: 'GET' },
     createOrder: { url: 'cms/leads/:id/orders', method: 'POST' },
     order: { url: 'cms/orders/:id', method: 'GET' },

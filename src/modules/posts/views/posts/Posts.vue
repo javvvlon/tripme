@@ -17,7 +17,7 @@
             <Button size="md" @click="open">{{ t('cms.posts.create') }}</Button>
         </div>
 
-        <EditorSkeleton v-if="status === 'pending'" variant="rows" />
+        <EditorSkeleton v-if="status === 'pending' && !posts.length" variant="rows" />
 
         <p v-else-if="!posts.length" class="tm-cms-posts__empty">
             {{ query || filter !== 'all' ? t('cms.posts.noMatches') : t('cms.posts.empty') }}
@@ -95,6 +95,11 @@
             </tbody>
         </table>
 
+        <Pagination
+            :page="page" :pages="pages" :total="total" :per-page="perPage"
+            @update:page="setPage" @update:per-page="setPerPage"
+        />
+
         <Modal
             v-model="creating"
             :title="t('cms.posts.newTitle')"
@@ -129,6 +134,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
+import Pagination from '~/shared/components/pagination/Pagination.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import { usePosts } from './Posts.hooks'
 import { LEGAL_PREFIX, POST_COLUMNS, POST_FILTERS } from './Posts.config'
@@ -140,6 +146,7 @@ const {
     posts, counts, status, error, busy, creating, draft, canCreate, slugIsValid,
     query, filter, sort, direction, sortBy, titleOf, authorOf, languagesOf,
     open, submit, remove,
+    page, pages, total, perPage, setPage, setPerPage,
 } = usePosts()
 
 const filterOptions = computed(() => POST_FILTERS.map(value => ({ value, label: t(`cms.posts.filters.${value}`) })))

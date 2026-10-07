@@ -30,7 +30,8 @@ export const usePosts = () => {
   const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const localePath = useLocalePath()
-  const { all, create, remove: removePost } = usePostsRepository()
+  const { page: postsPage, create, remove: removePost } = usePostsRepository()
+  const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const error = ref('')
   const busy = ref(false)
@@ -43,7 +44,34 @@ export const usePosts = () => {
   const creating = ref(false)
   const draft = reactive({ title: '', slug: '', touched: false })
 
-  const { data, status, refresh } = useAsyncData('cms:posts', () => all(), { default: () => [] as IPostAdminRaw[] })
+  const debounced = ref('')
+  let timer: ReturnType<typeof setTimeout> | null = null
+
+  watch(query, (next) => {
+    if (timer) clearTimeout(timer)
+
+    timer = setTimeout(() => { debounced.value = next.trim() }, 300)
+  })
+
+  onBeforeUnmount(() => {
+    if (timer) clearTimeout(timer)
+  })
+
+  watch([debounced, filter, sort, direction], toFirst)
+
+  const { data, status, refresh } = useAsyncData(
+    'cms:posts',
+    () => postsPage({ q: debounced.value, filter: filter.value, sort: sort.value, dir: direction.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, filter, sort, direction, pageQuery] },
+  )
+
+  const rows = computed<IPostAdminRaw[]>(() => data.value?.items ?? [])
+  const pages = computed(() => data.value?.pages ?? 1)
+  const total = computed(() => data.value?.total ?? 0)
+
+  watch(data, (next) => {
+    if (next && !next.items.length && next.page > next.pages) setPage(next.pages)
+  })
 
   const titleOf = (post: IPostAdminRaw): string =>
     preferredTranslation(post.translations, translation => Boolean(translation.title))?.title ?? ''
@@ -56,40 +84,10 @@ export const usePosts = () => {
     filled: post.translations.some(translation => translation.locale === locale && Boolean(translation.title?.trim())),
   }))
 
-  const SORT_VALUE: Record<PostSort, (post: IPostAdminRaw) => string | number> = {
-    title: post => titleOf(post).toLowerCase(),
-    author: post => authorOf(post).toLowerCase(),
-    status: post => (post.is_published ? 0 : 1),
-    published: post => (post.published_at ? Date.parse(post.published_at) : 0),
-    updated: post => Date.parse(post.updated_at),
-  }
-
-  const rows = computed(() => {
-    const needle = query.value.trim().toLowerCase()
-    const value = SORT_VALUE[sort.value]
-    const sign = direction.value === 'asc' ? 1 : -1
-
-    return (data.value ?? [])
-      .filter(post => filter.value === 'all' || post.is_published === (filter.value === 'published'))
-      .filter(post => !needle
-        || post.slug.includes(needle)
-        || authorOf(post).toLowerCase().includes(needle)
-        || post.translations.some(translation => translation.title?.toLowerCase().includes(needle)))
-      .sort((a, b) => {
-        const left = value(a)
-        const right = value(b)
-
-        if (left === right) return 0
-
-        return (left > right ? 1 : -1) * sign
-      })
-  })
-
-  const counts = computed(() => {
-    const posts = data.value ?? []
-
-    return { total: posts.length, live: posts.filter(post => post.is_published).length }
-  })
+  const counts = computed(() => ({
+    total: data.value?.counts.all ?? 0,
+    live: data.value?.counts.published ?? 0,
+  }))
 
   function sortBy(column: PostSort) {
     if (sort.value === column) {
@@ -159,5 +157,6 @@ export const usePosts = () => {
     posts: rows, counts, status, error, busy, creating, draft, canCreate, slugIsValid,
     query, filter, sort, direction, sortBy, titleOf, authorOf, languagesOf,
     open, submit, remove, refresh,
+    page, pages, total, perPage, setPage, setPerPage,
   }
 }

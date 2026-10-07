@@ -3,6 +3,7 @@ import { PostCreateIntention, PostIntention } from '../intentions/post'
 import type { IPostAdminRaw, IPostDraft, IPostRaw } from '../contracts/posts'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { AnyObject } from '~/shared/contracts/data'
+import type { IPageQuery, IPageRaw } from '~/shared/contracts/pagination'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -18,6 +19,22 @@ export const usePostsRepository = () => {
 
   const all = async (): Promise<IPostAdminRaw[]> => {
     const response = await http.call<IPostAdminRaw[]>('Posts', 'adminPosts')
+
+    return response.data
+  }
+
+  const page = async (
+    query: { q?: string, filter?: string, sort?: string, dir?: string },
+    paging: IPageQuery,
+  ): Promise<IPageRaw<IPostAdminRaw, { all: number, published: number }>> => {
+    const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
+
+    if (query.q) params.q = query.q
+    if (query.filter && query.filter !== 'all') params.filter = query.filter
+    if (query.sort) params.sort = query.sort
+    if (query.dir) params.dir = query.dir
+
+    const response = await http.call<IPageRaw<IPostAdminRaw, { all: number, published: number }>>('Posts', 'adminPosts', params)
 
     return response.data
   }
@@ -46,5 +63,5 @@ export const usePostsRepository = () => {
     await http.call<void>('Posts', 'deletePost', { id })
   }
 
-  return { bySlug, all, one, create, update, remove }
+  return { bySlug, all, page, one, create, update, remove }
 }

@@ -4,6 +4,7 @@ import type {
   LeadSort, LeadStatus, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
+import type { IPageQuery, IPageRaw } from '~/shared/contracts/pagination'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -74,6 +75,22 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
+  const page = async (
+    query: { q?: string, status?: LeadStatus, sort?: LeadSort, dir?: SortDirection },
+    paging: IPageQuery,
+  ): Promise<IPageRaw<ILeadRaw, { all: number, fresh: number }>> => {
+    const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
+
+    if (query.q) params.q = query.q
+    if (query.status) params.status = query.status
+    if (query.sort) params.sort = query.sort
+    if (query.dir) params.dir = query.dir
+
+    const response = await http.call<IPageRaw<ILeadRaw, { all: number, fresh: number }>>('Leads', 'adminLeads', params)
+
+    return response.data
+  }
+
   const one = async (id: string): Promise<ILeadRaw> => {
     const response = await http.call<ILeadRaw>('Leads', 'adminLead', { id })
 
@@ -118,6 +135,20 @@ export const useLeadsRepository = () => {
     if (query.status) params.status = query.status
 
     const response = await http.call<IOrderRaw[]>('Leads', 'orders', params)
+
+    return response.data
+  }
+
+  const ordersPage = async (
+    query: { q?: string, status?: string },
+    paging: IPageQuery,
+  ): Promise<IPageRaw<IOrderRaw, { all: number, live: number }>> => {
+    const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
+
+    if (query.q) params.q = query.q
+    if (query.status) params.status = query.status
+
+    const response = await http.call<IPageRaw<IOrderRaw, { all: number, live: number }>>('Leads', 'orders', params)
 
     return response.data
   }
@@ -195,8 +226,8 @@ export const useLeadsRepository = () => {
   }
 
   return {
-    submit, all, one, create, patch, setStatus, remove,
-    orders, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
+    submit, all, page, one, create, patch, setStatus, remove,
+    orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
     orderDocuments, generateDocument, attachDocument, removeDocument,
   }
 }

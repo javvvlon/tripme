@@ -7,7 +7,8 @@ import type { IOrderRaw } from '~/modules/leads/contracts/leads'
  */
 export const useOrders = () => {
   const { t } = useI18n()
-  const { orders: all } = useLeadsRepository()
+  const { ordersPage } = useLeadsRepository()
+  const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
   const filter = ref('')
@@ -22,29 +23,38 @@ export const useOrders = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
+  watch([debounced, filter], toFirst)
+
   const { data, status, refresh } = useAsyncData(
     'cms:orders',
-    () => all({ q: debounced.value, status: filter.value }),
-    { default: () => [] as IOrderRaw[], watch: [debounced, filter] },
+    () => ordersPage({ q: debounced.value, status: filter.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, filter, pageQuery] },
   )
+
+  const orders = computed<IOrderRaw[]>(() => data.value?.items ?? [])
+  const pages = computed(() => data.value?.pages ?? 1)
+  const total = computed(() => data.value?.total ?? 0)
+
+  watch(data, (next) => {
+    if (next && !next.items.length && next.page > next.pages) setPage(next.pages)
+  })
 
   const filterOptions = computed(() => [
     { value: '', label: t('cms.orders.filters.all') },
     ...ORDER_STATUSES.map(value => ({ value, label: t(`cms.orders.status.${value}`) })),
   ])
 
-  const counts = computed(() => {
-    const rows = data.value ?? []
-
-    return {
-      total: rows.length,
-      live: rows.filter(row => row.status !== 'completed').length,
-    }
-  })
+  const counts = computed(() => ({
+    total: data.value?.counts.all ?? 0,
+    live: data.value?.counts.live ?? 0,
+  }))
 
   onBeforeUnmount(() => {
     if (timer) clearTimeout(timer)
   })
 
-  return { orders: data, status, error, query, filter, filterOptions, counts, refresh }
+  return {
+    orders, status, error, query, filter, filterOptions, counts, refresh,
+    page, pages, total, perPage, setPage, setPerPage,
+  }
 }
