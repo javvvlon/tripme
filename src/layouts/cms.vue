@@ -8,6 +8,14 @@
                         :width="BRAND_LOGO.onDark.width" :height="BRAND_LOGO.onDark.height"
                     >
                 </NuxtLink>
+
+                <NuxtLink
+                    :to="localePath('/')" class="tm-cms__site"
+                    :title="t('cms.nav.openSite')" :aria-label="t('cms.nav.openSite')"
+                >
+                    /{{ locale }}
+                    <Icon name="arrow-up-right" :size="14" :stroke="2.2" />
+                </NuxtLink>
             </template>
 
             <NavbarItem
@@ -60,7 +68,7 @@ import { findNavTrail } from '~/shared/helpers/navigation'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import type { INavNode } from '~/shared/helpers/navigation'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 

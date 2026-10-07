@@ -320,7 +320,8 @@
       "operators": "Operators",
       "points": "TripMe points",
       "analytics": "Analytics",
-      "blogPage": "Blog page"
+      "blogPage": "Blog page",
+      "openSite": "Open the site"
     },
     "roles": {
       "CLIENT": "Client",

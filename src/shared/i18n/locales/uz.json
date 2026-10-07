@@ -320,7 +320,8 @@
       "operators": "Turoperatorlar",
       "points": "TripMe points",
       "analytics": "Analitika",
-      "blogPage": "Blog sahifasi"
+      "blogPage": "Blog sahifasi",
+      "openSite": "Saytni ochish"
     },
     "roles": {
       "CLIENT": "Mijoz",

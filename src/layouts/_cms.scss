@@ -16,6 +16,30 @@
         }
     }
 
+    &__site {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        padding: 5px 8px 5px 10px;
+        border: 1px solid var(--tm-cms-panel-line);
+        border-radius: radius('pill');
+        color: var(--tm-cms-panel-ink-dim);
+        font-size: size(12);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color .12s ease, border-color .12s ease, background .12s ease;
+
+        &:hover {
+            border-color: var(--tm-cms-panel-ink-dim);
+            background: var(--tm-cms-panel-hover);
+            color: var(--tm-cms-panel-ink);
+        }
+
+        &:focus-visible { @include focus-ring(var(--tm-cms-panel-ink)); }
+    }
+
     &__main {
         flex: 1;
         min-width: 0;

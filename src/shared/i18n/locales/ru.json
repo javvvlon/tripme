@@ -320,7 +320,8 @@
       "operators": "Туроператоры",
       "points": "TripMe points",
       "analytics": "Аналитика",
-      "blogPage": "Страница блога"
+      "blogPage": "Страница блога",
+      "openSite": "Открыть сайт"
     },
     "roles": {
       "CLIENT": "Клиент",

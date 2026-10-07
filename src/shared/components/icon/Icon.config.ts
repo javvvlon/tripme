@@ -6,6 +6,7 @@ export const ICON_PATHS: Record<string, string> = {
   'chevron': 'm6 9 6 6 6-6',
   'chevron-up': 'm6 15 6-6 6 6',
   'chevron-right': 'm9 6 6 6-6 6',
+  'arrow-up-right': 'M7 17 17 7M8.5 7H17v8.5',
   'arrow-right': 'M4 12h15m-6-6 6 6-6 6',
   globe: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M3.5 9h17M3.5 15h17M12 3c2.4 2.4 3.6 5.4 3.6 9S14.4 18.6 12 21c-2.4-2.4-3.6-5.4-3.6-9S9.6 5.4 12 3',
   user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4.5 20a7.5 7.5 0 0 1 15 0',
