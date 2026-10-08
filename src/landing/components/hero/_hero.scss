@@ -56,9 +56,49 @@
         text-shadow: 0 1px 16px rgba(7, 26, 66, .5);
     }
 
+    &__products {
+        display: inline-flex;
+        margin-top: 30px;
+        overflow: hidden;
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-md);
+    }
+
+    &__product {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        color: var(--tm-ink-2);
+        font-size: size(15);
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .15s ease, color .15s ease;
+
+        & + & { border-left: 1px solid var(--tm-border-1); }
+
+        &:hover { background: var(--tm-surface-2); color: var(--tm-ink-1); }
+
+        &:focus-visible {
+            outline: 2px solid var(--tm-brand-primary);
+            outline-offset: -2px;
+        }
+
+        &.is-active {
+            border-left-color: transparent;
+            background: var(--tm-brand-primary);
+            color: var(--tm-common-white);
+
+            & + .tm-hero__product { border-left-color: transparent; }
+        }
+
+        &.is-active:hover { background: var(--tm-brand-primary); }
+    }
+
     &__widget {
         max-width: 1120px;
-        margin: 34px auto 0;
+        margin: 16px auto 0;
         text-align: left;
     }
 

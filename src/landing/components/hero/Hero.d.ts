@@ -6,3 +6,5 @@ import type { IHomeBanner } from '~/modules/content/models/PageContent'
 export interface IHeroProps {
   banner?: IHomeBanner | null
 }
+
+export type HeroProduct = 'tours' | 'esim'

@@ -1,0 +1,99 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-esim-pay {
+    padding-block: 40px 72px;
+
+    &__frame {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        max-width: 440px;
+        margin: 0 auto;
+        padding: 28px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('lg');
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-md);
+    }
+
+    &__sandbox {
+        margin: -4px 0 0;
+        padding: 8px 12px;
+        border-radius: radius('sm');
+        background: color-mix(in srgb, var(--tm-status-warning) 18%, transparent);
+        color: var(--tm-ink-1);
+        font-size: size(13);
+        font-weight: 600;
+        text-align: center;
+    }
+
+    &__head {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__gateway {
+        align-self: flex-start;
+        padding: 4px 12px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-2);
+        font-size: size(13);
+        font-weight: 800;
+
+        &.is-payme { background: #e6f8f8; color: #0f9b9b; }
+        &.is-click { background: #e8f0fe; color: #1a5fd6; }
+        &.is-card { background: #eef0f9; color: #1a1f71; }
+    }
+
+    &__merchant {
+        margin-top: 8px;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+    }
+
+    &__amount {
+        font-size: size(28);
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    &__secure {
+        display: flex;
+        gap: 12px;
+        padding: 14px;
+        border-radius: radius('md');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-1);
+
+        p {
+            margin: 4px 0 0;
+            color: var(--tm-ink-3);
+            font-size: size(13);
+        }
+    }
+
+    &__cancel {
+        align-self: center;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { color: var(--tm-status-danger); }
+    }
+}

@@ -10,6 +10,7 @@ import { OperatorsModule } from './operators'
 import { PointsModule } from './points'
 import { AnalyticsModule } from './analytics'
 import { FinanceModule } from './finance'
+import { EsimModule } from './esim'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -26,4 +27,5 @@ export const modules: IModule[] = [
   PointsModule,
   AnalyticsModule,
   FinanceModule,
+  EsimModule,
 ]

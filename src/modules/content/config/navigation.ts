@@ -11,6 +11,7 @@ export const CMS_NAVIGATION: INavNode[] = [
       { key: 'analytics', labelKey: 'cms.nav.analytics', icon: 'pie', to: '/app/analytics' },
       { key: 'leads', labelKey: 'cms.nav.leads', icon: 'users', to: '/app/leads' },
       { key: 'orders', labelKey: 'cms.nav.orders', icon: 'briefcase', to: '/app/orders' },
+      { key: 'esim', labelKey: 'cms.nav.esim', icon: 'mobile', to: '/app/esim' },
     ],
   },
   {

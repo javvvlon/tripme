@@ -14,6 +14,11 @@ export const HERO: IHeroContent = {
   subtitleKey: 'home.hero.subtitle',
 }
 
+export const HERO_PRODUCTS = [
+  { value: 'tours', labelKey: 'home.products.tours', icon: 'briefcase' },
+  { value: 'esim', labelKey: 'home.products.esim', icon: 'mobile' },
+] as const
+
 export const HOT_ANCHOR = 'hot'
 
 export const QUICK_SEARCHES: IQuickSearch[] = [

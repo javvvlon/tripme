@@ -1,0 +1,26 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-esim-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 4px;
+    padding: 8px;
+    background: var(--tm-surface-1);
+    border-radius: radius('lg');
+    box-shadow: var(--tm-shadow-lg);
+
+    > * { border-radius: radius('md'); }
+
+    &__submit {
+        align-self: stretch;
+        min-width: 200px;
+        font-weight: 700;
+    }
+
+    @media #{$until-sm} {
+        grid-template-columns: minmax(0, 1fr);
+
+        &__submit { min-height: 52px; }
+    }
+}
