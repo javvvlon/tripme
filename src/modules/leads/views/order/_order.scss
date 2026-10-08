@@ -316,6 +316,21 @@
             font-size: size(15);
         }
     }
+
+    &__checklist { margin-top: 24px; }
+
+    &__tabs {
+        margin-top: 20px;
+        overflow-x: auto;
+    }
+
+    &__pane { margin-top: 16px; }
+
+    div#{&}__pane {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
 }
 
 @media #{$until-lg} {

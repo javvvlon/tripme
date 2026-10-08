@@ -85,7 +85,7 @@
                             <TourCard
                                 :tour="tour"
                                 :agent-view="isStaff"
-                                :route="{ from: criteria.from, to: criteria.to, kidAges: criteria.kidAges }"
+                                :route="{ from: criteria.from, to: criteria.to, toLabel: label(criteria.to), kidAges: criteria.kidAges }"
                                 :assign-label="assignLabel"
                                 :assign-title="assignTitle"
                                 :assigning="assigning === tour.get('id')"

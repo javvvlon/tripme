@@ -45,14 +45,22 @@
         color: var(--tm-ink-3);
     }
 
+    &__scroll {
+        overflow-x: auto;
+        margin-inline: -16px;
+        padding-inline: 16px;
+        overscroll-behavior-x: contain;
+    }
+
     &__table {
         width: 100%;
+        min-width: 1480px;
         border-collapse: collapse;
         font-size: size(13);
         table-layout: fixed;
 
         th, td {
-            padding: 10px 12px;
+            padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid var(--tm-border-1);
             vertical-align: middle;
@@ -72,13 +80,15 @@
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
 
-        .is-no { width: 118px; }
-        .is-date { width: 116px; }
-        .is-party { width: 72px; }
-        .is-price { width: 100px; }
-        .is-ref { width: 130px; }
-        .is-status { width: 150px; }
-        .is-owner { width: 140px; }
+        .is-no { width: 150px; }
+        .is-traveller { width: 180px; }
+        .is-date { width: 120px; }
+        .is-party { width: 70px; }
+        .is-price { width: 110px; }
+        .is-payment { width: 180px; }
+        .is-ref { width: 136px; }
+        .is-owner { width: 150px; }
+        .is-status { width: 168px; }
     }
 
     &__row {
@@ -128,13 +138,10 @@
         &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
         &.is-completed { background: var(--tm-surface-2); color: var(--tm-ink-3); }
     }
-}
 
-@media #{$until-lg} {
-    .tm-cms-orders__table {
-        th.is-ref, td:nth-child(7),
-        th.is-owner, td.is-owner,
-        th.is-party, td:nth-child(5) { display: none; }
+    &__payment {
+        padding: 2px 10px;
+        font-size: size(12);
     }
 }
 
@@ -144,9 +151,6 @@
 
         &__search { max-width: none; }
 
-        &__table {
-            th.is-date, td:nth-child(4),
-            th.is-price, td:nth-child(6) { display: none; }
-        }
+        &__owner { margin-left: 0; }
     }
 }

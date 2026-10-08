@@ -29,6 +29,7 @@ export const tripFromTour = (tour: Tour, route?: ITripRoute): ILeadTrip => ({
   price_currency: tour.get('price').currency,
   route_from: route?.from ?? '',
   route_to: route?.to ?? '',
+  route_to_label: route?.toLabel ?? '',
   kid_ages: (route?.kidAges ?? []).slice(0, tour.get('children')),
 })
 

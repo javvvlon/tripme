@@ -104,6 +104,11 @@
       "description": "O‘zbekistondan turlar: Turkiya, Misr, BAA, Tailand, Maldiv orollari. Barcha operatorlar takliflarini bitta qidiruvda taqqoslaymiz va to‘liq paket narxini ko‘rsatamiz.",
       "ogTitle": "TripMe — Toshkentdan turlar",
       "ogDescription": "Bitta qidiruv — barcha operatorlar. Parvoz, mehmonxona va transfer bitta narxda."
+    },
+    "products": {
+      "label": "Nima qidiryapsiz",
+      "tours": "Turlar",
+      "esim": "eSIM"
     }
   },
   "footer": {
@@ -333,7 +338,8 @@
         "settings": "Sozlamalar"
       },
       "collapse": "Menyuni yigʻish",
-      "expand": "Menyuni yoyish"
+      "expand": "Menyuni yoyish",
+      "esim": "eSIM"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -352,7 +358,7 @@
       "imageRejected": "Rasm tekshiruvdan oʻtmadi — almashtiring yoki olib tashlang.",
       "guards": {
         "transition": "«{from}» dan «{to}» ga oʻtib boʻlmaydi — bosqich tashlab ketilgan.",
-        "leadPaid": "Lidda toʻlangan buyurtma bor — rad etib boʻlmaydi.",
+        "leadPaid": "Lid boʻyicha tasdiqlangan buyurtma bor — rad etib boʻlmaydi.",
         "orderPaid": "Toʻlangan buyurtmani oʻchirib boʻlmaydi.",
         "leadRejected": "«Rad etilgan» liddan yangi buyurtma yaratib boʻlmaydi.",
         "unknownStatus": "Notaʼnif buyurtma holati.",
@@ -369,7 +375,24 @@
         "customerMissing": "Mijoz topilmadi.",
         "cancelReason": "Buyurtmani bekor qilish sababini kiriting.",
         "passportExpired": "Pasport sayohat tugashidan oldin muddati tugaydi — buyurtmani tasdiqlab bo‘lmaydi.",
-        "passportShort": "Pasport sayohat tugaganidan keyin yana 6 oy amal qilishi kerak — buyurtmani tasdiqlab bo‘lmaydi."
+        "passportShort": "Pasport sayohat tugaganidan keyin yana 6 oy amal qilishi kerak — buyurtmani tasdiqlab bo‘lmaydi.",
+        "confirmationIncomplete": "Buyurtmani hozircha tasdiqlab boʻlmaydi — shartlar bajarilmagan.",
+        "receiptRequired": "Mijoz pullari uchun chek ilova qiling.",
+        "reverseForbidden": "Toʻlovni faqat rahbar storno qila oladi.",
+        "alreadyReversed": "Bu toʻlov allaqachon storno qilingan.",
+        "orderHasPayments": "Buyurtmada toʻlovlar bor — oʻchirib boʻlmaydi.",
+        "supplierPaymentForbidden": "Yetkazib beruvchilarga toʻlovlarni rahbar kiritadi.",
+        "futurePayment": "Toʻlov sanasi kelajakda boʻlishi mumkin emas.",
+        "amountPositive": "Summa noldan katta boʻlishi kerak.",
+        "rateMissing": "Soʻmga kursni kiriting.",
+        "supplierRefRequired": "Yetkazib beruvchidagi bron raqamini kiriting.",
+        "depositPercent": "Depozit — 0 dan 100 gacha butun foiz.",
+        "receiptLocked": "Toʻlov chekini oʻchirib boʻlmaydi — toʻlovni storno qiling.",
+        "serviceCancelled": "Bekor qilingan xizmatni tasdiqlab boʻlmaydi.",
+        "serviceIssued": "Rasmiylashtirilgan xizmatni o'zgartirib bo'lmaydi",
+        "packageLocked": "Turpaket buyurtma ma'lumotlari orqali o'zgaradi",
+        "orderClosed": "Yopilgan buyurtmaga xizmat qo'shib bo'lmaydi",
+        "serviceDates": "Tugash sanasi boshlanishidan oldin"
       }
     },
     "upload": {
@@ -820,7 +843,8 @@
         "answered": "Birinchi javob {wait} ichida",
         "waiting": "Javob kutmoqda: {wait}",
         "waitingLate": "Javob kutmoqda: {wait} — me’yor {n} daqiqa"
-      }
+      },
+      "orderNeedsTour": "Avval lid uchun turni tanlang"
     },
     "orders": {
       "title": "Buyurtmalar",
@@ -852,7 +876,8 @@
         "party": "Mehmonlar",
         "price": "Narx",
         "supplierOrder": "Operator raqami",
-        "status": "Holat"
+        "status": "Holat",
+        "payment": "Toʻlov"
       },
       "fields": {
         "traveller": "Asosiy sayohatchi FIO",
@@ -908,7 +933,9 @@
         "kinds": {
           "offer": "Taklif",
           "invoice": "Hisob",
-          "attachment": "Fayl"
+          "attachment": "Fayl",
+          "contract": "Shartnoma",
+          "voucher": "Vaucher"
         },
         "confirmDelete": {
           "title": "Hujjat oʻchirilsinmi?",
@@ -921,7 +948,117 @@
         "placeholder": "Masalan: mijoz fikridan qaytdi, tur sotuvdan olindi",
         "confirm": "Buyurtmani bekor qilish",
         "keep": "Bekor qilmaslik"
-      }
+      },
+      "items": {
+        "title": "Xizmatlar",
+        "empty": "Buyurtmada hali xizmatlar yoʻq.",
+        "ref": "Yetkazib beruvchidagi bron № {ref}",
+        "kinds": {
+          "package": "Turpaket",
+          "flight": "Aviachipta",
+          "hotel": "Mehmonxona",
+          "transfer": "Transfer",
+          "insurance": "Sugʻurta",
+          "excursion": "Ekskursiya",
+          "visa": "Viza"
+        },
+        "status": {
+          "draft": "Qoralama",
+          "requested": "Yetkazib beruvchidan soʻraldi",
+          "confirmed": "Tasdiqlandi",
+          "rejected": "Rad etildi",
+          "issued": "Rasmiylashtirildi",
+          "cancelled": "Bekor qilindi"
+        },
+        "uzs": "≈ {amount}",
+        "rate": "{date} dagi kurs {rate}",
+        "rateEdit": "kursni oʻzgartirish",
+        "rateMissing": "kurs yoʻq — kiriting",
+        "rateLabel": "Soʻmga kurs",
+        "rateSaved": "Kurs saqlandi",
+        "confirm": "Yetkazib beruvchi tasdiqladi — bron raqamini kiriting",
+        "refLabel": "Yetkazib beruvchidagi bron №",
+        "confirmed": "Xizmat tasdiqlandi",
+        "add": "Xizmat qo'shish",
+        "issue": "Rasmiylashtirish",
+        "edit": "O'zgartirish",
+        "remove": "Olib tashlash",
+        "issueTitle": "Xizmatni rasmiylashtirish",
+        "issueConfirm": "Rasmiylashtirish",
+        "issueFile": "Polis, chipta yoki vaucher (ixtiyoriy)",
+        "deleteTitle": "Xizmat o'chirilsinmi?",
+        "deleteText": "«{name}» hali tasdiqlanmagan va buyurtmadan o'chiriladi.",
+        "deleteConfirm": "O'chirish",
+        "cancelTitle": "Xizmat bekor qilinsinmi?",
+        "cancelText": "«{name}» allaqachon tasdiqlangan. U buyurtmada chizilgan holda qoladi va summaga kirmaydi.",
+        "cancelConfirm": "Xizmatni bekor qilish",
+        "added": "Xizmat qo'shildi",
+        "updated": "Xizmat saqlandi",
+        "removed": "Xizmat olib tashlandi",
+        "issued": "Xizmat rasmiylashtirildi",
+        "form": {
+          "addTitle": "Yangi xizmat",
+          "editTitle": "Xizmat",
+          "add": "Qo'shish",
+          "kind": "Xizmat turi",
+          "title": "Nomi",
+          "supplier": "Yetkazib beruvchi",
+          "price": "Mijoz uchun narx",
+          "currency": "Valyuta",
+          "start": "Dan",
+          "end": "Gacha",
+          "note": "Izoh",
+          "datesWrong": "Tugash sanasi boshlanishidan oldin",
+          "examples": {
+            "insurance": "Kafolat sug'urtasi, 2 sayyoh",
+            "transfer": "Aeroport — mehmonxona — aeroport",
+            "flight": "TAS — IST, Uzbekistan Airways",
+            "hotel": "Qo'shimcha tun, Rixos Premium",
+            "excursion": "Kapadokiya, 1 kun",
+            "visa": "Shengen vizasi, 2 sayyoh"
+          }
+        }
+      },
+      "checklist": {
+        "title": "Tasdiqlash shartlari",
+        "suppliers": "Yetkazib beruvchilar xizmatlarni tasdiqladi",
+        "suppliersOk": "Barcha majburiy xizmatlar tasdiqlangan",
+        "suppliersWaiting": "Tasdiq kutilmoqda: {list}",
+        "contract": "Shartnoma imzolangan",
+        "contractOk": "{date} da yuklangan",
+        "contractMissing": "Imzolangan shartnoma skanini yuklang",
+        "contractUpload": "Shartnomani yuklash",
+        "contractUploading": "Yuklanmoqda…",
+        "contractSaved": "Shartnoma yuklandi",
+        "deposit": "Depozit toʻlangan",
+        "depositDetail": "{deposit} dan {received}",
+        "depositLegacy": "Toʻlovlar jurnaligacha toʻlangan",
+        "passport": "Pasport qaytgandan keyin 6 oy amal qiladi",
+        "passportOk": "Amal qilish muddati joyida",
+        "passportMissing": "Pasport muddatini «Turist va tur» boʻlimida kiriting",
+        "passportExpired": "Pasport sayohat tugashidan oldin tugaydi",
+        "passportShort": "Pasport qaytgandan keyin 6 oydan kam amal qiladi",
+        "confirm": "Buyurtmani tasdiqlash",
+        "confirmed": "Buyurtma tasdiqlandi",
+        "confirmedHint": "Hujjatlar va toʻlovlar quyidagi boʻlimlarda.",
+        "warnMode": "Qoida hozircha faqat ogohlantiradi: bajarilmagan bandlar bilan ham tasdiqlash mumkin.",
+        "enforceMode": "Barcha bandlar bajarilgach, tugma ochiladi.",
+        "confirmAnywayTitle": "Shartlar bajarilmagan holda tasdiqlansinmi?",
+        "confirmAnywayText": "Bajarilmagan: {list}. Qoida yoqilgach, bunday buyurtmani tasdiqlab boʻlmaydi.",
+        "confirmAnyway": "Baribir tasdiqlash",
+        "progress": "{total} dan {done}",
+        "goServices": "Xizmatni tasdiqlash",
+        "goFinance": "Toʻlovni qabul qilish",
+        "goDetails": "Pasportni kiritish"
+      },
+      "tabs": {
+        "services": "Xizmatlar",
+        "finance": "Moliya",
+        "details": "Turist va tur",
+        "documents": "Hujjatlar",
+        "history": "Tarix"
+      },
+      "autoStatus": "Buyurtma holati: «{status}»"
     },
     "operators": {
       "title": "Turoperatorlar",
@@ -1182,6 +1319,100 @@
         "orderAssigned": "{order} buyurtmasi o‘tkazildi: {to}",
         "status": "Holat: {from} → {to}"
       }
+    },
+    "finance": {
+      "title": "Moliya",
+      "sum": "soʻm",
+      "total": "Mijoz uchun narx",
+      "received": "Mijozdan olindi",
+      "balance": "Toʻlanishi qolgan",
+      "overpaid": "Ortiqcha toʻlov",
+      "suppliers": "Yetkazib beruvchilarga toʻlandi",
+      "revenue": "Tushum (kirim − chiqim)",
+      "missingRates": "{n} ta xizmat uchun kurs yoʻq. Xizmat kartochkasida kursni kiriting, aks holda jami toʻliq emas.",
+      "deposit": "Depozit {percent}%",
+      "depositMet": "toʻlangan",
+      "depositOf": "{deposit} dan {received}",
+      "depositEdit": "Depozit foizini oʻzgartirish",
+      "depositLabel": "Depozit, %",
+      "payments": "Toʻlovlar",
+      "noPayments": "Hali toʻlovlar yoʻq.",
+      "record": "Toʻlovni qabul qilish",
+      "saved": "Toʻlov saqlandi",
+      "byWhom": "{name} kiritdi",
+      "receiptLink": "Chek",
+      "paymentUzs": "{rate} kursida {amount}",
+      "reverse": "Storno qilish",
+      "reversed": "storno qilingan",
+      "reversal": "Toʻlov stornosi",
+      "reverseTitle": "Toʻlov storno qilinsinmi?",
+      "reverseText": "{amount} miqdorida teskari yozuv yaratiladi. Asl toʻlov tarixda qoladi.",
+      "reverseConfirm": "Storno qilish",
+      "reverseDone": "Toʻlov storno qilindi",
+      "form": {
+        "direction": "Toʻlov turi",
+        "method": "Toʻlov usuli",
+        "amount": "Summa",
+        "currency": "Valyuta",
+        "rate": "Soʻmga kurs",
+        "rateHint": "Bugungi MB kursi — boshqa kurs qoʻllangan boʻlsa, tuzating",
+        "paidAt": "Toʻlov sanasi",
+        "receipt": "Chek yoki kvitansiya",
+        "receiptRequired": "Mijoz pullari uchun chek majburiy",
+        "note": "Izoh",
+        "save": "Toʻlovni saqlash"
+      },
+      "directions": {
+        "customer_in": "Mijoz toʻlovi",
+        "customer_refund": "Mijozga qaytarish",
+        "supplier_out": "Yetkazib beruvchiga toʻlov",
+        "supplier_refund": "Yetkazib beruvchidan qaytarish"
+      },
+      "methods": {
+        "cash": "Naqd, kassa",
+        "uzcard": "Uzcard",
+        "humo": "Humo",
+        "card": "Visa / Mastercard",
+        "transfer": "Bank oʻtkazmasi"
+      },
+      "status": {
+        "unpaid": "Toʻlanmagan",
+        "partial": "Qisman toʻlangan",
+        "paid": "Toʻliq toʻlangan",
+        "overpaid": "Ortiqcha toʻlangan"
+      },
+      "legacyPaid": "Buyurtma toʻlovlar jurnaligacha toʻlangan va toʻliq toʻlangan hisoblanadi."
+    },
+    "esim": {
+      "title": "eSIM",
+      "lead": "Chiqarilgan — {issued}, e'tibor talab qiladi — {failed}.",
+      "search": "Qidiruv",
+      "searchPlaceholder": "Email, telefon, raqam yoki mamlakat…",
+      "filters": {
+        "all": "Barcha holatlar"
+      },
+      "status": {
+        "awaiting_payment": "To'lov kutilmoqda",
+        "paid": "To'langan",
+        "issued": "Chiqarilgan",
+        "issue_failed": "Chiqarilmagan",
+        "cancelled": "Bekor qilingan"
+      },
+      "columns": {
+        "number": "Raqam",
+        "date": "Sana",
+        "tariff": "Tarif",
+        "price": "Summa",
+        "margin": "Marja",
+        "method": "To'lov",
+        "client": "Mijoz",
+        "status": "Holat"
+      },
+      "retry": "Qayta chiqarish",
+      "retried": "eSIM chiqarildi",
+      "retryFailed": "Yetkazib beruvchi yana rad etdi",
+      "empty": "Hozircha eSIM xaridlari yo'q.",
+      "noMatches": "Hech narsa topilmadi."
     }
   },
   "richEditor": {
@@ -1510,5 +1741,123 @@
     "next": "Keyingi sahifa",
     "page": "{n}-sahifa",
     "perPage": "Sahifada"
+  },
+  "esim": {
+    "hero": {
+      "title": "Sayohat uchun eSIM",
+      "subtitle": "Rouming va SIM-karta qidirmasdan chet elda internet. QR-kod to'lovdan so'ng darhol."
+    },
+    "where": "Qayerga borasiz",
+    "wherePlaceholder": "Mamlakat",
+    "showPlans": "Tariflarni ko'rsatish",
+    "from": "{price} dan",
+    "sum": "so'm",
+    "popular": "Mashhur",
+    "allCountries": "Barcha mamlakatlar",
+    "countryTitle": "eSIM — {country}",
+    "networks": "Tarmoqlar: {list}",
+    "noPlans": "Bu mamlakat uchun hozircha tariflar yo'q.",
+    "choosePlan": "Tarifni tanlang",
+    "unlimited": "Cheksiz",
+    "gb": "{n} GB",
+    "days": "{n} kun | {n} kun | {n} kun | {n} kun",
+    "perDay": "kuniga {price}",
+    "steps": {
+      "1": {
+        "title": "To'lang",
+        "text": "Payme, Click yoki karta orqali — ro'yxatdan o'tmasdan."
+      },
+      "2": {
+        "title": "QR-kodni skanerlang",
+        "text": "Kod to'lovdan keyin darhol chiqadi. eSIMni uyda Wi-Fi orqali o'rnating."
+      },
+      "3": {
+        "title": "Yetib kelgach yoqing",
+        "text": "eSIM uchun mobil internetni yoqing — internet ishlaydi."
+      }
+    },
+    "checkout": "Rasmiylashtirish",
+    "email": "Email",
+    "emailHint": "Buyurtma bo'yicha aloqa uchun",
+    "phone": "Telefon",
+    "payWith": "To'lov usuli",
+    "total": "Jami",
+    "pay": {
+      "title": "To'lov",
+      "sandbox": "Test rejimi — pul yechilmaydi",
+      "cardNumber": "Karta raqami",
+      "expiry": "Muddati",
+      "cvc": "CVC",
+      "payAmount": "{amount} to'lash",
+      "secureTitle": "3-D Secure tasdiqlash",
+      "secureText": "Bank {card} kartasiga bog'langan raqamga kod yubordi.",
+      "code": "SMS-kod",
+      "codeHint": "Istalgan 6 raqam; 000000 — bank rad etadi",
+      "confirm": "Tasdiqlash",
+      "cancel": "To'lovni bekor qilish"
+    },
+    "test": "test",
+    "legal": "«To'lash» tugmasini bosib, siz shartlarga rozilik bildirasiz:",
+    "offer": "oferta",
+    "methods": {
+      "payme": "Payme",
+      "click": "Click",
+      "card": "Visa / Mastercard"
+    },
+    "methodHints": {
+      "payme": "Uzcard va Humo kartalari",
+      "click": "Uzcard va Humo kartalari",
+      "card": "3-D Secure himoyasi"
+    },
+    "errors": {
+      "email": "Emailni tekshiring",
+      "phone": "Raqamni to'liq kiriting"
+    },
+    "seo": {
+      "title": "Sayohat uchun eSIM — chet elda internet — TripMe",
+      "description": "25 mamlakat uchun eSIM: Turkiya, BAA, Misr, Tailand va boshqalar. Payme, Click yoki karta orqali to'lov, QR-kod darhol.",
+      "countryTitle": "Sayohat uchun eSIM: {country} — TripMe",
+      "countryDescription": "{country}da roumingsiz mobil internet. Tarifni tanlang va to'lovdan so'ng QR-kodni oling."
+    },
+    "order": {
+      "seo": "Sizning eSIM",
+      "missing": "Xarid topilmadi",
+      "ref": "ESIM-{number}",
+      "awaiting": "To'lov kutilmoqda",
+      "toPayment": "To'lovga o'tish",
+      "issuing": "To'lov qabul qilindi — eSIM chiqarilmoqda",
+      "issuingText": "Odatda bir necha soniya oladi. Sahifa o‘zi yangilanadi.",
+      "failed": "To'lov o'tdi, eSIMni qo'lda chiqaramiz",
+      "failedText": "Yetkazib beruvchi o'z vaqtida javob bermadi. eSIMni chiqarib, bir soat ichida siz bilan bog'lanamiz.",
+      "support": "Biz bilan bog'lanish",
+      "cancelled": "To'lov o'tmadi yoki to'lov vaqti tugadi",
+      "again": "Tarifni qayta tanlash",
+      "ready": "eSIM tayyor",
+      "scan": "QR-kodni telefon kamerasi bilan skanerlang",
+      "qrLabel": "eSIMni o'rnatish uchun QR-kod",
+      "keep": "Ushbu sahifa havolasini saqlang — u orqali har doim eSIMga qaytishingiz mumkin.",
+      "howTo": "Qanday o'rnatiladi",
+      "manual": "QR skanerlanmasa",
+      "smdp": "SM-DP+ manzili",
+      "code": "Faollashtirish kodi",
+      "copy": "Nusxalash",
+      "copied": "Nusxalandi"
+    },
+    "install": {
+      "ios": {
+        "1": "«Sozlamalar» → «Uyali aloqa» → «eSIM qo'shish»ni oching.",
+        "2": "«QR-koddan foydalanish»ni tanlang va chapdagi kodni skanerlang.",
+        "3": "eSIMga nom bering, masalan «Sayohat», qo'ng'iroqlar uchun asosiy raqamni qoldiring.",
+        "4": "Yetib kelgach, eSIM uchun «Mobil internet» va «Rouming»ni yoqing."
+      },
+      "android": {
+        "1": "«Sozlamalar» → «Tarmoq va internet» → «SIM-kartalar»ni oching.",
+        "2": "«eSIM qo'shish»ni bosing va QR-kodni skanerlang.",
+        "3": "Profil yuklanishini kuting va uni o'chirmang.",
+        "4": "Yetib kelgach, mobil internet uchun eSIMni tanlang va roumingni yoqing."
+      }
+    },
+    "payPrice": "{price} to'lash",
+    "soon": "eSIM tez orada saytda paydo bo'ladi."
   }
 }

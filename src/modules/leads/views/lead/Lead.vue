@@ -16,9 +16,8 @@
                         {{ t(`cms.leads.channels.${lead.channel}`) }} · {{ fullDate(lead.created_at) }}
                         <template v-if="lead.user_id"> · {{ t('cms.leads.registered') }}</template>
                     </p>
-                    <p class="tm-cms-lead__compliance">
-                        <span :class="response.overdue ? 'is-late' : 'is-ok'">{{ responseText }}</span>
-                        <span v-if="lead.consent_at">{{ t('cms.leads.consentGiven', { date: fullDate(lead.consent_at) }) }}</span>
+                    <p v-if="lead.consent_at" class="tm-cms-lead__compliance">
+                        <span>{{ t('cms.leads.consentGiven', { date: fullDate(lead.consent_at) }) }}</span>
                     </p>
                 </div>
 
@@ -38,7 +37,7 @@
 
             <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
-            <LeadOwner :lead="lead" class="tm-cms-lead__card" @changed="owned" />
+            <LeadOwner v-if="lead.manager_id !== me" :lead="lead" class="tm-cms-lead__card" @changed="owned" />
 
             <section class="tm-cms-lead__card">
                 <header class="tm-cms-lead__offer-head">
@@ -207,7 +206,12 @@
                 <header class="tm-cms-lead__orders-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.orders') }}</h2>
 
-                    <Button type="button" size="sm" variant="ghost" icon="plus" @click="addOrder">
+                    <Button
+                        type="button" size="sm" variant="ghost" icon="plus"
+                        :disabled="!hasTour"
+                        :title="hasTour ? undefined : t('cms.leads.orderNeedsTour')"
+                        @click="addOrder"
+                    >
                         {{ t('cms.leads.addOrder') }}
                     </Button>
                 </header>
@@ -253,9 +257,8 @@ import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
 import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
-import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
-import { leadResponse, waitLabel } from '~/modules/leads/helpers/compliance'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
 import type { Money } from '~/search_engine/contracts/search'
 
@@ -271,6 +274,8 @@ const {
     statusOptions, change, submit, addOrder, remove,
     picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()
+
+const { me } = useManagers()
 
 const shortDate = (value: string | null | undefined): string =>
     formatDate(value, locale.value, { day: '2-digit', month: 'short' })
@@ -323,7 +328,7 @@ const tourPrice = computed(() => {
 const KNOWN = new Set([
     'hotel_name', 'supplier_name', 'check_in', 'nights', 'adults', 'children',
     'price_amount', 'price_currency', 'route_from', 'route_to',
-    'booking_url', 'hotel_url', 'hotel_stars', 'meal_name', 'room_name', 'kid_ages',
+    'booking_url', 'hotel_url', 'hotel_stars', 'meal_name', 'room_name', 'kid_ages', 'route_to_label',
 ])
 
 const plain = (value: unknown): string =>
@@ -336,26 +341,6 @@ const extras = computed(() =>
         .filter(entry => entry.value))
 
 useSeoMeta({ title: () => t('cms.leads.title'), robots: 'noindex, nofollow' })
-
-const now = ref(Date.now())
-let ticker: ReturnType<typeof setInterval> | null = null
-
-onMounted(() => { ticker = setInterval(() => { now.value = Date.now() }, 30_000) })
-onBeforeUnmount(() => { if (ticker) clearInterval(ticker) })
-
-const response = computed(() => (lead.value
-    ? leadResponse(lead.value, now.value)
-    : { minutes: 0, overdue: false, answered: false }))
-
-const responseText = computed(() => {
-    const wait = waitLabel(response.value.minutes, t)
-
-    if (response.value.answered) return t('cms.leads.sla.answered', { wait })
-
-    return response.value.overdue
-        ? t('cms.leads.sla.waitingLate', { wait, n: RESPONSE_SLA_MINUTES })
-        : t('cms.leads.sla.waiting', { wait })
-})
 
 const pickToursLink = computed(() => {
     if (!lead.value) return ''

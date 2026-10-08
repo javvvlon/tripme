@@ -18,6 +18,8 @@
                 </div>
 
                 <div class="tm-cms-order__head-actions">
+                    <PaymentBadge :status="order.payment_status ?? 'unpaid'" />
+
                     <SelectMenu
                         :model-value="order.status"
                         :options="statusOptions"
@@ -55,6 +57,35 @@
                 </div>
             </section>
 
+            <OrderChecklist
+                v-if="order.confirmation && order.status !== 'cancelled' && order.status !== 'completed'"
+                :confirmation="order.confirmation"
+                :status="order.status"
+                :busy="saving || contractBusy"
+                class="tm-cms-order__checklist"
+                @confirm="confirmOrder"
+                @contract="attachContract"
+                @go="goTo"
+            />
+
+            <Tabs v-model="tab" :items="tabItems" variant="segment" :aria-label="order.ref" class="tm-cms-order__tabs" />
+
+            <div v-show="tab === 'services'" class="tm-cms-order__pane">
+            <OrderItems
+                ref="itemsBlock"
+                :items="order.items ?? []"
+                :busy="rateBusy"
+                :locked="order.status === 'cancelled' || order.status === 'completed'"
+                :start="order.check_in"
+                :end="order.return_date"
+                class="tm-cms-order__card tm-cms-order__items"
+                @rate="changeRate"
+                @confirm="confirmService"
+                @save="saveService"
+                @remove="removeService"
+                @issue="issueService"
+            />
+
             <section v-if="links.search || links.booking || links.hotel" class="tm-cms-order__card">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
 
@@ -84,8 +115,19 @@
                     </Button>
                 </div>
             </section>
+            </div>
 
-            <form class="tm-cms-order__form" novalidate @submit.prevent="submit">
+            <div v-show="tab === 'finance'" class="tm-cms-order__pane">
+                <OrderFinance
+                    ref="financeBlock"
+                    :order-id="order.uuid"
+                    :version="financeVersion"
+                    class="tm-cms-order__card"
+                    @changed="moneyChanged"
+                />
+            </div>
+
+            <form v-show="tab === 'details'" class="tm-cms-order__form tm-cms-order__pane" novalidate @submit.prevent="submit">
                 <section class="tm-cms-order__card">
                     <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.traveller') }}</h2>
 
@@ -165,7 +207,7 @@
                 </footer>
             </form>
 
-            <section class="tm-cms-order__card">
+            <section v-show="tab === 'documents'" class="tm-cms-order__card tm-cms-order__pane">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.orders.documents.title') }}</h2>
 
                 <div class="tm-cms-order__doc-actions">
@@ -234,7 +276,7 @@
                 </ul>
             </section>
 
-            <section v-if="history.length" class="tm-cms-order__card tm-cms-order__history">
+            <section v-if="history.length" v-show="tab === 'history'" class="tm-cms-order__card tm-cms-order__history tm-cms-order__pane">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.history') }}</h2>
 
                 <ol class="tm-cms-order__events">
@@ -273,6 +315,15 @@ import { tourFromOrder } from '~/modules/leads/helpers/quote'
 import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import OrderItems from '~/modules/leads/components/orderItems/OrderItems.vue'
+import OrderChecklist from '~/modules/leads/components/orderChecklist/OrderChecklist.vue'
+import Tabs from '~/shared/components/tabs/Tabs.vue'
+import OrderFinance from '~/modules/finance/components/orderFinance/OrderFinance.vue'
+import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
+import { useFinanceRepository } from '~/modules/finance/repositories'
+import { useLeadsRepository } from '~/modules/leads/repositories'
+import type { IFinanceRaw } from '~/modules/finance/contracts/finance'
+import type { IOrderItemBody, IOrderRaw } from '~/modules/leads/contracts/leads'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
@@ -291,9 +342,200 @@ const noteId = useId()
 const {
     order, draft, status, error, saving, saved, history,
     statusOptions, change, submit, remove, assignManager,
-    documents, documentsLoading, working, generate, attach, dropDocument,
+    documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
     cancelling, cancelReason, confirmCancel,
 } = useOrder()
+
+const { setItemRate } = useFinanceRepository()
+const { order: fetchOrder, orderHistory, uploadContract, confirmItem, addItem, updateItem, removeItem, issueItem } = useLeadsRepository()
+const { failed: rateFailed, saved: rateSaved } = useToast()
+
+const financeVersion = ref(0)
+const rateBusy = ref(false)
+
+async function changeRate(itemId: string, rate: number) {
+    if (!order.value) return
+
+    rateBusy.value = true
+
+    try {
+        await setItemRate(order.value.uuid, itemId, rate)
+        order.value.items = (await fetchOrder(order.value.uuid)).items
+        triggerRef(order)
+        financeVersion.value++
+        rateSaved(t('cms.orders.items.rateSaved'))
+    }
+    catch (e) {
+        rateFailed(e)
+    }
+    finally {
+        rateBusy.value = false
+    }
+}
+
+const { ask } = useConfirm()
+
+const route = useRoute()
+const router = useRouter()
+
+const TABS = ['services', 'finance', 'details', 'documents', 'history'] as const
+type OrderTab = typeof TABS[number]
+
+const tab = computed<OrderTab>({
+    get: () => (TABS.includes(route.query.tab as OrderTab) ? route.query.tab as OrderTab : 'services'),
+    set: (next) => { void router.replace({ query: { ...route.query, tab: next === 'services' ? undefined : next } }) },
+})
+
+const activeServices = computed(() =>
+    (order.value?.items ?? []).filter(item => item.status !== 'cancelled' && item.status !== 'rejected').length)
+
+const tabItems = computed(() => TABS.map(value => ({
+    value,
+    label: value === 'services' && activeServices.value
+        ? `${t('cms.orders.tabs.services')} · ${activeServices.value}`
+        : value === 'documents' && documents.value.length
+            ? `${t('cms.orders.tabs.documents')} · ${documents.value.length}`
+            : t(`cms.orders.tabs.${value}`),
+})))
+
+const contractBusy = ref(false)
+
+const financeBlock = useTemplateRef<{ openForm: () => void }>('financeBlock')
+
+function goTo(target: 'services' | 'finance' | 'details') {
+    tab.value = target
+
+    if (target === 'finance') nextTick(() => financeBlock.value?.openForm())
+}
+
+const adoptFresh = (fresh: IOrderRaw) => {
+    if (!order.value) return
+
+    if (fresh.status !== order.value.status) {
+        order.value.status = fresh.status
+        rateSaved(t('cms.orders.autoStatus', { status: t(`cms.orders.status.${fresh.status}`) }))
+        void orderHistory(fresh.uuid).then((events) => { history.value = events }).catch(() => undefined)
+    }
+
+    order.value.items = fresh.items
+    order.value.confirmation = fresh.confirmation
+    order.value.contract_signed_at = fresh.contract_signed_at
+    order.value.supplier_order_id = fresh.supplier_order_id
+    order.value.payment_status = fresh.payment_status
+    order.value.balance_uzs = fresh.balance_uzs
+    draft.supplierOrderId = fresh.supplier_order_id
+    triggerRef(order)
+}
+
+async function moneyChanged(finance: IFinanceRaw) {
+    if (!order.value) return
+
+    order.value.payment_status = finance.payment_status
+    order.value.balance_uzs = finance.balance_uzs
+    void loadDocuments()
+
+    try {
+        adoptFresh(await fetchOrder(order.value.uuid))
+    }
+    catch {
+        return
+    }
+}
+
+async function attachContract(file: File) {
+    if (!order.value) return
+
+    contractBusy.value = true
+
+    try {
+        adoptFresh(await uploadContract(order.value.uuid, file))
+        await loadDocuments()
+        rateSaved(t('cms.orders.checklist.contractSaved'))
+    }
+    catch (e) {
+        rateFailed(e)
+    }
+    finally {
+        contractBusy.value = false
+    }
+}
+
+async function confirmService(itemId: string, supplierRef: string) {
+    if (!order.value) return
+
+    rateBusy.value = true
+
+    try {
+        adoptFresh(await confirmItem(order.value.uuid, itemId, supplierRef))
+        rateSaved(t('cms.orders.items.confirmed'))
+    }
+    catch (e) {
+        rateFailed(e)
+    }
+    finally {
+        rateBusy.value = false
+    }
+}
+
+const itemsBlock = useTemplateRef<{ done: () => void }>('itemsBlock')
+
+async function changeServices(work: (orderId: string) => Promise<IOrderRaw>, message: string, documentsToo = false) {
+    if (!order.value) return
+
+    rateBusy.value = true
+
+    try {
+        adoptFresh(await work(order.value.uuid))
+        financeVersion.value++
+        itemsBlock.value?.done()
+        rateSaved(message)
+
+        if (documentsToo) await loadDocuments()
+    }
+    catch (e) {
+        rateFailed(e)
+    }
+    finally {
+        rateBusy.value = false
+    }
+}
+
+const saveService = (itemId: string | null, body: IOrderItemBody) => changeServices(
+    orderId => (itemId ? updateItem(orderId, itemId, body) : addItem(orderId, body)),
+    itemId ? t('cms.orders.items.updated') : t('cms.orders.items.added'),
+)
+
+const removeService = (itemId: string) => changeServices(orderId => removeItem(orderId, itemId), t('cms.orders.items.removed'))
+
+const issueService = (itemId: string, file: File | null) =>
+    changeServices(orderId => issueItem(orderId, itemId, file), t('cms.orders.items.issued'), Boolean(file))
+
+const CHECK_LABELS = {
+    suppliers: 'cms.orders.checklist.suppliers',
+    contract: 'cms.orders.checklist.contract',
+    deposit: 'cms.orders.checklist.deposit',
+    passport: 'cms.orders.checklist.passport',
+} as const
+
+async function confirmOrder() {
+    const confirmation = order.value?.confirmation
+
+    if (!confirmation) return
+
+    if (!confirmation.ready) {
+        if (confirmation.mode === 'enforce') return
+
+        if (!await ask({
+            title: t('cms.orders.checklist.confirmAnywayTitle'),
+            description: t('cms.orders.checklist.confirmAnywayText', {
+                list: confirmation.missing.map(key => t(CHECK_LABELS[key]).toLowerCase()).join('; '),
+            }),
+            confirmLabel: t('cms.orders.checklist.confirmAnyway'),
+        })) return
+    }
+
+    await change('confirmed')
+}
 
 const { elevated, me, assignOptions } = useManagers('orders')
 

@@ -1,0 +1,67 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-service-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    &__kinds {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    &__kind {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-2);
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+        transition: border-color .12s ease, background .12s ease, color .12s ease;
+
+        &:hover { border-color: var(--tm-ink-4); }
+
+        &.is-active {
+            border-color: var(--tm-brand-primary);
+            background: color-mix(in srgb, var(--tm-brand-primary) 8%, var(--tm-surface-1));
+            color: var(--tm-ink-1);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--tm-brand-primary);
+            outline-offset: 2px;
+        }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    &__price {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 96px;
+        gap: 8px;
+        align-items: end;
+
+        .tm-combobox__control {
+            min-height: 50px;
+            padding-block: 0;
+        }
+    }
+}
+
+@media #{$until-md} {
+    .tm-service-modal {
+        &__kinds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        &__grid { grid-template-columns: minmax(0, 1fr); }
+    }
+}

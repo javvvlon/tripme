@@ -4,10 +4,12 @@
 export const LEAD_STATUSES = ['new', 'in_progress', 'quote_sent', 'won', 'rejected'] as const
 
 export const ORDER_STATUSES = [
-  'draft', 'requested', 'confirmed', 'paid', 'issued', 'travelling', 'completed', 'cancelled',
+  'draft', 'requested', 'confirmed', 'issued', 'travelling', 'completed', 'cancelled',
 ] as const
 
 export type OrderStatus = typeof ORDER_STATUSES[number]
+
+export type OrderHistoryStatus = OrderStatus | 'paid'
 
 export const LEAD_SORTS = [
   'order', 'created', 'client', 'phone', 'tour',
@@ -46,6 +48,7 @@ export interface ILeadTrip {
 export interface ITripRoute {
   from: string
   to: string
+  toLabel?: string
   kidAges?: number[]
 }
 
@@ -135,14 +138,80 @@ export interface IOrderRaw {
   price_amount: number | null
   price_currency: string
   trip: Record<string, unknown>
+  items: IOrderItemRaw[]
+  payment_status: 'unpaid' | 'partial' | 'paid' | 'overpaid'
+  balance_uzs: number
+  deposit_percent: number | null
+  legacy_paid: boolean
+  contract_signed_at: string | null
+  confirmation: IOrderConfirmation
   note: string
   created_at: string
   updated_at: string
 }
 
+export type ConfirmationCheck = 'suppliers' | 'contract' | 'deposit' | 'passport'
+
+export interface IOrderConfirmation {
+  suppliers: { ok: boolean, pending: string[] }
+  contract: { ok: boolean, signed_at: string | null }
+  deposit: { ok: boolean, received_uzs: number, deposit_uzs: number, legacy: boolean }
+  passport: { ok: boolean, problem: 'missing' | 'expired' | 'short' | null }
+  missing: ConfirmationCheck[]
+  ready: boolean
+  mode: 'warn' | 'enforce'
+}
+
+export const ORDER_ITEM_KINDS = ['package', 'flight', 'hotel', 'transfer', 'insurance', 'excursion', 'visa'] as const
+
+export type OrderItemKind = typeof ORDER_ITEM_KINDS[number]
+
+export const MANUAL_ITEM_KINDS = ['visa', 'insurance', 'transfer', 'excursion', 'flight', 'hotel'] as const satisfies readonly OrderItemKind[]
+
+export type ManualItemKind = typeof MANUAL_ITEM_KINDS[number]
+
+export const TRACKED_ITEM_KINDS: OrderItemKind[] = ['package', 'flight', 'hotel']
+
+export const ITEM_CURRENCIES = ['USD', 'EUR', 'UZS'] as const
+
+export interface IOrderItemBody {
+  kind: ManualItemKind
+  title: string
+  supplier_name: string
+  service_start: string | null
+  service_end: string | null
+  price_amount: number
+  price_currency: string
+  note: string
+}
+
+export type OrderItemStatus = 'draft' | 'requested' | 'confirmed' | 'rejected' | 'issued' | 'cancelled'
+
+export interface IOrderItemRaw {
+  uuid: string
+  position: number
+  kind: OrderItemKind
+  status: OrderItemStatus
+  title: string
+  supplier_name: string
+  supplier_ref: string
+  offer_id: string
+  service_start: string | null
+  service_end: string | null
+  price_amount: number | null
+  price_currency: string
+  price_uzs: number | null
+  cost_amount: number | null
+  cost_currency: string
+  fx_rate: number | null
+  fx_date: string | null
+  required_for_confirmation: boolean
+  details: Record<string, unknown>
+}
+
 export interface IOrderEvent {
-  from: OrderStatus | null
-  to: OrderStatus
+  from: OrderHistoryStatus | null
+  to: OrderHistoryStatus
   actor_id: string | null
   actor_name: string | null
   at: string
@@ -173,15 +242,14 @@ export type ManagerFilter = 'all' | 'me' | 'none' | string
 export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   draft: ['requested', 'cancelled'],
   requested: ['confirmed', 'draft', 'cancelled'],
-  confirmed: ['paid', 'requested', 'cancelled'],
-  paid: ['issued', 'cancelled'],
+  confirmed: ['issued', 'requested', 'cancelled'],
   issued: ['travelling', 'cancelled'],
   travelling: ['completed'],
   completed: [],
   cancelled: [],
 }
 
-export const PASSPORT_CHECKED: OrderStatus[] = ['confirmed', 'paid', 'issued', 'travelling']
+export const PASSPORT_CHECKED: OrderStatus[] = ['confirmed', 'issued', 'travelling']
 
 export const PASSPORT_MARGIN_MONTHS = 6
 

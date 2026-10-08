@@ -25,6 +25,7 @@ export const useTourPicker = (initial: Partial<ITourPickerCriteria> = {}) => {
   const route = (): ITripRoute => ({
     from: from.value,
     to: to.value,
+    toLabel: references.countryOptions.value.find(option => option.value === to.value)?.label ?? '',
     kidAges: Array.from({ length: kids.value }, () => DEFAULT_KID_AGE),
   })
 

@@ -1,6 +1,6 @@
 import { toE164 } from '~/shared/helpers/phone'
 import type {
-  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderRaw,
+  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderItemBody, IOrderRaw,
   IStaffMember, LeadSort, LeadStatus, ManagerFilter, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -221,6 +221,50 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
+  const uploadContract = async (id: string, file: File): Promise<IOrderRaw> => {
+    const body = new FormData()
+
+    body.append('file', file, file.name)
+
+    const response = await http.call<IOrderRaw>('Leads', 'uploadContract', { id }, body)
+
+    return response.data
+  }
+
+  const confirmItem = async (id: string, itemId: string, supplierRef: string): Promise<IOrderRaw> => {
+    const response = await http.call<IOrderRaw>('Leads', 'confirmItem', { id, itemId }, { supplier_ref: supplierRef.trim() } as AnyObject)
+
+    return response.data
+  }
+
+  const addItem = async (id: string, body: IOrderItemBody): Promise<IOrderRaw> => {
+    const response = await http.call<IOrderRaw>('Leads', 'addItem', { id }, body as unknown as AnyObject)
+
+    return response.data
+  }
+
+  const updateItem = async (id: string, itemId: string, body: IOrderItemBody): Promise<IOrderRaw> => {
+    const response = await http.call<IOrderRaw>('Leads', 'updateItem', { id, itemId }, body as unknown as AnyObject)
+
+    return response.data
+  }
+
+  const removeItem = async (id: string, itemId: string): Promise<IOrderRaw> => {
+    const response = await http.call<IOrderRaw>('Leads', 'removeItem', { id, itemId })
+
+    return response.data
+  }
+
+  const issueItem = async (id: string, itemId: string, file: File | null): Promise<IOrderRaw> => {
+    const body = new FormData()
+
+    if (file) body.append('file', file, file.name)
+
+    const response = await http.call<IOrderRaw>('Leads', 'issueItem', { id, itemId }, body)
+
+    return response.data
+  }
+
   const removeDocument = async (id: string): Promise<void> => {
     await http.call<void>('Leads', 'removeDocument', { id })
   }
@@ -253,6 +297,7 @@ export const useLeadsRepository = () => {
   return {
     submit, all, page, one, history, take, staff, create, patch, setStatus, remove,
     orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
-    orderDocuments, generateDocument, attachDocument, removeDocument,
+    orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
+    addItem, updateItem, removeItem, issueItem,
   }
 }

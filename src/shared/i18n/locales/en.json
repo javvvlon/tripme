@@ -104,6 +104,11 @@
       "description": "Tour packages from Uzbekistan: Turkey, Egypt, UAE, Thailand, the Maldives. One search across every operator, with the full package price up front.",
       "ogTitle": "TripMe — tours from Tashkent",
       "ogDescription": "One search, every operator. Flight, hotel and transfer in a single price."
+    },
+    "products": {
+      "label": "What are you looking for",
+      "tours": "Tours",
+      "esim": "eSIM"
     }
   },
   "footer": {
@@ -333,7 +338,8 @@
         "settings": "Settings"
       },
       "collapse": "Collapse menu",
-      "expand": "Expand menu"
+      "expand": "Expand menu",
+      "esim": "eSIM"
     },
     "roles": {
       "CLIENT": "Client",
@@ -352,7 +358,7 @@
       "imageRejected": "The image was rejected — replace it or remove it.",
       "guards": {
         "transition": "An order cannot go from “{from}” to “{to}” — a step is missing.",
-        "leadPaid": "This lead has a paid order, so it cannot be rejected.",
+        "leadPaid": "This lead has a confirmed order, so it cannot be rejected.",
         "orderPaid": "A paid order cannot be deleted.",
         "leadRejected": "A rejected lead cannot take new orders.",
         "unknownStatus": "Unknown order status.",
@@ -369,7 +375,24 @@
         "customerMissing": "Customer not found.",
         "cancelReason": "Give a reason for cancelling the order.",
         "passportExpired": "The passport expires before the trip ends — the order cannot be confirmed.",
-        "passportShort": "The passport must stay valid 6 months after the trip ends — the order cannot be confirmed."
+        "passportShort": "The passport must stay valid 6 months after the trip ends — the order cannot be confirmed.",
+        "confirmationIncomplete": "The order cannot be confirmed yet — some conditions are not met.",
+        "receiptRequired": "Attach a receipt for client money.",
+        "reverseForbidden": "Only a manager can reverse a payment.",
+        "alreadyReversed": "This payment is already reversed.",
+        "orderHasPayments": "This order has payments, so it cannot be deleted.",
+        "supplierPaymentForbidden": "Payments to suppliers are recorded by a manager.",
+        "futurePayment": "A payment cannot be dated in the future.",
+        "amountPositive": "The amount must be above zero.",
+        "rateMissing": "Enter the exchange rate to sum.",
+        "supplierRefRequired": "Enter the supplier booking number.",
+        "depositPercent": "The deposit is a whole percent from 0 to 100.",
+        "receiptLocked": "A payment receipt cannot be deleted — reverse the payment instead.",
+        "serviceCancelled": "A cancelled service cannot be confirmed.",
+        "serviceIssued": "An issued service cannot be changed",
+        "packageLocked": "The tour package changes through the order details",
+        "orderClosed": "A closed order cannot take new services",
+        "serviceDates": "The end date is before the start"
       }
     },
     "upload": {
@@ -820,7 +843,8 @@
         "answered": "First answer after {wait}",
         "waiting": "Waiting for an answer {wait}",
         "waitingLate": "Waiting for an answer {wait} — the target is {n} minutes"
-      }
+      },
+      "orderNeedsTour": "Pick a tour for the lead first"
     },
     "orders": {
       "title": "Orders",
@@ -852,7 +876,8 @@
         "party": "Guests",
         "price": "Price",
         "supplierOrder": "Operator ref",
-        "status": "Status"
+        "status": "Status",
+        "payment": "Payment"
       },
       "fields": {
         "traveller": "Lead traveller",
@@ -908,7 +933,9 @@
         "kinds": {
           "offer": "Offer",
           "invoice": "Invoice",
-          "attachment": "File"
+          "attachment": "File",
+          "contract": "Contract",
+          "voucher": "Voucher"
         },
         "confirmDelete": {
           "title": "Delete this document?",
@@ -921,7 +948,117 @@
         "placeholder": "For example: the client changed their mind, the tour was withdrawn",
         "confirm": "Cancel order",
         "keep": "Keep order"
-      }
+      },
+      "items": {
+        "title": "Services",
+        "empty": "No services in this order yet.",
+        "ref": "Supplier booking № {ref}",
+        "kinds": {
+          "package": "Tour package",
+          "flight": "Flight",
+          "hotel": "Hotel",
+          "transfer": "Transfer",
+          "insurance": "Insurance",
+          "excursion": "Excursion",
+          "visa": "Visa"
+        },
+        "status": {
+          "draft": "Draft",
+          "requested": "Requested from supplier",
+          "confirmed": "Confirmed",
+          "rejected": "Rejected",
+          "issued": "Issued",
+          "cancelled": "Cancelled"
+        },
+        "uzs": "≈ {amount}",
+        "rate": "rate {rate} on {date}",
+        "rateEdit": "change rate",
+        "rateMissing": "no rate — set one",
+        "rateLabel": "Rate to sum",
+        "rateSaved": "Rate saved",
+        "confirm": "Supplier confirmed — enter booking №",
+        "refLabel": "Supplier booking №",
+        "confirmed": "Service confirmed",
+        "add": "Add service",
+        "issue": "Issue",
+        "edit": "Edit",
+        "remove": "Remove",
+        "issueTitle": "Issue service",
+        "issueConfirm": "Issue",
+        "issueFile": "Policy, ticket or voucher (optional)",
+        "deleteTitle": "Delete service?",
+        "deleteText": "\"{name}\" is not confirmed by the supplier yet and will be removed from the order.",
+        "deleteConfirm": "Delete",
+        "cancelTitle": "Cancel service?",
+        "cancelText": "\"{name}\" is already confirmed. It stays in the order, struck through, and leaves the total.",
+        "cancelConfirm": "Cancel service",
+        "added": "Service added",
+        "updated": "Service saved",
+        "removed": "Service removed",
+        "issued": "Service issued",
+        "form": {
+          "addTitle": "New service",
+          "editTitle": "Service",
+          "add": "Add",
+          "kind": "Service type",
+          "title": "Name",
+          "supplier": "Supplier",
+          "price": "Client price",
+          "currency": "Currency",
+          "start": "From",
+          "end": "To",
+          "note": "Comment",
+          "datesWrong": "The end date is before the start",
+          "examples": {
+            "insurance": "Kafolat insurance, 2 travellers",
+            "transfer": "Airport — hotel — airport",
+            "flight": "TAS — IST, Uzbekistan Airways",
+            "hotel": "Extra night, Rixos Premium",
+            "excursion": "Cappadocia, 1 day",
+            "visa": "Schengen visa, 2 travellers"
+          }
+        }
+      },
+      "checklist": {
+        "title": "Confirmation checklist",
+        "suppliers": "Suppliers confirmed the services",
+        "suppliersOk": "All required services are confirmed",
+        "suppliersWaiting": "Waiting for: {list}",
+        "contract": "Contract signed",
+        "contractOk": "Uploaded {date}",
+        "contractMissing": "Upload a scan of the signed contract",
+        "contractUpload": "Upload contract",
+        "contractUploading": "Uploading…",
+        "contractSaved": "Contract uploaded",
+        "deposit": "Deposit paid",
+        "depositDetail": "{received} of {deposit}",
+        "depositLegacy": "Paid before the payment log",
+        "passport": "Passport valid 6 months after return",
+        "passportOk": "Validity is fine",
+        "passportMissing": "Enter the passport expiry on the “Traveller & trip” tab",
+        "passportExpired": "The passport expires before the trip ends",
+        "passportShort": "The passport is valid less than 6 months after return",
+        "confirm": "Confirm order",
+        "confirmed": "Order confirmed",
+        "confirmedHint": "Documents and payments are in the tabs below.",
+        "warnMode": "The rule only warns for now: the order can still be confirmed with open items.",
+        "enforceMode": "The button unlocks once every item is done.",
+        "confirmAnywayTitle": "Confirm the order with open conditions?",
+        "confirmAnywayText": "Not done: {list}. Once the rule is enforced, such an order cannot be confirmed.",
+        "confirmAnyway": "Confirm anyway",
+        "progress": "{done} of {total}",
+        "goServices": "Confirm a service",
+        "goFinance": "Record a payment",
+        "goDetails": "Enter passport"
+      },
+      "tabs": {
+        "services": "Services",
+        "finance": "Finance",
+        "details": "Traveller & trip",
+        "documents": "Documents",
+        "history": "History"
+      },
+      "autoStatus": "Order status: \"{status}\""
     },
     "operators": {
       "title": "Tour operators",
@@ -1182,6 +1319,100 @@
         "orderAssigned": "Order {order} handed over: {to}",
         "status": "Status: {from} → {to}"
       }
+    },
+    "finance": {
+      "title": "Finance",
+      "sum": "sum",
+      "total": "Price for the client",
+      "received": "Received from the client",
+      "balance": "Left to pay",
+      "overpaid": "Overpaid",
+      "suppliers": "Paid to suppliers",
+      "revenue": "Revenue (in − out)",
+      "missingRates": "No exchange rate for {n} service(s). Set the rate on the service card, otherwise the total is incomplete.",
+      "deposit": "Deposit {percent}%",
+      "depositMet": "paid",
+      "depositOf": "{received} of {deposit}",
+      "depositEdit": "Change the deposit percent",
+      "depositLabel": "Deposit, %",
+      "payments": "Payments",
+      "noPayments": "No payments yet.",
+      "record": "Record a payment",
+      "saved": "Payment saved",
+      "byWhom": "by {name}",
+      "receiptLink": "Receipt",
+      "paymentUzs": "{amount} at {rate}",
+      "reverse": "Reverse",
+      "reversed": "reversed",
+      "reversal": "Reversal",
+      "reverseTitle": "Reverse this payment?",
+      "reverseText": "A counter-entry of {amount} will be added. The original payment stays in the history.",
+      "reverseConfirm": "Reverse",
+      "reverseDone": "Payment reversed",
+      "form": {
+        "direction": "Payment type",
+        "method": "Method",
+        "amount": "Amount",
+        "currency": "Currency",
+        "rate": "Rate to sum",
+        "rateHint": "Today’s central bank rate — correct it if another rate was used",
+        "paidAt": "Payment date",
+        "receipt": "Receipt",
+        "receiptRequired": "A receipt is required for client money",
+        "note": "Note",
+        "save": "Save payment"
+      },
+      "directions": {
+        "customer_in": "Client payment",
+        "customer_refund": "Refund to client",
+        "supplier_out": "Payment to supplier",
+        "supplier_refund": "Refund from supplier"
+      },
+      "methods": {
+        "cash": "Cash desk",
+        "uzcard": "Uzcard",
+        "humo": "Humo",
+        "card": "Visa / Mastercard",
+        "transfer": "Bank transfer"
+      },
+      "status": {
+        "unpaid": "Unpaid",
+        "partial": "Partly paid",
+        "paid": "Fully paid",
+        "overpaid": "Overpaid"
+      },
+      "legacyPaid": "This order was paid before the payment log and counts as fully paid."
+    },
+    "esim": {
+      "title": "eSIM",
+      "lead": "Issued {issued}, need attention — {failed}.",
+      "search": "Search",
+      "searchPlaceholder": "Email, phone, number or country…",
+      "filters": {
+        "all": "All statuses"
+      },
+      "status": {
+        "awaiting_payment": "Awaiting payment",
+        "paid": "Paid",
+        "issued": "Issued",
+        "issue_failed": "Not issued",
+        "cancelled": "Cancelled"
+      },
+      "columns": {
+        "number": "Number",
+        "date": "Date",
+        "tariff": "Plan",
+        "price": "Amount",
+        "margin": "Margin",
+        "method": "Payment",
+        "client": "Customer",
+        "status": "Status"
+      },
+      "retry": "Issue again",
+      "retried": "eSIM issued",
+      "retryFailed": "The provider refused again",
+      "empty": "No eSIM purchases yet.",
+      "noMatches": "Nothing found."
     }
   },
   "richEditor": {
@@ -1510,5 +1741,123 @@
     "next": "Next page",
     "page": "Page {n}",
     "perPage": "Per page"
+  },
+  "esim": {
+    "hero": {
+      "title": "eSIM for your trip",
+      "subtitle": "Mobile data abroad without roaming or hunting for a SIM card. Your QR code arrives right after payment."
+    },
+    "where": "Where are you going",
+    "wherePlaceholder": "Country",
+    "showPlans": "Show plans",
+    "from": "from {price}",
+    "sum": "sum",
+    "popular": "Popular",
+    "allCountries": "All countries",
+    "countryTitle": "eSIM — {country}",
+    "networks": "Networks: {list}",
+    "noPlans": "No plans for this country yet.",
+    "choosePlan": "Choose a plan",
+    "unlimited": "Unlimited",
+    "gb": "{n} GB",
+    "days": "{n} days | {n} day | {n} days | {n} days",
+    "perDay": "{price} a day",
+    "steps": {
+      "1": {
+        "title": "Pay",
+        "text": "Payme, Click or card — no sign-up."
+      },
+      "2": {
+        "title": "Scan the QR",
+        "text": "The code appears right after payment. Install the eSIM at home on Wi-Fi."
+      },
+      "3": {
+        "title": "Switch on when you land",
+        "text": "Turn on mobile data for the eSIM and you are online."
+      }
+    },
+    "checkout": "Checkout",
+    "email": "Email",
+    "emailHint": "For updates about your order",
+    "phone": "Phone",
+    "payWith": "Payment method",
+    "total": "Total",
+    "pay": {
+      "title": "Payment",
+      "sandbox": "Test mode — no money is charged",
+      "cardNumber": "Card number",
+      "expiry": "Expiry",
+      "cvc": "CVC",
+      "payAmount": "Pay {amount}",
+      "secureTitle": "3-D Secure check",
+      "secureText": "Your bank sent a code to the phone linked to card {card}.",
+      "code": "SMS code",
+      "codeHint": "Any 6 digits; 000000 means the bank declines",
+      "confirm": "Confirm",
+      "cancel": "Cancel payment"
+    },
+    "test": "test",
+    "legal": "By paying you accept the",
+    "offer": "public offer",
+    "methods": {
+      "payme": "Payme",
+      "click": "Click",
+      "card": "Visa / Mastercard"
+    },
+    "methodHints": {
+      "payme": "Uzcard and Humo cards",
+      "click": "Uzcard and Humo cards",
+      "card": "3-D Secure protected"
+    },
+    "errors": {
+      "email": "Check the email",
+      "phone": "Enter the full number"
+    },
+    "seo": {
+      "title": "Travel eSIM — mobile data abroad — TripMe",
+      "description": "eSIM for 25 countries: Turkey, UAE, Egypt, Thailand and more. Pay with Payme, Click or card and get the QR code instantly.",
+      "countryTitle": "Travel eSIM: {country} — TripMe",
+      "countryDescription": "Mobile data in {country} without roaming. Pick a plan and get the QR code right after payment."
+    },
+    "order": {
+      "seo": "Your eSIM",
+      "missing": "Purchase not found",
+      "ref": "ESIM-{number}",
+      "awaiting": "Waiting for payment",
+      "toPayment": "Go to payment",
+      "issuing": "Payment received — issuing your eSIM",
+      "issuingText": "This usually takes a few seconds. The page refreshes by itself.",
+      "failed": "Payment went through, we are issuing the eSIM by hand",
+      "failedText": "The provider did not answer in time. We will issue the eSIM and contact you within an hour.",
+      "support": "Contact us",
+      "cancelled": "The payment failed or the payment time ran out",
+      "again": "Choose a plan again",
+      "ready": "eSIM is ready",
+      "scan": "Scan the QR code with your phone camera",
+      "qrLabel": "QR code to install the eSIM",
+      "keep": "Save the link to this page — it always brings you back to your eSIM.",
+      "howTo": "How to install",
+      "manual": "If the QR does not scan",
+      "smdp": "SM-DP+ address",
+      "code": "Activation code",
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "install": {
+      "ios": {
+        "1": "Open Settings → Mobile Service → Add eSIM.",
+        "2": "Choose Use QR Code and scan the code on the left.",
+        "3": "Name the eSIM, for example \"Trip\", and keep your main line for calls.",
+        "4": "When you land, turn on Mobile Data and Data Roaming for the eSIM."
+      },
+      "android": {
+        "1": "Open Settings → Network & internet → SIMs.",
+        "2": "Tap Add eSIM and scan the QR code.",
+        "3": "Wait for the profile to download and do not delete it.",
+        "4": "When you land, pick the eSIM for mobile data and turn on roaming."
+      }
+    },
+    "payPrice": "Pay {price}",
+    "soon": "eSIM is coming to the site soon."
   }
 }

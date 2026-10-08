@@ -40,14 +40,22 @@
         color: var(--tm-ink-3);
     }
 
+    &__scroll {
+        overflow-x: auto;
+        margin-inline: -16px;
+        padding-inline: 16px;
+        overscroll-behavior-x: contain;
+    }
+
     &__table {
         width: 100%;
+        min-width: 1560px;
         border-collapse: collapse;
         font-size: size(12);
         table-layout: fixed;
 
         th, td {
-            padding: 9px 10px;
+            padding: 11px 14px;
             text-align: left;
             border-bottom: 1px solid var(--tm-border-1);
             vertical-align: middle;
@@ -64,14 +72,16 @@
         .is-num { text-align: right; font-variant-numeric: tabular-nums; }
         .is-muted { color: var(--tm-ink-3); font-variant-numeric: tabular-nums; }
 
-        .is-order { width: 108px; }
-        .is-date { width: 84px; }
-        .is-stay { width: 118px; }
-        .is-phone { width: 126px; }
-        .is-party { width: 62px; }
-        .is-price { width: 88px; }
-        .is-status { width: 150px; }
-        .is-owner { width: 128px; }
+        .is-order { width: 140px; }
+        .is-date { width: 140px; }
+        .is-name { width: 170px; }
+        .is-stay { width: 130px; }
+        .is-phone { width: 140px; }
+        .is-party { width: 70px; }
+        .is-price { width: 104px; }
+        .is-supplier { width: 136px; }
+        .is-status { width: 164px; }
+        .is-owner { width: 140px; }
     }
 
     &__sort {
@@ -80,7 +90,7 @@
         gap: 4px;
         overflow: hidden;
         width: 100%;
-        padding: 9px 10px;
+        padding: 11px 14px;
         border: 0;
         background: none;
         color: var(--tm-ink-3);
@@ -167,13 +177,6 @@
     }
 }
 
-@media #{$until-lg} {
-    .tm-cms-leads__table {
-        th.is-phone, td:nth-child(4),
-        th.is-date, td:nth-child(2) { display: none; }
-    }
-}
-
 @media #{$until-md} {
     .tm-cms-leads {
         &__actions {
@@ -184,20 +187,5 @@
         &__search { max-width: none; }
 
         &__owner { margin-left: 0; }
-
-        &__table {
-            table-layout: auto;
-
-            th.is-stay, td:nth-child(6),
-            th.is-party, td:nth-child(7),
-            th.is-price, td:nth-child(8),
-            th:nth-child(9), td:nth-child(9),
-            th.is-owner, td.is-owner { display: none; }
-
-            th, td { padding: 10px 8px; }
-
-            .is-order { width: 104px; }
-            .is-status { width: auto; }
-        }
     }
 }

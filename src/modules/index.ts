@@ -9,6 +9,7 @@ import { LeadsModule } from './leads'
 import { OperatorsModule } from './operators'
 import { PointsModule } from './points'
 import { AnalyticsModule } from './analytics'
+import { FinanceModule } from './finance'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -24,4 +25,5 @@ export const modules: IModule[] = [
   OperatorsModule,
   PointsModule,
   AnalyticsModule,
+  FinanceModule,
 ]

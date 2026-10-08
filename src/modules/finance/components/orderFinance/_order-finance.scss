@@ -1,0 +1,243 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-finance {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('md');
+    background: var(--tm-surface-1);
+
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    &__title {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    &__subtitle {
+        margin: 0 0 8px;
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        font-weight: 700;
+    }
+
+    &__muted {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__totals {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+
+        > div {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        > .is-split {
+            margin-top: 4px;
+            padding-top: 12px;
+            border-top: 1px solid var(--tm-border-1);
+        }
+
+        dt { color: var(--tm-ink-2); font-size: size(14); }
+
+        dd {
+            margin: 0;
+            color: var(--tm-ink-1);
+            font-size: size(14);
+            font-weight: 600;
+            text-align: right;
+
+            &.is-strong { font-size: size(16); font-weight: 700; }
+            &.is-good { color: var(--tm-status-success); }
+            &.is-warn { color: var(--tm-cms-accent); }
+        }
+    }
+
+    &__warning {
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: radius('sm');
+        background: color-mix(in srgb, var(--tm-status-warning) 18%, transparent);
+        color: var(--tm-ink-1);
+        font-size: size(13);
+    }
+
+    &__deposit {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__deposit-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--tm-ink-2);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__deposit-edit {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 8px;
+
+        > :first-child { flex: 0 1 140px; }
+    }
+
+    &__bar {
+        overflow: hidden;
+        height: 8px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-2);
+
+        span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--tm-brand-primary);
+            transition: width .3s ease;
+
+            &.is-met { background: var(--tm-status-success); }
+        }
+    }
+
+    &__link {
+        align-self: flex-start;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-cms-accent);
+        font-size: size(13);
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover { text-decoration: underline; }
+        &.is-danger { color: var(--tm-status-danger); }
+        &:disabled { opacity: .5; cursor: default; }
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__payment {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px 16px;
+        padding: 12px 14px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+
+        &.is-reversed .tm-finance__payment-amount span:first-child { text-decoration: line-through; color: var(--tm-ink-3); }
+        &.is-reversal { background: none; border: 1px dashed var(--tm-border-1); }
+    }
+
+    &__payment-main {
+        display: flex;
+        flex: 1 1 220px;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    &__payment-title {
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 700;
+    }
+
+    &__payment-links {
+        display: flex;
+        gap: 14px;
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__tag {
+        margin-left: 6px;
+        padding: 1px 8px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-3);
+        font-size: size(11);
+    }
+
+    &__payment-amount {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+        color: var(--tm-status-success);
+        font-size: size(15);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+
+        &.is-out { color: var(--tm-ink-1); }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    &__file {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: size(13);
+    }
+
+    &__file-label {
+        color: var(--tm-ink-2);
+        font-weight: 600;
+    }
+
+    &__form-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    &__record { align-self: flex-start; }
+}
+
+@media #{$until-md} {
+    .tm-finance__grid { grid-template-columns: minmax(0, 1fr); }
+}

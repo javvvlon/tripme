@@ -156,7 +156,7 @@ export const useLead = () => {
   })
 
   async function addOrder() {
-    if (!lead.value) return
+    if (!lead.value || !hasTour.value) return
 
     error.value = ''
 

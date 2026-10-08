@@ -6,12 +6,12 @@ import type { LeadSort } from '~/modules/leads/contracts/leads'
 export const COLUMNS: Array<{ key: LeadSort, class?: string }> = [
   { key: 'order', class: 'is-num is-order' },
   { key: 'created', class: 'is-date' },
-  { key: 'client' },
+  { key: 'client', class: 'is-name' },
   { key: 'phone', class: 'is-phone' },
   { key: 'tour' },
   { key: 'dates', class: 'is-stay' },
   { key: 'party', class: 'is-num is-party' },
   { key: 'price', class: 'is-num is-price' },
-  { key: 'supplier' },
+  { key: 'supplier', class: 'is-supplier' },
   { key: 'status', class: 'is-status' },
 ]

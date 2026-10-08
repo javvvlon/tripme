@@ -1,0 +1,32 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: radius('pill');
+    border: 1px solid var(--tm-border-1);
+    background: var(--tm-surface-2);
+    color: var(--tm-ink-2);
+    font-size: size(13);
+    font-weight: 700;
+    white-space: nowrap;
+
+    &.is-partial {
+        border-color: transparent;
+        background: color-mix(in srgb, var(--tm-status-warning) 24%, transparent);
+        color: var(--tm-ink-1);
+    }
+
+    &.is-paid {
+        border-color: transparent;
+        background: var(--tm-status-success-soft);
+        color: var(--tm-status-success);
+    }
+
+    &.is-overpaid {
+        border-color: transparent;
+        background: var(--tm-cms-accent-soft);
+        color: var(--tm-cms-accent);
+    }
+}

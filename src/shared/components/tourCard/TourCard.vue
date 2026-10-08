@@ -240,6 +240,7 @@ const trip = computed<ILeadTrip>(() =>
   tripFromTour(props.tour, {
     from: props.route?.from ?? '',
     to: props.route?.to ?? '',
+    toLabel: props.route?.toLabel ?? '',
     kidAges: props.route?.kidAges ?? [],
   }))
 

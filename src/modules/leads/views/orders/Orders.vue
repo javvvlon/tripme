@@ -31,15 +31,17 @@
             {{ query || filter ? t('cms.orders.noMatches') : t('cms.orders.empty') }}
         </p>
 
-        <table v-else class="tm-cms-orders__table">
+        <div v-else class="tm-cms-orders__scroll">
+        <table class="tm-cms-orders__table">
             <thead>
                 <tr>
                     <th scope="col" class="is-num is-no">{{ t('cms.orders.columns.number') }}</th>
-                    <th scope="col">{{ t('cms.orders.columns.traveller') }}</th>
+                    <th scope="col" class="is-traveller">{{ t('cms.orders.columns.traveller') }}</th>
                     <th scope="col">{{ t('cms.orders.columns.trip') }}</th>
                     <th scope="col" class="is-date">{{ t('cms.orders.columns.departure') }}</th>
                     <th scope="col" class="is-num is-party">{{ t('cms.orders.columns.party') }}</th>
                     <th scope="col" class="is-num is-price">{{ t('cms.orders.columns.price') }}</th>
+                    <th scope="col" class="is-payment">{{ t('cms.orders.columns.payment') }}</th>
                     <th scope="col" class="is-ref">{{ t('cms.orders.columns.supplierOrder') }}</th>
                     <th scope="col" class="is-owner">{{ t('cms.ownership.column') }}</th>
                     <th scope="col" class="is-status">{{ t('cms.orders.columns.status') }}</th>
@@ -63,6 +65,9 @@
                     <td class="is-muted">{{ order.check_in ? `${shortDate(order.check_in)} · ${order.nights}` : '—' }}</td>
                     <td class="is-num">{{ order.adults }}<template v-if="order.children">+{{ order.children }}</template></td>
                     <td class="is-num">{{ money(order) }}</td>
+                    <td class="is-payment">
+                        <PaymentBadge :status="order.payment_status ?? 'unpaid'" class="tm-cms-orders__payment" />
+                    </td>
                     <td class="is-muted tm-cms-orders__truncate">{{ order.supplier_order_id || '—' }}</td>
                     <td class="is-owner tm-cms-orders__truncate">
                         {{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}
@@ -76,6 +81,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <Pagination
             :page="page" :pages="pages" :total="total" :per-page="perPage"
@@ -88,6 +94,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import Pagination from '~/shared/components/pagination/Pagination.vue'
+import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
 import { useOrders } from './Orders.hooks'
 import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 

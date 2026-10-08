@@ -32,7 +32,8 @@
             {{ query ? t('cms.leads.noMatches') : t('cms.leads.empty') }}
         </p>
 
-        <table v-else class="tm-cms-leads__table">
+        <div v-else class="tm-cms-leads__scroll">
+        <table class="tm-cms-leads__table">
             <thead>
                 <tr>
                     <th
@@ -96,6 +97,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <Pagination
             :page="page" :pages="pages" :total="total" :per-page="perPage"
