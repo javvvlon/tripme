@@ -47,7 +47,7 @@
         <fieldset class="tm-manual-lead__group">
             <legend>{{ t('cms.leads.sections.trip') }}</legend>
 
-            <TourPicker :selected="tour" @update:selected="tour = $event" />
+            <TourPicker :selected="tour" @update:selected="choose" />
         </fieldset>
 
         <div class="tm-manual-lead__field">
@@ -76,7 +76,7 @@ const open = defineModel<boolean>({ default: false })
 const { t } = useI18n()
 const commentId = useId()
 
-const { draft, tour, validation, saving, error, submit, reset } = useManualLead((lead) => {
+const { draft, tour, choose, validation, saving, error, submit, reset } = useManualLead((lead) => {
     open.value = false
     emit('created', lead)
 })

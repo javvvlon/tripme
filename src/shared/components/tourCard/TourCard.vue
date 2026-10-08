@@ -100,6 +100,16 @@
                     </Button>
 
                     <Button
+                        v-if="agentView && assignLabel"
+                        size="sm" variant="secondary" icon="check"
+                        :disabled="assigning"
+                        :title="assignTitle"
+                        @click="emit('assign', trip)"
+                    >
+                        {{ assigning ? t('results.assign.busy') : assignLabel }}
+                    </Button>
+
+                    <Button
                         v-if="agentView && tour.canBook()"
                         :href="tour.get('bookingUrl')!"
                         size="sm"
@@ -147,9 +157,11 @@ import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { BadgeTone } from '../badge/Badge.d'
-import type { ITourCardProps } from './TourCard.d'
+import type { ITourCardEmits, ITourCardProps } from './TourCard.d'
 
 const props = defineProps<ITourCardProps>()
+
+const emit = defineEmits<ITourCardEmits>()
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -225,7 +237,11 @@ const summary = computed(() =>
   [props.tour.displayName(), dates.value, price.value].filter(Boolean).join(' · '))
 
 const trip = computed<ILeadTrip>(() =>
-  tripFromTour(props.tour, { from: props.route?.from ?? '', to: props.route?.to ?? '' }))
+  tripFromTour(props.tour, {
+    from: props.route?.from ?? '',
+    to: props.route?.to ?? '',
+    kidAges: props.route?.kidAges ?? [],
+  }))
 
 const { asking, sending, sent, request } = useTourRequest(() => trip.value)
 

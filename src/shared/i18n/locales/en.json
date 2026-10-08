@@ -249,7 +249,13 @@
     "sourcePrice": "{price} at the operator",
     "headlineBare": "Tours {destination}, {dates}",
     "currencyNote": "Dollar prices are for reference. Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
-    "currencyRate": "Today 1 $ = {rate} UZS."
+    "currencyRate": "Today 1 $ = {rate} UZS.",
+    "assign": {
+      "cta": "Pick for lead",
+      "busy": "Attaching…",
+      "replace": "Replace in lead",
+      "title": "Attach this tour to {ref}"
+    }
   },
   "auth": {
     "mode": "Sign in or sign up",
@@ -762,7 +768,6 @@
       "noMatches": "Nothing found.",
       "openAtOperator": "Open at the operator",
       "openHotelPage": "Hotel page",
-      "noBookingUrl": "The search link is only stored for newer leads.",
       "channels": {
         "site": "Website",
         "telegram": "Telegram",
@@ -789,8 +794,16 @@
         "lead": "Every order under it and its history go with it."
       },
       "offer": {
-        "lead": "Where to go back to see what the client picked.",
-        "repeatSearch": "Repeat the search"
+        "repeatSearch": "Repeat the search",
+        "empty": "The client hasn’t picked a tour yet",
+        "emptyHint": "Pick a tour here, or find one in the full search and press “Pick for lead” on its card.",
+        "pick": "Pick a tour",
+        "replace": "Replace tour",
+        "inSearch": "Open the full search",
+        "assigned": "Tour attached to the lead",
+        "confirmTitle": "Replace the tour on this lead?",
+        "confirmText": "The lead currently has “{hotel}”. The new tour replaces it; existing orders stay as they are.",
+        "confirm": "Replace"
       },
       "registered": "Registered customer",
       "consentGiven": "Consent to data processing: {date}",

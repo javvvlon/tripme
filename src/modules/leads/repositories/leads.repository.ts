@@ -23,6 +23,7 @@ export interface ILeadPatchBody {
   first_name: string
   last_name: string
   phone: string
+  trip: ILeadTrip
 }
 
 export interface IOrderPatchBody {

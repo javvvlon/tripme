@@ -294,23 +294,107 @@
         .tm-cms-lead__card-title { margin: 0; }
     }
 
-    &__offer-lead {
-        margin: 0 0 10px;
-        font-size: size(13);
-        color: var(--tm-ink-3);
+
+    &__offer-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+
+        .tm-cms-lead__card-title { margin: 0; }
     }
 
     &__offer-links {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+
+        &.is-end {
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
     }
 
-    &__offer-note {
-        margin: 10px 0 0;
-        font-size: size(12);
-        color: var(--tm-ink-4);
+    &__tour {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
     }
+
+    &__tour-main {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    &__tour-name {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 700;
+    }
+
+    &__tour-stars {
+        margin-left: 4px;
+        color: var(--tm-brand-primary);
+        font-size: size(12);
+        letter-spacing: .08em;
+    }
+
+    &__tour-meta {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__tour-price {
+        flex: none;
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(17);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__offer-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    &__offer-title {
+        margin: 0;
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__offer-quote {
+        margin: 0;
+        padding: 8px 12px;
+        border-left: 3px solid var(--tm-brand-primary);
+        border-radius: 0 radius('xs') radius('xs') 0;
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        white-space: pre-line;
+    }
+
+    &__offer-hint {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
 
     &__no-orders {
         margin: 0;

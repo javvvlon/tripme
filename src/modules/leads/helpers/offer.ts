@@ -1,3 +1,4 @@
+import { DEFAULT_KID_AGE } from '~/shared/composables/useSearchCriteria'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 
 /**
@@ -16,6 +17,15 @@ const count = (value: unknown): number => {
   const parsed = Number(value)
 
   return Number.isFinite(parsed) && parsed > 0 ? Math.trunc(parsed) : 0
+}
+
+export function kidAgesOf(trip: Partial<ILeadTrip> | null | undefined): number[] {
+  const kids = count(trip?.children)
+  const stored = Array.isArray(trip?.kid_ages)
+    ? trip.kid_ages.map(Number).filter(age => Number.isInteger(age) && age >= 0 && age <= 17)
+    : []
+
+  return Array.from({ length: kids }, (_, index) => stored[index] ?? DEFAULT_KID_AGE)
 }
 
 export function offerLinks(trip: Partial<ILeadTrip> | null | undefined): ILeadOfferLinks {
@@ -37,11 +47,11 @@ export function offerLinks(trip: Partial<ILeadTrip> | null | undefined): ILeadOf
 
   const nights = count(trip?.nights)
   const adults = count(trip?.adults)
-  const kids = count(trip?.children)
+  const kids = kidAgesOf(trip)
 
   if (nights) query.nights = String(nights)
   if (adults) query.adults = String(adults)
-  if (kids) query.kids = String(kids)
+  if (kids.length) query.kids = kids.join(',')
 
   links.search = `/search?${new URLSearchParams(query).toString()}`
 

@@ -1,10 +1,10 @@
-import type { ILeadTrip } from '~/modules/leads/contracts/leads'
+import type { ILeadTrip, ITripRoute } from '~/modules/leads/contracts/leads'
 import type { Tour } from '~/search_engine/models/Tour'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const tripFromTour = (tour: Tour, route?: { from: string, to: string }): ILeadTrip => ({
+export const tripFromTour = (tour: Tour, route?: ITripRoute): ILeadTrip => ({
   hotel_name: tour.get('hotelName'),
   hotel_stars: tour.get('hotelStars'),
   hotel_code: tour.get('hotelSupplierCode'),
@@ -29,6 +29,7 @@ export const tripFromTour = (tour: Tour, route?: { from: string, to: string }): 
   price_currency: tour.get('price').currency,
   route_from: route?.from ?? '',
   route_to: route?.to ?? '',
+  kid_ages: (route?.kidAges ?? []).slice(0, tour.get('children')),
 })
 
 export const tripFromLead = (lead: { trip: Record<string, unknown>, hotel_name: string, supplier_name: string, check_in: string | null, nights: number, adults: number, children: number, price_amount: number | null, price_currency: string, destination: string }): ILeadTrip => ({

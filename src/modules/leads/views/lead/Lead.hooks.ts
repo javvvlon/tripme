@@ -4,8 +4,11 @@ import { DEFAULT_CURRENCY } from '~/shared/helpers/money'
 import { today } from '~/shared/helpers/dates'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
-import { tripFromLead } from '~/modules/leads/helpers/trip'
-import type { ILeadRaw, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/leads'
+import { tripFromLead, tripFromTour } from '~/modules/leads/helpers/trip'
+import { HOME_DEPARTURE } from '~/shared/composables/useSearchCriteria'
+import type { ILeadRaw, IOrderRaw, ITripRoute, LeadStatus } from '~/modules/leads/contracts/leads'
+import type { ITourPickerCriteria } from '~/modules/leads/components/tourPicker/TourPicker.d'
+import type { Tour } from '~/search_engine/models/Tour'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -73,7 +76,7 @@ export const useLead = () => {
   const statusOptions = computed(() =>
     LEAD_STATUSES.map(value => ({ value, label: t(`cms.leads.status.${value}`) })))
 
-  async function save(body: Parameters<typeof patch>[1]) {
+  async function save(body: Parameters<typeof patch>[1], message?: string) {
     error.value = ''
     saved.value = false
     saving.value = true
@@ -84,14 +87,47 @@ export const useLead = () => {
       lead.value = next
       adopt(next)
       saved.value = true
-      cheer()
+      cheer(message)
+      return true
     }
     catch (e) {
       error.value = failed(e)
+      return false
     }
     finally {
       saving.value = false
     }
+  }
+
+  const picking = ref(false)
+
+  const hasTour = computed(() => Boolean(lead.value?.hotel_name))
+
+  const pickerSeed = computed<Partial<ITourPickerCriteria>>(() => {
+    const found = lead.value
+
+    if (!found) return {}
+
+    return {
+      from: found.route_from || HOME_DEPARTURE,
+      to: found.route_to || found.destination,
+      date: found.check_in ?? '',
+      nights: found.nights || undefined,
+      adults: found.adults || undefined,
+      kids: found.children,
+    }
+  })
+
+  async function assign(tour: Tour | null, searched: ITripRoute | null) {
+    if (!tour || !lead.value) return
+
+    if (hasTour.value && !await ask({
+      title: t('cms.leads.offer.confirmTitle'),
+      description: t('cms.leads.offer.confirmText', { hotel: lead.value.hotel_name }),
+      confirmLabel: t('cms.leads.offer.confirm'),
+    })) return
+
+    if (await save({ trip: tripFromTour(tour, searched ?? undefined) }, t('cms.leads.offer.assigned'))) picking.value = false
   }
 
   const change = (next: LeadStatus) => save({ status: next })
@@ -152,5 +188,6 @@ export const useLead = () => {
   return {
     lead, draft, orders, status, error, saving, saved,
     statusOptions, change, submit, addOrder, remove, refresh,
+    picking, hasTour, pickerSeed, assign,
   }
 }

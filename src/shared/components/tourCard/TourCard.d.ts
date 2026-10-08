@@ -1,4 +1,5 @@
 import type { Tour } from '~/search_engine/models/Tour'
+import type { ILeadTrip, ITripRoute } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -6,5 +7,12 @@ import type { Tour } from '~/search_engine/models/Tour'
 export interface ITourCardProps {
   tour: Tour
   agentView?: boolean
-  route?: { from: string, to: string }
+  route?: ITripRoute
+  assignLabel?: string
+  assignTitle?: string
+  assigning?: boolean
+}
+
+export interface ITourCardEmits {
+  assign: [trip: ILeadTrip]
 }

@@ -5,6 +5,7 @@ import { Post } from '~/modules/posts/models/Post'
 import { POST_EXCERPT_MAX, POST_TITLE_MAX } from './PostEditor.config'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import type { Tour } from '~/search_engine/models/Tour'
+import type { ITripRoute } from '~/modules/leads/contracts/leads'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { IPostDraft } from '~/modules/posts/contracts/posts'
 
@@ -96,8 +97,8 @@ export const usePostEditor = () => {
 
   const uploadInline = async (chosen: File): Promise<string> => upload(chosen)
 
-  const assignTour = (chosen: Tour | null) => {
-    draft.tour = chosen ? tripFromTour(chosen) : null
+  const assignTour = (chosen: Tour | null, route: ITripRoute | null = null) => {
+    draft.tour = chosen ? tripFromTour(chosen, route ?? undefined) : null
   }
 
   const useStored = (url: string) => {

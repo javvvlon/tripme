@@ -13,7 +13,7 @@
 
                 <p class="tm-tour-picker__chosen-price">{{ formatMoney(selected.get('price'), locale) }}</p>
 
-                <Button type="button" size="sm" variant="ghost" @click="emit('update:selected', null)">
+                <Button type="button" size="sm" variant="ghost" @click="emit('update:selected', null, null)">
                     {{ t('cms.leads.picker.change') }}
                 </Button>
             </div>
@@ -73,7 +73,7 @@
 
             <ul v-if="results.length" class="tm-tour-picker__results">
                 <li v-for="tour in results" :key="tour.get('id')">
-                    <button type="button" class="tm-tour-picker__option" @click="emit('update:selected', tour)">
+                    <button type="button" class="tm-tour-picker__option" @click="emit('update:selected', tour, route())">
                         <span class="tm-tour-picker__option-main">
                             <span class="tm-tour-picker__option-name">{{ tour.get('hotelName') }}</span>
                             <span class="tm-tour-picker__option-meta">
@@ -93,17 +93,17 @@
 
 <script setup lang="ts">
 import { useTourPicker } from './TourPicker.hooks'
-import type { Tour } from '~/search_engine/models/Tour'
+import type { ITourPickerEmits, ITourPickerProps } from './TourPicker.d'
 
-defineProps<{ selected: Tour | null }>()
-const emit = defineEmits<{ 'update:selected': [tour: Tour | null] }>()
+const props = defineProps<ITourPickerProps>()
+const emit = defineEmits<ITourPickerEmits>()
 
 const { t, locale } = useI18n()
 
 const {
     from, to, date, nights, adults, kids,
-    references, results, searching, searched, error, canSearch, run,
-} = useTourPicker()
+    references, results, searching, searched, error, canSearch, run, route,
+} = useTourPicker(props.initial)
 
 const numeric = (model: Ref<number>) => computed({
     get: () => String(model.value),

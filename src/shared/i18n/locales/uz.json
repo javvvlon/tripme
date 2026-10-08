@@ -249,7 +249,13 @@
     "sourcePrice": "operatorda {price}",
     "headlineBare": "Turlar {destination}, {dates}",
     "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
-    "currencyRate": "Bugun 1 $ = {rate} so‘m."
+    "currencyRate": "Bugun 1 $ = {rate} so‘m.",
+    "assign": {
+      "cta": "Lid uchun tanlash",
+      "busy": "Biriktirilmoqda…",
+      "replace": "Lidda almashtirish",
+      "title": "Turni {ref} ga biriktirish"
+    }
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
@@ -762,7 +768,6 @@
       "noMatches": "Hech nima topilmadi.",
       "openAtOperator": "Operatorda ochish",
       "openHotelPage": "Mehmonxona sahifasi",
-      "noBookingUrl": "Tanlov havolasi faqat yangi arizalarda mavjud.",
       "channels": {
         "site": "Saytdan",
         "telegram": "Telegram",
@@ -789,8 +794,16 @@
         "lead": "U bilan birga barcha buyurtmalari va tarixi oʻchadi."
       },
       "offer": {
-        "lead": "Mijoz tanlagan narsani koʻrish uchun qayerga qaytish kerak.",
-        "repeatSearch": "Qidiruvni takrorlash"
+        "repeatSearch": "Qidiruvni takrorlash",
+        "empty": "Mijoz hali tur tanlamagan",
+        "emptyHint": "Turni shu yerda tanlang yoki toʻliq qidiruvda toping va kartochkadagi «Lid uchun tanlash» tugmasini bosing.",
+        "pick": "Tur tanlash",
+        "replace": "Turni almashtirish",
+        "inSearch": "Toʻliq qidiruvni ochish",
+        "assigned": "Tur lidga biriktirildi",
+        "confirmTitle": "Liddagi tur almashtirilsinmi?",
+        "confirmText": "Hozir lidda «{hotel}». Yangi tur uning oʻrnini egallaydi, yaratilgan buyurtmalar oʻzgarmaydi.",
+        "confirm": "Almashtirish"
       },
       "registered": "Ro‘yxatdan o‘tgan mijoz",
       "consentGiven": "Ma’lumotlarni qayta ishlashga rozilik: {date}",

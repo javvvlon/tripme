@@ -266,11 +266,6 @@
         @include focus-ring(var(--tm-status-danger));
     }
 
-    &__offer-lead {
-        margin: 0 0 10px;
-        font-size: size(13);
-        color: var(--tm-ink-3);
-    }
 
     &__offer-links {
         display: flex;
@@ -278,11 +273,6 @@
         gap: 8px;
     }
 
-    &__offer-note {
-        margin: 10px 0 0;
-        font-size: size(12);
-        color: var(--tm-ink-4);
-    }
 
     &__events {
         list-style: none;

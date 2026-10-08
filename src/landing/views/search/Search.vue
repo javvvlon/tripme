@@ -85,7 +85,11 @@
                             <TourCard
                                 :tour="tour"
                                 :agent-view="isStaff"
-                                :route="{ from: criteria.from, to: criteria.to }"
+                                :route="{ from: criteria.from, to: criteria.to, kidAges: criteria.kidAges }"
+                                :assign-label="assignLabel"
+                                :assign-title="assignTitle"
+                                :assigning="assigning === tour.get('id')"
+                                @assign="assignTour"
                             />
                         </li>
                     </ul>
@@ -138,6 +142,8 @@ import QuoteBar from '~/modules/leads/components/quoteBar/QuoteBar.vue'
 import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { useLeadsRepository } from '~/modules/leads/repositories'
+import { useAssignTour } from '~/modules/leads/hooks/use-assign-tour'
+import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
@@ -161,6 +167,7 @@ const route = useRoute()
 const { count: quoteCount, leadId: quoteLead, tours: quoteTours, opened: quoteOpen } = useQuote()
 const { one: fetchLead } = useLeadsRepository()
 const quoteLeadRef = ref('')
+const assignTarget = ref<ILeadRaw | null>(null)
 
 watch(() => route.query.lead, (value) => {
   if (typeof value === 'string' && value) quoteLead.value = value
@@ -168,11 +175,20 @@ watch(() => route.query.lead, (value) => {
 
 watch([quoteLead, isStaff], async ([id, staff]) => {
   quoteLeadRef.value = ''
+  assignTarget.value = null
 
   if (!import.meta.client || !id || !staff) return
 
-  quoteLeadRef.value = (await fetchLead(id).catch(() => null))?.ref ?? ''
+  const found = await fetchLead(id).catch(() => null)
+
+  quoteLeadRef.value = found?.ref ?? ''
+  assignTarget.value = found && route.query.lead === id ? found : null
 }, { immediate: true })
+
+const assignLead = computed(() =>
+  assignTarget.value && route.query.lead === assignTarget.value.uuid ? assignTarget.value : null)
+
+const { busy: assigning, label: assignLabel, title: assignTitle, assign: assignTour } = useAssignTour(assignLead)
 
 const { usdRate } = useUzsRates()
 
