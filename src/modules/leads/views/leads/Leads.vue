@@ -17,6 +17,12 @@
                 class="tm-cms-leads__search"
             />
 
+            <SelectMenu
+                v-model="managerFilter"
+                :options="filterOptions"
+                class="tm-cms-leads__owner"
+            />
+
             <Button size="md" @click="creating = true">{{ t('cms.leads.create.cta') }}</Button>
         </div>
 
@@ -42,6 +48,7 @@
                             />
                         </button>
                     </th>
+                    <th scope="col" class="is-owner"><span class="tm-cms-leads__sort">{{ t('cms.ownership.column') }}</span></th>
                 </tr>
             </thead>
 
@@ -80,6 +87,12 @@
                             @update:model-value="change(lead, $event as LeadStatus)"
                         />
                     </td>
+
+                    <td class="is-owner">
+                        <span v-if="!lead.manager_id" class="tm-cms-leads__queue">{{ t('cms.ownership.queue') }}</span>
+                        <span v-else-if="lead.manager_id === me" class="tm-cms-leads__mine">{{ t('cms.ownership.you') }}</span>
+                        <span v-else class="tm-cms-leads__truncate">{{ lead.manager_name || '—' }}</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -111,6 +124,7 @@ const creating = ref(false)
 
 const {
     leads, status, error, query, sort, direction,
+    managerFilter, filterOptions, me,
     rowOptions, counts, sortBy, change, refresh,
     page, pages, total, perPage, setPage, setPerPage,
 } = useLeads()

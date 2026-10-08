@@ -38,6 +38,8 @@
 
             <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
+            <LeadOwner :lead="lead" class="tm-cms-lead__card" @changed="owned" />
+
             <section class="tm-cms-lead__card">
                 <header class="tm-cms-lead__offer-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
@@ -232,6 +234,8 @@
                     </li>
                 </ul>
             </section>
+
+            <LeadHistory :lead-id="lead.uuid" :version="historyVersion" class="tm-cms-lead__card tm-cms-lead__history" />
         </template>
     </div>
 </template>
@@ -248,6 +252,8 @@ import { offerLinks } from '~/modules/leads/helpers/offer'
 import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
+import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
+import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
 import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
 import { leadResponse, waitLabel } from '~/modules/leads/helpers/compliance'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
@@ -261,6 +267,7 @@ const reasonId = useId()
 
 const {
     lead, draft, orders, status, error, saving, saved,
+    historyVersion, owned,
     statusOptions, change, submit, addOrder, remove,
     picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()

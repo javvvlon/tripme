@@ -1,4 +1,5 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
 import type { ILeadRaw, LeadSort, LeadStatus, SortDirection } from '~/modules/leads/contracts/leads'
 
@@ -9,6 +10,7 @@ export const useLeads = () => {
   const { t } = useI18n()
   const { fail, loadFailed } = useToast()
   const { page: leadsPage, setStatus } = useLeadsRepository()
+  const { managerFilter, filterOptions, elevated, me } = useManagers('leads')
   const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
@@ -26,12 +28,12 @@ export const useLeads = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  watch([debounced, sort, direction], toFirst)
+  watch([debounced, sort, direction, managerFilter], toFirst)
 
   const { data, status, refresh } = useAsyncData(
     'cms:leads',
-    () => leadsPage({ q: debounced.value, sort: sort.value, dir: direction.value }, pageQuery.value),
-    { default: () => null, watch: [debounced, sort, direction, pageQuery] },
+    () => leadsPage({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, sort, direction, managerFilter, pageQuery] },
   )
 
   const leads = computed<ILeadRaw[]>(() => data.value?.items ?? [])
@@ -82,6 +84,7 @@ export const useLeads = () => {
 
   return {
     leads, status, error, query, sort, direction,
+    managerFilter, filterOptions, elevated, me,
     rowOptions, counts, sortBy, change, refresh,
     page, pages, total, perPage, setPage, setPerPage,
   }

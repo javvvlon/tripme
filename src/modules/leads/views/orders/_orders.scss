@@ -5,6 +5,11 @@
     flex: 1 0 auto;
     flex-direction: column;
 
+    &__owner {
+        min-width: 180px;
+        margin-left: auto;
+    }
+
     &__actions {
         display: flex;
         align-items: center;
@@ -73,6 +78,7 @@
         .is-price { width: 100px; }
         .is-ref { width: 130px; }
         .is-status { width: 150px; }
+        .is-owner { width: 140px; }
     }
 
     &__row {
@@ -127,6 +133,7 @@
 @media #{$until-lg} {
     .tm-cms-orders__table {
         th.is-ref, td:nth-child(7),
+        th.is-owner, td.is-owner,
         th.is-party, td:nth-child(5) { display: none; }
     }
 }

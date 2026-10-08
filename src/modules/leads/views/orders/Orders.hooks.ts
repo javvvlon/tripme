@@ -1,4 +1,5 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { ORDER_STATUSES } from '~/modules/leads/contracts/leads'
 import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 
@@ -8,6 +9,7 @@ import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 export const useOrders = () => {
   const { t } = useI18n()
   const { ordersPage } = useLeadsRepository()
+  const { managerFilter, filterOptions: managerOptions, me } = useManagers('orders')
   const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
@@ -23,12 +25,12 @@ export const useOrders = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  watch([debounced, filter], toFirst)
+  watch([debounced, filter, managerFilter], toFirst)
 
   const { data, status, refresh } = useAsyncData(
     'cms:orders',
-    () => ordersPage({ q: debounced.value, status: filter.value }, pageQuery.value),
-    { default: () => null, watch: [debounced, filter, pageQuery] },
+    () => ordersPage({ q: debounced.value, status: filter.value, manager: managerFilter.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, filter, managerFilter, pageQuery] },
   )
 
   const orders = computed<IOrderRaw[]>(() => data.value?.items ?? [])
@@ -55,6 +57,7 @@ export const useOrders = () => {
 
   return {
     orders, status, error, query, filter, filterOptions, counts, refresh,
+    managerFilter, managerOptions, me,
     page, pages, total, perPage, setPage, setPerPage,
   }
 }

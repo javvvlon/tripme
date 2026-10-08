@@ -136,7 +136,20 @@
                             :hint="t('cms.orders.fields.supplierOrderHint')"
                         />
                         <Input v-model="draft.branch" :label="t('cms.orders.fields.branch')" />
-                        <div />
+                        <Combobox
+                            v-if="elevated"
+                            :model-value="order.manager_id ?? ''"
+                            variant="field"
+                            :label="t('cms.ownership.column')"
+                            :options="assignOptions"
+                            :placeholder="t('cms.ownership.assignPlaceholder')"
+                            :disabled="saving"
+                            @update:model-value="assignManager"
+                        />
+                        <div v-else class="tm-cms-order__owner">
+                            <span class="tm-cms-order__label">{{ t('cms.ownership.column') }}</span>
+                            <strong>{{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}</strong>
+                        </div>
                     </div>
 
                     <div class="tm-cms-order__field">
@@ -231,6 +244,7 @@
                             <template v-if="event.from">{{ t(`cms.orders.status.${event.from}`) }} →</template>
                             {{ t(`cms.orders.status.${event.to}`) }}
                         </span>
+                        <span v-if="event.actor_name" class="tm-cms-order__event-who">{{ event.actor_name }}</span>
                     </li>
                 </ol>
             </section>
@@ -261,6 +275,7 @@ import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
+import { useManagers } from '~/modules/leads/hooks/use-managers'
 import Button from '~/shared/components/button/Button.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import Icon from '~/shared/components/icon/Icon.vue'
@@ -275,10 +290,12 @@ const noteId = useId()
 
 const {
     order, draft, status, error, saving, saved, history,
-    statusOptions, change, submit, remove,
+    statusOptions, change, submit, remove, assignManager,
     documents, documentsLoading, working, generate, attach, dropDocument,
     cancelling, cancelReason, confirmCancel,
 } = useOrder()
+
+const { elevated, me, assignOptions } = useManagers('orders')
 
 const cancelId = useId()
 

@@ -70,7 +70,8 @@
         .is-phone { width: 126px; }
         .is-party { width: 62px; }
         .is-price { width: 88px; }
-        .is-status { width: 124px; }
+        .is-status { width: 150px; }
+        .is-owner { width: 128px; }
     }
 
     &__sort {
@@ -139,6 +140,31 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    &__owner {
+        min-width: 180px;
+        margin-left: auto;
+    }
+
+    &__queue,
+    &__mine {
+        display: inline-block;
+        padding: 2px 9px;
+        border-radius: radius('pill');
+        font-size: size(12);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    &__queue {
+        background: var(--tm-brand-primary-soft);
+        color: var(--tm-brand-primary-dark);
+    }
+
+    &__mine {
+        background: var(--tm-cms-accent-soft);
+        color: var(--tm-cms-accent);
+    }
 }
 
 @media #{$until-lg} {
@@ -157,13 +183,16 @@
 
         &__search { max-width: none; }
 
+        &__owner { margin-left: 0; }
+
         &__table {
             table-layout: auto;
 
             th.is-stay, td:nth-child(6),
             th.is-party, td:nth-child(7),
             th.is-price, td:nth-child(8),
-            th:nth-child(9), td:nth-child(9) { display: none; }
+            th:nth-child(9), td:nth-child(9),
+            th.is-owner, td.is-owner { display: none; }
 
             th, td { padding: 10px 8px; }
 

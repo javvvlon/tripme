@@ -1,0 +1,58 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-lead-history {
+    &__title {
+        margin: 0 0 16px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    &__empty {
+        margin: 0;
+        color: var(--tm-ink-3);
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        display: grid;
+        grid-template-columns: 132px minmax(0, 1fr) auto;
+        align-items: baseline;
+        gap: 12px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--tm-border-2);
+        font-size: size(14);
+
+        &:last-child { border-bottom: 0; }
+    }
+
+    &__at {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__what { color: var(--tm-ink-1); }
+
+    &__who {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        white-space: nowrap;
+    }
+}
+
+@media #{$until-md} {
+    .tm-lead-history__item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2px;
+    }
+}

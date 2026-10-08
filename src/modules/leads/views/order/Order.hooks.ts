@@ -134,6 +134,14 @@ export const useOrder = () => {
     }
   }
 
+  const assignManager = (value: string | null) => {
+    const target = value || null
+
+    if (!order.value || target === order.value.manager_id) return
+
+    void save({ manager_id: target })
+  }
+
   const cancelling = ref(false)
   const cancelReason = ref('')
 
@@ -271,7 +279,7 @@ export const useOrder = () => {
 
   return {
     order, draft, status, error, saving, saved, history,
-    statusOptions, change, submit, remove, refresh,
+    statusOptions, change, submit, remove, refresh, assignManager,
     documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
     cancelling, cancelReason, confirmCancel,
   }

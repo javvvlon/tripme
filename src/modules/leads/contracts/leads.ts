@@ -121,6 +121,7 @@ export interface IOrderRaw {
   deal_date: string | null
   return_date: string | null
   manager_id: string | null
+  manager_name: string
   branch: string
   supplier_order_id: string
   passport_id: string
@@ -143,8 +144,31 @@ export interface IOrderEvent {
   from: OrderStatus | null
   to: OrderStatus
   actor_id: string | null
+  actor_name: string | null
   at: string
 }
+
+export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned'
+
+export interface ILeadEvent {
+  kind: LeadEventKind
+  from: string | null
+  to: string | null
+  from_name: string | null
+  to_name: string | null
+  subject: string | null
+  actor_id: string | null
+  actor_name: string | null
+  at: string
+}
+
+export interface IStaffMember {
+  uuid: string
+  name: string
+  role: string
+}
+
+export type ManagerFilter = 'all' | 'me' | 'none' | string
 
 export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   draft: ['requested', 'cancelled'],

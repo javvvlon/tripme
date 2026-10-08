@@ -17,6 +17,11 @@
                 class="tm-cms-orders__search"
             />
 
+            <SelectMenu
+                v-model="managerFilter"
+                :options="managerOptions"
+                class="tm-cms-orders__owner"
+            />
             <SelectMenu v-model="filter" :options="filterOptions" align="right" />
         </div>
 
@@ -36,6 +41,7 @@
                     <th scope="col" class="is-num is-party">{{ t('cms.orders.columns.party') }}</th>
                     <th scope="col" class="is-num is-price">{{ t('cms.orders.columns.price') }}</th>
                     <th scope="col" class="is-ref">{{ t('cms.orders.columns.supplierOrder') }}</th>
+                    <th scope="col" class="is-owner">{{ t('cms.ownership.column') }}</th>
                     <th scope="col" class="is-status">{{ t('cms.orders.columns.status') }}</th>
                 </tr>
             </thead>
@@ -58,6 +64,9 @@
                     <td class="is-num">{{ order.adults }}<template v-if="order.children">+{{ order.children }}</template></td>
                     <td class="is-num">{{ money(order) }}</td>
                     <td class="is-muted tm-cms-orders__truncate">{{ order.supplier_order_id || '—' }}</td>
+                    <td class="is-owner tm-cms-orders__truncate">
+                        {{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}
+                    </td>
 
                     <td class="is-status">
                         <span class="tm-cms-orders__status" :class="`is-${order.status}`">
@@ -87,6 +96,7 @@ const localePath = useLocalePath()
 
 const {
   orders, status, error, query, filter, filterOptions, counts,
+  managerFilter, managerOptions, me,
   page, pages, total, perPage, setPage, setPerPage,
 } = useOrders()
 

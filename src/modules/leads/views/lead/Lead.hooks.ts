@@ -32,6 +32,7 @@ export const useLead = () => {
   const error = ref('')
 
   const orders = ref<IOrderRaw[]>([])
+  const historyVersion = ref(0)
 
   const draft = reactive({
     destination: '',
@@ -86,6 +87,7 @@ export const useLead = () => {
 
       lead.value = next
       adopt(next)
+      historyVersion.value++
       saved.value = true
       cheer(message)
       return true
@@ -196,9 +198,15 @@ export const useLead = () => {
     }
   }
 
+  async function owned(next: ILeadRaw) {
+    lead.value = next
+    historyVersion.value++
+    orders.value = await ordersFor(id.value).catch(() => orders.value)
+  }
+
   return {
-    lead, draft, orders, status, error, saving, saved,
-    statusOptions, change, submit, addOrder, remove, refresh,
+    lead, draft, orders, status, error, saving, saved, historyVersion,
+    statusOptions, change, submit, addOrder, remove, refresh, owned,
     picking, hasTour, pickerSeed, assign, clearTour,
   }
 }

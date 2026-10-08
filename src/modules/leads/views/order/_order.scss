@@ -298,6 +298,24 @@
     }
 
     &__event-move { color: var(--tm-ink-1); font-weight: 600; }
+
+    &__event-who {
+        margin-left: auto;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__owner {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        strong {
+            padding: 12px 0;
+            color: var(--tm-ink-1);
+            font-size: size(15);
+        }
+    }
 }
 
 @media #{$until-lg} {

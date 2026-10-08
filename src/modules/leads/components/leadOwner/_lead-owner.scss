@@ -1,0 +1,74 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-lead-owner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+
+    &__who {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+    }
+
+    &__avatar {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--tm-cms-accent-soft);
+        color: var(--tm-cms-accent);
+
+        &.is-queue {
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary-dark);
+        }
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+
+        strong {
+            color: var(--tm-ink-1);
+            font-size: size(16);
+            font-weight: 700;
+        }
+    }
+
+    &__label {
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    &__hint {
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 12px;
+    }
+
+    &__assign { min-width: 240px; }
+}
+
+@media #{$until-md} {
+    .tm-lead-owner {
+        &__actions,
+        &__assign { width: 100%; min-width: 0; }
+    }
+}
