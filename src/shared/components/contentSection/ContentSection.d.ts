@@ -1,4 +1,4 @@
-import type { IContentSection } from '~/modules/content/models/HomeContent'
+import type { IContentSection } from '~/modules/content/models/PageContent'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>

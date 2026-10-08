@@ -5,18 +5,26 @@ import type { IModuleRoute } from '../../../shared/bootstrap/contracts'
  */
 export const routes: IModuleRoute[] = [
   {
-    name: 'cms-home-banner',
-    path: '/app/content/banner',
-    file: 'modules/content/views/banner/Banner.vue',
-    layout: 'cms',
-    ssr: false,
-    meta: { middleware: 'auth' },
-  },
-  {
     name: 'cms-home-sections',
     path: '/app/content/sections',
     file: 'modules/content/views/sections/Sections.vue',
     layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', wide: true },
+  },
+  {
+    name: 'cms-blog-page',
+    path: '/app/content/blog',
+    file: 'modules/content/views/sections/Sections.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', contentPage: 'blog', wide: true },
+  },
+  {
+    name: 'cms-builder-frame',
+    path: '/app/content/frame',
+    file: 'modules/content/views/builderFrame/BuilderFrame.vue',
+    layout: 'blank',
     ssr: false,
     meta: { middleware: 'auth' },
   },
@@ -34,6 +42,6 @@ export const routes: IModuleRoute[] = [
     file: 'modules/content/views/listEditor/ListEditor.vue',
     layout: 'cms',
     ssr: false,
-    meta: { middleware: 'auth' },
+    meta: { middleware: 'auth', wide: true },
   },
 ]

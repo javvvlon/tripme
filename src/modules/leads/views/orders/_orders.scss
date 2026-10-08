@@ -1,6 +1,10 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-cms-orders {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+
     &__owner {
         min-width: 180px;
         margin-left: auto;

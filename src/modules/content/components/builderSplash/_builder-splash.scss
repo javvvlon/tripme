@@ -1,0 +1,98 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-splash {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    background: var(--tm-surface-2);
+    transition: opacity .4s ease, visibility .4s ease;
+
+    &.is-leaving {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        width: min(340px, calc(100% - 48px));
+        animation: tm-splash-rise .6s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    &.is-leaving &__card {
+        transform: scale(.96);
+        transition: transform .4s ease;
+    }
+
+    &__logo {
+        width: 168px;
+        height: auto;
+        animation: tm-splash-float 2.4s ease-in-out infinite;
+    }
+
+    &__track {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 6px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+    }
+
+    &__bar {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--tm-brand-primary), var(--tm-brand-secondary), var(--tm-brand-primary));
+        background-size: 200% 100%;
+        transform-origin: left center;
+        animation: tm-splash-shimmer 1.4s linear infinite;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: -16px;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+    }
+
+    &__percent {
+        color: var(--tm-ink-2);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.tm-splash-step-enter-active,
+.tm-splash-step-leave-active { transition: opacity .18s ease, transform .18s ease; }
+
+.tm-splash-step-enter-from { opacity: 0; transform: translateY(4px); }
+
+.tm-splash-step-leave-to { opacity: 0; transform: translateY(-4px); }
+
+@keyframes tm-splash-rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes tm-splash-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes tm-splash-shimmer {
+    from { background-position: 0% 0; }
+    to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-splash__logo,
+    .tm-splash__bar { animation: none; }
+}

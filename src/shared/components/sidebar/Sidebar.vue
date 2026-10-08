@@ -1,7 +1,8 @@
 <template>
-    <aside class="tm-sidebar">
+    <aside class="tm-sidebar" :class="{ 'is-collapsed': collapsed }">
         <div class="tm-sidebar__head">
             <div class="tm-sidebar__brand"><slot name="brand" /></div>
+            <slot name="tools" />
         </div>
 
         <nav class="tm-sidebar__nav" :aria-label="ariaLabel ?? t('cms.nav.label')">

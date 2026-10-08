@@ -25,7 +25,7 @@
             <SelectMenu v-model="filter" :options="filterOptions" align="right" />
         </div>
 
-        <EditorSkeleton v-if="status === 'pending'" variant="rows" />
+        <EditorSkeleton v-if="status === 'pending' && !orders.length" variant="rows" />
 
         <p v-else-if="!orders?.length" class="tm-cms-orders__empty">
             {{ query || filter ? t('cms.orders.noMatches') : t('cms.orders.empty') }}
@@ -76,19 +76,29 @@
                 </tr>
             </tbody>
         </table>
+
+        <Pagination
+            :page="page" :pages="pages" :total="total" :per-page="perPage"
+            @update:page="setPage" @update:per-page="setPerPage"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
+import Pagination from '~/shared/components/pagination/Pagination.vue'
 import { useOrders } from './Orders.hooks'
 import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
-const { orders, status, error, query, filter, filterOptions, managerFilter, managerOptions, me, counts } = useOrders()
+const {
+  orders, status, error, query, filter, filterOptions, counts,
+  managerFilter, managerOptions, me,
+  page, pages, total, perPage, setPage, setPerPage,
+} = useOrders()
 
 const go = (order: IOrderRaw) => navigateTo(localePath(`/app/orders/${order.uuid}`))
 

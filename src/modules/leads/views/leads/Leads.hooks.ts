@@ -9,8 +9,9 @@ import type { ILeadRaw, LeadSort, LeadStatus, SortDirection } from '~/modules/le
 export const useLeads = () => {
   const { t } = useI18n()
   const { fail, loadFailed } = useToast()
-  const { all, setStatus } = useLeadsRepository()
+  const { page: leadsPage, setStatus } = useLeadsRepository()
   const { managerFilter, filterOptions, elevated, me } = useManagers('leads')
+  const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
   const sort = ref<LeadSort>('order')
@@ -27,20 +28,29 @@ export const useLeads = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
+  watch([debounced, sort, direction, managerFilter], toFirst)
+
   const { data, status, refresh } = useAsyncData(
     'cms:leads',
-    () => all({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value }),
-    { default: () => [] as ILeadRaw[], watch: [debounced, sort, direction, managerFilter] },
+    () => leadsPage({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, sort, direction, managerFilter, pageQuery] },
   )
+
+  const leads = computed<ILeadRaw[]>(() => data.value?.items ?? [])
+  const pages = computed(() => data.value?.pages ?? 1)
+  const total = computed(() => data.value?.total ?? 0)
+
+  watch(data, (next) => {
+    if (next && !next.items.length && next.page > next.pages) setPage(next.pages)
+  })
 
   const rowOptions = computed(() =>
     LEAD_STATUSES.map(value => ({ value, label: t(`cms.leads.status.${value}`) })))
 
-  const counts = computed(() => {
-    const rows = data.value ?? []
-
-    return { total: rows.length, fresh: rows.filter(row => row.status === 'new').length }
-  })
+  const counts = computed(() => ({
+    total: data.value?.counts.all ?? 0,
+    fresh: data.value?.counts.fresh ?? 0,
+  }))
 
   const TEXT_COLUMNS: LeadSort[] = ['client', 'tour', 'supplier', 'status', 'phone']
 
@@ -73,8 +83,9 @@ export const useLeads = () => {
   })
 
   return {
-    leads: data, status, error, query, sort, direction,
+    leads, status, error, query, sort, direction,
     managerFilter, filterOptions, elevated, me,
     rowOptions, counts, sortBy, change, refresh,
+    page, pages, total, perPage, setPage, setPerPage,
   }
 }

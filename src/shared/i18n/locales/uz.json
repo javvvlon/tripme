@@ -249,7 +249,13 @@
     "sourcePrice": "operatorda {price}",
     "headlineBare": "Turlar {destination}, {dates}",
     "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
-    "currencyRate": "Bugun 1 $ = {rate} so‘m."
+    "currencyRate": "Bugun 1 $ = {rate} so‘m.",
+    "assign": {
+      "cta": "Lid uchun tanlash",
+      "busy": "Biriktirilmoqda…",
+      "replace": "Lidda almashtirish",
+      "title": "Turni {ref} ga biriktirish"
+    }
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
@@ -311,16 +317,23 @@
   "cms": {
     "nav": {
       "label": "Sayt bo‘limlari",
-      "banner": "Banner",
-      "sections": "Bo‘limlar",
+      "sections": "Bosh sahifa",
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
       "leads": "Lidlar",
-      "content": "Kontent",
       "orders": "Buyurtmalar",
       "operators": "Turoperatorlar",
       "points": "TripMe points",
-      "analytics": "Analitika"
+      "analytics": "Analitika",
+      "blogPage": "Blog sahifasi",
+      "openSite": "Saytni ochish",
+      "groups": {
+        "work": "Ish",
+        "site": "Sayt",
+        "settings": "Sozlamalar"
+      },
+      "collapse": "Menyuni yigʻish",
+      "expand": "Menyuni yoyish"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -364,7 +377,8 @@
       "orDrop": "yoki faylni tashlang",
       "replace": "Almashtirish",
       "remove": "O‘chirish",
-      "library": "Galereyadan"
+      "library": "Galereyadan",
+      "missing": "Fayl mavjud emas — rasmni qayta yuklang yoki galereyadan tanlang."
     },
     "banner": {
       "title": "Banner",
@@ -440,37 +454,20 @@
       "question": "Savol",
       "questionPlaceholder": "Masalan, Turni qanday to‘lash mumkin?",
       "answer": "Javob",
-      "answerPlaceholder": "Qisqa va tushunarli javob"
+      "answerPlaceholder": "Qisqa va tushunarli javob",
+      "settings": "Roʻyxat sozlamalari",
+      "untitledItem": "Sarlavhasiz",
+      "descriptionPlain": "Kartochkada matn bezaksiz va qisqa koʻrsatiladi."
     },
     "sections": {
-      "title": "Bosh sahifa bo‘limlari",
-      "lead": "Qidiruv ostida nima va qaysi tartibda ko‘rsatiladi.",
-      "mode": "Rejim",
-      "modes": {
-        "edit": "Muharrir",
-        "preview": "Ko‘rish"
-      },
-      "previewLanguage": "Ko‘rish tili",
-      "previewEmpty": "«{title}» hozircha bo‘sh — saytda ko‘rinmaydi.",
       "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",
-      "add": "Bo‘lim qo‘shish",
-      "addTitle": "Yangi bo‘lim",
-      "addLead": "Bo‘lim qanday ko‘rinishini tanlang. Turini keyin ham o‘zgartirish mumkin.",
-      "addConfirm": "Qo‘shish",
-      "remove": "Bo‘limni o‘chirish",
       "removedNote": "«{title}» bo‘limi o‘chirildi.",
       "undo": "Qaytarish",
       "shown": "Saytda",
       "hidden": "Yashirin",
-      "expand": "Ochish",
-      "collapse": "Yig‘ish",
       "drag": "Tartibni o‘zgartirish uchun torting",
-      "type": "Turi",
       "source": "Kartochkalar manbasi",
       "heading": "Sarlavha",
-      "headingPlaceholder": "Masalan, Qaynoq yo‘nalishlar",
-      "untitled": "Sarlavhasiz",
-      "missing": "Tarjima yo‘q: {locales}",
       "list": "Ro‘yxat",
       "listPlaceholder": "Ro‘yxatni tanlang",
       "noLists": "«{kind}» turidagi ro‘yxat yo‘q — yarating.",
@@ -480,8 +477,6 @@
       "articles": "Maqolalar",
       "articlesLatest": "So‘nggi chop etilganlar",
       "postsHint": "Hech narsa tanlanmagan — so‘nggi maqolalar ko‘rsatiladi.",
-      "pickedArticles": "maqolalar: {count}",
-      "latestArticles": "so‘nggi maqolalar",
       "layout": "Joylashuv",
       "noLayout": "joylashuvsiz",
       "overflow": "Ro‘yxatda {items} ta element bor, joylashuv esa {capacity} tasini sig‘diradi — qolganlari ko‘rinmaydi.",
@@ -493,10 +488,10 @@
         "title": "Sarlavha yo‘q",
         "list": "Ro‘yxat tanlanmagan",
         "layout": "Joylashuv tanlanmagan",
-        "anchor": "«{anchor}» langari band"
+        "anchor": "«{anchor}» langari band",
+        "body": "Matn yoʻq",
+        "single": "Sahifada bunday blok faqat bitta boʻlishi mumkin"
       },
-      "changes": "O‘zgarishlar",
-      "unsaved": "Saqlanmagan o‘zgarishlar bor",
       "discard": "Bekor qilish",
       "leave": {
         "title": "Saqlamasdan chiqasizmi?",
@@ -514,6 +509,115 @@
         "gridHint": "4_4_4 — qatorda uchta · 8_4 — keng va tor · 8_4.4.4 — katta va uchta kichik · 4_4_4_4_4_4 — oltita",
         "created": "Joylashuv yaratildi",
         "failed": "Joylashuvni yaratib bo‘lmadi."
+      },
+      "headingOptional": "Sarlavha (ixtiyoriy)",
+      "subtitle": "Kichik sarlavha",
+      "subtitlePlaceholder": "Sarlavha ostidagi bir-ikki qator",
+      "headingPlaceholders": {
+        "hero": "Masalan, TripMe blogi",
+        "featured": "Masalan, Hafta maqolasi",
+        "cards": "Masalan, Qaynoq yo‘nalishlar",
+        "features": "Masalan, Nega TripMe",
+        "faq": "Masalan, Savol-javoblar",
+        "feed": "Masalan, Barcha maqolalar",
+        "banner": "Masalan, Maldiv −20% oktabr oxirigacha",
+        "media": "Masalan, Mehmonxonani qanday tanlaymiz",
+        "cta": "Masalan, Qayerga borishni bilmayapsizmi?",
+        "quote": "Masalan, Anna Kim",
+        "text": "Masalan, Biz haqimizda",
+        "spotlight": "Masalan, Hozir oʻqishyapti",
+        "search": "Boʻsh boʻlsa — standart sarlavha koʻrsatiladi",
+        "contact": ""
+      },
+      "image": "Fon rasmi",
+      "imageHint": "Ixtiyoriy. Keng rasm, PNG, JPG yoki WebP, 8 MB gacha — matn ustiga tushadi.",
+      "featuredPost": "Maqola",
+      "featuredLatest": "Eng yangisi",
+      "featuredHint": "«Eng yangisi» yangi maqola chiqqanda o‘zi almashadi.",
+      "pageSize": "Birdaniga maqolalar",
+      "pageSizeHint": "Qolganlari «Yana ko‘rsatish» tugmasi orqali.",
+      "excludeFeatured": "Asosiy maqolani lentada takrorlamaslik",
+      "feedSummary": "{n} tadan",
+      "anchorHintBlog": "Blokka havola uchun: /blog#nom. Lotin harflari, raqamlar va chiziqchalar.",
+      "language": "Til",
+      "notFilled": "To‘ldirilmagan",
+      "featuredAuto": "Avtomatik",
+      "featuredPick": "Maqolani tanlash",
+      "eyebrow": "Belgi",
+      "eyebrowPlaceholder": "Masalan, Maxsus taklif",
+      "body": "Matn",
+      "bodyPlaceholder": "Blok matnini yozing…",
+      "ctaLabel": "Tugma matni",
+      "ctaLabelPlaceholder": "Masalan, Turlarni koʻrish",
+      "ctaLink": "Tugma havolasi",
+      "ctaLinkHint": "Sayt sahifasi (/search) yoki toʻliq manzil https://…",
+      "options": {
+        "style": "Koʻrinish",
+        "tone": "Rang",
+        "imageSide": "Rasm",
+        "listSize": "Roʻyxatdagi maqolalar"
+      },
+      "optionValues": {
+        "style": {
+          "card": "Kartochka",
+          "wide": "Butun kenglikda"
+        },
+        "tone": {
+          "light": "Yorqin",
+          "brand": "Brend",
+          "dark": "Toʻq"
+        },
+        "imageSide": {
+          "left": "Chapda",
+          "right": "Oʻngda"
+        }
+      },
+      "fieldLabels": {
+        "author": "Muallif (ixtiyoriy)",
+        "role": "Bu kim",
+        "quote": "Iqtibos",
+        "photo": "Muallif rasmi",
+        "picture": "Rasm"
+      },
+      "placeholders": {
+        "role": "Masalan, may oyida Turkiyaga borgan",
+        "quote": "Masalan, Soʻnggi yillardagi eng yaxshi taʼtil — hammasi mayda-chuydasigacha oʻylangan."
+      }
+    },
+    "builder": {
+      "unsaved": "Saqlanmagan oʻzgarishlar bor",
+      "saved": "Hammasi saqlangan",
+      "device": "Ekran kengligi",
+      "devices": {
+        "desktop": "Kompyuter",
+        "tablet": "Planshet",
+        "mobile": "Telefon"
+      },
+      "clean": "Ramkasiz koʻrish (Esc — qaytish)",
+      "openLive": "Sahifani saytda ochish",
+      "blocks": "Bloklar",
+      "outline": "Tuzilma",
+      "canvas": "Sahifa",
+      "close": "Yopish",
+      "shownHint": "Saqlangandan keyin blok tashrif buyuruvchilarga koʻrinadi.",
+      "hiddenHint": "Blok saqlanadi, lekin saytda koʻrinmaydi.",
+      "actions": {
+        "up": "Yuqoriga",
+        "down": "Pastga",
+        "duplicate": "Nusxalash",
+        "toggle": "Yashirish",
+        "show": "Koʻrsatish",
+        "remove": "Oʻchirish"
+      },
+      "pageSettings": "Sahifa sozlamalari",
+      "emptyBlock": "Blok hozircha boʻsh — uni oʻngdagi panelda toʻldiring.",
+      "dropHere": "Blokni shu yerga sudrab qoʻying",
+      "emptyPage": "Sahifa boʻsh — birinchi blokni shu yerga sudrab qoʻying",
+      "splash": {
+        "step1": "Bloklar yuklanmoqda…",
+        "step2": "Sahifa yigʻilmoqda…",
+        "step3": "Maqolalar olinmoqda…",
+        "step4": "Deyarli tayyor…"
       }
     },
     "posts": {
@@ -545,8 +649,8 @@
         "excerptPlaceholder": "Karta va qidiruv uchun bir-ikki jumla",
         "excerptHint": "Roʻyxatdagi kartada va qidiruv natijalarida koʻrinadi.",
         "body": "Matn",
-        "bodyPlaceholder": "## Kichik sarlavha\n\nMaqola matni Markdown formatida…",
-        "bodyHint": "Markdown: **qalin**, _kursiv_, ## sarlavhalar, - roʻyxatlar, [havolalar](https://).",
+        "bodyPlaceholder": "Maqolani yozishni boshlang…",
+        "bodyHint": "Matnni bezash uchun uni belgilang. Rasmlarni buferdan qoʻyish yoki matnga sudrab tashlash mumkin.",
         "state": "Holat",
         "image": "Muqova",
         "badgeType": "Badge turi",
@@ -556,11 +660,6 @@
         "linkHint": "Ixtiyoriy: asl manbaga havola.",
         "author": "Muallif"
       },
-      "view": {
-        "label": "Roʻyxat koʻrinishi",
-        "tile": "Roʻyxat",
-        "card": "Kartalar"
-      },
       "tour": {
         "title": "Maqoladagi tur",
         "lead": "Taklifni toping — oʻquvchi uni ariza tugmasi bilan karta koʻrinishida koʻradi.",
@@ -569,6 +668,28 @@
       "confirmDelete": {
         "title": "Maqola oʻchirilsinmi?",
         "lead": "Maqola sahifasi ochilmay qoladi, boʻlimlar esa boʻshaydi."
+      },
+      "count": "Jami {total}, chop etilgan — {live}.",
+      "search": "Maqolalarni qidirish",
+      "searchPlaceholder": "Sarlavha, manzil yoki muallif…",
+      "noMatches": "Hech narsa topilmadi.",
+      "columns": {
+        "cover": "Muqova",
+        "title": "Maqola",
+        "author": "Muallif",
+        "status": "Holat",
+        "published": "Chop etilgan",
+        "updated": "O‘zgartirilgan",
+        "languages": "Tillar"
+      },
+      "legal": "Huquqiy sahifa",
+      "withTour": "Tur bilan",
+      "translated": "Sarlavha to‘ldirilgan",
+      "notTranslated": "Tarjima yo‘q",
+      "filters": {
+        "all": "Barcha maqolalar",
+        "published": "Chop etilganlar",
+        "draft": "Qoralamalar"
       }
     },
     "leads": {
@@ -647,7 +768,6 @@
       "noMatches": "Hech nima topilmadi.",
       "openAtOperator": "Operatorda ochish",
       "openHotelPage": "Mehmonxona sahifasi",
-      "noBookingUrl": "Tanlov havolasi faqat yangi arizalarda mavjud.",
       "channels": {
         "site": "Saytdan",
         "telegram": "Telegram",
@@ -674,8 +794,21 @@
         "lead": "U bilan birga barcha buyurtmalari va tarixi oʻchadi."
       },
       "offer": {
-        "lead": "Mijoz tanlagan narsani koʻrish uchun qayerga qaytish kerak.",
-        "repeatSearch": "Qidiruvni takrorlash"
+        "repeatSearch": "Qidiruvni takrorlash",
+        "empty": "Mijoz hali tur tanlamagan",
+        "emptyHint": "Turni shu yerda tanlang yoki toʻliq qidiruvda toping va kartochkadagi «Lid uchun tanlash» tugmasini bosing.",
+        "pick": "Tur tanlash",
+        "replace": "Turni almashtirish",
+        "inSearch": "Toʻliq qidiruvni ochish",
+        "assigned": "Tur lidga biriktirildi",
+        "confirmTitle": "Liddagi tur almashtirilsinmi?",
+        "confirmText": "Hozir lidda «{hotel}». Yangi tur uning oʻrnini egallaydi, yaratilgan buyurtmalar oʻzgarmaydi.",
+        "confirm": "Almashtirish",
+        "clear": "Turni olib tashlash",
+        "clearTitle": "Tur liddan olib tashlansinmi?",
+        "clearText": "«{hotel}» liddan olib tashlanadi. Yaratilgan buyurtmalar oʻzgarmaydi.",
+        "clearConfirm": "Olib tashlash",
+        "cleared": "Tur liddan olib tashlandi"
       },
       "registered": "Ro‘yxatdan o‘tgan mijoz",
       "consentGiven": "Ma’lumotlarni qayta ishlashga rozilik: {date}",
@@ -959,16 +1092,56 @@
       "kinds": {
         "cards": "Kartochkalar",
         "features": "Afzalliklar",
-        "faq": "Savol-javoblar"
+        "faq": "Savol-javoblar",
+        "hero": "Sarlavha bloki",
+        "featured": "Asosiy maqola",
+        "feed": "Maqolalar lentasi",
+        "banner": "Banner",
+        "media": "Rasm + matn",
+        "cta": "CTA-chiziq",
+        "quote": "Iqtibos",
+        "text": "Matn",
+        "spotlight": "Asosiy + roʻyxat",
+        "search": "Qidiruv",
+        "contact": "Kontaktlar"
       },
       "kindHints": {
         "cards": "O‘z joylashuviga ega kartochkalar — ro‘yxatdan yoki blog maqolalaridan.",
         "features": "Qisqa afzalliklar qatori: belgi, sarlavha va bir-ikki so‘z.",
-        "faq": "Akkordeon: savol bosilganda javob ochiladi."
+        "faq": "Akkordeon: savol bosilganda javob ochiladi.",
+        "hero": "Sahifa sarlavhasi, kichik sarlavha va xohlasangiz to‘liq kenglikdagi rasm.",
+        "featured": "Bitta maqola katta kartochkada — tanlangan yoki eng yangisi.",
+        "feed": "Barcha chop etilgan maqolalar «Yana ko‘rsatish» tugmasi bilan.",
+        "banner": "Belgi, sarlavha, tugma va rasmli promo — kartochka yoki butun kenglikda.",
+        "media": "Chap yoki oʻngda rasm, yonida bezatilgan matn va tugma.",
+        "cta": "Chaqiriq va tugmali yorqin chiziq.",
+        "quote": "Fikr yoki iqtibos: matn, muallif va rasm.",
+        "text": "Sarlavha, roʻyxat va rasmli erkin matn.",
+        "spotlight": "Jurnal bloki: katta maqola va keyingilari roʻyxati.",
+        "search": "Tur qidiruvi bilan birinchi ekran: sarlavha, kichik sarlavha va rasm.",
+        "contact": "Kontaktlar va aloqa formasi."
       },
       "sources": {
         "list": "Ro‘yxat",
-        "posts": "Blog maqolalari"
+        "posts": "Blog maqolalari",
+        "none": "—"
+      }
+    },
+    "pages": {
+      "home": {
+        "title": "Bosh sahifa",
+        "lead": "Butun bosh sahifa: qidiruv, bloklar va kontaktlar — tashrif buyuruvchilar koʻradigan tartibda."
+      },
+      "blog": {
+        "title": "Blog sahifasi",
+        "lead": "/blog sahifasi qaysi bloklardan va qaysi tartibda yig‘ilgan."
+      },
+      "seo": {
+        "title": "Qidiruv va ijtimoiy tarmoqlarda sahifa",
+        "lead": "Google va havola ko‘rinishi uchun sarlavha va tavsif.",
+        "metaTitle": "Sarlavha",
+        "metaDescription": "Tavsif",
+        "length": "{n} / ~{max} belgi"
       }
     },
     "ownership": {
@@ -1011,25 +1184,39 @@
       }
     }
   },
-  "markdown": {
-    "bold": "Qalin",
-    "italic": "Kursiv",
-    "heading": "Sarlavha",
-    "quote": "Iqtibos",
-    "bullet": "Ro'yxat",
-    "link": "Havola",
-    "write": "Tahrirlash",
-    "preview": "Ko'rib chiqish",
-    "image": "Rasm qoʻshish",
-    "video": "Video qoʻshish",
-    "videoPlaceholder": "YouTube, Vimeo yoki .mp4 havolasi",
-    "insert": "Qoʻshish",
+  "richEditor": {
+    "toolbar": "Formatlash",
+    "caption": "Rasm izohi (ixtiyoriy)",
+    "remove": "Oʻchirish",
+    "linkPlaceholder": "https://… yoki /tours/maldives",
+    "apply": "Qoʻllash",
+    "unlink": "Havolani olib tashlash",
+    "align": {
+      "left": "Chapda, matn aylanib oʻtadi",
+      "center": "Markazda",
+      "right": "Oʻngda, matn aylanib oʻtadi",
+      "full": "Butun kenglikda"
+    },
+    "tools": {
+      "h2": "Sarlavha",
+      "h3": "Kichik sarlavha",
+      "bold": "Qalin",
+      "italic": "Kursiv",
+      "strike": "Ustidan chizilgan",
+      "link": "Havola",
+      "bullet": "Belgili roʻyxat",
+      "ordered": "Raqamli roʻyxat",
+      "quote": "Iqtibos",
+      "divider": "Ajratgich",
+      "image": "Rasm qoʻyish",
+      "video": "Video qoʻyish",
+      "undo": "Bekor qilish",
+      "redo": "Qaytarish"
+    },
     "uploading": "Rasm yuklanmoqda…",
     "uploadFailed": "Rasmni yuklab boʻlmadi.",
-    "alignHint": "Matn bilan yonma-yon: ![izoh](havola \"left\"), \"right\" yoki \"full\".",
-    "library": "Yuklangan rasmlar",
-    "libraryEmpty": "Hozircha hech nima yuklanmagan.",
-    "upload": "Yangisini yuklash"
+    "videoPlaceholder": "YouTube, Vimeo yoki .mp4 havolasi",
+    "insert": "Qoʻshish"
   },
   "post": {
     "readMore": "Manbada oʻqish",
@@ -1046,7 +1233,8 @@
       "title": "TripMe blogi",
       "lead": "Yo‘nalishlar, marshrutlar va amaliy maslahatlar — har kuni u yerga sayohatchilarni jo‘natadigan odamlardan.",
       "empty": "Hozircha maqolalar yo‘q — tez orada birinchisi paydo bo‘ladi.",
-      "seoTitle": "Blog — TripMe"
+      "seoTitle": "Blog — TripMe",
+      "more": "Yana ko‘rsatish · {count}"
     }
   },
   "contact": {
@@ -1313,5 +1501,14 @@
       "manager": "Menejeringiz: {name}, TripMe"
     },
     "pdf": "PDF ni buyurtmaga saqlash"
+  },
+  "pagination": {
+    "label": "Sahifalar",
+    "shown": "{total} tadan {from}–{to} koʻrsatilmoqda",
+    "empty": "Hech narsa topilmadi",
+    "previous": "Oldingi sahifa",
+    "next": "Keyingi sahifa",
+    "page": "{n}-sahifa",
+    "perPage": "Sahifada"
   }
 }

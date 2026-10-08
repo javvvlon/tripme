@@ -1,5 +1,7 @@
 import { LOCALES } from '~/shared/config/locales'
 
+const REVALIDATED_PAGES = ['', '/blog']
+
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
@@ -27,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
   if (bypassToken) {
     const origin = getRequestURL(event).origin
-    const paths = LOCALES.flatMap(locale => [`/${locale}`, `/${locale}/_payload.json`])
+    const paths = LOCALES.flatMap(locale => REVALIDATED_PAGES.flatMap(page => [`/${locale}${page}`, `/${locale}${page}/_payload.json`]))
 
     const results = await Promise.allSettled(paths.map(path => $fetch(`${origin}${path}`, {
       headers: { 'x-prerender-revalidate': bypassToken },

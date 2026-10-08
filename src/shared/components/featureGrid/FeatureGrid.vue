@@ -10,13 +10,14 @@
             >
 
             <h3 class="tm-features__title">{{ item.title }}</h3>
-            <p v-if="item.description" class="tm-features__text">{{ item.description }}</p>
+            <p v-if="item.description" class="tm-features__text">{{ markdownToText(item.description) }}</p>
         </li>
     </ul>
 </template>
 
 <script setup lang="ts">
-import type { IContentItem } from '~/modules/content/models/HomeContent'
+import type { IContentItem } from '~/modules/content/models/PageContent'
+import { markdownToText } from '~/shared/helpers/markdown'
 
 defineProps<{ items: IContentItem[] }>()
 </script>

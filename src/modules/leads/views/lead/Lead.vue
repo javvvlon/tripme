@@ -41,36 +41,92 @@
             <LeadOwner :lead="lead" class="tm-cms-lead__card" @changed="owned" />
 
             <section class="tm-cms-lead__card">
-                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+                <header class="tm-cms-lead__offer-head">
+                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
 
-                <p class="tm-cms-lead__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
+                    <div v-if="hasTour && !picking" class="tm-cms-lead__offer-actions">
+                        <Button
+                            type="button" size="sm" variant="ghost" icon="pencil"
+                            :disabled="saving"
+                            @click="picking = true"
+                        >
+                            {{ t('cms.leads.offer.replace') }}
+                        </Button>
 
-                <div class="tm-cms-lead__offer-links">
-                    <Button
-                        size="sm" variant="secondary" icon="search"
-                        :to="pickToursLink"
-                    >
-                        {{ t('cms.leads.offer.repeatSearch') }}
-                    </Button>
+                        <Button
+                            type="button" size="sm" variant="danger-quiet" icon="trash"
+                            :disabled="saving"
+                            @click="clearTour"
+                        >
+                            {{ t('cms.leads.offer.clear') }}
+                        </Button>
+                    </div>
+                </header>
 
-                    <Button
-                        v-if="links.booking"
-                        size="sm" variant="ghost" icon="arrow-right"
-                        :href="links.booking" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openAtOperator') }}
-                    </Button>
+                <template v-if="picking">
+                    <TourPicker :selected="null" :initial="pickerSeed" @update:selected="assign" />
 
-                    <Button
-                        v-if="links.hotel"
-                        size="sm" variant="ghost" icon="bed"
-                        :href="links.hotel" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openHotelPage') }}
-                    </Button>
+                    <div class="tm-cms-lead__offer-links is-end">
+                        <Button type="button" size="sm" variant="ghost" :disabled="saving" @click="picking = false">
+                            {{ t('common.cancel') }}
+                        </Button>
+                    </div>
+                </template>
+
+                <template v-else-if="hasTour">
+                    <div class="tm-cms-lead__tour">
+                        <div class="tm-cms-lead__tour-main">
+                            <p class="tm-cms-lead__tour-name">
+                                {{ lead.hotel_name }}
+                                <span v-if="stars" class="tm-cms-lead__tour-stars" :aria-label="`${stars}★`">{{ '★'.repeat(stars) }}</span>
+                            </p>
+                            <p v-if="tourMeta" class="tm-cms-lead__tour-meta">{{ tourMeta }}</p>
+                            <p class="tm-cms-lead__tour-meta">
+                                <template v-if="lead.check_in">{{ formatDateRange(lead.check_in, lead.nights, locale) }} · </template>{{ party }}
+                            </p>
+                        </div>
+
+                        <p v-if="tourPrice" class="tm-cms-lead__tour-price">{{ tourPrice }}</p>
+                    </div>
+
+                    <div class="tm-cms-lead__offer-links">
+                        <Button size="sm" variant="secondary" icon="search" :to="pickToursLink">
+                            {{ t('cms.leads.offer.repeatSearch') }}
+                        </Button>
+
+                        <Button
+                            v-if="links.booking"
+                            size="sm" variant="ghost" icon="arrow-right"
+                            :href="links.booking" target="_blank" rel="noopener"
+                        >
+                            {{ t('cms.leads.openAtOperator') }}
+                        </Button>
+
+                        <Button
+                            v-if="links.hotel"
+                            size="sm" variant="ghost" icon="bed"
+                            :href="links.hotel" target="_blank" rel="noopener"
+                        >
+                            {{ t('cms.leads.openHotelPage') }}
+                        </Button>
+                    </div>
+                </template>
+
+                <div v-else class="tm-cms-lead__offer-empty">
+                    <p class="tm-cms-lead__offer-title">{{ t('cms.leads.offer.empty') }}</p>
+                    <blockquote v-if="lead.comment" class="tm-cms-lead__offer-quote">{{ lead.comment }}</blockquote>
+                    <p class="tm-cms-lead__offer-hint">{{ t('cms.leads.offer.emptyHint') }}</p>
+
+                    <div class="tm-cms-lead__offer-links">
+                        <Button type="button" size="sm" icon="plus" @click="picking = true">
+                            {{ t('cms.leads.offer.pick') }}
+                        </Button>
+
+                        <Button size="sm" variant="secondary" icon="search" :to="pickToursLink">
+                            {{ t('cms.leads.offer.inSearch') }}
+                        </Button>
+                    </div>
                 </div>
-
-                <p v-if="!links.booking" class="tm-cms-lead__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
             </section>
 
             <CustomerPoints v-if="lead.user_id" :user-id="lead.user_id" class="tm-cms-lead__points" />
@@ -193,12 +249,15 @@ import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
+import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
+import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
 import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
 import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
 import { leadResponse, waitLabel } from '~/modules/leads/helpers/compliance'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
+import type { Money } from '~/search_engine/contracts/search'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -210,6 +269,7 @@ const {
     lead, draft, orders, status, error, saving, saved,
     historyVersion, owned,
     statusOptions, change, submit, addOrder, remove,
+    picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()
 
 const shortDate = (value: string | null | undefined): string =>
@@ -218,12 +278,52 @@ const shortDate = (value: string | null | undefined): string =>
 const fullDate = (value: string | null | undefined): string =>
     formatDate(value, locale.value, { dateStyle: 'medium', timeStyle: 'short' })
 
-const links = computed(() => offerLinks(lead.value?.trip as never))
+const links = computed(() => offerLinks(lead.value ? { ...lead.value.trip, ...pickRoute(lead.value) } : null))
+
+const pickRoute = (found: NonNullable<typeof lead.value>) => ({
+    route_from: found.route_from || String(found.trip.route_from ?? ''),
+    route_to: found.route_to || String(found.trip.route_to ?? ''),
+    check_in: found.check_in,
+    nights: found.nights,
+    adults: found.adults,
+    children: found.children,
+})
+
+const stars = computed(() => {
+    const value = Number(lead.value?.trip.hotel_stars)
+    const named = /\d\s*\*/.test(lead.value?.hotel_name ?? '')
+
+    return !named && Number.isInteger(value) && value > 0 && value <= 5 ? value : 0
+})
+
+const tourMeta = computed(() =>
+    [lead.value?.supplier_name, lead.value?.trip.meal_name, lead.value?.trip.room_name]
+        .map(value => (typeof value === 'string' ? value.trim() : ''))
+        .filter(Boolean)
+        .join(' · '))
+
+const party = computed(() => {
+    if (!lead.value) return ''
+
+    const parts = [t('search.adults', { n: lead.value.adults }, lead.value.adults)]
+
+    if (lead.value.children) parts.push(t('search.kids', { n: lead.value.children }, lead.value.children))
+
+    return parts.join(', ')
+})
+
+const tourPrice = computed(() => {
+    const amount = lead.value?.price_amount
+
+    if (!amount) return ''
+
+    return formatMoney({ amount, currency: (lead.value?.price_currency || 'USD') as Money['currency'] }, locale.value)
+})
 
 const KNOWN = new Set([
     'hotel_name', 'supplier_name', 'check_in', 'nights', 'adults', 'children',
     'price_amount', 'price_currency', 'route_from', 'route_to',
-    'booking_url', 'hotel_url',
+    'booking_url', 'hotel_url', 'hotel_stars', 'meal_name', 'room_name', 'kid_ages',
 ])
 
 const plain = (value: unknown): string =>

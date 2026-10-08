@@ -1,0 +1,48 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-lang-switch {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('sm');
+    background: var(--tm-surface-2);
+
+    &__tab {
+        position: relative;
+        min-width: 44px;
+        padding: 6px 10px;
+        border: 0;
+        border-radius: radius('xs');
+        background: transparent;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .04em;
+        cursor: pointer;
+        transition: background .15s, color .15s;
+
+        &:hover { color: var(--tm-ink-1); }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--tm-cms-accent-soft);
+        }
+
+        &.is-active {
+            background: var(--tm-surface-1);
+            color: var(--tm-cms-accent);
+            box-shadow: var(--tm-shadow-sm);
+        }
+    }
+
+    &__dot {
+        position: absolute;
+        top: 4px;
+        right: 5px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--tm-brand-primary);
+    }
+}

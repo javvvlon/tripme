@@ -1,60 +1,104 @@
 <template>
     <div class="tm-cms-posts">
-        <SectionHead :level="1" :title="t('cms.posts.title')" :sub="t('cms.posts.lead')" />
-
+        <SectionHead :level="1" :title="t('cms.posts.title')" :sub="t('cms.posts.count', counts)" />
 
         <div class="tm-cms-posts__actions">
-            <Button size="md" @click="open">{{ t('cms.posts.create') }}</Button>
+            <SearchField
+                v-model="query"
+                :label="t('cms.posts.search')"
+                :placeholder="t('cms.posts.searchPlaceholder')"
+                icon="search"
+                clearable
+                class="tm-cms-posts__search"
+            />
 
-            <div class="tm-cms-posts__views" role="group" :aria-label="t('cms.posts.view.label')">
-                <button
-                    v-for="mode in VIEW_MODES" :key="mode.value"
-                    type="button" class="tm-cms-posts__view"
-                    :class="{ 'is-active': view === mode.value }"
-                    :aria-pressed="view === mode.value"
-                    :title="t(`cms.posts.view.${mode.value}`)"
-                    :aria-label="t(`cms.posts.view.${mode.value}`)"
-                    @click="view = mode.value"
-                >
-                    <Icon :name="mode.icon" :size="18" />
-                </button>
-            </div>
+            <SelectMenu v-model="filter" :options="filterOptions" class="tm-cms-posts__filter" />
+
+            <Button size="md" @click="open">{{ t('cms.posts.create') }}</Button>
         </div>
 
-        <EditorSkeleton v-if="status === 'pending'" variant="rows" />
+        <EditorSkeleton v-if="status === 'pending' && !posts.length" variant="rows" />
 
-        <p v-else-if="!posts?.length" class="tm-cms-posts__empty">{{ t('cms.posts.empty') }}</p>
+        <p v-else-if="!posts.length" class="tm-cms-posts__empty">
+            {{ query || filter !== 'all' ? t('cms.posts.noMatches') : t('cms.posts.empty') }}
+        </p>
 
-        <ul v-else class="tm-cms-posts__grid" :class="`is-${view}`">
-            <li v-for="post in posts" :key="post.uuid" class="tm-cms-posts__row">
-                <NuxtLink :to="localePath(`/app/posts/${post.uuid}`)" class="tm-cms-posts__cover">
-                    <Photo :photo="{ src: post.image_url, alt: '' }" ratio="16x9" />
-                </NuxtLink>
+        <table v-else class="tm-cms-posts__table">
+            <thead>
+                <tr>
+                    <th scope="col" class="is-cover"><span class="tm-cms-posts__sort">{{ t('cms.posts.columns.cover') }}</span></th>
+                    <th
+                        v-for="column in POST_COLUMNS" :key="column.key"
+                        scope="col" :class="column.class"
+                        :aria-sort="sort === column.key ? (direction === 'asc' ? 'ascending' : 'descending') : 'none'"
+                    >
+                        <button type="button" class="tm-cms-posts__sort" @click="sortBy(column.key)">
+                            {{ t(`cms.posts.columns.${column.key}`) }}
+                            <Icon
+                                v-if="sort === column.key"
+                                :name="direction === 'asc' ? 'chevron-up' : 'chevron'" :size="12"
+                            />
+                        </button>
+                    </th>
+                    <th scope="col" class="is-langs"><span class="tm-cms-posts__sort">{{ t('cms.posts.columns.languages') }}</span></th>
+                    <th scope="col" class="is-actions"><span class="tm-cms-posts__sort" /></th>
+                </tr>
+            </thead>
 
-                <NuxtLink :to="localePath(`/app/posts/${post.uuid}`)" class="tm-cms-posts__name">
-                    <Icon name="doc" :size="18" class="tm-cms-posts__icon" />
-                    <span>{{ titleOf(post) }}</span>
-                </NuxtLink>
-
-                <p v-if="excerptOf(post)" class="tm-cms-posts__excerpt">{{ excerptOf(post) }}</p>
-
-                <span class="tm-cms-posts__slug">/{{ post.slug }}</span>
-
-                <span v-if="post.author" class="tm-cms-posts__author">{{ authorOf(post) }}</span>
-
-                <span class="tm-cms-posts__state" :class="{ 'is-live': post.is_published }">
-                    {{ post.is_published ? t('cms.posts.published') : t('cms.posts.draft') }}
-                </span>
-
-                <button
-                    type="button" class="tm-cms-posts__delete"
-                    :aria-label="t('cms.posts.delete')" :title="t('cms.posts.delete')"
-                    @click="remove(post.uuid, titleOf(post))"
+            <tbody>
+                <tr
+                    v-for="post in posts" :key="post.uuid"
+                    class="tm-cms-posts__row"
+                    tabindex="0"
+                    @click="go(post.uuid)"
+                    @keydown.enter="go(post.uuid)"
                 >
-                    <Icon name="close" :size="16" />
-                </button>
-            </li>
-        </ul>
+                    <td class="is-cover">
+                        <span class="tm-cms-posts__thumb">
+                            <img v-if="post.image_url" :src="post.image_url" alt="" loading="lazy">
+                            <Icon v-else name="doc" :size="16" />
+                        </span>
+                    </td>
+                    <td class="is-title">
+                        <span class="tm-cms-posts__title">{{ titleOf(post) || t('cms.posts.untitled') }}</span>
+                        <span class="tm-cms-posts__slug">
+                            /{{ post.slug }}
+                            <span v-if="post.slug.startsWith(LEGAL_PREFIX)" class="tm-cms-posts__tag">{{ t('cms.posts.legal') }}</span>
+                            <span v-if="post.tour" class="tm-cms-posts__tag">{{ t('cms.posts.withTour') }}</span>
+                        </span>
+                    </td>
+                    <td class="is-author tm-cms-posts__muted">{{ authorOf(post) || '—' }}</td>
+                    <td class="is-status">
+                        <span class="tm-cms-posts__state" :class="{ 'is-live': post.is_published }">
+                            {{ post.is_published ? t('cms.posts.published') : t('cms.posts.draft') }}
+                        </span>
+                    </td>
+                    <td class="is-date tm-cms-posts__muted">{{ post.published_at ? shortDate(post.published_at) : '—' }}</td>
+                    <td class="is-date tm-cms-posts__muted">{{ shortDate(post.updated_at) }}</td>
+                    <td class="is-langs">
+                        <span
+                            v-for="language in languagesOf(post)" :key="language.locale"
+                            class="tm-cms-posts__lang" :class="{ 'is-filled': language.filled }"
+                            :title="language.filled ? t('cms.posts.translated') : t('cms.posts.notTranslated')"
+                        >{{ language.locale.toUpperCase() }}</span>
+                    </td>
+                    <td class="is-actions" @click.stop>
+                        <button
+                            type="button" class="tm-cms-posts__delete"
+                            :aria-label="t('cms.posts.delete')" :title="t('cms.posts.delete')"
+                            @click="remove(post.uuid, titleOf(post))"
+                        >
+                            <Icon name="trash" :size="16" />
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <Pagination
+            :page="page" :pages="pages" :total="total" :per-page="perPage"
+            @update:page="setPage" @update:per-page="setPerPage"
+        />
 
         <Modal
             v-model="creating"
@@ -89,32 +133,28 @@
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
+import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
+import Pagination from '~/shared/components/pagination/Pagination.vue'
+import { formatDate } from '~/shared/helpers/format-date'
 import { usePosts } from './Posts.hooks'
-import { preferredTranslation } from '~/modules/content/contracts/content'
-import type { IPostAdminRaw } from '~/modules/posts/contracts/posts'
+import { LEGAL_PREFIX, POST_COLUMNS, POST_FILTERS } from './Posts.config'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const {
-    posts, status, error, busy, view, creating, draft,
-    canCreate, slugIsValid, open, submit, remove,
+    posts, counts, status, error, busy, creating, draft, canCreate, slugIsValid,
+    query, filter, sort, direction, sortBy, titleOf, authorOf, languagesOf,
+    open, submit, remove,
+    page, pages, total, perPage, setPage, setPerPage,
 } = usePosts()
 
-const VIEW_MODES = [
-    { value: 'tile' as const, icon: 'list' },
-    { value: 'card' as const, icon: 'image' },
-]
+const filterOptions = computed(() => POST_FILTERS.map(value => ({ value, label: t(`cms.posts.filters.${value}`) })))
 
-const titleOf = (post: IPostAdminRaw): string =>
-    preferredTranslation(post.translations, translation => Boolean(translation.title))?.title
-    ?? t('cms.posts.untitled')
+const go = (id: string) => navigateTo(localePath(`/app/posts/${id}`))
 
-const excerptOf = (post: IPostAdminRaw): string =>
-    preferredTranslation(post.translations, translation => Boolean(translation.excerpt))?.excerpt ?? ''
-
-const authorOf = (post: IPostAdminRaw): string =>
-    `${post.author?.first_name ?? ''} ${post.author?.last_name ?? ''}`.trim()
+const shortDate = (value: string): string =>
+    formatDate(value, locale.value, { day: '2-digit', month: 'short', year: 'numeric' })
 
 useSeoMeta({ title: () => t('cms.posts.title'), robots: 'noindex, nofollow' })
 </script>

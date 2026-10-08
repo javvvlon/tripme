@@ -19,7 +19,7 @@ export const useLegalPage = () => {
   })
 
   const { data, status } = useAsyncData(
-    'legal-page',
+    () => `legal-page-${doc.value}-${locale.value}`,
     async (): Promise<IPostAttributes | null> => {
       try {
         return (await bySlug(`${LEGAL_SLUG_PREFIX}${doc.value}`, locale.value as ContentLocale))?.toObject() ?? null
@@ -28,7 +28,7 @@ export const useLegalPage = () => {
         return null
       }
     },
-    { watch: [doc, locale], default: () => null },
+    { default: () => null },
   )
 
   return { doc, page: computed(() => data.value), status }

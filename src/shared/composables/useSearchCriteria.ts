@@ -104,6 +104,7 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
     if (criteria.nights !== SEARCH_DEFAULTS.nights) q.nights = String(criteria.nights)
     if (criteria.adults !== SEARCH_DEFAULTS.adults) q.adults = String(criteria.adults)
     if (criteria.kidAges.length) q.kids = criteria.kidAges.join(',')
+    if (typeof route.query.lead === 'string' && route.query.lead) q.lead = route.query.lead
     return q
   })
 

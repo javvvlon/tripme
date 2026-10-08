@@ -55,10 +55,8 @@
                 </div>
             </section>
 
-            <section class="tm-cms-order__card">
+            <section v-if="links.search || links.booking || links.hotel" class="tm-cms-order__card">
                 <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
-
-                <p class="tm-cms-order__offer-lead">{{ t('cms.leads.offer.lead') }}</p>
 
                 <div class="tm-cms-order__offer-links">
                     <Button
@@ -85,8 +83,6 @@
                         {{ t('cms.leads.openHotelPage') }}
                     </Button>
                 </div>
-
-                <p v-if="!links.booking" class="tm-cms-order__offer-note">{{ t('cms.leads.noBookingUrl') }}</p>
             </section>
 
             <form class="tm-cms-order__form" novalidate @submit.prevent="submit">

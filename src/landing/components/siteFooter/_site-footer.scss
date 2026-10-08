@@ -134,6 +134,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        min-width: 52px;
         height: 34px;
         padding: 0 12px;
         border: 1px solid var(--tm-border-1);
@@ -144,7 +145,11 @@
         font-weight: 700;
         letter-spacing: .01em;
 
-        img { display: block; width: auto; }
+        img {
+            display: block;
+            width: auto;
+            max-width: 64px;
+        }
     }
 
     &__contacts {
@@ -185,17 +190,25 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 20px;
+        gap: 16px 48px;
         padding-top: 18px;
         padding-bottom: 18px;
     }
 
+    &__rights {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        gap: 2px;
+    }
+
     &__agent {
+        max-width: 96ch;
         margin: 0;
-        padding-bottom: 18px;
         font-size: size(12);
         line-height: 1.6;
         color: var(--tm-ink-4);
+        text-align: right;
     }
 
     &__entity,
@@ -229,5 +242,7 @@
             align-items: flex-start;
             gap: 8px;
         }
+
+        &__agent { text-align: left; }
     }
 }

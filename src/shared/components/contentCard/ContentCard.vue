@@ -24,7 +24,7 @@
 
         <div class="tm-content-card__body">
             <h3 class="tm-content-card__title">{{ item.title }}</h3>
-            <p v-if="item.description" class="tm-content-card__text">{{ item.description }}</p>
+            <p v-if="item.description" class="tm-content-card__text">{{ markdownToText(item.description) }}</p>
         </div>
     </component>
 </template>
@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
 import type { IContentCardProps } from './ContentCard.d'
+import { markdownToText } from '~/shared/helpers/markdown'
 
 const props = defineProps<IContentCardProps>()
 

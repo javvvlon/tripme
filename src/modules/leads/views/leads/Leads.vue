@@ -26,7 +26,7 @@
             <Button size="md" @click="creating = true">{{ t('cms.leads.create.cta') }}</Button>
         </div>
 
-        <EditorSkeleton v-if="status === 'pending'" variant="rows" />
+        <EditorSkeleton v-if="status === 'pending' && !leads.length" variant="rows" />
 
         <p v-else-if="!leads?.length" class="tm-cms-leads__empty">
             {{ query ? t('cms.leads.noMatches') : t('cms.leads.empty') }}
@@ -97,6 +97,11 @@
             </tbody>
         </table>
 
+        <Pagination
+            :page="page" :pages="pages" :total="total" :per-page="perPage"
+            @update:page="setPage" @update:per-page="setPerPage"
+        />
+
         <ManualLeadModal v-model="creating" @created="onCreated" />
     </div>
 </template>
@@ -105,6 +110,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import ManualLeadModal from '~/modules/leads/components/manualLeadModal/ManualLeadModal.vue'
+import Pagination from '~/shared/components/pagination/Pagination.vue'
 import { useLeads } from './Leads.hooks'
 import { COLUMNS } from './Leads.config'
 import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
@@ -120,6 +126,7 @@ const {
     leads, status, error, query, sort, direction,
     managerFilter, filterOptions, me,
     rowOptions, counts, sortBy, change, refresh,
+    page, pages, total, perPage, setPage, setPerPage,
 } = useLeads()
 
 const now = ref(Date.now())

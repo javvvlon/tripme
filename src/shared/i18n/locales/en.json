@@ -249,7 +249,13 @@
     "sourcePrice": "{price} at the operator",
     "headlineBare": "Tours {destination}, {dates}",
     "currencyNote": "Dollar prices are for reference. Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
-    "currencyRate": "Today 1 $ = {rate} UZS."
+    "currencyRate": "Today 1 $ = {rate} UZS.",
+    "assign": {
+      "cta": "Pick for lead",
+      "busy": "Attaching…",
+      "replace": "Replace in lead",
+      "title": "Attach this tour to {ref}"
+    }
   },
   "auth": {
     "mode": "Sign in or sign up",
@@ -311,16 +317,23 @@
   "cms": {
     "nav": {
       "label": "Site sections",
-      "banner": "Banner",
-      "sections": "Sections",
+      "sections": "Home page",
       "lists": "Lists",
       "posts": "Articles",
       "leads": "Leads",
-      "content": "Content",
       "orders": "Orders",
       "operators": "Operators",
       "points": "TripMe points",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "blogPage": "Blog page",
+      "openSite": "Open the site",
+      "groups": {
+        "work": "Work",
+        "site": "Site",
+        "settings": "Settings"
+      },
+      "collapse": "Collapse menu",
+      "expand": "Expand menu"
     },
     "roles": {
       "CLIENT": "Client",
@@ -364,7 +377,8 @@
       "orDrop": "or drag and drop",
       "replace": "Replace",
       "remove": "Remove",
-      "library": "From library"
+      "library": "From library",
+      "missing": "The file is missing. Upload the image again or pick one from the gallery."
     },
     "banner": {
       "title": "Banner",
@@ -440,37 +454,20 @@
       "question": "Question",
       "questionPlaceholder": "For example, How do I pay for a tour?",
       "answer": "Answer",
-      "answerPlaceholder": "A short, clear answer"
+      "answerPlaceholder": "A short, clear answer",
+      "settings": "List settings",
+      "untitledItem": "Untitled",
+      "descriptionPlain": "Cards show this text briefly, without formatting."
     },
     "sections": {
-      "title": "Home page sections",
-      "lead": "What shows under the search and in which order.",
-      "mode": "Mode",
-      "modes": {
-        "edit": "Editor",
-        "preview": "Preview"
-      },
-      "previewLanguage": "Preview language",
-      "previewEmpty": "“{title}” is empty for now — the site will not show it.",
       "empty": "No sections yet — add the first one.",
-      "add": "Add a section",
-      "addTitle": "New section",
-      "addLead": "Choose how the section looks. You can change the type later.",
-      "addConfirm": "Add",
-      "remove": "Remove section",
       "removedNote": "Section “{title}” removed.",
       "undo": "Undo",
       "shown": "Live",
       "hidden": "Hidden",
-      "expand": "Expand",
-      "collapse": "Collapse",
       "drag": "Drag to reorder",
-      "type": "Type",
       "source": "Where cards come from",
       "heading": "Heading",
-      "headingPlaceholder": "For example, Hot destinations",
-      "untitled": "Untitled",
-      "missing": "Missing: {locales}",
       "list": "List",
       "listPlaceholder": "Choose a list",
       "noLists": "No “{kind}” lists yet — create one.",
@@ -480,8 +477,6 @@
       "articles": "Posts",
       "articlesLatest": "Latest published",
       "postsHint": "Nothing chosen — the latest posts will show.",
-      "pickedArticles": "posts: {count}",
-      "latestArticles": "latest posts",
       "layout": "Layout",
       "noLayout": "no layout",
       "overflow": "The list has {items} items but the layout fits {capacity} — the rest will not show.",
@@ -493,10 +488,10 @@
         "title": "No heading",
         "list": "No list chosen",
         "layout": "No layout chosen",
-        "anchor": "Anchor “{anchor}” is taken"
+        "anchor": "Anchor “{anchor}” is taken",
+        "body": "No text",
+        "single": "A page can hold only one block of this type"
       },
-      "changes": "Changes",
-      "unsaved": "You have unsaved changes",
       "discard": "Discard",
       "leave": {
         "title": "Leave without saving?",
@@ -514,6 +509,115 @@
         "gridHint": "4_4_4 — three in a row · 8_4 — wide and narrow · 8_4.4.4 — one large, three small · 4_4_4_4_4_4 — six",
         "created": "Layout created",
         "failed": "Could not create the layout."
+      },
+      "headingOptional": "Heading (optional)",
+      "subtitle": "Subtitle",
+      "subtitlePlaceholder": "A line or two under the heading",
+      "headingPlaceholders": {
+        "hero": "For example, The TripMe blog",
+        "featured": "For example, Post of the week",
+        "cards": "For example, Hot destinations",
+        "features": "For example, Why TripMe",
+        "faq": "For example, Questions and answers",
+        "feed": "For example, All posts",
+        "banner": "For example, Maldives −20% until end of October",
+        "media": "For example, How we pick a hotel",
+        "cta": "For example, Not sure where to go?",
+        "quote": "For example, Anna Kim",
+        "text": "For example, About us",
+        "spotlight": "For example, Reading now",
+        "search": "Leave empty to show the standard heading",
+        "contact": ""
+      },
+      "image": "Background photo",
+      "imageHint": "Optional. A wide photo, PNG, JPG or WebP up to 8 MB — the text sits on top.",
+      "featuredPost": "Post",
+      "featuredLatest": "The latest",
+      "featuredHint": "“The latest” changes by itself when a new post comes out.",
+      "pageSize": "Posts at first",
+      "pageSizeHint": "The rest come with “Show more”.",
+      "excludeFeatured": "Don’t repeat the featured post in the feed",
+      "feedSummary": "{n} at a time",
+      "anchorHintBlog": "To link to the block: /blog#name. Latin letters, digits and hyphens.",
+      "language": "Language",
+      "notFilled": "Not filled in",
+      "featuredAuto": "Automatic",
+      "featuredPick": "Pick a post",
+      "eyebrow": "Label",
+      "eyebrowPlaceholder": "For example, Special offer",
+      "body": "Text",
+      "bodyPlaceholder": "Write the block text…",
+      "ctaLabel": "Button text",
+      "ctaLabelPlaceholder": "For example, See tours",
+      "ctaLink": "Button link",
+      "ctaLinkHint": "A site page (/search) or a full https://… address",
+      "options": {
+        "style": "Look",
+        "tone": "Colour",
+        "imageSide": "Photo",
+        "listSize": "Articles in the list"
+      },
+      "optionValues": {
+        "style": {
+          "card": "Card",
+          "wide": "Full width"
+        },
+        "tone": {
+          "light": "Light",
+          "brand": "Brand",
+          "dark": "Dark"
+        },
+        "imageSide": {
+          "left": "Left",
+          "right": "Right"
+        }
+      },
+      "fieldLabels": {
+        "author": "Author (optional)",
+        "role": "Who they are",
+        "quote": "Quote",
+        "photo": "Author photo",
+        "picture": "Photo"
+      },
+      "placeholders": {
+        "role": "For example, went to Turkey in May",
+        "quote": "For example, The best holiday in years — every detail was thought through."
+      }
+    },
+    "builder": {
+      "unsaved": "Unsaved changes",
+      "saved": "All changes saved",
+      "device": "Screen width",
+      "devices": {
+        "desktop": "Desktop",
+        "tablet": "Tablet",
+        "mobile": "Phone"
+      },
+      "clean": "Preview without outlines (Esc to go back)",
+      "openLive": "Open the page on the site",
+      "blocks": "Blocks",
+      "outline": "Outline",
+      "canvas": "Page",
+      "close": "Close",
+      "shownHint": "Visitors see this block once you save.",
+      "hiddenHint": "The block is kept but not shown on the site.",
+      "actions": {
+        "up": "Move up",
+        "down": "Move down",
+        "duplicate": "Duplicate",
+        "toggle": "Hide",
+        "show": "Show",
+        "remove": "Delete"
+      },
+      "pageSettings": "Page settings",
+      "emptyBlock": "This block is empty. Fill it in on the right.",
+      "dropHere": "Drop a block here",
+      "emptyPage": "The page is empty. Drop the first block here",
+      "splash": {
+        "step1": "Loading blocks…",
+        "step2": "Assembling the page…",
+        "step3": "Fetching articles…",
+        "step4": "Almost there…"
       }
     },
     "posts": {
@@ -545,8 +649,8 @@
         "excerptPlaceholder": "One or two sentences for the card and search",
         "excerptHint": "Shown on the card in a list and in search results.",
         "body": "Body",
-        "bodyPlaceholder": "## Subheading\n\nThe article body in Markdown…",
-        "bodyHint": "Markdown: **bold**, _italic_, ## headings, - lists, [links](https://).",
+        "bodyPlaceholder": "Start writing the article…",
+        "bodyHint": "Select text to format it. Paste images or drop them straight into the text.",
         "state": "State",
         "image": "Cover",
         "badgeType": "Badge type",
@@ -556,11 +660,6 @@
         "linkHint": "Optional: a link to the original source.",
         "author": "Author"
       },
-      "view": {
-        "label": "List view",
-        "tile": "List",
-        "card": "Cards"
-      },
       "tour": {
         "title": "Tour in this article",
         "lead": "Find an offer — readers see it as a card with a request button.",
@@ -569,6 +668,28 @@
       "confirmDelete": {
         "title": "Delete this article?",
         "lead": "Its page stops opening and sections built from it empty out."
+      },
+      "count": "{total} in total, {live} published.",
+      "search": "Search posts",
+      "searchPlaceholder": "Title, address or author…",
+      "noMatches": "Nothing found.",
+      "columns": {
+        "cover": "Cover",
+        "title": "Post",
+        "author": "Author",
+        "status": "Status",
+        "published": "Published",
+        "updated": "Updated",
+        "languages": "Languages"
+      },
+      "legal": "Legal page",
+      "withTour": "With a tour",
+      "translated": "Title filled in",
+      "notTranslated": "Not translated",
+      "filters": {
+        "all": "All posts",
+        "published": "Published",
+        "draft": "Drafts"
       }
     },
     "leads": {
@@ -647,7 +768,6 @@
       "noMatches": "Nothing found.",
       "openAtOperator": "Open at the operator",
       "openHotelPage": "Hotel page",
-      "noBookingUrl": "The search link is only stored for newer leads.",
       "channels": {
         "site": "Website",
         "telegram": "Telegram",
@@ -674,8 +794,21 @@
         "lead": "Every order under it and its history go with it."
       },
       "offer": {
-        "lead": "Where to go back to see what the client picked.",
-        "repeatSearch": "Repeat the search"
+        "repeatSearch": "Repeat the search",
+        "empty": "The client hasn’t picked a tour yet",
+        "emptyHint": "Pick a tour here, or find one in the full search and press “Pick for lead” on its card.",
+        "pick": "Pick a tour",
+        "replace": "Replace tour",
+        "inSearch": "Open the full search",
+        "assigned": "Tour attached to the lead",
+        "confirmTitle": "Replace the tour on this lead?",
+        "confirmText": "The lead currently has “{hotel}”. The new tour replaces it; existing orders stay as they are.",
+        "confirm": "Replace",
+        "clear": "Remove tour",
+        "clearTitle": "Remove the tour from this lead?",
+        "clearText": "“{hotel}” will be removed from the lead. Existing orders stay as they are.",
+        "clearConfirm": "Remove",
+        "cleared": "Tour removed from the lead"
       },
       "registered": "Registered customer",
       "consentGiven": "Consent to data processing: {date}",
@@ -959,16 +1092,56 @@
       "kinds": {
         "cards": "Cards",
         "features": "Features",
-        "faq": "Questions and answers"
+        "faq": "Questions and answers",
+        "hero": "Header",
+        "featured": "Featured post",
+        "feed": "Post feed",
+        "banner": "Banner",
+        "media": "Image + text",
+        "cta": "CTA strip",
+        "quote": "Quote",
+        "text": "Text",
+        "spotlight": "Lead + list",
+        "search": "Search",
+        "contact": "Contacts"
       },
       "kindHints": {
         "cards": "Cards in a layout of your choice — from a list or from blog posts.",
         "features": "A row of short selling points: icon, title, a few words.",
-        "faq": "An accordion: each question opens into its answer."
+        "faq": "An accordion: each question opens into its answer.",
+        "hero": "The page title, a subtitle and, if you like, a full-width photo.",
+        "featured": "One post as a large card — the one you pick or the latest.",
+        "feed": "Every published post in a grid with a “Show more” button.",
+        "banner": "A promo with a label, heading, button and photo, as a card or full width.",
+        "media": "A photo on the left or right with formatted text and a button.",
+        "cta": "A bold strip with a call to action and a button.",
+        "quote": "A review or quote: the text, the author and a photo.",
+        "text": "Free text with headings, lists and images.",
+        "spotlight": "Magazine block: one large article and a list of the next ones.",
+        "search": "The first screen with tour search: heading, subtitle and photo.",
+        "contact": "Contacts and the enquiry form."
       },
       "sources": {
         "list": "List",
-        "posts": "Blog posts"
+        "posts": "Blog posts",
+        "none": "—"
+      }
+    },
+    "pages": {
+      "home": {
+        "title": "Home page",
+        "lead": "The whole home page: search, blocks and contacts, in the order visitors see them."
+      },
+      "blog": {
+        "title": "Blog page",
+        "lead": "Which blocks make up /blog and in which order."
+      },
+      "seo": {
+        "title": "Page in search and social",
+        "lead": "Title and description for Google and link previews.",
+        "metaTitle": "Title",
+        "metaDescription": "Description",
+        "length": "{n} of ~{max} characters"
       }
     },
     "ownership": {
@@ -1011,25 +1184,39 @@
       }
     }
   },
-  "markdown": {
-    "bold": "Bold",
-    "italic": "Italic",
-    "heading": "Heading",
-    "quote": "Quote",
-    "bullet": "List",
-    "link": "Link",
-    "write": "Write",
-    "preview": "Preview",
-    "image": "Insert image",
-    "video": "Insert video",
-    "videoPlaceholder": "A YouTube, Vimeo or .mp4 link",
-    "insert": "Insert",
+  "richEditor": {
+    "toolbar": "Formatting",
+    "caption": "Photo caption (optional)",
+    "remove": "Remove",
+    "linkPlaceholder": "https://… or /tours/maldives",
+    "apply": "Apply",
+    "unlink": "Remove link",
+    "align": {
+      "left": "Left, text wraps",
+      "center": "Centred",
+      "right": "Right, text wraps",
+      "full": "Full width"
+    },
+    "tools": {
+      "h2": "Heading",
+      "h3": "Subheading",
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strikethrough",
+      "link": "Link",
+      "bullet": "Bulleted list",
+      "ordered": "Numbered list",
+      "quote": "Quote",
+      "divider": "Divider",
+      "image": "Insert image",
+      "video": "Insert video",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
     "uploading": "Uploading the image…",
     "uploadFailed": "The image could not be uploaded.",
-    "alignHint": "Wrap text around it: ![caption](url \"left\"), \"right\", or \"full\" for full width.",
-    "library": "Uploaded images",
-    "libraryEmpty": "Nothing uploaded yet.",
-    "upload": "Upload new"
+    "videoPlaceholder": "A YouTube, Vimeo or .mp4 link",
+    "insert": "Insert"
   },
   "post": {
     "readMore": "Read at the source",
@@ -1046,7 +1233,8 @@
       "title": "The TripMe blog",
       "lead": "Destinations, routes and practical advice — from the people who send travellers there every day.",
       "empty": "No articles yet — the first one is on its way.",
-      "seoTitle": "Blog — TripMe"
+      "seoTitle": "Blog — TripMe",
+      "more": "Show more · {count}"
     }
   },
   "contact": {
@@ -1313,5 +1501,14 @@
       "manager": "Your manager: {name}, TripMe"
     },
     "pdf": "Save PDF to the order"
+  },
+  "pagination": {
+    "label": "Pages",
+    "shown": "Showing {from}–{to} of {total}",
+    "empty": "Nothing found",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {n}",
+    "perPage": "Per page"
   }
 }

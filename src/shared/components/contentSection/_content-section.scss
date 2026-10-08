@@ -7,6 +7,17 @@
 
     &__head { margin-bottom: 24px; }
 
+    &.is-hero { margin-block: 44px 32px; }
+
+    &.is-featured { margin-block: 32px; }
+
+    &.is-search,
+    &.is-contact {
+        max-width: none;
+        margin-block: 0;
+        padding: 0;
+    }
+
     &__link {
         display: inline-flex;
         align-items: center;

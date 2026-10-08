@@ -1,0 +1,15 @@
+@use '../../styles/utils' as *;
+
+.tm-rich-text {
+    max-width: 760px;
+
+    @include prose;
+
+    > :last-child { margin-bottom: 0; }
+
+    &::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}

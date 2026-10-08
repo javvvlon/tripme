@@ -43,14 +43,19 @@
     &__answer {
         padding: 0 22px 22px;
 
-        p {
-            margin: 0;
+        .tm-faq__text {
             max-width: min(80ch, 100%);
-            overflow-wrap: anywhere;
-            font-size: size(15);
-            line-height: 1.6;
-            color: var(--tm-ink-2);
-            white-space: pre-line;
+
+            @include prose;
+
+            & {
+                font-size: size(15);
+                line-height: 1.6;
+            }
+
+            > :last-child { margin-bottom: 0; }
+
+            p { margin: 0 0 10px; }
         }
     }
 

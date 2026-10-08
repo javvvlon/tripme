@@ -1,4 +1,8 @@
 import { usePostsRepository } from '~/modules/posts/repositories'
+import { CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
+import { TEXT_SORTS } from './Posts.config'
+import type { PostFilter, PostSort } from './Posts.config'
+import type { IPostAdminRaw } from '~/modules/posts/contracts/posts'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -21,34 +25,79 @@ const TRANSLITERATION: Record<string, string> = {
   ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya', ў: 'o', қ: 'q', ғ: 'g', ҳ: 'h',
 }
 
-const VIEW_KEY = 'tm:cms:posts:view'
-
-export type PostsView = 'tile' | 'card'
-
 export const usePosts = () => {
   const { t } = useI18n()
   const { failed, saved: cheer, fail, loadFailed } = useToast()
   const { ask } = useConfirm()
   const localePath = useLocalePath()
-  const { all, create, remove: removePost } = usePostsRepository()
+  const { page: postsPage, create, remove: removePost } = usePostsRepository()
+  const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const error = ref('')
   const busy = ref(false)
 
-  const view = ref<PostsView>('tile')
-
-  onMounted(() => {
-    const stored = localStorage.getItem(VIEW_KEY)
-
-    if (stored === 'tile' || stored === 'card') view.value = stored
-  })
-
-  watch(view, next => localStorage.setItem(VIEW_KEY, next))
+  const query = ref('')
+  const filter = ref<PostFilter>('all')
+  const sort = ref<PostSort>('updated')
+  const direction = ref<'asc' | 'desc'>('desc')
 
   const creating = ref(false)
   const draft = reactive({ title: '', slug: '', touched: false })
 
-  const { data, status, refresh } = useAsyncData('cms:posts', () => all(), { default: () => [] })
+  const debounced = ref('')
+  let timer: ReturnType<typeof setTimeout> | null = null
+
+  watch(query, (next) => {
+    if (timer) clearTimeout(timer)
+
+    timer = setTimeout(() => { debounced.value = next.trim() }, 300)
+  })
+
+  onBeforeUnmount(() => {
+    if (timer) clearTimeout(timer)
+  })
+
+  watch([debounced, filter, sort, direction], toFirst)
+
+  const { data, status, refresh } = useAsyncData(
+    'cms:posts',
+    () => postsPage({ q: debounced.value, filter: filter.value, sort: sort.value, dir: direction.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, filter, sort, direction, pageQuery] },
+  )
+
+  const rows = computed<IPostAdminRaw[]>(() => data.value?.items ?? [])
+  const pages = computed(() => data.value?.pages ?? 1)
+  const total = computed(() => data.value?.total ?? 0)
+
+  watch(data, (next) => {
+    if (next && !next.items.length && next.page > next.pages) setPage(next.pages)
+  })
+
+  const titleOf = (post: IPostAdminRaw): string =>
+    preferredTranslation(post.translations, translation => Boolean(translation.title))?.title ?? ''
+
+  const authorOf = (post: IPostAdminRaw): string =>
+    `${post.author?.first_name ?? ''} ${post.author?.last_name ?? ''}`.trim()
+
+  const languagesOf = (post: IPostAdminRaw) => CONTENT_LOCALES.map(locale => ({
+    locale,
+    filled: post.translations.some(translation => translation.locale === locale && Boolean(translation.title?.trim())),
+  }))
+
+  const counts = computed(() => ({
+    total: data.value?.counts.all ?? 0,
+    live: data.value?.counts.published ?? 0,
+  }))
+
+  function sortBy(column: PostSort) {
+    if (sort.value === column) {
+      direction.value = direction.value === 'asc' ? 'desc' : 'asc'
+      return
+    }
+
+    sort.value = column
+    direction.value = TEXT_SORTS.includes(column) ? 'asc' : 'desc'
+  }
 
   const slugIsValid = computed(() => SLUG_PATTERN.test(draft.slug))
   const canCreate = computed(() => Boolean(draft.title.trim()) && slugIsValid.value)
@@ -104,5 +153,10 @@ export const usePosts = () => {
     }
   }
 
-  return { posts: data, status, error, busy, view, creating, draft, canCreate, slugIsValid, open, submit, remove, refresh }
+  return {
+    posts: rows, counts, status, error, busy, creating, draft, canCreate, slugIsValid,
+    query, filter, sort, direction, sortBy, titleOf, authorOf, languagesOf,
+    open, submit, remove, refresh,
+    page, pages, total, perPage, setPage, setPerPage,
+  }
 }

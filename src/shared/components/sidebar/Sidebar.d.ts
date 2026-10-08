@@ -3,4 +3,5 @@
  */
 export interface ISidebarProps {
   ariaLabel?: string
+  collapsed?: boolean
 }

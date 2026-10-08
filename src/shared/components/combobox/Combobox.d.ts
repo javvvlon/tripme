@@ -5,6 +5,7 @@ export interface IComboboxOption {
   value: string
   label: string
   hint?: string
+  group?: string
 }
 
 export interface IComboboxProps {

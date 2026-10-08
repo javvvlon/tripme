@@ -85,7 +85,7 @@
 
                     <ul class="tm-site-footer__marks">
                         <li v-for="method in PAYMENT_METHODS" :key="method.id" class="tm-site-footer__mark">
-                            <img v-if="method.image" :src="method.image" :alt="method.label" height="20">
+                            <img v-if="method.image" :src="method.image" :alt="method.label" :title="method.label" :style="{ height: `${method.height ?? 18}px` }" loading="lazy">
                             <span v-else>{{ method.label }}</span>
                         </li>
                     </ul>
@@ -115,11 +115,13 @@
 
         <div class="tm-site-footer__legalbar">
             <div class="container-wide tm-site-footer__legalbar-inner">
-                <span v-if="entity" class="tm-site-footer__entity">{{ entity }}</span>
-                <span class="tm-site-footer__copyright">{{ t('footer.copyright', { year }) }}</span>
-            </div>
+                <div class="tm-site-footer__rights">
+                    <span v-if="entity" class="tm-site-footer__entity">{{ entity }}</span>
+                    <span class="tm-site-footer__copyright">{{ t('footer.copyright', { year }) }}</span>
+                </div>
 
-            <p class="container-wide tm-site-footer__agent">{{ t('footer.agentStatus') }}</p>
+                <p class="tm-site-footer__agent">{{ t('footer.agentStatus') }}</p>
+            </div>
         </div>
     </footer>
 </template>

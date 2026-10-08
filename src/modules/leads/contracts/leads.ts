@@ -39,7 +39,14 @@ export interface ILeadTrip {
   price_currency: string
   route_from: string
   route_to: string
+  kid_ages?: number[]
   [key: string]: unknown
+}
+
+export interface ITripRoute {
+  from: string
+  to: string
+  kidAges?: number[]
 }
 
 export interface ILeadRaw {

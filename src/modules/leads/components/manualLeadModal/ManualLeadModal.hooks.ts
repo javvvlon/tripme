@@ -2,7 +2,7 @@ import { useLeadsRepository } from '~/modules/leads/repositories'
 import { emptyManualDraft } from '~/modules/leads/contracts/leads'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import { isCompletePhone } from '~/shared/helpers/phone'
-import type { ILeadManualDraft, ILeadRaw } from '~/modules/leads/contracts/leads'
+import type { ILeadManualDraft, ILeadRaw, ITripRoute } from '~/modules/leads/contracts/leads'
 import type { Tour } from '~/search_engine/models/Tour'
 
 /**
@@ -14,6 +14,12 @@ export const useManualLead = (onCreated: (lead: ILeadRaw) => void) => {
 
   const draft = reactive<ILeadManualDraft>(emptyManualDraft())
   const tour = shallowRef<Tour | null>(null)
+  const route = shallowRef<ITripRoute | null>(null)
+
+  const choose = (next: Tour | null, searched: ITripRoute | null) => {
+    tour.value = next
+    route.value = searched
+  }
 
   const saving = ref(false)
   const error = ref('')
@@ -28,6 +34,7 @@ export const useManualLead = (onCreated: (lead: ILeadRaw) => void) => {
     Object.assign(draft, emptyManualDraft())
 
     tour.value = null
+    route.value = null
     error.value = ''
     validation.reset()
   }
@@ -45,7 +52,7 @@ export const useManualLead = (onCreated: (lead: ILeadRaw) => void) => {
     saving.value = true
 
     try {
-      onCreated(await create(draft, tripFromTour(tour.value)))
+      onCreated(await create(draft, tripFromTour(tour.value, route.value ?? undefined)))
     }
     catch {
       error.value = t('cms.errors.save')
@@ -55,5 +62,5 @@ export const useManualLead = (onCreated: (lead: ILeadRaw) => void) => {
     }
   }
 
-  return { draft, tour, validation, saving, error, submit, reset }
+  return { draft, tour, choose, validation, saving, error, submit, reset }
 }

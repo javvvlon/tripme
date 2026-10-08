@@ -6,6 +6,7 @@ export interface INavbarItemProps {
   icon?: string
   to?: string
   active?: boolean
-  expandable?: boolean
   disabled?: boolean
+  badge?: string | number | null
+  accent?: boolean
 }

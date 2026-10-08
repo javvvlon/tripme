@@ -1,0 +1,41 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-canvas {
+    position: relative;
+    overflow: auto;
+    min-width: 0;
+    padding: 24px;
+    background:
+        radial-gradient(circle, color-mix(in srgb, var(--tm-ink-4) 35%, transparent) 1px, transparent 1px) 0 0 / 18px 18px,
+        var(--tm-surface-1);
+
+    &__stage {
+        position: relative;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: radius('md');
+        background: var(--tm-surface-2);
+        box-shadow: 0 0 0 1px var(--tm-border-1), shadow('md');
+        transition: width .2s ease;
+    }
+
+    &.is-mobile &__stage,
+    &.is-tablet &__stage { border-radius: radius('lg'); }
+
+    &__frame {
+        display: block;
+        border: 0;
+        opacity: 0;
+        transform-origin: 0 0;
+        transition: opacity .2s ease;
+
+        &.is-ready { opacity: 1; }
+    }
+
+    &__loading {
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

@@ -13,7 +13,7 @@ export const usePostPage = () => {
   const slug = computed(() => String(route.params.slug ?? ''))
 
   const { data, status } = useAsyncData(
-    'blog-post',
+    () => `blog-post-${slug.value}-${locale.value}`,
     async (): Promise<IPostAttributes | null> => {
       try {
         return (await bySlug(slug.value, locale.value as ContentLocale))?.toObject() ?? null
@@ -22,7 +22,7 @@ export const usePostPage = () => {
         return null
       }
     },
-    { watch: [slug, locale], default: () => null },
+    { default: () => null },
   )
 
   const post = computed(() => data.value)

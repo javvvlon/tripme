@@ -1,0 +1,65 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-palette {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    &__tile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        padding: 6px 8px 6px 6px;
+        border: 1px solid transparent;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-1);
+        text-align: left;
+        cursor: grab;
+        transition: background .12s ease, border-color .12s ease;
+
+        &:hover {
+            border-color: var(--tm-border-1);
+            background: var(--tm-surface-1);
+        }
+
+        &:active { cursor: grabbing; }
+
+        &:focus-visible {
+            outline: 2px solid var(--tm-cms-accent);
+            outline-offset: 1px;
+        }
+    }
+
+    &__icon {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: radius('xs');
+        background: var(--tm-cms-accent-soft);
+        color: var(--tm-cms-accent);
+    }
+
+    &__name {
+        flex: 1;
+        overflow: hidden;
+        min-width: 0;
+        font-size: size(13);
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__plus {
+        flex: none;
+        color: var(--tm-ink-4);
+        opacity: 0;
+        transition: opacity .12s ease;
+    }
+
+    &__tile:hover &__plus,
+    &__tile:focus-visible &__plus { opacity: 1; }
+}
