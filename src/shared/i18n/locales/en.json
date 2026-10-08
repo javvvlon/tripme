@@ -803,7 +803,12 @@
         "assigned": "Tour attached to the lead",
         "confirmTitle": "Replace the tour on this lead?",
         "confirmText": "The lead currently has “{hotel}”. The new tour replaces it; existing orders stay as they are.",
-        "confirm": "Replace"
+        "confirm": "Replace",
+        "clear": "Remove tour",
+        "clearTitle": "Remove the tour from this lead?",
+        "clearText": "“{hotel}” will be removed from the lead. Existing orders stay as they are.",
+        "clearConfirm": "Remove",
+        "cleared": "Tour removed from the lead"
       },
       "registered": "Registered customer",
       "consentGiven": "Consent to data processing: {date}",

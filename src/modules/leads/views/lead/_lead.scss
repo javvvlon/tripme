@@ -305,6 +305,12 @@
         .tm-cms-lead__card-title { margin: 0; }
     }
 
+    &__offer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
     &__offer-links {
         display: flex;
         flex-wrap: wrap;

@@ -803,7 +803,12 @@
         "assigned": "Tur lidga biriktirildi",
         "confirmTitle": "Liddagi tur almashtirilsinmi?",
         "confirmText": "Hozir lidda «{hotel}». Yangi tur uning oʻrnini egallaydi, yaratilgan buyurtmalar oʻzgarmaydi.",
-        "confirm": "Almashtirish"
+        "confirm": "Almashtirish",
+        "clear": "Turni olib tashlash",
+        "clearTitle": "Tur liddan olib tashlansinmi?",
+        "clearText": "«{hotel}» liddan olib tashlanadi. Yaratilgan buyurtmalar oʻzgarmaydi.",
+        "clearConfirm": "Olib tashlash",
+        "cleared": "Tur liddan olib tashlandi"
       },
       "registered": "Ro‘yxatdan o‘tgan mijoz",
       "consentGiven": "Ma’lumotlarni qayta ishlashga rozilik: {date}",

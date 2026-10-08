@@ -130,6 +130,17 @@ export const useLead = () => {
     if (await save({ trip: tripFromTour(tour, searched ?? undefined) }, t('cms.leads.offer.assigned'))) picking.value = false
   }
 
+  async function clearTour() {
+    if (!lead.value || !await ask({
+      title: t('cms.leads.offer.clearTitle'),
+      description: t('cms.leads.offer.clearText', { hotel: lead.value.hotel_name }),
+      confirmLabel: t('cms.leads.offer.clearConfirm'),
+      tone: 'danger',
+    })) return
+
+    await save({ trip: null }, t('cms.leads.offer.cleared'))
+  }
+
   const change = (next: LeadStatus) => save({ status: next })
 
   const submit = () => save({
@@ -188,6 +199,6 @@ export const useLead = () => {
   return {
     lead, draft, orders, status, error, saving, saved,
     statusOptions, change, submit, addOrder, remove, refresh,
-    picking, hasTour, pickerSeed, assign,
+    picking, hasTour, pickerSeed, assign, clearTour,
   }
 }

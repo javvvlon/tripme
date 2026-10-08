@@ -42,13 +42,23 @@
                 <header class="tm-cms-lead__offer-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
 
-                    <Button
-                        v-if="hasTour && !picking"
-                        type="button" size="sm" variant="ghost" icon="pencil"
-                        @click="picking = true"
-                    >
-                        {{ t('cms.leads.offer.replace') }}
-                    </Button>
+                    <div v-if="hasTour && !picking" class="tm-cms-lead__offer-actions">
+                        <Button
+                            type="button" size="sm" variant="ghost" icon="pencil"
+                            :disabled="saving"
+                            @click="picking = true"
+                        >
+                            {{ t('cms.leads.offer.replace') }}
+                        </Button>
+
+                        <Button
+                            type="button" size="sm" variant="danger-quiet" icon="trash"
+                            :disabled="saving"
+                            @click="clearTour"
+                        >
+                            {{ t('cms.leads.offer.clear') }}
+                        </Button>
+                    </div>
                 </header>
 
                 <template v-if="picking">
@@ -252,7 +262,7 @@ const reasonId = useId()
 const {
     lead, draft, orders, status, error, saving, saved,
     statusOptions, change, submit, addOrder, remove,
-    picking, hasTour, pickerSeed, assign,
+    picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()
 
 const shortDate = (value: string | null | undefined): string =>
