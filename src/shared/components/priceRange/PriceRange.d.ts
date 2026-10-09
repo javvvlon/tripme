@@ -13,5 +13,5 @@ export interface IPriceRangeProps {
   max: number
   fromLabel: string
   toLabel: string
-  format?: (value: number) => string
+  currency?: string
 }

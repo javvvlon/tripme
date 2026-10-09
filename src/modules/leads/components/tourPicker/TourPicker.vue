@@ -78,7 +78,7 @@
                             <span class="tm-tour-picker__option-name">{{ tour.get('hotelName') }}</span>
                             <span class="tm-tour-picker__option-meta">
                                 {{ tour.get('supplier').name }}
-                                <template v-if="tour.get('mealName')"> · {{ tour.get('mealName') }}</template>
+                                <template v-if="tour.get('mealName')"> · {{ mealText(t, tour.get('mealPlan'), tour.get('mealName')) }}</template>
                                 <template v-if="tour.get('roomName')"> · {{ tour.get('roomName') }}</template>
                             </span>
                         </span>
@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import { mealText } from '~/shared/helpers/meal'
 import { useTourPicker } from './TourPicker.hooks'
 import type { ITourPickerEmits, ITourPickerProps } from './TourPicker.d'
 

@@ -193,7 +193,7 @@
     "title": "Filters",
     "hotelName": "Search by hotel name",
     "stars": "Star rating of the hotel",
-    "price": "Price for night",
+    "price": "Tour price",
     "rating": "Hotel rating",
     "meals": "Nutrition",
     "countries": "Resorts",
@@ -204,7 +204,24 @@
     "reset": "Clear all filters ({count})",
     "districts": "District",
     "suppliers": "Tour operator",
-    "suppliersNote": "Unticking one stops us asking that operator at all."
+    "suppliersNote": "Unticking one stops us asking that operator at all.",
+    "resetShort": "Reset ({count})",
+    "nothing": "Nothing found",
+    "showAll": "Show all ({count})",
+    "showLess": "Show less",
+    "districtSearch": "Find an area",
+    "active": "Selected filters",
+    "removeOne": "Remove filter \"{name}\"",
+    "clearAll": "Clear all",
+    "mealPlans": {
+      "RO": "Room only",
+      "BB": "Breakfast",
+      "HB": "Half board",
+      "FB": "Full board",
+      "AI": "All inclusive",
+      "UAI": "Ultra all inclusive",
+      "PROGRAM": "As per tour programme"
+    }
   },
   "results": {
     "headline": "Tours {destination}, {dates}, from {price}",
@@ -260,7 +277,8 @@
       "busy": "Attaching…",
       "replace": "Replace in lead",
       "title": "Attach this tour to {ref}"
-    }
+    },
+    "showTours": "Nothing found | Show {count} tour | Show {count} tours | Show {count} tours"
   },
   "auth": {
     "mode": "Sign in or sign up",

@@ -36,8 +36,8 @@
             </h3>
 
             <ul class="tm-tour-card__facts">
-                <li v-if="tour.get('mealName')" class="tm-tour-card__fact tm-tour-card__fact--meal">
-                    <Icon name="check" :size="13" :stroke="2.4" />{{ tour.get('mealName') }}
+                <li v-if="meal" class="tm-tour-card__fact tm-tour-card__fact--meal" :title="tour.get('mealName') ?? undefined">
+                    <Icon name="check" :size="13" :stroke="2.4" />{{ meal }}
                 </li>
                 <li v-if="tour.get('roomName')" class="tm-tour-card__fact">
                     <Icon name="bed" :size="14" />{{ tour.get('roomName') }}
@@ -149,6 +149,7 @@
 </template>
 
 <script setup lang="ts">
+import { mealText } from '~/shared/helpers/meal'
 import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
@@ -164,6 +165,8 @@ const props = defineProps<ITourCardProps>()
 const emit = defineEmits<ITourCardEmits>()
 
 const { t, locale } = useI18n()
+
+const meal = computed(() => mealText(t, props.tour.get('mealPlan'), props.tour.get('mealName')))
 const localePath = useLocalePath()
 
 const routeExists = useRouteExists()

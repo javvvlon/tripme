@@ -1,4 +1,5 @@
 import { passportProblem } from './compliance'
+import { mealText } from '~/shared/helpers/meal'
 import { Availability, Tour } from '~/search_engine/models/Tour'
 import type { CurrencyCode } from '~/search_engine/contracts/search'
 import type { ILeadTrip, IOrderRaw } from '~/modules/leads/contracts/leads'
@@ -148,7 +149,7 @@ export function buildQuote(options: IQuoteOptions): string {
       }))
     }
 
-    if (tour.get('mealName')) lines.push(t('quote.text.meal', { meal: tour.get('mealName') }))
+    if (tour.get('mealName')) lines.push(t('quote.text.meal', { meal: mealText(t, tour.get('mealPlan'), tour.get('mealName')) }))
     if (tour.get('roomName')) lines.push(t('quote.text.room', { room: tour.get('roomName') }))
 
     if (price.amount > 0) {

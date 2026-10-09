@@ -3,33 +3,55 @@
         <Breadcrumbs :items="breadcrumbs" class="tm-search-view__crumbs" />
 
         <button
+            v-if="isSearchable"
             type="button" class="tm-search-view__filters-toggle"
             :aria-expanded="filtersOpen"
-            @click="filtersOpen = !filtersOpen"
+            @click="filtersOpen = true"
         >
             <Icon name="filter" :size="17" />
             {{ t('results.filters') }}
-            <Icon :name="filtersOpen ? 'chevron-up' : 'chevron'" :size="16" />
+            <span v-if="activeFilters" class="tm-search-view__filters-count">{{ activeFilters }}</span>
         </button>
 
-        <div class="tm-search-view__layout" :class="{ 'is-filtering': filtersOpen }">
-            <ClientOnly>
-                <FilterPanel
-                    v-model="filters" :facets="facets" :loading="busy"
-                    :agent-view="isStaff"
-                    class="tm-search-view__filters"
-                />
+        <div class="tm-search-view__layout" :class="{ 'is-bare': !isSearchable }">
+            <div
+                v-if="isSearchable"
+                class="tm-search-view__sheet" :class="{ 'is-open': filtersOpen }"
+                role="dialog" :aria-modal="filtersOpen ? 'true' : undefined" :aria-label="t('filters.title')"
+            >
+                <div class="tm-search-view__sheet-head">
+                    <strong>{{ t('filters.title') }}</strong>
+                    <button type="button" class="tm-search-view__sheet-close" :aria-label="t('common.close')" @click="filtersOpen = false">
+                        <Icon name="close" :size="20" />
+                    </button>
+                </div>
 
-                <template #fallback>
+                <ClientOnly>
                     <FilterPanel
-                        v-model="filters" :facets="facets" :loading="busy"
-                        class="tm-search-view__filters"
+                        v-model="filters" :facets="facets" :loading="busy && !facets.total"
+                        :agent-view="isStaff"
+                        class="tm-search-view__filters" :class="{ 'is-refreshing': busy }"
                     />
-                </template>
-            </ClientOnly>
+
+                    <template #fallback>
+                        <FilterPanel
+                            v-model="filters" :facets="facets" :loading="busy && !facets.total"
+                            class="tm-search-view__filters"
+                        />
+                    </template>
+                </ClientOnly>
+
+                <div class="tm-search-view__sheet-foot">
+                    <Button block size="lg" @click="filtersOpen = false">
+                        {{ busy ? t('results.loading') : t('results.showTours', { count: total }, total) }}
+                    </Button>
+                </div>
+            </div>
 
             <div class="tm-search-view__results">
                 <ResultsHeader v-model:sort="sort" :title="headline" :sortable="tours.length > 0" />
+
+                <ActiveFilters v-if="isSearchable" v-model="filters" :facets="facets" />
 
                 <p v-if="isSearchable" class="tm-search-view__currency">
                     {{ currencyNote }}
@@ -115,9 +137,17 @@
                     <Button variant="ghost" size="sm" icon="search" @click="refresh">{{ t('results.retry') }}</Button>
                 </div>
 
-                <p v-else class="tm-search-view__status">
-                    {{ isSearchable ? t('results.empty') : t('results.chooseRoute') }}
-                </p>
+                <p v-else-if="isSearchable" class="tm-search-view__status">{{ t('results.empty') }}</p>
+
+                <div v-else class="tm-search-view__start">
+                    <Icon name="plane" :size="28" class="tm-search-view__start-icon" />
+                    <p>{{ t('results.chooseRoute') }}</p>
+                    <ul class="tm-search-view__start-chips">
+                        <li v-for="item in QUICK_SEARCHES" :key="item.id">
+                            <Chip :to="item.to" :icon="item.icon">{{ t(item.labelKey) }}</Chip>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -136,6 +166,8 @@
 
 <script setup lang="ts">
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
+import ActiveFilters from '~/landing/components/activeFilters/ActiveFilters.vue'
+import { QUICK_SEARCHES } from '~/landing/views/home/Home.config'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
 import DayPrices from '~/landing/components/dayPrices/DayPrices.vue'
 import QuoteBar from '~/modules/leads/components/quoteBar/QuoteBar.vue'
@@ -162,6 +194,21 @@ const {
 const { sentinel } = useInfiniteScroll(loadMore, { enabled: canLoadMore })
 
 const filtersOpen = ref(false)
+
+const activeFilters = computed(() => {
+  const value = filters.value
+
+  return value.stars.length + value.meals.length + value.resorts.length + value.suppliers.length
+    + (value.priceMin !== undefined || value.priceMax !== undefined ? 1 : 0)
+})
+
+watch(filtersOpen, (open) => {
+  if (import.meta.client) document.documentElement.classList.toggle('is-sheet-open', open)
+})
+
+onBeforeUnmount(() => {
+  if (import.meta.client) document.documentElement.classList.remove('is-sheet-open')
+})
 
 const route = useRoute()
 const { count: quoteCount, leadId: quoteLead, tours: quoteTours, opened: quoteOpen } = useQuote()
@@ -249,7 +296,58 @@ useSeoMeta({
         align-items: start;
     }
 
-    &__filters { position: sticky; top: 24px; }
+    &__layout.is-bare { grid-template-columns: minmax(0, 1fr); }
+
+    &__sheet {
+        position: sticky;
+        top: 24px;
+        max-height: calc(100vh - 48px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+    }
+
+    &__sheet-head,
+    &__sheet-foot { display: none; }
+
+    &__start {
+        display: grid;
+        justify-items: center;
+        gap: 14px;
+        padding: 56px 24px;
+        border-radius: radius('lg');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-3);
+        text-align: center;
+
+        p { margin: 0; max-width: 46ch; font-size: size(15); }
+    }
+
+    &__start-icon { color: var(--tm-brand-secondary); }
+
+    &__start-chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin: 6px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__filters-count {
+        display: inline-grid;
+        place-items: center;
+        min-width: 20px;
+        height: 20px;
+        margin-left: auto;
+        padding: 0 6px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+        font-size: size(12);
+        font-weight: 700;
+    }
 
     &__results { min-width: 0; }
 
@@ -416,17 +514,66 @@ useSeoMeta({
 
     @media #{$until-lg} {
         &__layout { grid-template-columns: minmax(0, 1fr); }
-        &__filters { position: static; }
+
+        &__filters-toggle { display: flex; }
+
+        &__sheet {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: none;
+            flex-direction: column;
+            max-height: none;
+            overflow: hidden;
+            background: var(--tm-surface-1);
+
+            &.is-open { display: flex; }
+
+            .tm-filter-panel {
+                flex: 1;
+                overflow-y: auto;
+                border: 0;
+                border-radius: 0;
+                overscroll-behavior: contain;
+
+                &__head { display: none; }
+            }
+        }
+
+        &__sheet-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: calc(14px + env(safe-area-inset-top, 0px)) 18px 14px;
+            border-bottom: 1px solid var(--tm-border-1);
+            font-size: size(17);
+        }
+
+        &__sheet-close {
+            display: inline-grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--tm-surface-2);
+            color: var(--tm-ink-1);
+            cursor: pointer;
+        }
+
+        &__sheet-foot {
+            display: block;
+            padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+            border-top: 1px solid var(--tm-border-1);
+            background: var(--tm-surface-1);
+        }
     }
 
     @media #{$until-md} {
         padding-block: 16px 48px;
 
         &__crumbs { margin-bottom: 12px; }
-
-        &__filters-toggle { display: flex; }
-
-        &__layout:not(.is-filtering) .tm-search-view__filters { display: none; }
     }
 }
+:root.is-sheet-open { overflow: hidden; }
 </style>

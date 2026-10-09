@@ -193,7 +193,7 @@
     "title": "Filtrlar",
     "hotelName": "Mehmonxona nomi bo‘yicha qidirish",
     "stars": "Mehmonxona yulduzlari",
-    "price": "Bir kecha narxi",
+    "price": "Tur narxi",
     "rating": "Mehmonxona reytingi",
     "meals": "Ovqatlanish",
     "countries": "Kurortlar",
@@ -204,7 +204,24 @@
     "reset": "Filtrlarni tozalash ({count})",
     "districts": "Tuman",
     "suppliers": "Turoperator",
-    "suppliersNote": "Belgi olib tashlansa, operatorga umuman murojaat qilinmaydi."
+    "suppliersNote": "Belgi olib tashlansa, operatorga umuman murojaat qilinmaydi.",
+    "resetShort": "Tozalash ({count})",
+    "nothing": "Hech narsa topilmadi",
+    "showAll": "Hammasini ko'rsatish ({count})",
+    "showLess": "Yig'ish",
+    "districtSearch": "Tumanni topish",
+    "active": "Tanlangan filtrlar",
+    "removeOne": "«{name}» filtrini olib tashlash",
+    "clearAll": "Hammasini tozalash",
+    "mealPlans": {
+      "RO": "Ovqatsiz",
+      "BB": "Nonushta",
+      "HB": "Yarim pansion",
+      "FB": "To'liq pansion",
+      "AI": "Hammasi kiritilgan",
+      "UAI": "Ultra hammasi kiritilgan",
+      "PROGRAM": "Tur dasturi bo'yicha"
+    }
   },
   "results": {
     "headline": "Turlar {destination}, {dates}, {price} dan",
@@ -260,7 +277,8 @@
       "busy": "Biriktirilmoqda…",
       "replace": "Lidda almashtirish",
       "title": "Turni {ref} ga biriktirish"
-    }
+    },
+    "showTours": "Hech narsa topilmadi | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",

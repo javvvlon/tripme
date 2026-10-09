@@ -83,6 +83,10 @@ export const useSearch = () => {
   const requestKey = computed(() =>
     JSON.stringify(new SearchCriteriaIntention().toRequest(request.value)))
 
+  const scopeKey = computed(() => JSON.stringify(criteria.value))
+
+  let lastScope = ''
+
   const offers = shallowRef<Tour[]>([])
   const facets = shallowRef<SearchFacets>(EMPTY_FACETS)
   const statuses = shallowRef<ISupplierStatus[]>([])
@@ -170,7 +174,8 @@ export const useSearch = () => {
     const forDate = criteria.value.date
 
     offers.value = []
-    facets.value = EMPTY_FACETS
+    if (scopeKey.value !== lastScope) facets.value = EMPTY_FACETS
+    lastScope = scopeKey.value
     statuses.value = []
     finished.value = false
     hasMore.value = false

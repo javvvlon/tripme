@@ -30,6 +30,7 @@ export interface ITourRaw {
   nights: number
   mealCode: string | null
   mealName: string | null
+  mealPlan?: string | null
   roomName: string | null
   adults: number
   children: number

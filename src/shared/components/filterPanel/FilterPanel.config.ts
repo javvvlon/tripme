@@ -10,3 +10,15 @@ export const FILTER_GROUPS = [
 ] as const
 
 export type FilterGroupKey = typeof FILTER_GROUPS[number]['key']
+
+export const PRICE_DEBOUNCE_MS = 500
+
+export const EMPTY_FILTERS = {
+  stars: [] as number[],
+  meals: [] as string[],
+  resorts: [] as string[],
+  hotels: [] as string[],
+  suppliers: [] as string[],
+  priceMin: undefined as number | undefined,
+  priceMax: undefined as number | undefined,
+}
