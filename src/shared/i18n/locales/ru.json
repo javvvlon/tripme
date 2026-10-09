@@ -354,7 +354,7 @@
   "cms": {
     "nav": {
       "label": "Разделы сайта",
-      "sections": "Главная страница",
+      "sections": "Главная",
       "lists": "Списки",
       "posts": "Статьи",
       "leads": "Лиды",
@@ -362,7 +362,7 @@
       "operators": "Туроператоры",
       "points": "TripMe points",
       "analytics": "Аналитика",
-      "blogPage": "Страница блога",
+      "blogPage": "Блог",
       "openSite": "Открыть сайт",
       "groups": {
         "work": "Работа",

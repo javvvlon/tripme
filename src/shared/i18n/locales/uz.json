@@ -354,7 +354,7 @@
   "cms": {
     "nav": {
       "label": "Sayt bo‘limlari",
-      "sections": "Bosh sahifa",
+      "sections": "Asosiy",
       "lists": "Ro‘yxatlar",
       "posts": "Maqolalar",
       "leads": "Lidlar",
@@ -362,7 +362,7 @@
       "operators": "Turoperatorlar",
       "points": "TripMe points",
       "analytics": "Analitika",
-      "blogPage": "Blog sahifasi",
+      "blogPage": "Blog",
       "openSite": "Saytni ochish",
       "groups": {
         "work": "Ish",

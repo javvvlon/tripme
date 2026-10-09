@@ -354,7 +354,7 @@
   "cms": {
     "nav": {
       "label": "Site sections",
-      "sections": "Home page",
+      "sections": "Home",
       "lists": "Lists",
       "posts": "Articles",
       "leads": "Leads",
@@ -362,7 +362,7 @@
       "operators": "Operators",
       "points": "TripMe points",
       "analytics": "Analytics",
-      "blogPage": "Blog page",
+      "blogPage": "Blog",
       "openSite": "Open the site",
       "groups": {
         "work": "Work",
