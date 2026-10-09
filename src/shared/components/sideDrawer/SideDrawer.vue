@@ -39,9 +39,7 @@ const onKey = (event: KeyboardEvent) => {
     if (event.key === 'Escape') open.value = false
 }
 
-watch(open, (value) => {
-    if (!import.meta.client) return
-
+const sync = (value: boolean) => {
     if (value) {
         returnFocus = document.activeElement as HTMLElement | null
         document.addEventListener('keydown', onKey)
@@ -51,7 +49,11 @@ watch(open, (value) => {
         document.removeEventListener('keydown', onKey)
         returnFocus?.focus?.()
     }
-})
+}
+
+watch(open, value => sync(value))
+
+onMounted(() => { if (open.value) sync(true) })
 
 onBeforeUnmount(() => {
     if (import.meta.client) document.removeEventListener('keydown', onKey)

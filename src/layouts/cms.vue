@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 import { useMessagesRepository } from '~/modules/messages/repositories'
+import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import { BRAND_LOGO, BRAND_MARK, BRAND_NAME } from '~/shared/config/brand'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { CMS_NAVIGATION } from '~/modules/content/config/navigation'
@@ -134,6 +135,9 @@ const { page: leadsPage } = useLeadsRepository()
 const newLeads = ref(0)
 const unreadMessages = ref(0)
 const { inboxUnread } = useMessagesRepository()
+const { onEvent: onMessageEvent } = useMessageStream()
+
+onMessageEvent(async () => { unreadMessages.value = await inboxUnread().catch(() => unreadMessages.value) })
 
 const countNewLeads = async () => {
   try {

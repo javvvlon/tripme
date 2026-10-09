@@ -11,6 +11,7 @@ import SideDrawer from '~/shared/components/sideDrawer/SideDrawer.vue'
 import IconButton from '~/shared/components/iconButton/IconButton.vue'
 import ClientChat from '~/modules/messages/components/clientChat/ClientChat.vue'
 import { useMessagesRepository } from '~/modules/messages/repositories'
+import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import type { IChatButtonProps } from './ChatButton.d'
 
 const props = defineProps<IChatButtonProps>()
@@ -35,6 +36,12 @@ watch(() => props.clientId, count, { immediate: true })
 
 let timer: ReturnType<typeof setInterval> | null = null
 
-onMounted(() => { timer = setInterval(() => { if (!document.hidden && !open.value) void count() }, 30000) })
+const { onEvent } = useMessageStream()
+
+onEvent((event) => {
+    if (event.clientId === props.clientId && !open.value) void count()
+})
+
+onMounted(() => { timer = setInterval(() => { if (!document.hidden && !open.value) void count() }, 60000) })
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </script>

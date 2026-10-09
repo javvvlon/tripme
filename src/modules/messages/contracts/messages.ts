@@ -26,3 +26,7 @@ export interface IInboxRow {
   last_message_at: string | null
   unread: number
 }
+
+export type StreamEvent =
+  | { type: 'message', clientId: string, message: IMessage }
+  | { type: 'read', clientId: string, side: 'client' | 'staff' }

@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import ChatThread from '~/modules/messages/components/chatThread/ChatThread.vue'
 import { useMessagesRepository } from '~/modules/messages/repositories'
+import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import type { IMessage } from '~/modules/messages/contracts/messages'
 
 const { t } = useI18n()
@@ -24,13 +25,19 @@ const { failed } = useToast()
 const { mine, sendMine } = useMessagesRepository()
 const unread = useState<number>('account:unread-messages', () => 0)
 
-const POLL_MS = 15000
+const POLL_MS = 60000
 
 const messages = ref<IMessage[]>([])
 const loading = ref(true)
 const busy = ref(false)
 
 let timer: ReturnType<typeof setInterval> | null = null
+
+const { onEvent } = useMessageStream()
+
+onEvent((event) => {
+    if (event.type === 'message' && !messages.value.some(message => message.id === event.message.id)) void load()
+})
 
 async function load() {
     try {

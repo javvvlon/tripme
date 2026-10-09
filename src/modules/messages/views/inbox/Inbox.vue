@@ -1,12 +1,17 @@
 <template>
     <div class="tm-inbox">
-        <SectionHead :level="1" :title="t('messages.inboxTitle')" :sub="t('messages.inboxLead', { n: totalUnread })" />
+        <SectionHead :level="1" :title="t('messages.inboxTitle')" :sub="rows.length ? t('messages.inboxLead', { n: totalUnread }) : ''" />
 
-        <div class="tm-inbox__layout">
+        <p v-if="status === 'pending' && !rows.length" class="tm-inbox__state">{{ t('messages.loading') }}</p>
+
+        <div v-else-if="!rows.length" class="tm-inbox__empty">
+            <span class="tm-inbox__empty-icon" aria-hidden="true"><Icon name="mail" :size="28" /></span>
+            <strong>{{ t('messages.inboxEmpty') }}</strong>
+            <p>{{ t('messages.inboxEmptyText') }}</p>
+        </div>
+
+        <div v-else class="tm-inbox__layout">
             <aside class="tm-inbox__list" :class="{ 'is-hidden-narrow': selected }">
-                <p v-if="status === 'pending' && !rows.length" class="tm-inbox__state">{{ t('messages.loading') }}</p>
-                <p v-else-if="!rows.length" class="tm-inbox__state">{{ t('messages.inboxEmpty') }}</p>
-
                 <button
                     v-for="row in rows" :key="row.client_id"
                     type="button" class="tm-inbox__row"
@@ -36,7 +41,10 @@
                     </header>
                     <ClientChat :client-id="selected" @read="markRead" />
                 </template>
-                <p v-else class="tm-inbox__state">{{ t('messages.pick') }}</p>
+                <div v-else class="tm-inbox__empty is-compact">
+                    <span class="tm-inbox__empty-icon" aria-hidden="true"><Icon name="mail" :size="24" /></span>
+                    <p>{{ t('messages.pick') }}</p>
+                </div>
             </section>
         </div>
     </div>
@@ -45,6 +53,7 @@
 <script setup lang="ts">
 import ClientChat from '~/modules/messages/components/clientChat/ClientChat.vue'
 import { useMessagesRepository } from '~/modules/messages/repositories'
+import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import type { IInboxRow } from '~/modules/messages/contracts/messages'
 
 const { t, locale } = useI18n()
@@ -86,7 +95,11 @@ const when = (value: string) => {
 
 let timer: ReturnType<typeof setInterval> | null = null
 
-onMounted(() => { timer = setInterval(() => { if (!document.hidden) void refresh() }, 20000) })
+const { onEvent } = useMessageStream()
+
+onEvent(() => { void refresh() })
+
+onMounted(() => { timer = setInterval(() => { if (!document.hidden) void refresh() }, 60000) })
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
 useSeoMeta({ title: () => t('messages.inboxTitle'), robots: 'noindex, nofollow' })

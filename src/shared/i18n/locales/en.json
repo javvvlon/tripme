@@ -2011,8 +2011,9 @@
     "staffEmpty": "No messages yet. Write to the client first.",
     "inboxTitle": "Messages",
     "inboxLead": "Unread: {n}",
-    "inboxEmpty": "No conversations yet.",
-    "pick": "Pick a conversation on the left.",
+    "inboxEmpty": "No conversations yet",
+    "inboxEmptyText": "When a client writes from their account, the conversation shows up here.",
+    "pick": "Pick a conversation on the left",
     "you": "You",
     "leadTitle": "Conversation with the client",
     "errors": {

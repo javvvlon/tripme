@@ -56,6 +56,7 @@ import ToastHost from '~/shared/components/toastHost/ToastHost.vue'
 import { ACCOUNT_NAVIGATION } from '~/modules/account/config/navigation'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useMessagesRepository } from '~/modules/messages/repositories'
+import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import type { IAccountNavItem } from '~/modules/account/config/navigation'
 
 const { t } = useI18n()
@@ -74,6 +75,10 @@ const countUnread = async () => {
 }
 
 watch(() => route.path, () => void countUnread())
+
+const { onEvent: onMessageEvent } = useMessageStream()
+
+onMessageEvent(() => { void countUnread() })
 onMounted(() => void countUnread())
 
 const initials = computed(() => {

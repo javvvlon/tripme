@@ -26,5 +26,7 @@ export const useMessagesRepository = () => {
   const clientUnread = async (id: string): Promise<number> =>
     (await http.call<{ unread: number }>('Messages', 'clientUnread', { id })).data.unread
 
-  return { mine, mineUnread, sendMine, inbox, inboxUnread, clientThread, sendToClient, clientUnread }
+  const streamTicket = async (): Promise<string> => (await http.call<{ ticket: string }>('Messages', 'streamTicket')).data.ticket
+
+  return { mine, mineUnread, sendMine, inbox, inboxUnread, clientThread, sendToClient, clientUnread, streamTicket }
 }

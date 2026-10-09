@@ -2011,8 +2011,9 @@
     "staffEmpty": "Hozircha xabarlar yo'q. Mijozga birinchi bo'lib yozing.",
     "inboxTitle": "Xabarlar",
     "inboxLead": "O'qilmagan: {n}",
-    "inboxEmpty": "Hozircha yozishmalar yo'q.",
-    "pick": "Chapdan yozishmani tanlang.",
+    "inboxEmpty": "Hozircha yozishmalar yo‘q",
+    "inboxEmptyText": "Mijoz shaxsiy kabinetidan yozganda, yozishma shu yerda paydo bo‘ladi.",
+    "pick": "Chapdan yozishmani tanlang",
     "you": "Siz",
     "leadTitle": "Mijoz bilan yozishma",
     "errors": {
