@@ -1,5 +1,5 @@
 <template>
-    <section class="tm-customer-points">
+    <section v-if="!missing" class="tm-customer-points">
         <div class="tm-customer-points__head">
             <h2 class="tm-customer-points__title">{{ t('cms.points.customer.title') }}</h2>
 
@@ -77,7 +77,7 @@ const props = defineProps<{ userId: string }>()
 
 const { t, locale } = useI18n()
 
-const { data, status, canManage, adjusting, draft, saving, formError, open, submit } = useCustomerPoints(() => props.userId)
+const { data, status, missing, canManage, adjusting, draft, saving, formError, open, submit } = useCustomerPoints(() => props.userId)
 
 const points = (value: number): string => value.toLocaleString(locale.value)
 </script>

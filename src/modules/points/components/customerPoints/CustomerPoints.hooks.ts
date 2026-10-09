@@ -18,8 +18,14 @@ export const useCustomerPoints = (userId: () => string) => {
     () => customer(userId()),
   )
 
+  const missing = computed(() => {
+    const failure = error.value as { status?: number, statusCode?: number } | null
+
+    return failure?.status === 404 || failure?.statusCode === 404
+  })
+
   watch(error, (failure) => {
-    if (failure) loadFailed(t('cms.points.customer.loadFailed'))
+    if (failure && !missing.value) loadFailed(t('cms.points.customer.loadFailed'))
   })
 
   const adjusting = ref(false)
@@ -60,5 +66,5 @@ export const useCustomerPoints = (userId: () => string) => {
     }
   }
 
-  return { data, status, canManage, adjusting, draft, saving, formError, open, submit, refresh }
+  return { data, status, missing, canManage, adjusting, draft, saving, formError, open, submit, refresh }
 }
