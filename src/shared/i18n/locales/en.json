@@ -359,7 +359,6 @@
       "guards": {
         "transition": "An order cannot go from “{from}” to “{to}” — a step is missing.",
         "leadPaid": "This lead has a confirmed order, so it cannot be rejected.",
-        "orderPaid": "A paid order cannot be deleted.",
         "leadRejected": "A rejected lead cannot take new orders.",
         "unknownStatus": "Unknown order status.",
         "leadMissing": "This lead no longer exists.",
@@ -380,7 +379,6 @@
         "receiptRequired": "Attach a receipt for client money.",
         "reverseForbidden": "Only a manager can reverse a payment.",
         "alreadyReversed": "This payment is already reversed.",
-        "orderHasPayments": "This order has payments, so it cannot be deleted.",
         "supplierPaymentForbidden": "Payments to suppliers are recorded by a manager.",
         "futurePayment": "A payment cannot be dated in the future.",
         "amountPositive": "The amount must be above zero.",
@@ -719,7 +717,6 @@
       "title": "Leads",
       "lead": "{total} in total, {fresh} new.",
       "empty": "No leads yet.",
-      "delete": "Delete lead",
       "status": {
         "new": "New",
         "in_progress": "In progress",
@@ -812,10 +809,6 @@
         "budgetCurrency": "Currency",
         "rejectReason": "Reason for rejection"
       },
-      "confirmDelete": {
-        "title": "Delete this lead?",
-        "lead": "Every order under it and its history go with it."
-      },
       "offer": {
         "repeatSearch": "Repeat the search",
         "empty": "The client hasn’t picked a tour yet",
@@ -855,7 +848,6 @@
       "searchPlaceholder": "Traveller, hotel, operator or number…",
       "back": "Back",
       "missing": "Order not found.",
-      "delete": "Delete order",
       "createdOn": "Created {date}",
       "passportShort": "The passport is valid for less than {n} months after the trip ends — the order cannot be confirmed.",
       "passportExpired": "The passport expires before the trip ends.",
@@ -908,10 +900,6 @@
         "travelling": "Travelling",
         "completed": "Completed",
         "cancelled": "Cancelled"
-      },
-      "confirmDelete": {
-        "title": "Delete this order?",
-        "lead": "The order and its status history are removed. The lead stays."
       },
       "created": "Order created",
       "documents": {
@@ -1413,6 +1401,28 @@
       "retryFailed": "The provider refused again",
       "empty": "No eSIM purchases yet.",
       "noMatches": "Nothing found."
+    },
+    "archive": {
+      "action": "Archive",
+      "confirm": "Archive",
+      "restore": "Restore",
+      "filter": "Archive",
+      "badge": "Archived",
+      "leadTitle": "Archive this lead?",
+      "leadText": "The lead and its orders leave the working lists. History, documents and payments stay, and the lead can be restored.",
+      "orderTitle": "Archive this order?",
+      "orderText": "The order leaves the working lists. Documents and payments stay, and the order can be restored.",
+      "leadDone": "Lead archived",
+      "orderDone": "Order archived",
+      "restored": "Restored",
+      "leadSince": "Lead archived since {date}",
+      "orderSince": "Order archived since {date}",
+      "empty": "The archive is empty.",
+      "restoreFirst": "The lead is archived — restore it to create an order.",
+      "history": {
+        "archived": "Archived",
+        "restored": "Restored from the archive"
+      }
     }
   },
   "richEditor": {

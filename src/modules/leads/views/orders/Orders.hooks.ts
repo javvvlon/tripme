@@ -25,12 +25,14 @@ export const useOrders = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  watch([debounced, filter, managerFilter], toFirst)
+  const archived = ref(false)
+
+  watch([debounced, filter, managerFilter, archived], toFirst)
 
   const { data, status, refresh } = useAsyncData(
     'cms:orders',
-    () => ordersPage({ q: debounced.value, status: filter.value, manager: managerFilter.value }, pageQuery.value),
-    { default: () => null, watch: [debounced, filter, managerFilter, pageQuery] },
+    () => ordersPage({ q: debounced.value, status: filter.value, manager: managerFilter.value, archived: archived.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, filter, managerFilter, archived, pageQuery] },
   )
 
   const orders = computed<IOrderRaw[]>(() => data.value?.items ?? [])
@@ -56,7 +58,7 @@ export const useOrders = () => {
   })
 
   return {
-    orders, status, error, query, filter, filterOptions, counts, refresh,
+    orders, status, error, query, filter, filterOptions, counts, refresh, archived,
     managerFilter, managerOptions, me,
     page, pages, total, perPage, setPage, setPerPage,
   }

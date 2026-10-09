@@ -23,12 +23,21 @@
                 class="tm-cms-orders__owner"
             />
             <SelectMenu v-model="filter" :options="filterOptions" align="right" />
+
+            <Button
+                size="md" icon="folder"
+                :variant="archived ? 'primary' : 'secondary'"
+                :aria-pressed="archived"
+                @click="archived = !archived"
+            >
+                {{ t('cms.archive.filter') }}
+            </Button>
         </div>
 
         <EditorSkeleton v-if="status === 'pending' && !orders.length" variant="rows" />
 
         <p v-else-if="!orders?.length" class="tm-cms-orders__empty">
-            {{ query || filter ? t('cms.orders.noMatches') : t('cms.orders.empty') }}
+            {{ archived ? t('cms.archive.empty') : query || filter ? t('cms.orders.noMatches') : t('cms.orders.empty') }}
         </p>
 
         <div v-else class="tm-cms-orders__scroll">
@@ -102,7 +111,7 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const {
-  orders, status, error, query, filter, filterOptions, counts,
+  orders, status, error, query, filter, filterOptions, counts, archived,
   managerFilter, managerOptions, me,
   page, pages, total, perPage, setPage, setPerPage,
 } = useOrders()

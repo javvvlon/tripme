@@ -42,6 +42,10 @@ function describe(event: ILeadEvent): string {
       return t('cms.ownership.history.taken', { name: person(event.to_name, event.to) })
     case 'assigned':
       return t('cms.ownership.history.assigned', { from: person(event.from_name, event.from), to: person(event.to_name, event.to) })
+    case 'archived':
+      return t('cms.archive.history.archived')
+    case 'restored':
+      return t('cms.archive.history.restored')
     case 'order_assigned':
       return t('cms.ownership.history.orderAssigned', { order: event.subject ?? '', to: person(event.to_name, event.to) })
     default:

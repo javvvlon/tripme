@@ -9,16 +9,17 @@ export const resource: IResource = {
   resources: {
     submit: { url: 'leads', method: 'POST' },
 
-    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status', 'q', 'sort', 'dir', 'manager', 'page', 'per_page'] },
+    adminLeads: { url: 'cms/leads', method: 'GET', params: ['status', 'q', 'sort', 'dir', 'manager', 'page', 'per_page', 'archived'] },
     adminLead: { url: 'cms/leads/:id', method: 'GET' },
     leadHistory: { url: 'cms/leads/:id/history', method: 'GET' },
     takeLead: { url: 'cms/leads/:id/take', method: 'POST' },
     staff: { url: 'cms/leads/staff', method: 'GET' },
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },
-    deleteLead: { url: 'cms/leads/:id', method: 'DELETE' },
+    archiveLead: { url: 'cms/leads/:id/archive', method: 'POST' },
+    restoreLead: { url: 'cms/leads/:id/restore', method: 'POST' },
 
-    orders: { url: 'cms/orders', method: 'GET', params: ['q', 'status', 'manager', 'page', 'per_page'] },
+    orders: { url: 'cms/orders', method: 'GET', params: ['q', 'status', 'manager', 'page', 'per_page', 'archived'] },
     leadOrders: { url: 'cms/leads/:id/orders', method: 'GET' },
     createOrder: { url: 'cms/leads/:id/orders', method: 'POST' },
     order: { url: 'cms/orders/:id', method: 'GET' },
@@ -34,6 +35,7 @@ export const resource: IResource = {
     issueItem: { url: 'cms/orders/:id/items/:itemId/issue', method: 'POST' },
     removeDocument: { url: 'cms/documents/:id', method: 'DELETE' },
     patchOrder: { url: 'cms/orders/:id', method: 'PATCH' },
-    deleteOrder: { url: 'cms/orders/:id', method: 'DELETE' },
+    archiveOrder: { url: 'cms/orders/:id/archive', method: 'POST' },
+    restoreOrder: { url: 'cms/orders/:id/restore', method: 'POST' },
   },
 }

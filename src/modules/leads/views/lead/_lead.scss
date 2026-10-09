@@ -476,6 +476,7 @@
         &.is-issued,
         &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
         &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
+        &.is-archived { border-style: dashed; color: var(--tm-ink-3); }
     }
 }
 

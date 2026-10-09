@@ -54,6 +54,7 @@ export interface ITripRoute {
 
 export interface ILeadRaw {
   uuid: string
+  archived_at?: string | null
   order_id: number
   ref: string
   first_response_at: string | null
@@ -114,6 +115,7 @@ export const emptyManualDraft = (): ILeadManualDraft => ({
 
 export interface IOrderRaw {
   uuid: string
+  archived_at?: string | null
   order_no: number
   ref: string
   cancel_reason: string
@@ -217,7 +219,7 @@ export interface IOrderEvent {
   at: string
 }
 
-export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned'
+export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored'
 
 export interface ILeadEvent {
   kind: LeadEventKind

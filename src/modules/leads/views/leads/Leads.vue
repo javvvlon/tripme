@@ -23,13 +23,22 @@
                 class="tm-cms-leads__owner"
             />
 
+            <Button
+                size="md" icon="folder"
+                :variant="archived ? 'primary' : 'secondary'"
+                :aria-pressed="archived"
+                @click="archived = !archived"
+            >
+                {{ t('cms.archive.filter') }}
+            </Button>
+
             <Button size="md" @click="creating = true">{{ t('cms.leads.create.cta') }}</Button>
         </div>
 
         <EditorSkeleton v-if="status === 'pending' && !leads.length" variant="rows" />
 
         <p v-else-if="!leads?.length" class="tm-cms-leads__empty">
-            {{ query ? t('cms.leads.noMatches') : t('cms.leads.empty') }}
+            {{ archived ? t('cms.archive.empty') : query ? t('cms.leads.noMatches') : t('cms.leads.empty') }}
         </p>
 
         <div v-else class="tm-cms-leads__scroll">
@@ -125,7 +134,7 @@ const localePath = useLocalePath()
 const creating = ref(false)
 
 const {
-    leads, status, error, query, sort, direction,
+    leads, status, archived, error, query, sort, direction,
     managerFilter, filterOptions, me,
     rowOptions, counts, sortBy, change, refresh,
     page, pages, total, perPage, setPage, setPerPage,

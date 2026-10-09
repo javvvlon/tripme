@@ -359,7 +359,6 @@
       "guards": {
         "transition": "«{from}» dan «{to}» ga oʻtib boʻlmaydi — bosqich tashlab ketilgan.",
         "leadPaid": "Lid boʻyicha tasdiqlangan buyurtma bor — rad etib boʻlmaydi.",
-        "orderPaid": "Toʻlangan buyurtmani oʻchirib boʻlmaydi.",
         "leadRejected": "«Rad etilgan» liddan yangi buyurtma yaratib boʻlmaydi.",
         "unknownStatus": "Notaʼnif buyurtma holati.",
         "leadMissing": "Lid topilmadi — oʻchirilgan boʻlishi mumkin.",
@@ -380,7 +379,6 @@
         "receiptRequired": "Mijoz pullari uchun chek ilova qiling.",
         "reverseForbidden": "Toʻlovni faqat rahbar storno qila oladi.",
         "alreadyReversed": "Bu toʻlov allaqachon storno qilingan.",
-        "orderHasPayments": "Buyurtmada toʻlovlar bor — oʻchirib boʻlmaydi.",
         "supplierPaymentForbidden": "Yetkazib beruvchilarga toʻlovlarni rahbar kiritadi.",
         "futurePayment": "Toʻlov sanasi kelajakda boʻlishi mumkin emas.",
         "amountPositive": "Summa noldan katta boʻlishi kerak.",
@@ -719,7 +717,6 @@
       "title": "Lidlar",
       "lead": "Jami {total}, yangi — {fresh}.",
       "empty": "Hozircha lidlar yoʻq.",
-      "delete": "Lidni oʻchirish",
       "status": {
         "new": "Yangi",
         "in_progress": "Ishda",
@@ -812,10 +809,6 @@
         "budgetCurrency": "Valyuta",
         "rejectReason": "Rad etish sababi"
       },
-      "confirmDelete": {
-        "title": "Lid oʻchirilsinmi?",
-        "lead": "U bilan birga barcha buyurtmalari va tarixi oʻchadi."
-      },
       "offer": {
         "repeatSearch": "Qidiruvni takrorlash",
         "empty": "Mijoz hali tur tanlamagan",
@@ -855,7 +848,6 @@
       "searchPlaceholder": "Sayohatchi, mehmonxona, operator yoki raqam…",
       "back": "Orqaga",
       "missing": "Buyurtma topilmadi.",
-      "delete": "Buyurtmani oʻchirish",
       "createdOn": "{date} da yaratilgan",
       "passportShort": "Pasport sayohat tugaganidan keyin {n} oydan kam amal qiladi — buyurtmani tasdiqlab bo‘lmaydi.",
       "passportExpired": "Pasport sayohat tugashidan oldin muddati tugaydi.",
@@ -908,10 +900,6 @@
         "travelling": "Sayohatda",
         "completed": "Yakunlangan",
         "cancelled": "Bekor qilingan"
-      },
-      "confirmDelete": {
-        "title": "Buyurtma oʻchirilsinmi?",
-        "lead": "Buyurtma va uning holatlar tarixi oʻchadi. Lid qoladi."
       },
       "created": "Buyurtma yaratildi",
       "documents": {
@@ -1413,6 +1401,28 @@
       "retryFailed": "Yetkazib beruvchi yana rad etdi",
       "empty": "Hozircha eSIM xaridlari yo'q.",
       "noMatches": "Hech narsa topilmadi."
+    },
+    "archive": {
+      "action": "Arxivga",
+      "confirm": "Arxivga yuborish",
+      "restore": "Tiklash",
+      "filter": "Arxiv",
+      "badge": "Arxivda",
+      "leadTitle": "Lid arxivga yuborilsinmi?",
+      "leadText": "Lid va uning buyurtmalari ishchi ro'yxatlardan yo'qoladi. Tarix, hujjatlar va to'lovlar saqlanadi, lidni tiklash mumkin.",
+      "orderTitle": "Buyurtma arxivga yuborilsinmi?",
+      "orderText": "Buyurtma ishchi ro'yxatlardan yo'qoladi. Hujjatlar va to'lovlar saqlanadi, buyurtmani tiklash mumkin.",
+      "leadDone": "Lid arxivda",
+      "orderDone": "Buyurtma arxivda",
+      "restored": "Tiklandi",
+      "leadSince": "Lid {date} dan arxivda",
+      "orderSince": "Buyurtma {date} dan arxivda",
+      "empty": "Arxiv bo'sh.",
+      "restoreFirst": "Lid arxivda — buyurtma yaratish uchun uni tiklang.",
+      "history": {
+        "archived": "Arxivga yuborildi",
+        "restored": "Arxivdan tiklandi"
+      }
     }
   },
   "richEditor": {

@@ -80,7 +80,7 @@ export const useLeadsRepository = () => {
   }
 
   const page = async (
-    query: { q?: string, status?: LeadStatus, sort?: LeadSort, dir?: SortDirection, manager?: ManagerFilter },
+    query: { q?: string, status?: LeadStatus, sort?: LeadSort, dir?: SortDirection, manager?: ManagerFilter, archived?: boolean },
     paging: IPageQuery,
   ): Promise<IPageRaw<ILeadRaw, { all: number, fresh: number }>> => {
     const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
@@ -90,6 +90,7 @@ export const useLeadsRepository = () => {
     if (query.sort) params.sort = query.sort
     if (query.dir) params.dir = query.dir
     if (query.manager && query.manager !== 'all') params.manager = query.manager
+    if (query.archived) params.archived = '1'
 
     const response = await http.call<IPageRaw<ILeadRaw, { all: number, fresh: number }>>('Leads', 'adminLeads', params)
 
@@ -147,9 +148,9 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
-  const remove = async (id: string): Promise<void> => {
-    await http.call<void>('Leads', 'deleteLead', { id })
-  }
+  const archive = async (id: string): Promise<ILeadRaw> => (await http.call<ILeadRaw>('Leads', 'archiveLead', { id })).data
+
+  const restore = async (id: string): Promise<ILeadRaw> => (await http.call<ILeadRaw>('Leads', 'restoreLead', { id })).data
 
   const orders = async (query: { q?: string, status?: string, manager?: ManagerFilter } = {}): Promise<IOrderRaw[]> => {
     const params: Record<string, string> = {}
@@ -164,7 +165,7 @@ export const useLeadsRepository = () => {
   }
 
   const ordersPage = async (
-    query: { q?: string, status?: string, manager?: ManagerFilter },
+    query: { q?: string, status?: string, manager?: ManagerFilter, archived?: boolean },
     paging: IPageQuery,
   ): Promise<IPageRaw<IOrderRaw, { all: number, live: number }>> => {
     const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
@@ -172,6 +173,7 @@ export const useLeadsRepository = () => {
     if (query.q) params.q = query.q
     if (query.status) params.status = query.status
     if (query.manager && query.manager !== 'all') params.manager = query.manager
+    if (query.archived) params.archived = '1'
 
     const response = await http.call<IPageRaw<IOrderRaw, { all: number, live: number }>>('Leads', 'orders', params)
 
@@ -290,13 +292,13 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
-  const removeOrder = async (id: string): Promise<void> => {
-    await http.call<void>('Leads', 'deleteOrder', { id })
-  }
+  const archiveOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'archiveOrder', { id })).data
+
+  const restoreOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'restoreOrder', { id })).data
 
   return {
-    submit, all, page, one, history, take, staff, create, patch, setStatus, remove,
-    orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, removeOrder,
+    submit, all, page, one, history, take, staff, create, patch, setStatus, archive, restore,
+    orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder,
     orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
     addItem, updateItem, removeItem, issueItem,
   }

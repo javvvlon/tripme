@@ -29,9 +29,17 @@
                         @update:model-value="change($event as OrderStatus)"
                     />
 
-                    <Button type="button" variant="danger-quiet" @click="remove">{{ t('cms.orders.delete') }}</Button>
+                    <Button v-if="!order.archived_at" type="button" variant="secondary" icon="folder" @click="archive">
+                        {{ t('cms.archive.action') }}
+                    </Button>
                 </div>
             </header>
+
+            <section v-if="order.archived_at" class="tm-cms-archived" role="status">
+                <Icon name="folder" :size="18" />
+                <span>{{ t('cms.archive.orderSince', { date: fullDate(order.archived_at) }) }}</span>
+                <Button type="button" size="sm" variant="secondary" icon="undo" @click="restore">{{ t('cms.archive.restore') }}</Button>
+            </section>
 
             <p v-if="saved" class="tm-cms-order__saved" role="status">{{ t('cms.saved') }}</p>
 
@@ -341,7 +349,7 @@ const noteId = useId()
 
 const {
     order, draft, status, error, saving, saved, history,
-    statusOptions, change, submit, remove, assignManager,
+    statusOptions, change, submit, archive, restore, assignManager,
     documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
     cancelling, cancelReason, confirmCancel,
 } = useOrder()

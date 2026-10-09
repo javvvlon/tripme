@@ -188,3 +188,20 @@
         padding: 20px 18px 40px;
     }
 }
+
+.tm-cms-archived {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border: 1px dashed var(--tm-border-1);
+    border-radius: radius('md');
+    background: var(--tm-surface-2);
+    color: var(--tm-ink-2);
+    font-size: size(14);
+    font-weight: 600;
+
+    > span { flex: 1; min-width: 0; }
+}

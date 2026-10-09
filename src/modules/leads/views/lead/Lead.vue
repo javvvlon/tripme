@@ -31,9 +31,17 @@
                         @update:model-value="change($event as LeadStatus)"
                     />
 
-                    <Button type="button" variant="danger-quiet" @click="remove">{{ t('cms.leads.delete') }}</Button>
+                    <Button v-if="!lead.archived_at" type="button" variant="secondary" icon="folder" @click="archive">
+                        {{ t('cms.archive.action') }}
+                    </Button>
                 </div>
             </header>
+
+            <section v-if="lead.archived_at" class="tm-cms-archived" role="status">
+                <Icon name="folder" :size="18" />
+                <span>{{ t('cms.archive.leadSince', { date: fullDate(lead.archived_at) }) }}</span>
+                <Button type="button" size="sm" variant="secondary" icon="undo" @click="restore">{{ t('cms.archive.restore') }}</Button>
+            </section>
 
             <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
@@ -231,6 +239,7 @@
                                 </span>
                             </span>
 
+                            <span v-if="order.archived_at" class="tm-cms-lead__order-status is-archived">{{ t('cms.archive.badge') }}</span>
                             <span class="tm-cms-lead__order-status" :class="`is-${order.status}`">
                                 {{ t(`cms.orders.status.${order.status}`) }}
                             </span>
@@ -271,7 +280,7 @@ const reasonId = useId()
 const {
     lead, draft, orders, status, error, saving, saved,
     historyVersion, owned,
-    statusOptions, change, submit, addOrder, remove,
+    statusOptions, change, submit, addOrder, archive, restore,
     picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()
 

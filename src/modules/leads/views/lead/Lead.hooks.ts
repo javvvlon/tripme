@@ -21,7 +21,7 @@ export const useLead = () => {
   const localePath = useLocalePath()
 
   const {
-    one, patch, remove: removeLead,
+    one, patch, archive: archiveLead, restore: restoreLead,
     ordersFor, createOrder,
   } = useLeadsRepository()
 
@@ -180,18 +180,26 @@ export const useLead = () => {
     }
   }
 
-  async function remove() {
+  async function archive() {
     if (!await ask({
-      title: t('cms.leads.confirmDelete.title'),
-      description: t('cms.leads.confirmDelete.lead'),
+      title: t('cms.archive.leadTitle'),
+      description: t('cms.archive.leadText'),
       subject: [lead.value?.first_name, lead.value?.last_name].filter(Boolean).join(' ') || undefined,
+      confirmLabel: t('cms.archive.confirm'),
     })) return
 
+    await setArchived(true)
+  }
+
+  const restore = () => setArchived(false)
+
+  async function setArchived(archived: boolean) {
     error.value = ''
 
     try {
-      await removeLead(id.value)
-      await navigateTo(localePath('/app/leads'))
+      lead.value = archived ? await archiveLead(id.value) : await restoreLead(id.value)
+      historyVersion.value++
+      cheer(archived ? t('cms.archive.leadDone') : t('cms.archive.restored'))
     }
     catch (e) {
       error.value = failed(e)
@@ -206,7 +214,7 @@ export const useLead = () => {
 
   return {
     lead, draft, orders, status, error, saving, saved, historyVersion,
-    statusOptions, change, submit, addOrder, remove, refresh, owned,
+    statusOptions, change, submit, addOrder, archive, restore, refresh, owned,
     picking, hasTour, pickerSeed, assign, clearTour,
   }
 }

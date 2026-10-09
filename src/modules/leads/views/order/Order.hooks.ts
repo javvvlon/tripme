@@ -42,7 +42,7 @@ export const useOrder = () => {
   const localePath = useLocalePath()
 
   const {
-    order: fetchOrder, orderHistory, patchOrder, removeOrder,
+    order: fetchOrder, orderHistory, patchOrder, archiveOrder, restoreOrder,
     orderDocuments, generateDocument, attachDocument, removeDocument,
   } = useLeadsRepository()
 
@@ -184,20 +184,31 @@ export const useOrder = () => {
     note: draft.note,
   })
 
-  async function remove() {
+  async function archive() {
     if (!await ask({
-      title: t('cms.orders.confirmDelete.title'),
-      description: t('cms.orders.confirmDelete.lead'),
-      subject: order.value ? `#${order.value.order_no} · ${order.value.hotel_name || ''}`.trim() : undefined,
+      title: t('cms.archive.orderTitle'),
+      description: t('cms.archive.orderText'),
+      subject: order.value ? `${order.value.ref} · ${order.value.hotel_name || ''}`.trim() : undefined,
+      confirmLabel: t('cms.archive.confirm'),
     })) return
 
+    await setArchived(true)
+  }
+
+  const restore = () => setArchived(false)
+
+  async function setArchived(archived: boolean) {
     error.value = ''
 
     try {
-      const leadId = order.value?.lead_id
+      const next = archived ? await archiveOrder(id.value) : await restoreOrder(id.value)
 
-      await removeOrder(id.value)
-      await navigateTo(localePath(leadId ? `/app/leads/${leadId}` : '/app/orders'))
+      if (order.value) {
+        order.value.archived_at = next.archived_at ?? null
+        triggerRef(order)
+      }
+
+      cheer(archived ? t('cms.archive.orderDone') : t('cms.archive.restored'))
     }
     catch (e) {
       error.value = failed(e)
@@ -279,7 +290,7 @@ export const useOrder = () => {
 
   return {
     order, draft, status, error, saving, saved, history,
-    statusOptions, change, submit, remove, refresh, assignManager,
+    statusOptions, change, submit, archive, restore, refresh, assignManager,
     documents, documentsLoading, working, loadDocuments, generate, attach, dropDocument,
     cancelling, cancelReason, confirmCancel,
   }

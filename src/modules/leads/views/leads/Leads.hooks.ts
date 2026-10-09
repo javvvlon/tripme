@@ -28,12 +28,14 @@ export const useLeads = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  watch([debounced, sort, direction, managerFilter], toFirst)
+  const archived = ref(false)
+
+  watch([debounced, sort, direction, managerFilter, archived], toFirst)
 
   const { data, status, refresh } = useAsyncData(
     'cms:leads',
-    () => leadsPage({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value }, pageQuery.value),
-    { default: () => null, watch: [debounced, sort, direction, managerFilter, pageQuery] },
+    () => leadsPage({ q: debounced.value, sort: sort.value, dir: direction.value, manager: managerFilter.value, archived: archived.value }, pageQuery.value),
+    { default: () => null, watch: [debounced, sort, direction, managerFilter, archived, pageQuery] },
   )
 
   const leads = computed<ILeadRaw[]>(() => data.value?.items ?? [])
@@ -83,7 +85,7 @@ export const useLeads = () => {
   })
 
   return {
-    leads, status, error, query, sort, direction,
+    leads, status, error, query, sort, direction, archived,
     managerFilter, filterOptions, elevated, me,
     rowOptions, counts, sortBy, change, refresh,
     page, pages, total, perPage, setPage, setPerPage,
