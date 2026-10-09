@@ -1,47 +1,42 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-inbox {
-    &__layout {
+    &__panel {
         display: grid;
-        grid-template-columns: 320px minmax(0, 1fr);
-        gap: 16px;
+        grid-template-columns: 340px minmax(0, 1fr);
+        height: clamp(520px, calc(100dvh - 250px), 900px);
         margin-top: 20px;
-        align-items: start;
+        overflow: hidden;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('lg');
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
     }
 
     &__list {
         display: flex;
         flex-direction: column;
-        max-height: 640px;
+        min-height: 0;
         overflow-y: auto;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('md');
-        background: var(--tm-surface-1);
-    }
-
-    &__state {
-        margin: 0;
-        padding: 32px 18px;
-        color: var(--tm-ink-3);
-        text-align: center;
+        overscroll-behavior: contain;
+        border-right: 1px solid var(--tm-border-1);
     }
 
     &__empty {
         display: flex;
         flex-direction: column;
+        grid-column: 1 / -1;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        margin-top: 20px;
-        padding: 72px 24px;
-        border: 1px dashed var(--tm-border-1);
-        border-radius: radius('md');
+        height: 100%;
+        padding: 24px;
+        background: var(--tm-surface-2);
         text-align: center;
 
         strong { color: var(--tm-ink-1); font-size: size(17); }
 
         p { max-width: 360px; margin: 0; color: var(--tm-ink-3); font-size: size(14); }
-
-        &.is-compact { margin-top: 0; padding: 96px 24px; border: 0; }
     }
 
     &__empty-icon {
@@ -59,7 +54,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 12px 14px;
+        padding: 14px 18px;
         border: 0;
         border-bottom: 1px solid var(--tm-border-2);
         background: none;
@@ -132,33 +127,69 @@
     &__thread {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         min-width: 0;
+        min-height: 0;
+
+        .tm-chat {
+            flex: 1;
+            min-height: 0;
+            border: 0;
+            border-radius: 0;
+        }
+
+        .tm-chat__scroll {
+            min-height: 0;
+            max-height: none;
+            border-radius: 0;
+        }
     }
 
     &__thread-head {
         display: flex;
-        align-items: baseline;
-        gap: 10px;
+        flex: none;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--tm-border-1);
+    }
 
-        strong { font-size: size(16); }
+    &__thread-who {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
 
-        span { color: var(--tm-ink-3); font-size: size(13); }
+        strong { overflow: hidden; color: var(--tm-ink-1); font-size: size(15); text-overflow: ellipsis; white-space: nowrap; }
+
+        span { overflow: hidden; color: var(--tm-ink-3); font-size: size(13); text-overflow: ellipsis; white-space: nowrap; }
     }
 
     &__back {
         display: none;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        margin-left: -6px;
         padding: 0;
         border: 0;
+        border-radius: 50%;
         background: none;
+        color: var(--tm-ink-2);
         cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); }
     }
 
     @media #{$until-md} {
-        &__layout { grid-template-columns: minmax(0, 1fr); }
+        &__panel {
+            grid-template-columns: minmax(0, 1fr);
+            height: clamp(480px, calc(100dvh - 210px), 900px);
+        }
 
-        .is-hidden-narrow { display: none; }
+        &__panel.is-open &__list,
+        &__panel:not(.is-open) &__thread { display: none; }
 
-        &__back { display: inline-flex; }
+        &__list { border-right: 0; }
+
+        &__back { display: inline-grid; }
     }
 }
