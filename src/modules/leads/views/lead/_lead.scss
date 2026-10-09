@@ -1,6 +1,15 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-cms-lead {
+    &__tabs { margin: 4px 0 16px; }
+
+    &__pane {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+    }
+
     &__back {
         display: inline-flex;
         align-items: center;

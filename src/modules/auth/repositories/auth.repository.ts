@@ -73,5 +73,18 @@ export const useAuthRepository = () => {
     return User.fromRaw(response.data)
   }
 
-  return { login, signup, refresh, logout, sendVerification, verify, me }
+  const capabilities = async (): Promise<{ email: boolean, sms: boolean }> =>
+    (await http.call<{ email: boolean, sms: boolean }>('Auth', 'capabilities')).data
+
+  const forgotPassword = async (email: string, locale: string): Promise<void> => {
+    await http.call<void>('Auth', 'forgotPassword', {}, { email: email.trim(), locale } as AnyObject)
+  }
+
+  const resetPassword = async (email: string, code: string, password: string): Promise<IAuthTokens> => {
+    const response = await http.call<ITokensRaw>('Auth', 'resetPassword', {}, { email: email.trim(), code: code.trim(), password } as AnyObject)
+
+    return toTokens(response.data)
+  }
+
+  return { login, signup, refresh, logout, sendVerification, verify, me, capabilities, forgotPassword, resetPassword }
 }

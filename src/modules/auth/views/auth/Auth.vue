@@ -32,6 +32,8 @@
                         @blur="form.touch('password')"
                     />
 
+                    <NuxtLink v-if="canReset" :to="localePath('/auth/reset')" class="tm-auth__forgot">{{ t('auth.reset.link') }}</NuxtLink>
+
                     <p v-if="error" class="tm-auth__error" role="alert">{{ error }}</p>
 
                     <Button type="submit" size="lg" block :disabled="pending">
@@ -63,11 +65,14 @@
 <script setup lang="ts">
 import { AUTH_BANNER } from './Auth.config'
 import { useAuth } from './Auth.hooks'
+import { useCapabilities } from '~/modules/auth/hooks/use-capabilities'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
 
 const { form, pending, error, submit } = useAuth()
+
+const { email: canReset } = useCapabilities()
 
 const { values, errors, touched } = form
 

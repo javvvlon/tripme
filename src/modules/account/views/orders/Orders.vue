@@ -5,11 +5,28 @@
             <p class="tm-my-orders__lead">{{ t('account.orders.lead') }}</p>
         </header>
 
+        <section v-if="requests.length" class="tm-my-orders__requests">
+            <h2 class="tm-my-orders__section">{{ t('account.requests.title') }}</h2>
+
+            <ul class="tm-my-orders__request-list">
+                <li v-for="request in requests" :key="request.uuid" class="tm-my-orders__request">
+                    <span class="tm-my-orders__request-icon" aria-hidden="true"><Icon name="inbox" :size="18" /></span>
+                    <div class="tm-my-orders__request-main">
+                        <strong>{{ request.hotel_name || request.destination || t('account.requests.untitled') }}</strong>
+                        <span>{{ request.ref }} · {{ day(request.created_at) }}</span>
+                    </div>
+                    <span class="tm-my-orders__request-status" :class="`is-${request.status}`">{{ t(`account.requests.status.${request.status}`) }}</span>
+                </li>
+            </ul>
+        </section>
+
+        <h2 v-if="requests.length && orders.length" class="tm-my-orders__section">{{ t('account.orders.section') }}</h2>
+
         <div v-if="status === 'pending'" class="tm-my-orders__state">
             <Spinner />
         </div>
 
-        <div v-else-if="!orders.length" class="tm-my-orders__empty">
+        <div v-else-if="!orders.length && !requests.length" class="tm-my-orders__empty">
             <Icon name="briefcase" :size="28" />
             <h2 class="tm-my-orders__empty-title">{{ t('account.orders.emptyTitle') }}</h2>
             <p class="tm-my-orders__empty-text">{{ t('account.orders.emptyText') }}</p>
@@ -41,7 +58,7 @@
                         </div>
                         <div>
                             <dt>{{ t('account.orders.price') }}</dt>
-                            <dd>{{ price(order) }}</dd>
+                            <dd>{{ order.total_uzs ? sum(order.total_uzs) : price(order) }}</dd>
                         </div>
                     </dl>
 
@@ -65,7 +82,13 @@ import { useCustomerOrders } from './Orders.hooks'
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-const { orders, status } = useCustomerOrders()
+const { orders, requests, status } = useCustomerOrders()
+
+const { locale } = useI18n()
+
+const sum = (value: number) => `${new Intl.NumberFormat(locale.value, { maximumFractionDigits: 0 }).format(value)} ${t('cms.finance.sum')}`
+
+const day = (value: string) => new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' }).format(new Date(value))
 const { span, travellers, price } = useOrderWords()
 
 useSeoMeta({ title: () => t('account.orders.seoTitle'), robots: 'noindex, nofollow' })

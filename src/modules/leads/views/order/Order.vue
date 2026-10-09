@@ -29,9 +29,8 @@
                         @update:model-value="change($event as OrderStatus)"
                     />
 
-                    <Button v-if="!order.archived_at" type="button" variant="secondary" icon="folder" @click="archive">
-                        {{ t('cms.archive.action') }}
-                    </Button>
+                    <ChatButton v-if="order.client_id" :client-id="order.client_id" :client-name="order.traveller_name" />
+                    <MoreMenu v-if="!order.archived_at" :label="t('cms.more')" :items="moreItems" @select="onMore" />
                 </div>
             </header>
 
@@ -137,7 +136,17 @@
 
             <form v-show="tab === 'details'" class="tm-cms-order__form tm-cms-order__pane" novalidate @submit.prevent="submit">
                 <section class="tm-cms-order__card">
-                    <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.traveller') }}</h2>
+                    <div class="tm-cms-order__card-head">
+                        <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.traveller') }}</h2>
+                        <SelectMenu
+                            v-if="savedTravellers.length"
+                            :model-value="''"
+                            :options="travellerOptions"
+                            :placeholder="t('cms.orders.fromProfile')"
+                            size="sm" align="right"
+                            @update:model-value="useTraveller"
+                        />
+                    </div>
 
                     <div class="tm-cms-order__row">
                         <Input v-model="draft.travellerName" :label="t('cms.orders.fields.traveller')" />
@@ -324,6 +333,8 @@ import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import OrderItems from '~/modules/leads/components/orderItems/OrderItems.vue'
+import ChatButton from '~/modules/messages/components/chatButton/ChatButton.vue'
+import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
 import OrderChecklist from '~/modules/leads/components/orderChecklist/OrderChecklist.vue'
 import Tabs from '~/shared/components/tabs/Tabs.vue'
 import OrderFinance from '~/modules/finance/components/orderFinance/OrderFinance.vue'
@@ -332,6 +343,7 @@ import { useFinanceRepository } from '~/modules/finance/repositories'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import type { IFinanceRaw } from '~/modules/finance/contracts/finance'
 import type { IOrderItemBody, IOrderRaw } from '~/modules/leads/contracts/leads'
+import type { ITraveller } from '~/modules/account/contracts/account'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useOrder } from './Order.hooks'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
@@ -484,6 +496,33 @@ async function confirmService(itemId: string, supplierRef: string) {
         rateBusy.value = false
     }
 }
+
+const { orderTravellers } = useLeadsRepository()
+
+const savedTravellers = ref<ITraveller[]>([])
+
+watch(() => order.value?.uuid, async (id) => {
+    savedTravellers.value = id ? await orderTravellers(id).catch(() => []) : []
+}, { immediate: true })
+
+const travellerOptions = computed(() => [
+    { value: '', label: t('cms.orders.fromProfile') },
+    ...savedTravellers.value.map(traveller => ({ value: traveller.id, label: `${traveller.last_name} ${traveller.first_name}${traveller.passport_number ? ` · ${traveller.passport_number}` : ''}` })),
+])
+
+function useTraveller(id: string) {
+    const traveller = savedTravellers.value.find(entry => entry.id === id)
+
+    if (!traveller) return
+
+    draft.travellerName = `${traveller.last_name} ${traveller.first_name}`.trim()
+    draft.passportId = traveller.passport_number
+    draft.passportExpiresAt = traveller.passport_expires_at ?? ''
+}
+
+const moreItems = computed(() => [{ key: 'archive', label: t('cms.archive.action'), icon: 'folder' }])
+
+const onMore = (key: string) => { if (key === 'archive') void archive() }
 
 const itemsBlock = useTemplateRef<{ done: () => void }>('itemsBlock')
 

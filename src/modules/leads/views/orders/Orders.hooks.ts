@@ -25,7 +25,8 @@ export const useOrders = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  const archived = ref(false)
+  const route = useRoute()
+  const archived = computed(() => route.query.archived === '1')
 
   watch([debounced, filter, managerFilter, archived], toFirst)
 

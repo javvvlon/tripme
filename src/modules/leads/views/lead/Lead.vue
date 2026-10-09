@@ -31,9 +31,8 @@
                         @update:model-value="change($event as LeadStatus)"
                     />
 
-                    <Button v-if="!lead.archived_at" type="button" variant="secondary" icon="folder" @click="archive">
-                        {{ t('cms.archive.action') }}
-                    </Button>
+                    <ChatButton v-if="lead.user_id" :client-id="lead.user_id" :client-name="[lead.first_name, lead.last_name].filter(Boolean).join(' ')" />
+                    <MoreMenu v-if="!lead.archived_at" :label="t('cms.more')" :items="moreItems" @select="onMore" />
                 </div>
             </header>
 
@@ -47,6 +46,9 @@
 
             <LeadOwner v-if="lead.manager_id !== me" :lead="lead" class="tm-cms-lead__card" @changed="owned" />
 
+            <Tabs v-model="tab" :items="tabItems" variant="segment" :aria-label="lead.ref" class="tm-cms-lead__tabs" />
+
+            <div v-show="tab === 'tour'" class="tm-cms-lead__pane">
             <section class="tm-cms-lead__card">
                 <header class="tm-cms-lead__offer-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
@@ -135,7 +137,9 @@
                     </div>
                 </div>
             </section>
+            </div>
 
+            <div v-show="tab === 'request'" class="tm-cms-lead__pane">
             <CustomerPoints v-if="lead.user_id" :user-id="lead.user_id" class="tm-cms-lead__points" />
 
             <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
@@ -209,7 +213,9 @@
                     </div>
                 </dl>
             </section>
+            </div>
 
+            <div v-show="tab === 'orders'" class="tm-cms-lead__pane">
             <section class="tm-cms-lead__card tm-cms-lead__orders">
                 <header class="tm-cms-lead__orders-head">
                     <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.orders') }}</h2>
@@ -248,7 +254,11 @@
                 </ul>
             </section>
 
-            <LeadHistory :lead-id="lead.uuid" :version="historyVersion" class="tm-cms-lead__card tm-cms-lead__history" />
+            </div>
+
+            <div v-show="tab === 'history'" class="tm-cms-lead__pane">
+                <LeadHistory :lead-id="lead.uuid" :version="historyVersion" class="tm-cms-lead__card tm-cms-lead__history" />
+            </div>
         </template>
     </div>
 </template>
@@ -257,6 +267,8 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import { useLead } from './Lead.hooks'
+import { LEAD_TABS } from './Lead.config'
+import type { LeadTab } from './Lead.config'
 import Button from '~/shared/components/button/Button.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
@@ -266,6 +278,8 @@ import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
 import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
+import ChatButton from '~/modules/messages/components/chatButton/ChatButton.vue'
+import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
@@ -283,6 +297,28 @@ const {
     statusOptions, change, submit, addOrder, archive, restore,
     picking, hasTour, pickerSeed, assign, clearTour,
 } = useLead()
+
+const route = useRoute()
+const router = useRouter()
+
+const moreItems = computed(() => [{ key: 'archive', label: t('cms.archive.action'), icon: 'folder' }])
+
+const onMore = (key: string) => { if (key === 'archive') void archive() }
+
+const tab = computed<LeadTab>({
+    get: () => {
+        const wanted = route.query.tab as LeadTab
+
+        return LEAD_TABS.includes(wanted) ? wanted : 'tour'
+    },
+    set: (next) => { void router.replace({ query: { ...route.query, tab: next === 'tour' ? undefined : next } }) },
+})
+
+const tabItems = computed(() => LEAD_TABS
+    .map(value => ({
+        value,
+        label: value === 'orders' && orders.value.length ? `${t('cms.leads.tabs.orders')} · ${orders.value.length}` : t(`cms.leads.tabs.${value}`),
+    })))
 
 const { me } = useManagers()
 

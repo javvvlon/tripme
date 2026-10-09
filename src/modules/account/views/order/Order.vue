@@ -38,7 +38,7 @@
                         <div><dt>{{ t('account.orders.travellers') }}</dt><dd>{{ travellers(order) }}</dd></div>
                         <div v-if="order.supplier_name"><dt>{{ t('account.order.operator') }}</dt><dd>{{ order.supplier_name }}</dd></div>
                         <div v-if="order.supplier_order_id"><dt>{{ t('account.order.booking') }}</dt><dd>{{ order.supplier_order_id }}</dd></div>
-                        <div><dt>{{ t('account.orders.price') }}</dt><dd class="is-strong">{{ price(order) }}</dd></div>
+                        <div><dt>{{ t('account.orders.price') }}</dt><dd class="is-strong">{{ order.total_uzs ? sum(order.total_uzs) : price(order) }}</dd></div>
                     </dl>
                 </section>
 
@@ -64,8 +64,41 @@
                 </section>
             </div>
 
+            <section v-if="order.services?.length" class="tm-my-order__card">
+                <div class="tm-my-order__card-head">
+                    <h2 class="tm-my-order__card-title">{{ t('account.order.services') }}</h2>
+                    <PaymentBadge :status="order.payment_status" />
+                </div>
+
+                <ul class="tm-my-order__services">
+                    <li v-for="(service, i) in order.services" :key="i" class="tm-my-order__service">
+                        <div>
+                            <strong>{{ service.title }}</strong>
+                            <span>{{ [service.kind, service.when].filter(Boolean).join(' · ') }}</span>
+                        </div>
+                        <div class="tm-my-order__service-price">
+                            <strong>{{ service.price }}</strong>
+                            <span v-if="service.uzs && !service.price.includes('сум')">≈ {{ sum(service.uzs) }}</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <dl class="tm-my-order__totals">
+                    <div><dt>{{ t('account.order.total') }}</dt><dd>{{ sum(order.total_uzs) }}</dd></div>
+                    <div><dt>{{ t('account.order.paid') }}</dt><dd>{{ sum(order.received_uzs) }}</dd></div>
+                    <div class="is-due"><dt>{{ t('account.order.due') }}</dt><dd>{{ sum(order.balance_uzs) }}</dd></div>
+                </dl>
+            </section>
+
             <section class="tm-my-order__card">
-                <h2 class="tm-my-order__card-title">{{ t('account.order.documents') }}</h2>
+                <div class="tm-my-order__card-head">
+                    <h2 class="tm-my-order__card-title">{{ t('account.order.documents') }}</h2>
+                    <label class="tm-my-order__upload" :class="{ 'is-busy': uploading }">
+                        <input type="file" class="sr-only" accept="image/png,image/jpeg,image/webp,application/pdf" :disabled="uploading" @change="upload">
+                        <Icon name="upload" :size="15" />
+                        {{ uploading ? t('account.order.uploading') : t('account.order.upload') }}
+                    </label>
+                </div>
 
                 <p v-if="!order.documents.length" class="tm-my-order__muted">{{ t('account.order.noDocuments') }}</p>
 
@@ -85,6 +118,14 @@
                         <Button size="sm" variant="ghost" :href="document.url" target="_blank" rel="noopener">
                             {{ t('account.order.download') }}
                         </Button>
+                        <button
+                            v-if="document.kind === 'client_upload'"
+                            type="button" class="tm-my-order__doc-remove"
+                            :aria-label="t('account.order.removeFile')"
+                            @click="removeOwn(document.id, document.name)"
+                        >
+                            <Icon name="trash" :size="16" />
+                        </button>
                     </li>
                 </ul>
             </section>
@@ -113,13 +154,16 @@ import Button from '~/shared/components/button/Button.vue'
 import Icon from '~/shared/components/icon/Icon.vue'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
 import OrderStatusPill from '~/modules/account/components/orderStatusPill/OrderStatusPill.vue'
+import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
 import { useOrderWords } from '~/modules/account/hooks/use-order-words'
 import { useCustomerOrder } from './Order.hooks'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const sum = (value: number) => `${new Intl.NumberFormat(locale.value, { maximumFractionDigits: 0 }).format(value)} ${t('cms.finance.sum')}`
 const localePath = useLocalePath()
 
-const { order, status, history } = useCustomerOrder()
+const { order, status, history, uploading, upload, removeOwn } = useCustomerOrder()
 const { day, moment, span, travellers, price } = useOrderWords()
 
 const weight = (bytes: number): string =>

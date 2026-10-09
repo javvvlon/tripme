@@ -9,8 +9,15 @@ export const CMS_NAVIGATION: INavNode[] = [
     labelKey: 'cms.nav.groups.work',
     children: [
       { key: 'analytics', labelKey: 'cms.nav.analytics', icon: 'pie', to: '/app/analytics' },
-      { key: 'leads', labelKey: 'cms.nav.leads', icon: 'users', to: '/app/leads' },
-      { key: 'orders', labelKey: 'cms.nav.orders', icon: 'briefcase', to: '/app/orders' },
+      {
+        key: 'leads', labelKey: 'cms.nav.leads', icon: 'users', to: '/app/leads',
+        children: [{ key: 'leads.archive', labelKey: 'cms.nav.archive', to: '/app/leads', query: { archived: '1' } }],
+      },
+      {
+        key: 'orders', labelKey: 'cms.nav.orders', icon: 'briefcase', to: '/app/orders',
+        children: [{ key: 'orders.archive', labelKey: 'cms.nav.archive', to: '/app/orders', query: { archived: '1' } }],
+      },
+      { key: 'messages', labelKey: 'cms.nav.messages', icon: 'mail', to: '/app/messages' },
       { key: 'esim', labelKey: 'cms.nav.esim', icon: 'mobile', to: '/app/esim' },
     ],
   },

@@ -116,6 +116,7 @@ export const emptyManualDraft = (): ILeadManualDraft => ({
 export interface IOrderRaw {
   uuid: string
   archived_at?: string | null
+  client_id?: string | null
   order_no: number
   ref: string
   cancel_reason: string
@@ -257,7 +258,7 @@ export const PASSPORT_MARGIN_MONTHS = 6
 
 export const RESPONSE_SLA_MINUTES = 15
 
-export type DocumentKind = 'offer' | 'invoice' | 'attachment'
+export type DocumentKind = 'offer' | 'invoice' | 'attachment' | 'contract' | 'voucher' | 'client_upload'
 
 export interface IOrderDocument {
   id: string

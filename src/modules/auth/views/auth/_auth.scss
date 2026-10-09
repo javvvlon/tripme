@@ -117,4 +117,26 @@
         &__panel { padding: 34px 28px; }
         &__row { grid-template-columns: 1fr; }
     }
+
+    &__forgot {
+        align-self: flex-end;
+        margin-top: -6px;
+        color: var(--tm-brand-secondary);
+        font-size: size(13);
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+
+    &__link {
+        align-self: center;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-brand-secondary);
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+    }
 }

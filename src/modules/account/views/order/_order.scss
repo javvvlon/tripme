@@ -1,6 +1,41 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-my-order {
+    &__upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { border-color: var(--tm-ink-4); }
+
+        &:focus-within { outline: 2px solid var(--tm-brand-primary); outline-offset: 2px; }
+
+        &.is-busy { opacity: .6; cursor: progress; }
+    }
+
+    &__doc-remove {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: 0;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-3);
+        cursor: pointer;
+
+        &:hover { background: var(--tm-status-danger-soft); color: var(--tm-status-danger); }
+    }
+
     &__back {
         display: inline-flex;
         align-items: center;
@@ -285,6 +320,60 @@
         display: block;
         font-size: size(12);
         color: var(--tm-ink-3);
+    }
+
+    &__card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        .tm-my-order__card-title { margin: 0; }
+    }
+
+    &__services {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__service {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--tm-border-2);
+
+        > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+        strong { color: var(--tm-ink-1); font-size: size(15); }
+
+        span { color: var(--tm-ink-3); font-size: size(13); }
+    }
+
+    &__service-price {
+        align-items: flex-end;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__totals {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 14px 0 0;
+
+        div { display: flex; justify-content: space-between; gap: 16px; }
+
+        dt { color: var(--tm-ink-3); font-size: size(14); }
+
+        dd { margin: 0; color: var(--tm-ink-1); font-size: size(15); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+        .is-due dd { font-size: size(19); font-weight: 800; }
     }
 }
 

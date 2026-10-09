@@ -36,6 +36,7 @@ export const resource: IResource = {
     removeDocument: { url: 'cms/documents/:id', method: 'DELETE' },
     patchOrder: { url: 'cms/orders/:id', method: 'PATCH' },
     archiveOrder: { url: 'cms/orders/:id/archive', method: 'POST' },
+    orderTravellers: { url: 'cms/orders/:id/travellers', method: 'GET' },
     restoreOrder: { url: 'cms/orders/:id/restore', method: 'POST' },
   },
 }

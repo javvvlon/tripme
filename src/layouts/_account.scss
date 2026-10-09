@@ -10,6 +10,20 @@
 }
 
 .tm-account {
+    &__badge {
+        display: inline-grid;
+        place-items: center;
+        min-width: 20px;
+        height: 20px;
+        margin-left: auto;
+        padding: 0 6px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-primary);
+        color: var(--tm-common-white);
+        font-size: size(12);
+        font-weight: 700;
+    }
+
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
     gap: 28px;

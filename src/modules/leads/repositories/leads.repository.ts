@@ -4,6 +4,7 @@ import type {
   IStaffMember, LeadSort, LeadStatus, ManagerFilter, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
+import type { ITraveller } from '~/modules/account/contracts/account'
 import type { IPageQuery, IPageRaw } from '~/shared/contracts/pagination'
 
 /**
@@ -292,13 +293,16 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
+  const orderTravellers = async (id: string): Promise<ITraveller[]> =>
+    (await http.call<ITraveller[]>('Leads', 'orderTravellers', { id })).data
+
   const archiveOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'archiveOrder', { id })).data
 
   const restoreOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'restoreOrder', { id })).data
 
   return {
     submit, all, page, one, history, take, staff, create, patch, setStatus, archive, restore,
-    orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder,
+    orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder, orderTravellers,
     orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
     addItem, updateItem, removeItem, issueItem,
   }

@@ -6,9 +6,13 @@ import { useAccountRepository } from '~/modules/account/repositories'
 export const useCustomerOrders = () => {
   const { t } = useI18n()
   const { loadFailed } = useToast()
-  const { orders: fetchOrders } = useAccountRepository()
+  const { orders: fetchOrders, requests: fetchRequests } = useAccountRepository()
 
   const { data, status, error, refresh } = useAsyncData('account:orders', () => fetchOrders(), { default: () => [] })
+
+  const { data: requestData } = useAsyncData('account:requests', () => fetchRequests().catch(() => []), { default: () => [] })
+
+  const requests = computed(() => (requestData.value ?? []).filter(request => !request.orders && request.status !== 'rejected'))
 
   watch(error, (failure) => {
     if (failure) loadFailed(t('account.orders.loadFailed'))
@@ -16,5 +20,5 @@ export const useCustomerOrders = () => {
 
   const orders = computed(() => data.value ?? [])
 
-  return { orders, status, refresh }
+  return { orders, requests, status, refresh }
 }

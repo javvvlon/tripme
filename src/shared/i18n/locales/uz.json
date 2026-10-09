@@ -312,7 +312,21 @@
     "passwordHint": "Kamida {min} ta belgi",
     "registering": "Hisob yaratilmoqda…",
     "haveAccount": "Hisobingiz bormi?",
-    "noAccount": "Hali hisobingiz yo‘qmi?"
+    "noAccount": "Hali hisobingiz yo‘qmi?",
+    "reset": {
+      "link": "Parolni unutdingizmi?",
+      "title": "Yangi parol",
+      "lead": "Emailni kiriting — parolni almashtirish uchun kod yuboramiz.",
+      "send": "Kod olish",
+      "sent": "Agar {email} bilan akkaunt bo'lsa, unga kod yubordik.",
+      "code": "Xatdagi kod",
+      "password": "Yangi parol",
+      "passwordHint": "Kamida 8 belgi",
+      "save": "Saqlash va kirish",
+      "again": "Kodni qayta yuborish",
+      "back": "Kirishga qaytish",
+      "failed": "Parolni almashtirib bo'lmadi."
+    }
   },
   "dashboard": {
     "title": "Agent kabineti",
@@ -357,7 +371,9 @@
       },
       "collapse": "Menyuni yigʻish",
       "expand": "Menyuni yoyish",
-      "esim": "eSIM"
+      "esim": "eSIM",
+      "messages": "Xabarlar",
+      "archive": "Arxiv"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -855,7 +871,13 @@
         "waiting": "Javob kutmoqda: {wait}",
         "waitingLate": "Javob kutmoqda: {wait} — me’yor {n} daqiqa"
       },
-      "orderNeedsTour": "Avval lid uchun turni tanlang"
+      "orderNeedsTour": "Avval lid uchun turni tanlang",
+      "tabs": {
+        "tour": "Tur",
+        "request": "Mijoz va so'rov",
+        "orders": "Buyurtmalar",
+        "history": "Tarix"
+      }
     },
     "orders": {
       "title": "Buyurtmalar",
@@ -941,7 +963,8 @@
           "invoice": "Hisob",
           "attachment": "Fayl",
           "contract": "Shartnoma",
-          "voucher": "Vaucher"
+          "voucher": "Vaucher",
+          "client_upload": "Mijozdan"
         },
         "confirmDelete": {
           "title": "Hujjat oʻchirilsinmi?",
@@ -1064,7 +1087,8 @@
         "documents": "Hujjatlar",
         "history": "Tarix"
       },
-      "autoStatus": "Buyurtma holati: «{status}»"
+      "autoStatus": "Buyurtma holati: «{status}»",
+      "fromProfile": "Mijoz profilidan"
     },
     "operators": {
       "title": "Turoperatorlar",
@@ -1424,7 +1448,6 @@
       "action": "Arxivga",
       "confirm": "Arxivga yuborish",
       "restore": "Tiklash",
-      "filter": "Arxiv",
       "badge": "Arxivda",
       "leadTitle": "Lid arxivga yuborilsinmi?",
       "leadText": "Lid va uning buyurtmalari ishchi ro'yxatlardan yo'qoladi. Tarix, hujjatlar va to'lovlar saqlanadi, lidni tiklash mumkin.",
@@ -1440,8 +1463,13 @@
       "history": {
         "archived": "Arxivga yuborildi",
         "restored": "Arxivdan tiklandi"
-      }
-    }
+      },
+      "leadsTitle": "Lidlar arxivi",
+      "leadsLead": "Ishdan olingan lidlar. Tiklash uchun lidni oching.",
+      "ordersTitle": "Buyurtmalar arxivi",
+      "ordersLead": "Ishdan olingan buyurtmalar. Tiklash uchun buyurtmani oching."
+    },
+    "more": "Boshqa amallar"
   },
   "richEditor": {
     "toolbar": "Formatlash",
@@ -1589,7 +1617,10 @@
     "nav": {
       "orders": "Buyurtmalarim",
       "profile": "Profil",
-      "points": "TripMe points"
+      "points": "TripMe points",
+      "travellers": "Sayohatchilar",
+      "esim": "eSIM",
+      "messages": "Xabarlar"
     },
     "status": {
       "draft": "Rasmiylashtirilmoqda",
@@ -1614,7 +1645,10 @@
     "documentKinds": {
       "offer": "Tijorat taklifi",
       "invoice": "Hisob",
-      "attachment": "Fayl"
+      "attachment": "Fayl",
+      "contract": "Shartnoma",
+      "voucher": "Vaucher",
+      "client_upload": "Sizning faylingiz"
     },
     "orders": {
       "title": "Buyurtmalarim",
@@ -1631,7 +1665,8 @@
       "priceLater": "Aniqlashtirilmoqda",
       "adults": "kattalar yo‘q | {n} kattalar | {n} kattalar | {n} kattalar",
       "children": "bolalar yo‘q | {n} bola | {n} bola | {n} bola",
-      "open": "Batafsil"
+      "open": "Batafsil",
+      "section": "Buyurtmalar"
     },
     "order": {
       "back": "Buyurtmalarga",
@@ -1653,7 +1688,16 @@
       "noDocuments": "Hujjatlar hali yo‘q — tayyor bo‘lishi bilan shu yerda paydo bo‘ladi.",
       "download": "Ochish",
       "history": "Buyurtma tarixi",
-      "noHistory": "Hali o‘zgarishlar bo‘lmagan."
+      "noHistory": "Hali o‘zgarishlar bo‘lmagan.",
+      "services": "Xizmatlar va to'lov",
+      "total": "Jami",
+      "paid": "To'langan",
+      "due": "To'lash kerak",
+      "upload": "Hujjat yuklash",
+      "uploading": "Yuklanmoqda…",
+      "uploaded": "Hujjat yuklandi — menejer uni ko'radi",
+      "removeFile": "Faylni o'chirish",
+      "removeFileTitle": "Fayl o'chirilsinmi?"
     },
     "profile": {
       "title": "Profil",
@@ -1690,6 +1734,74 @@
       "noHistory": "Hozircha hisoblanmagan — birinchi yakunlangan sayohatdan keyin paydo bo‘ladi.",
       "forOrder": "{n} buyurtma bo‘yicha sayohat",
       "adjustment": "Tuzatish"
+    },
+    "requests": {
+      "title": "Arizalar",
+      "untitled": "Tur tanlash",
+      "status": {
+        "new": "Yangi",
+        "in_progress": "Ishda",
+        "quote_sent": "Taklif yuborildi",
+        "won": "Rasmiylashtirilmoqda",
+        "rejected": "Yopilgan"
+      }
+    },
+    "travellers": {
+      "title": "Sayohatchilar",
+      "lead": "Pasport ma'lumotlarini bir marta saqlang — menejer ularni buyurtmaga o'zi kiritadi.",
+      "add": "Qo'shish",
+      "addTitle": "Yangi sayohatchi",
+      "editTitle": "Sayohatchi",
+      "edit": "O'zgartirish",
+      "remove": "O'chirish",
+      "removeTitle": "Sayohatchini o'chirasizmi?",
+      "saved": "Saqlandi",
+      "empty": "Hozircha hech kim yo'q. O'zingizni va hamrohlaringizni qo'shing.",
+      "loadFailed": "Sayohatchilarni yuklab bo'lmadi.",
+      "lastName": "Familiya (lotincha)",
+      "firstName": "Ism (lotincha)",
+      "birthDate": "Tug'ilgan sana",
+      "gender": "Jinsi",
+      "male": "Erkak",
+      "female": "Ayol",
+      "passport": "Xorijiy pasport",
+      "expires": "Amal qilish muddati",
+      "citizenship": "Fuqarolik"
+    },
+    "esim": {
+      "title": "Mening eSIMlarim",
+      "empty": "Hozircha eSIM xaridlari yo'q.",
+      "buy": "eSIM tanlash"
+    },
+    "phone": {
+      "verified": "Raqam tasdiqlangan",
+      "unverified": "Raqam tasdiqlanmagan",
+      "verify": "Tasdiqlash",
+      "title": "Raqamni tasdiqlash",
+      "sent": "{phone} raqamiga kod yubordik.",
+      "code": "SMS-kod",
+      "confirm": "Tasdiqlash",
+      "done": "Raqam tasdiqlandi — arizalaringiz akkauntga bog'landi"
+    },
+    "delete": {
+      "title": "Akkauntni o'chirish",
+      "text": "Shaxsiy ma'lumotlaringiz va saqlangan sayohatchilar o'chiriladi. Buyurtmalar va to'lovlar agentlik hisobotida qoladi, lekin akkauntga bog'lanmaydi.",
+      "action": "Akkauntni o'chirish",
+      "confirmTitle": "Akkaunt butunlay o'chirilsinmi?",
+      "confirmText": "Uni tiklab bo'lmaydi. Tasdiqlash uchun parolni kiriting.",
+      "confirm": "O'chirish"
+    },
+    "errors": {
+      "badCode": "Kod noto'g'ri yoki eskirgan.",
+      "tooManyCodes": "Juda ko'p kod so'raldi. Bir soatdan keyin urinib ko'ring.",
+      "noSms": "SMS orqali tasdiqlash hozircha mavjud emas.",
+      "noEmail": "Parolni tiklash hozircha mavjud emas.",
+      "noPhone": "Avval telefon raqamini kiriting.",
+      "shortPassword": "Parol kamida 8 belgidan iborat bo'lsin.",
+      "latin": "Ism va familiyani pasportdagidek lotincha yozing.",
+      "travellerName": "Pasportdagidek ism va familiya kerak.",
+      "tooManyTravellers": "20 tagacha sayohatchini saqlash mumkin.",
+      "staffDelete": "Xodim akkauntini administrator o'chiradi."
     }
   },
   "price": {
@@ -1887,5 +1999,28 @@
     },
     "payPrice": "{price} to'lash",
     "soon": "eSIM tez orada saytda paydo bo'ladi."
+  },
+  "messages": {
+    "title": "Xabarlar",
+    "lead": "Menejerga shu yerda yozing — buyurtmalaringiz yangiliklari ham shu yerda chiqadi.",
+    "loading": "Yuklanmoqda…",
+    "empty": "Bu yerda menejer bilan yozishma bo'ladi. Savolingiz bo'lsa, yozing.",
+    "placeholder": "Xabar yozing…",
+    "send": "Yuborish",
+    "staffPlaceholder": "Mijozga javob…",
+    "staffEmpty": "Hozircha xabarlar yo'q. Mijozga birinchi bo'lib yozing.",
+    "inboxTitle": "Xabarlar",
+    "inboxLead": "O'qilmagan: {n}",
+    "inboxEmpty": "Hozircha yozishmalar yo'q.",
+    "pick": "Chapdan yozishmani tanlang.",
+    "you": "Siz",
+    "leadTitle": "Mijoz bilan yozishma",
+    "errors": {
+      "empty": "Xabar bo'sh.",
+      "long": "Xabar 2000 belgidan uzun.",
+      "foreign": "Bu boshqa agentning mijozi."
+    },
+    "write": "Mijozga yozish",
+    "unreadLabel": "O'qilmagan: {n}"
   }
 }

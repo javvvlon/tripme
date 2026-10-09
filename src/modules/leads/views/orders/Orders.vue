@@ -2,8 +2,8 @@
     <div class="tm-cms-orders">
         <SectionHead
             :level="1"
-            :title="t('cms.orders.title')"
-            :sub="t('cms.orders.lead', counts)"
+            :title="archived ? t('cms.archive.ordersTitle') : t('cms.orders.title')"
+            :sub="archived ? t('cms.archive.ordersLead') : t('cms.orders.lead', counts)"
         />
 
 
@@ -23,15 +23,6 @@
                 class="tm-cms-orders__owner"
             />
             <SelectMenu v-model="filter" :options="filterOptions" align="right" />
-
-            <Button
-                size="md" icon="folder"
-                :variant="archived ? 'primary' : 'secondary'"
-                :aria-pressed="archived"
-                @click="archived = !archived"
-            >
-                {{ t('cms.archive.filter') }}
-            </Button>
         </div>
 
         <EditorSkeleton v-if="status === 'pending' && !orders.length" variant="rows" />

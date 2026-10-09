@@ -36,4 +36,20 @@ export const routes: IModuleRoute[] = [
     ssr: false,
     meta: { middleware: 'customer' },
   },
+  {
+    name: 'account-travellers',
+    path: '/account/travellers',
+    file: 'modules/account/views/travellers/Travellers.vue',
+    layout: 'account',
+    ssr: false,
+    meta: { middleware: 'customer' },
+  },
+  {
+    name: 'account-esim',
+    path: '/account/esim',
+    file: 'modules/account/views/esim/Esim.vue',
+    layout: 'account',
+    ssr: false,
+    meta: { middleware: 'customer' },
+  },
 ]

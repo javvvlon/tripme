@@ -8,6 +8,7 @@ export interface INavNode {
   to?: string
   children?: INavNode[]
   disabled?: boolean
+  query?: Record<string, string>
 }
 
 export function findNavTrail(

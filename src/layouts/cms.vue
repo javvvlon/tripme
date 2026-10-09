@@ -32,16 +32,28 @@
             <section v-for="group in CMS_NAVIGATION" :key="group.key" class="tm-cms__group">
                 <h2 class="tm-cms__group-title">{{ t(group.labelKey) }}</h2>
 
-                <NavbarItem
-                    v-for="node in group.children" :key="node.key"
-                    :label="t(node.labelKey)"
-                    :icon="node.icon"
-                    :to="node.to"
-                    :active="isActive(node)"
-                    :disabled="node.disabled"
-                    :badge="node.key === 'leads' && newLeads ? newLeads : null"
-                    accent
-                />
+                <template v-for="node in group.children" :key="node.key">
+                    <NavbarItem
+                        :label="t(node.labelKey)"
+                        :icon="node.icon"
+                        :to="node.to"
+                        :active="isActive(node) && !subActive(node)"
+                        :disabled="node.disabled"
+                        :badge="node.key === 'leads' && newLeads ? newLeads : node.key === 'messages' && unreadMessages ? unreadMessages : null"
+                        accent
+                    />
+
+                    <template v-if="node.children && !collapsed && sectionOpen(node)">
+                        <NuxtLink
+                            v-for="child in node.children" :key="child.key"
+                            :to="{ path: localePath(child.to ?? ''), query: child.query }"
+                            class="tm-cms__sub" :class="{ 'is-active': isChildActive(child) }"
+                            :aria-current="isChildActive(child) ? 'page' : undefined"
+                        >
+                            {{ t(child.labelKey) }}
+                        </NuxtLink>
+                    </template>
+                </template>
             </section>
 
             <template #footer>
@@ -76,6 +88,7 @@
 </template>
 
 <script setup lang="ts">
+import { useMessagesRepository } from '~/modules/messages/repositories'
 import { BRAND_LOGO, BRAND_MARK, BRAND_NAME } from '~/shared/config/brand'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { CMS_NAVIGATION } from '~/modules/content/config/navigation'
@@ -92,6 +105,13 @@ const { user, logout } = useAuthSession()
 const trail = computed(() => findNavTrail(CMS_NAVIGATION, route.path, localePath))
 
 const isActive = (node: INavNode) => trail.value.some(step => step.key === node.key)
+
+const sectionOpen = (node: INavNode) => Boolean(node.to) && route.path.startsWith(localePath(node.to!))
+
+const isChildActive = (child: INavNode) => route.path === localePath(child.to ?? '')
+    && Object.entries(child.query ?? {}).every(([key, value]) => route.query[key] === value)
+
+const subActive = (node: INavNode) => (node.children ?? []).some(isChildActive)
 
 const COLLAPSED_KEY = 'tm-sidebar-collapsed'
 
@@ -112,6 +132,8 @@ const toggleCollapsed = () => {
 const { page: leadsPage } = useLeadsRepository()
 
 const newLeads = ref(0)
+const unreadMessages = ref(0)
+const { inboxUnread } = useMessagesRepository()
 
 const countNewLeads = async () => {
   try {
@@ -120,6 +142,8 @@ const countNewLeads = async () => {
   catch {
     newLeads.value = 0
   }
+
+  unreadMessages.value = await inboxUnread().catch(() => 0)
 }
 
 watch(() => route.path, () => void countNewLeads())

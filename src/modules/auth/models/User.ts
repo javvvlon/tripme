@@ -16,6 +16,7 @@ export interface IUserRaw {
   phone_number: string
   role: UserRole
   is_verified: boolean
+  phone_verified?: boolean
 }
 
 export interface IUser {
@@ -26,6 +27,7 @@ export interface IUser {
   phoneNumber: string
   role: UserRole | null
   isVerified: boolean
+  phoneVerified: boolean
 }
 
 export class User extends Model<IUser> {
@@ -38,6 +40,7 @@ export class User extends Model<IUser> {
       phoneNumber: raw.phone_number,
       role: raw.role,
       isVerified: raw.is_verified,
+      phoneVerified: Boolean(raw.phone_verified),
     }
   }
 

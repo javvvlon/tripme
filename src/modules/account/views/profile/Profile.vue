@@ -27,13 +27,16 @@
             </div>
 
             <div class="tm-profile__row">
-                <PhoneInput
-                    v-model="details.phone"
-                    :label="t('auth.phone')"
-                    required
-                    :error="detailsTouched.phone ? detailsErrors.phone : undefined"
-                    @blur="touchDetails('phone')"
-                />
+                <div class="tm-profile__phone">
+                    <PhoneInput
+                        v-model="details.phone"
+                        :label="t('auth.phone')"
+                        required
+                        :error="detailsTouched.phone ? detailsErrors.phone : undefined"
+                        @blur="touchDetails('phone')"
+                    />
+                    <PhoneCheck />
+                </div>
 
                 <Input
                     :model-value="user?.get('email') ?? ''"
@@ -89,12 +92,16 @@
                 </Button>
             </footer>
         </form>
+
+        <DeleteAccount />
     </div>
 </template>
 
 <script setup lang="ts">
 import Button from '~/shared/components/button/Button.vue'
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import PhoneCheck from '~/modules/account/components/phoneCheck/PhoneCheck.vue'
+import DeleteAccount from '~/modules/account/components/deleteAccount/DeleteAccount.vue'
 import { MIN_PASSWORD_LENGTH } from '~/modules/auth/views/auth/Auth.config'
 import { useProfile } from './Profile.hooks'
 

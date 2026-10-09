@@ -1,6 +1,17 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-cms-order {
+    &__card-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+
+        .tm-cms-order__card-title { margin: 0; }
+    }
+
     &__back {
         display: inline-flex;
         align-items: center;

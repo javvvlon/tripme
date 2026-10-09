@@ -22,6 +22,7 @@
                         >
                             <Icon :name="item.icon" :size="17" />
                             {{ t(item.labelKey) }}
+                            <span v-if="item.key === 'messages' && unread" class="tm-account__badge">{{ unread }}</span>
                         </NuxtLink>
 
                         <button
@@ -54,6 +55,7 @@ import ModalHost from '~/shared/components/modalHost/ModalHost.vue'
 import ToastHost from '~/shared/components/toastHost/ToastHost.vue'
 import { ACCOUNT_NAVIGATION } from '~/modules/account/config/navigation'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
+import { useMessagesRepository } from '~/modules/messages/repositories'
 import type { IAccountNavItem } from '~/modules/account/config/navigation'
 
 const { t } = useI18n()
@@ -61,6 +63,18 @@ const route = useRoute()
 const localePath = useLocalePath()
 
 const { user, logout } = useAuthSession()
+
+const { mineUnread } = useMessagesRepository()
+const unread = useState<number>('account:unread-messages', () => 0)
+
+const countUnread = async () => {
+    if (route.path.endsWith('/account/messages')) return
+
+    unread.value = await mineUnread().catch(() => 0)
+}
+
+watch(() => route.path, () => void countUnread())
+onMounted(() => void countUnread())
 
 const initials = computed(() => {
   if (!user.value) return ''

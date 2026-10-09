@@ -14,5 +14,8 @@ export const resource: IResource = {
     sendVerification: { url: 'auth/send-verification-message/', method: 'POST' },
     verify: { url: 'auth/verify/', method: 'POST' },
     me: { url: 'profile/', method: 'GET' },
+    capabilities: { url: 'auth/capabilities', method: 'GET', skipAuthRefresh: true },
+    forgotPassword: { url: 'auth/password/forgot', method: 'POST', skipAuthRefresh: true },
+    resetPassword: { url: 'auth/password/reset', method: 'POST', skipAuthRefresh: true },
   },
 }

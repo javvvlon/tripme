@@ -1,6 +1,70 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-my-orders {
+    &__section {
+        margin: 26px 0 12px;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    &__request-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__request {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 1px dashed var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+    }
+
+    &__request-icon {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--tm-surface-2);
+        color: var(--tm-brand-secondary);
+    }
+
+    &__request-main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+
+        strong { overflow: hidden; color: var(--tm-ink-1); text-overflow: ellipsis; white-space: nowrap; }
+
+        span { color: var(--tm-ink-3); font-size: size(13); }
+    }
+
+    &__request-status {
+        flex: none;
+        padding: 3px 10px;
+        border-radius: radius('pill');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+        font-size: size(12);
+        font-weight: 700;
+
+        &.is-new { background: color-mix(in srgb, var(--tm-brand-secondary) 12%, transparent); color: var(--tm-brand-secondary); }
+        &.is-in_progress { background: color-mix(in srgb, var(--tm-status-warning) 22%, transparent); color: var(--tm-ink-1); }
+    }
+
     &__head { margin-bottom: 22px; }
 
     &__title {

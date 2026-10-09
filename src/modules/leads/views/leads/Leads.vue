@@ -2,8 +2,8 @@
     <div class="tm-cms-leads">
         <SectionHead
             :level="1"
-            :title="t('cms.leads.title')"
-            :sub="t('cms.leads.lead', counts)"
+            :title="archived ? t('cms.archive.leadsTitle') : t('cms.leads.title')"
+            :sub="archived ? t('cms.archive.leadsLead') : t('cms.leads.lead', counts)"
         />
 
 
@@ -23,16 +23,7 @@
                 class="tm-cms-leads__owner"
             />
 
-            <Button
-                size="md" icon="folder"
-                :variant="archived ? 'primary' : 'secondary'"
-                :aria-pressed="archived"
-                @click="archived = !archived"
-            >
-                {{ t('cms.archive.filter') }}
-            </Button>
-
-            <Button size="md" @click="creating = true">{{ t('cms.leads.create.cta') }}</Button>
+            <Button v-if="!archived" size="md" @click="creating = true">{{ t('cms.leads.create.cta') }}</Button>
         </div>
 
         <EditorSkeleton v-if="status === 'pending' && !leads.length" variant="rows" />

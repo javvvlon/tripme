@@ -1,7 +1,9 @@
 import { User } from '~/modules/auth/models/User'
 import type { IUserRaw } from '~/modules/auth/models/User'
 import { toE164 } from '~/shared/helpers/phone'
-import type { ICustomerOrder, ICustomerOrderDetail, IPasswordDraft, IProfileDraft } from '../contracts/account'
+import type {
+  ICustomerEsim, ICustomerOrder, ICustomerOrderDetail, ICustomerRequest, IPasswordDraft, IProfileDraft, ITraveller, ITravellerDraft,
+} from '../contracts/account'
 import type { AnyObject } from '~/shared/contracts/data'
 
 /**
@@ -39,5 +41,49 @@ export const useAccountRepository = () => {
     } as AnyObject)
   }
 
-  return { orders, order, updateProfile, changePassword }
+  const requests = async (): Promise<ICustomerRequest[]> => (await http.call<ICustomerRequest[]>('Account', 'requests')).data
+
+  const esims = async (): Promise<ICustomerEsim[]> => (await http.call<ICustomerEsim[]>('Account', 'esim')).data
+
+  const travellers = async (): Promise<ITraveller[]> => (await http.call<ITraveller[]>('Account', 'travellers')).data
+
+  const saveTraveller = async (draft: ITravellerDraft, id?: string): Promise<ITraveller> => {
+    const body = { ...draft } as unknown as AnyObject
+
+    return id
+      ? (await http.call<ITraveller>('Account', 'updateTraveller', { id }, body)).data
+      : (await http.call<ITraveller>('Account', 'addTraveller', {}, body)).data
+  }
+
+  const removeTraveller = async (id: string): Promise<void> => {
+    await http.call<void>('Account', 'removeTraveller', { id })
+  }
+
+  const sendPhoneCode = async (locale: string): Promise<void> => {
+    await http.call<void>('Account', 'sendPhoneCode', {}, { locale } as AnyObject)
+  }
+
+  const verifyPhone = async (code: string): Promise<User> =>
+    User.fromRaw((await http.call<IUserRaw>('Account', 'verifyPhone', {}, { code: code.trim() } as AnyObject)).data)
+
+  const deleteAccount = async (password: string): Promise<void> => {
+    await http.call<void>('Account', 'deleteAccount', {}, { password } as AnyObject)
+  }
+
+  const uploadDocument = async (orderId: string, file: File): Promise<void> => {
+    const body = new FormData()
+
+    body.append('file', file, file.name)
+    await http.call<unknown>('Account', 'uploadDocument', { id: orderId }, body)
+  }
+
+  const removeDocument = async (id: string): Promise<void> => {
+    await http.call<void>('Account', 'removeDocument', { id })
+  }
+
+  return {
+    uploadDocument, removeDocument,
+    orders, order, updateProfile, changePassword, requests, esims,
+    travellers, saveTraveller, removeTraveller, sendPhoneCode, verifyPhone, deleteAccount,
+  }
 }

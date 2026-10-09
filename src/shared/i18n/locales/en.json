@@ -312,7 +312,21 @@
     "passwordHint": "At least {min} characters",
     "registering": "Creating your account…",
     "haveAccount": "Already have an account?",
-    "noAccount": "No account yet?"
+    "noAccount": "No account yet?",
+    "reset": {
+      "link": "Forgot password?",
+      "title": "New password",
+      "lead": "Enter your email and we will send a code to change your password.",
+      "send": "Get a code",
+      "sent": "If an account with {email} exists, we have sent it a code.",
+      "code": "Code from the email",
+      "password": "New password",
+      "passwordHint": "At least 8 characters",
+      "save": "Save and sign in",
+      "again": "Send the code again",
+      "back": "Back to sign in",
+      "failed": "Could not change the password."
+    }
   },
   "dashboard": {
     "title": "Agent workspace",
@@ -357,7 +371,9 @@
       },
       "collapse": "Collapse menu",
       "expand": "Expand menu",
-      "esim": "eSIM"
+      "esim": "eSIM",
+      "messages": "Messages",
+      "archive": "Archive"
     },
     "roles": {
       "CLIENT": "Client",
@@ -855,7 +871,13 @@
         "waiting": "Waiting for an answer {wait}",
         "waitingLate": "Waiting for an answer {wait} — the target is {n} minutes"
       },
-      "orderNeedsTour": "Pick a tour for the lead first"
+      "orderNeedsTour": "Pick a tour for the lead first",
+      "tabs": {
+        "tour": "Tour",
+        "request": "Client & request",
+        "orders": "Orders",
+        "history": "History"
+      }
     },
     "orders": {
       "title": "Orders",
@@ -941,7 +963,8 @@
           "invoice": "Invoice",
           "attachment": "File",
           "contract": "Contract",
-          "voucher": "Voucher"
+          "voucher": "Voucher",
+          "client_upload": "From the client"
         },
         "confirmDelete": {
           "title": "Delete this document?",
@@ -1064,7 +1087,8 @@
         "documents": "Documents",
         "history": "History"
       },
-      "autoStatus": "Order status: \"{status}\""
+      "autoStatus": "Order status: \"{status}\"",
+      "fromProfile": "From the client profile"
     },
     "operators": {
       "title": "Tour operators",
@@ -1424,7 +1448,6 @@
       "action": "Archive",
       "confirm": "Archive",
       "restore": "Restore",
-      "filter": "Archive",
       "badge": "Archived",
       "leadTitle": "Archive this lead?",
       "leadText": "The lead and its orders leave the working lists. History, documents and payments stay, and the lead can be restored.",
@@ -1440,8 +1463,13 @@
       "history": {
         "archived": "Archived",
         "restored": "Restored from the archive"
-      }
-    }
+      },
+      "leadsTitle": "Lead archive",
+      "leadsLead": "Leads taken out of work. Open one to restore it.",
+      "ordersTitle": "Order archive",
+      "ordersLead": "Orders taken out of work. Open one to restore it."
+    },
+    "more": "More actions"
   },
   "richEditor": {
     "toolbar": "Formatting",
@@ -1589,7 +1617,10 @@
     "nav": {
       "orders": "My orders",
       "profile": "Profile",
-      "points": "TripMe points"
+      "points": "TripMe points",
+      "travellers": "Travellers",
+      "esim": "eSIM",
+      "messages": "Messages"
     },
     "status": {
       "draft": "Being prepared",
@@ -1614,7 +1645,10 @@
     "documentKinds": {
       "offer": "Commercial offer",
       "invoice": "Invoice",
-      "attachment": "File"
+      "attachment": "File",
+      "contract": "Contract",
+      "voucher": "Voucher",
+      "client_upload": "Your file"
     },
     "orders": {
       "title": "My orders",
@@ -1631,7 +1665,8 @@
       "priceLater": "To be confirmed",
       "adults": "no adults | {n} adult | {n} adults | {n} adults",
       "children": "no children | {n} child | {n} children | {n} children",
-      "open": "Details"
+      "open": "Details",
+      "section": "Orders"
     },
     "order": {
       "back": "Back to orders",
@@ -1653,7 +1688,16 @@
       "noDocuments": "No documents yet — they will appear here as soon as they are ready.",
       "download": "Open",
       "history": "Order history",
-      "noHistory": "No changes yet."
+      "noHistory": "No changes yet.",
+      "services": "Services and payment",
+      "total": "Total",
+      "paid": "Paid",
+      "due": "Due",
+      "upload": "Upload a document",
+      "uploading": "Uploading…",
+      "uploaded": "Uploaded — your manager will see it",
+      "removeFile": "Delete file",
+      "removeFileTitle": "Delete this file?"
     },
     "profile": {
       "title": "Profile",
@@ -1690,6 +1734,74 @@
       "noHistory": "Nothing yet — points appear after your first completed trip.",
       "forOrder": "Trip on order {n}",
       "adjustment": "Adjustment"
+    },
+    "requests": {
+      "title": "Requests",
+      "untitled": "Tour request",
+      "status": {
+        "new": "New",
+        "in_progress": "In progress",
+        "quote_sent": "Offer sent",
+        "won": "Being booked",
+        "rejected": "Closed"
+      }
+    },
+    "travellers": {
+      "title": "Travellers",
+      "lead": "Save passport details once — your manager fills them into the order, so you never have to dictate them.",
+      "add": "Add",
+      "addTitle": "New traveller",
+      "editTitle": "Traveller",
+      "edit": "Edit",
+      "remove": "Delete",
+      "removeTitle": "Delete this traveller?",
+      "saved": "Saved",
+      "empty": "Nobody yet. Add yourself and the people you travel with.",
+      "loadFailed": "Could not load travellers.",
+      "lastName": "Last name (Latin)",
+      "firstName": "First name (Latin)",
+      "birthDate": "Date of birth",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "passport": "Passport",
+      "expires": "Valid until",
+      "citizenship": "Citizenship"
+    },
+    "esim": {
+      "title": "My eSIMs",
+      "empty": "No eSIM purchases yet.",
+      "buy": "Choose an eSIM"
+    },
+    "phone": {
+      "verified": "Phone confirmed",
+      "unverified": "Phone not confirmed",
+      "verify": "Confirm",
+      "title": "Confirm your phone",
+      "sent": "We sent a code to {phone}.",
+      "code": "SMS code",
+      "confirm": "Confirm",
+      "done": "Phone confirmed — your requests are now in your account"
+    },
+    "delete": {
+      "title": "Delete account",
+      "text": "We delete your personal data and saved travellers. Orders and payments stay with the agency for its records, no longer linked to you.",
+      "action": "Delete account",
+      "confirmTitle": "Delete your account for good?",
+      "confirmText": "This cannot be undone. Enter your password to confirm.",
+      "confirm": "Delete"
+    },
+    "errors": {
+      "badCode": "The code is wrong or expired.",
+      "tooManyCodes": "Too many codes. Try again in an hour.",
+      "noSms": "SMS confirmation is not available yet.",
+      "noEmail": "Password reset is not available yet.",
+      "noPhone": "Add a phone number first.",
+      "shortPassword": "A password needs at least 8 characters.",
+      "latin": "Write names in Latin letters, as in the passport.",
+      "travellerName": "A first and last name are needed, as in the passport.",
+      "tooManyTravellers": "You can save up to 20 travellers.",
+      "staffDelete": "Staff accounts are removed by an administrator."
     }
   },
   "price": {
@@ -1887,5 +1999,28 @@
     },
     "payPrice": "Pay {price}",
     "soon": "eSIM is coming to the site soon."
+  },
+  "messages": {
+    "title": "Messages",
+    "lead": "Write to your manager right here — updates on your orders appear here too.",
+    "loading": "Loading…",
+    "empty": "Your conversation with the manager will appear here. Write if you have a question.",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "staffPlaceholder": "Reply to the client…",
+    "staffEmpty": "No messages yet. Write to the client first.",
+    "inboxTitle": "Messages",
+    "inboxLead": "Unread: {n}",
+    "inboxEmpty": "No conversations yet.",
+    "pick": "Pick a conversation on the left.",
+    "you": "You",
+    "leadTitle": "Conversation with the client",
+    "errors": {
+      "empty": "The message is empty.",
+      "long": "The message is longer than 2000 characters.",
+      "foreign": "This client belongs to another agent."
+    },
+    "write": "Message the client",
+    "unreadLabel": "Unread: {n}"
   }
 }

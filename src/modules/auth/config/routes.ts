@@ -13,6 +13,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'guest' },
   },
   {
+    name: 'auth-reset',
+    path: '/auth/reset',
+    file: 'modules/auth/views/reset/Reset.vue',
+    layout: 'blank',
+    ssr: false,
+    meta: { middleware: 'guest' },
+  },
+  {
     name: 'auth-register',
     path: '/register',
     file: 'modules/auth/views/register/Register.vue',
