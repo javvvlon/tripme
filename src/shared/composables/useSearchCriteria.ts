@@ -1,6 +1,7 @@
 import { SearchMode } from '~/search_engine/contracts/search'
 import { addDays } from '~/shared/helpers/dates'
 import type { SearchCriteria } from '~/search_engine/contracts/search'
+import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -122,7 +123,9 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
     return parts.join(', ')
   })
 
-  const nightsLabel = computed(() => t('search.nights', criteria.nights))
+  const nightsLabel = computed(() => criteria.nights === FLEXIBLE_NIGHTS.around
+    ? t('search.nightsRange', { from: FLEXIBLE_NIGHTS.from, to: FLEXIBLE_NIGHTS.to })
+    : t('search.nights', criteria.nights))
 
   return { criteria, query, target, submit, reset, travellersLabel, nightsLabel }
 }

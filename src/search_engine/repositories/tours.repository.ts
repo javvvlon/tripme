@@ -1,6 +1,6 @@
 import { Tour } from '~/search_engine/models/Tour'
 import type { ITourRaw } from '~/search_engine/models/Tour'
-import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
+import { SearchCriteriaIntention, nightsRange } from '~/search_engine/intentions/search'
 import type { SearchRequest, SearchFacets } from '~/search_engine/contracts/search'
 import type { AnyObject } from '~/shared/contracts/data'
 
@@ -128,7 +128,7 @@ export const useToursRepository = () => {
     const response = await http.call<{ date: string | null }>(
       'SearchEngine',
       'soonestDeparture',
-      { from, to, nights, adults, children: kids ? String(kids) : undefined },
+      { from, to, ...nightsRange(nights), adults, children: kids ? String(kids) : undefined },
     )
 
     return response.data?.date ?? ''

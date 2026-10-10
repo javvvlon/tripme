@@ -165,6 +165,7 @@
 </template>
 
 <script setup lang="ts">
+import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
 import ActiveFilters from '~/landing/components/activeFilters/ActiveFilters.vue'
 import { QUICK_SEARCHES } from '~/landing/views/home/Home.config'
@@ -249,11 +250,14 @@ const headline = computed(() => {
 
   const destination = label(criteria.value.to) || t('results.anywhere')
   const { date, dateTo, nights } = criteria.value
+  const flexible = nights === FLEXIBLE_NIGHTS.around
+  const nightsText = flexible ? t('search.nightsRange', { from: FLEXIBLE_NIGHTS.from, to: FLEXIBLE_NIGHTS.to }) : t('search.nights', nights)
+  const day = (value: string) => new Intl.DateTimeFormat(locale.value, { day: '2-digit', month: '2-digit' }).format(new Date(value))
   const dates = !date
     ? ''
     : dateTo
-      ? `${formatDayRange(date, dateTo, locale.value)}, ${t('search.nights', nights)}`
-      : formatDateRange(date, nights, locale.value)
+      ? `${formatDayRange(date, dateTo, locale.value)}, ${nightsText}`
+      : flexible ? `${day(date)}, ${nightsText}` : formatDateRange(date, nights, locale.value)
   const from = facets.value.priceFrom
   const cheapest = from
     ? formatMoney({ amount: from.amount, currency: from.currency as 'USD' | 'EUR' | 'UZS' }, locale.value)

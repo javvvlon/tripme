@@ -82,7 +82,8 @@
     },
     "sheetDone": "Done",
     "edit": "Edit",
-    "summaryEmpty": "Where to?"
+    "summaryEmpty": "Where to?",
+    "nightsRange": "{from}–{to} nights"
   },
   "home": {
     "hero": {

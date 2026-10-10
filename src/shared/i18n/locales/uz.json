@@ -82,7 +82,8 @@
     },
     "sheetDone": "Tayyor",
     "edit": "O‘zgartirish",
-    "summaryEmpty": "Qayerga uchamiz?"
+    "summaryEmpty": "Qayerga uchamiz?",
+    "nightsRange": "{from}–{to} kecha"
   },
   "home": {
     "hero": {

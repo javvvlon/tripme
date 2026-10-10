@@ -1,6 +1,11 @@
 import { Intention } from '~/shared/helpers/intentions'
 import type { SearchRequest } from '~/search_engine/contracts/search'
 
+export const FLEXIBLE_NIGHTS = { around: 7, from: 6, to: 8 } as const
+
+export const nightsRange = (nights: number | undefined): { nights?: number, nightsTo?: number } =>
+  nights === FLEXIBLE_NIGHTS.around ? { nights: FLEXIBLE_NIGHTS.from, nightsTo: FLEXIBLE_NIGHTS.to } : { nights }
+
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
@@ -23,6 +28,7 @@ export class SearchCriteriaIntention extends Intention<SearchRequest> {
 
     const withFilters: Record<string, unknown> = {
       ...query,
+      ...nightsRange(data.nights),
       children: data.kidAges.length ? data.kidAges.join(',') : undefined,
       dateTo: data.date && data.dateTo ? data.dateTo : undefined,
       stars: list(filters?.stars),

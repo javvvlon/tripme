@@ -82,7 +82,8 @@
     },
     "sheetDone": "Готово",
     "edit": "Изменить",
-    "summaryEmpty": "Куда летим?"
+    "summaryEmpty": "Куда летим?",
+    "nightsRange": "{from}–{to} ночей"
   },
   "home": {
     "hero": {
