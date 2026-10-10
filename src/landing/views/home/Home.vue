@@ -21,7 +21,7 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const url = useRequestURL()
 
-const { sections } = useHome()
+const { sections } = await useHome()
 
 useSeoMeta({
   title: () => t('home.seo.title'),

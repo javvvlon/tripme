@@ -22,7 +22,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const url = useRequestURL()
 
-const { sections, seo, status } = useBlog()
+const { sections, seo, status } = await useBlog()
 
 const title = computed(() => seo.value?.title || t('post.index.seoTitle'))
 const description = computed(() => seo.value?.description || t('post.index.lead'))
