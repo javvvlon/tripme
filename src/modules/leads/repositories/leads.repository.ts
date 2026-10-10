@@ -122,13 +122,13 @@ export const useLeadsRepository = () => {
     return response.data ?? []
   }
 
-  const create = async (draft: ILeadManualDraft, trip: ILeadTrip): Promise<ILeadRaw> => {
+  const create = async (draft: ILeadManualDraft, trip?: ILeadTrip): Promise<ILeadRaw> => {
     const response = await http.call<ILeadRaw>('Leads', 'createLead', {}, {
       first_name: draft.firstName.trim(),
       last_name: draft.lastName.trim(),
       phone: toE164(draft.phone),
       comment: draft.comment.trim(),
-      trip,
+      ...(trip ? { trip } : {}),
     } as AnyObject)
 
     return response.data

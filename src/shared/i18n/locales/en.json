@@ -814,8 +814,7 @@
         "change": "Pick another",
         "empty": "Nothing found — try different criteria.",
         "found": "{count} found — pick one",
-        "failed": "The search failed. Please try again.",
-        "required": "Pick a tour from the search results."
+        "failed": "The search failed. Please try again."
       },
       "search": "Search leads",
       "searchPlaceholder": "Name, phone, number or hotel…",

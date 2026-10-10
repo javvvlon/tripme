@@ -814,8 +814,7 @@
         "change": "Boshqasini tanlash",
         "empty": "Hech nima topilmadi — parametrlarni oʻzgartiring.",
         "found": "{count} ta topildi — turni tanlang",
-        "failed": "Qidiruv amalga oshmadi. Yana urinib koʻring.",
-        "required": "Qidiruv natijalaridan turni tanlang."
+        "failed": "Qidiruv amalga oshmadi. Yana urinib koʻring."
       },
       "search": "Lidlarni qidirish",
       "searchPlaceholder": "Ism, telefon, raqam yoki mehmonxona…",

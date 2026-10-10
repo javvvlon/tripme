@@ -44,15 +44,10 @@ export const useManualLead = (onCreated: (lead: ILeadRaw) => void) => {
 
     if (!validation.validate()) return
 
-    if (!tour.value) {
-      error.value = t('cms.leads.picker.required')
-      return
-    }
-
     saving.value = true
 
     try {
-      onCreated(await create(draft, tripFromTour(tour.value, route.value ?? undefined)))
+      onCreated(await create(draft, tour.value ? tripFromTour(tour.value, route.value ?? undefined) : undefined))
     }
     catch {
       error.value = t('cms.errors.save')
