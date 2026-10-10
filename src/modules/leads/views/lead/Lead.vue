@@ -137,6 +137,17 @@
                     </div>
                 </div>
             </section>
+
+            <section v-if="extras.length" class="tm-cms-lead__card">
+                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
+
+                <dl class="tm-cms-lead__raw">
+                    <div v-for="entry in extras" :key="entry.key">
+                        <dt>{{ entry.key }}</dt>
+                        <dd>{{ entry.value }}</dd>
+                    </div>
+                </dl>
+            </section>
             </div>
 
             <div v-show="tab === 'request'" class="tm-cms-lead__pane">
@@ -203,16 +214,6 @@
                 </footer>
             </form>
 
-            <section v-if="extras.length" class="tm-cms-lead__card">
-                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
-
-                <dl class="tm-cms-lead__raw">
-                    <div v-for="entry in extras" :key="entry.key">
-                        <dt>{{ entry.key }}</dt>
-                        <dd>{{ entry.value }}</dd>
-                    </div>
-                </dl>
-            </section>
             </div>
 
             <div v-show="tab === 'orders'" class="tm-cms-lead__pane">

@@ -86,7 +86,13 @@
                 <dl class="tm-my-order__totals">
                     <div><dt>{{ t('account.order.total') }}</dt><dd>{{ sum(order.total_uzs) }}</dd></div>
                     <div><dt>{{ t('account.order.paid') }}</dt><dd>{{ sum(order.received_uzs) }}</dd></div>
-                    <div class="is-due"><dt>{{ t('account.order.due') }}</dt><dd>{{ sum(order.balance_uzs) }}</dd></div>
+                    <div class="is-due">
+                        <dt>
+                            {{ t('account.order.due') }}
+                            <small v-if="order.balance_uzs && order.rates_date" class="tm-my-order__rate">{{ t('account.order.dueAt', { date: order.rates_date.split('-').reverse().join('.') }) }}</small>
+                        </dt>
+                        <dd>{{ sum(order.balance_uzs) }}</dd>
+                    </div>
                 </dl>
             </section>
 

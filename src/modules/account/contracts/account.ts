@@ -47,6 +47,7 @@ export interface ICustomerOrderDetail extends ICustomerOrder {
   total_uzs: number
   received_uzs: number
   balance_uzs: number
+  rates_date: string | null
   payment_status: 'unpaid' | 'partial' | 'paid' | 'overpaid'
 }
 

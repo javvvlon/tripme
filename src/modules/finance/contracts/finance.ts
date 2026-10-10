@@ -41,6 +41,7 @@ export interface IFinanceRaw {
   missing_rates: number
   received_uzs: number
   balance_uzs: number
+  rates_date: string | null
   overpaid_uzs: number
   paid_to_suppliers_uzs: number | null
   revenue_uzs: number | null

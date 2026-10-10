@@ -6,7 +6,6 @@ import type { IOrderItemBody, IOrderItemRaw } from '~/modules/leads/contracts/le
 import type { IOrderItemsProps } from './OrderItems.d'
 
 type Emit = {
-  (event: 'rate', itemId: string, rate: number): void
   (event: 'confirm', itemId: string, supplierRef: string): void
   (event: 'save', itemId: string | null, body: IOrderItemBody): void
   (event: 'remove', itemId: string): void
@@ -23,8 +22,6 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
   const { t, locale } = useI18n()
   const { ask } = useConfirm()
 
-  const editing = ref('')
-  const rateDraft = ref('')
   const confirming = ref('')
   const refDraft = ref('')
   const serviceOpen = ref(false)
@@ -39,11 +36,7 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
   }
 
   const confirmingTitle = computed(() => titleOf(confirming.value))
-  const editingTitle = computed(() => titleOf(editing.value))
   const issuingTitle = computed(() => titleOf(issuing.value))
-
-  const parsedRate = computed(() => Number(rateDraft.value.replace(/\s/g, '').replace(',', '.')))
-  const rateValid = computed(() => Number.isFinite(parsedRate.value) && parsedRate.value > 0)
 
   function startConfirm(item: IOrderItemRaw) {
     refDraft.value = item.supplier_ref
@@ -55,18 +48,6 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
 
     emit('confirm', confirming.value, refDraft.value.trim())
     confirming.value = ''
-  }
-
-  function startRate(item: IOrderItemRaw) {
-    rateDraft.value = item.fx_rate ? String(item.fx_rate) : ''
-    editing.value = item.uuid
-  }
-
-  function saveRate() {
-    if (!rateValid.value) return
-
-    emit('rate', editing.value, parsedRate.value)
-    editing.value = ''
   }
 
   function addService() {
@@ -169,9 +150,9 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
   const activeCount = computed(() => props.items.filter(item => !INACTIVE_STATUSES.includes(item.status)).length)
 
   return {
-    rows, activeCount, editing, rateDraft, confirming, refDraft, rateValid, confirmingTitle, editingTitle,
+    rows, activeCount, confirming, refDraft, confirmingTitle,
     serviceOpen, serviceItem, issuing, issueFile, issuingTitle,
-    startConfirm, saveConfirm, startRate, saveRate, addService, editService, saveService,
+    startConfirm, saveConfirm, addService, editService, saveService,
     startIssue, pickIssueFile, saveIssue, removeService, done,
   }
 }

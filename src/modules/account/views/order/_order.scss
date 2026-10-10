@@ -371,6 +371,8 @@
 
         dt { color: var(--tm-ink-3); font-size: size(14); }
 
+        dt small { display: block; color: var(--tm-ink-4); font-size: size(12); }
+
         dd { margin: 0; color: var(--tm-ink-1); font-size: size(15); font-weight: 600; font-variant-numeric: tabular-nums; }
 
         .is-due dd { font-size: size(19); font-weight: 800; }

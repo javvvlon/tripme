@@ -55,9 +55,6 @@
                         <p v-if="item.uzs" class="tm-order-items__uzs">{{ item.uzs }}</p>
                         <p class="tm-order-items__rate" :class="{ 'is-missing': !item.fx_rate }">
                             {{ item.rateText }}
-                            <button type="button" class="tm-order-items__link" @click="startRate(item)">
-                                {{ t('cms.orders.items.rateEdit') }}
-                            </button>
                         </p>
                     </template>
                 </div>
@@ -85,20 +82,6 @@
             @confirm="saveConfirm"
         >
             <Input v-model="refDraft" :label="t('cms.orders.items.refLabel')" placeholder="EB-58213" />
-        </Modal>
-
-        <Modal
-            :model-value="Boolean(editing)"
-            :title="t('cms.orders.items.rateLabel')"
-            :description="editingTitle"
-            :confirm-label="t('cms.save')"
-            :busy="busy"
-            :disabled="!rateValid"
-            size="sm"
-            @update:model-value="editing = $event ? editing : ''"
-            @confirm="saveRate"
-        >
-            <Input v-model="rateDraft" inputmode="decimal" :label="t('cms.orders.items.rateLabel')" />
         </Modal>
 
         <Modal
@@ -133,9 +116,9 @@ const emit = defineEmits<IOrderItemsEmits>()
 const { t } = useI18n()
 
 const {
-    rows, activeCount, editing, rateDraft, confirming, refDraft, rateValid, confirmingTitle, editingTitle,
+    rows, activeCount, confirming, refDraft, confirmingTitle,
     serviceOpen, serviceItem, issuing, issuingTitle,
-    startConfirm, saveConfirm, startRate, saveRate, addService, editService, saveService,
+    startConfirm, saveConfirm, addService, editService, saveService,
     startIssue, pickIssueFile, saveIssue, removeService, done,
 } = useOrderItems(props, emit)
 

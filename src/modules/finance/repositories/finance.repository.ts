@@ -44,11 +44,5 @@ export const useFinanceRepository = () => {
     return response.data
   }
 
-  const setItemRate = async (orderId: string, itemId: string, rate: number): Promise<IFinanceRaw> => {
-    const response = await http.call<IFinanceRaw>('Finance', 'setItemRate', { id: orderId, itemId }, { fx_rate: rate } as AnyObject)
-
-    return response.data
-  }
-
-  return { overview, record, reverse, setDeposit, setItemRate }
+  return { overview, record, reverse, setDeposit }
 }

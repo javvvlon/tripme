@@ -86,7 +86,6 @@
                 :start="order.check_in"
                 :end="order.return_date"
                 class="tm-cms-order__card tm-cms-order__items"
-                @rate="changeRate"
                 @confirm="confirmService"
                 @save="saveService"
                 @remove="removeService"
@@ -339,7 +338,6 @@ import OrderChecklist from '~/modules/leads/components/orderChecklist/OrderCheck
 import Tabs from '~/shared/components/tabs/Tabs.vue'
 import OrderFinance from '~/modules/finance/components/orderFinance/OrderFinance.vue'
 import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
-import { useFinanceRepository } from '~/modules/finance/repositories'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import type { IFinanceRaw } from '~/modules/finance/contracts/finance'
 import type { IOrderItemBody, IOrderRaw } from '~/modules/leads/contracts/leads'
@@ -366,32 +364,11 @@ const {
     cancelling, cancelReason, confirmCancel,
 } = useOrder()
 
-const { setItemRate } = useFinanceRepository()
 const { order: fetchOrder, orderHistory, uploadContract, confirmItem, addItem, updateItem, removeItem, issueItem } = useLeadsRepository()
 const { failed: rateFailed, saved: rateSaved } = useToast()
 
 const financeVersion = ref(0)
 const rateBusy = ref(false)
-
-async function changeRate(itemId: string, rate: number) {
-    if (!order.value) return
-
-    rateBusy.value = true
-
-    try {
-        await setItemRate(order.value.uuid, itemId, rate)
-        order.value.items = (await fetchOrder(order.value.uuid)).items
-        triggerRef(order)
-        financeVersion.value++
-        rateSaved(t('cms.orders.items.rateSaved'))
-    }
-    catch (e) {
-        rateFailed(e)
-    }
-    finally {
-        rateBusy.value = false
-    }
-}
 
 const { ask } = useConfirm()
 

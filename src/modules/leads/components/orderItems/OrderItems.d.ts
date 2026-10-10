@@ -12,7 +12,6 @@ export interface IOrderItemsProps {
 }
 
 export interface IOrderItemsEmits {
-  rate: [itemId: string, rate: number]
   confirm: [itemId: string, supplierRef: string]
   save: [itemId: string | null, body: IOrderItemBody]
   remove: [itemId: string]

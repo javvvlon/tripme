@@ -22,7 +22,10 @@
                     <dd class="is-warn">{{ sum(finance.overpaid_uzs) }}</dd>
                 </div>
                 <div v-else>
-                    <dt>{{ t('cms.finance.balance') }}</dt>
+                    <dt>
+                        {{ t('cms.finance.balance') }}
+                        <small v-if="finance.balance_uzs && finance.rates_date" class="tm-order-finance__rate">{{ t('cms.finance.rateAt', { date: finance.rates_date.split('-').reverse().join('.') }) }}</small>
+                    </dt>
                     <dd>{{ sum(finance.balance_uzs) }}</dd>
                 </div>
 

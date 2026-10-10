@@ -59,6 +59,8 @@
 
         dt { color: var(--tm-ink-2); font-size: size(14); }
 
+        dt small { display: block; color: var(--tm-ink-4); font-size: size(12); }
+
         dd {
             margin: 0;
             color: var(--tm-ink-1);
