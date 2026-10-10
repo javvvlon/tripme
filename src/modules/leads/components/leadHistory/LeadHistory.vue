@@ -5,9 +5,15 @@
         <p v-if="!events?.length" class="tm-lead-history__empty">{{ t('cms.ownership.history.empty') }}</p>
 
         <ol v-else class="tm-lead-history__list">
-            <li v-for="(event, index) in events" :key="index" class="tm-lead-history__item">
+            <li
+                v-for="(event, index) in events" :key="index"
+                class="tm-lead-history__item" :class="{ 'is-trip': event.kind === 'trip_started' }"
+            >
                 <span class="tm-lead-history__at">{{ when(event.at) }}</span>
-                <span class="tm-lead-history__what">{{ describe(event) }}</span>
+                <span class="tm-lead-history__what">
+                    {{ describe(event) }}
+                    <small v-if="event.kind === 'trip_started' && previousOf(event)" class="tm-lead-history__previous">{{ previousOf(event) }}</small>
+                </span>
                 <span v-if="event.actor_name" class="tm-lead-history__who">{{ event.actor_name }}</span>
             </li>
         </ol>
@@ -46,11 +52,41 @@ function describe(event: ILeadEvent): string {
       return t('cms.archive.history.archived')
     case 'restored':
       return t('cms.archive.history.restored')
+    case 'trip_started':
+      return t('cms.leads.trip.historyStarted', { n: event.to ?? '' })
     case 'order_assigned':
       return t('cms.ownership.history.orderAssigned', { order: event.subject ?? '', to: person(event.to_name, event.to) })
     default:
       return t('cms.ownership.history.status', { from: status(event.from), to: status(event.to) })
   }
+}
+
+interface IPreviousTrip {
+  hotel?: string
+  destination?: string
+  check_in?: string | null
+  nights?: number
+  price_amount?: number | null
+  price_currency?: string
+  orders?: Array<{ ref: string, status: string }>
+}
+
+function previousOf(event: ILeadEvent): string {
+  let trip: IPreviousTrip
+
+  try {
+    trip = JSON.parse(event.subject ?? '') as IPreviousTrip
+  }
+  catch {
+    return ''
+  }
+
+  const day = trip.check_in ? new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(trip.check_in)) : ''
+  const price = trip.price_amount ? new Intl.NumberFormat(locale.value, { style: 'currency', currency: trip.price_currency || 'USD', maximumFractionDigits: 0 }).format(trip.price_amount) : ''
+  const orders = (trip.orders ?? []).map(order => `${order.ref} · ${t(`cms.orders.status.${order.status}`)}`).join(', ')
+  const parts = [trip.hotel || trip.destination || '', day, trip.nights ? t('search.nights', { n: trip.nights }, trip.nights) : '', price, orders].filter(Boolean)
+
+  return parts.length ? t('cms.leads.trip.historyPrevious', { trip: parts.join(' · ') }) : ''
 }
 
 const when = (iso: string) => new Intl.DateTimeFormat(locale.value, {

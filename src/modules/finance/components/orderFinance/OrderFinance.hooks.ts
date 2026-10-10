@@ -7,7 +7,7 @@ import type { IOrderFinanceProps } from './OrderFinance.d'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IFinanceRaw) => void) => {
+export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IFinanceRaw) => Promise<void> | void) => {
   const { t, locale } = useI18n()
   const { failed, saved } = useToast()
   const { ask } = useConfirm()
@@ -54,9 +54,9 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
     }
   }
 
-  const adopt = (next: IFinanceRaw) => {
+  const adopt = async (next: IFinanceRaw) => {
     finance.value = next
-    changed(next)
+    await changed(next)
   }
 
   watch(() => [props.orderId, props.version], load, { immediate: true })
@@ -124,7 +124,7 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
     busy.value = true
 
     try {
-      adopt(await record(props.orderId, draft))
+      await adopt(await record(props.orderId, draft))
       paying.value = false
       saved(t('cms.finance.saved'))
     }
@@ -147,7 +147,7 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
     busy.value = true
 
     try {
-      adopt(await reverse(payment.uuid))
+      await adopt(await reverse(payment.uuid))
       saved(t('cms.finance.reverseDone'))
     }
     catch (e) {
@@ -171,7 +171,7 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
     busy.value = true
 
     try {
-      adopt(await setDeposit(props.orderId, value))
+      await adopt(await setDeposit(props.orderId, value))
       editingDeposit.value = false
     }
     catch (e) {

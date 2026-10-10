@@ -47,7 +47,6 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
     if (!refDraft.value.trim()) return
 
     emit('confirm', confirming.value, refDraft.value.trim())
-    confirming.value = ''
   }
 
   function addService() {
@@ -90,6 +89,7 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
   function done() {
     serviceOpen.value = false
     issuing.value = ''
+    confirming.value = ''
   }
 
   const number = (value: number, digits = 2) =>

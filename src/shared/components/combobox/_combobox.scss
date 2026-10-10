@@ -154,7 +154,22 @@
 
         .tm-combobox__caret { flex: none; color: var(--tm-ink-4); }
 
-        .tm-combobox__menu { left: 0; right: 0; }
+        .tm-combobox__menu {
+            left: 0;
+            right: auto;
+            width: max-content;
+            min-width: 100%;
+            max-width: min(380px, calc(100vw - 32px));
+
+            &.is-end {
+                left: auto;
+                right: 0;
+            }
+        }
+
+        .tm-combobox__option { white-space: nowrap; }
+
+        .tm-combobox__hint { margin-left: auto; padding-left: 16px; }
     }
 
     &--bar {

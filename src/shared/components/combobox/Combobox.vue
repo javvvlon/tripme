@@ -44,7 +44,7 @@
 
         <p v-if="note" class="tm-combobox__note">{{ note }}</p>
 
-        <ul v-if="open" :id="`${id}-menu`" class="tm-combobox__menu" role="listbox">
+        <ul v-if="open" :id="`${id}-menu`" class="tm-combobox__menu" :class="{ 'is-end': menuAlign === 'end' }" role="listbox">
             <li v-for="(option, i) in filtered" :key="option.value">
                 <span
                     v-if="option.group && option.group !== filtered[i - 1]?.group"

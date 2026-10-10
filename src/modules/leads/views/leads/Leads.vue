@@ -59,7 +59,7 @@
                         <span class="tm-cms-leads__line">{{ lead.phone }}</span>
                         <span class="tm-cms-leads__meta">
                             <span class="tm-cms-leads__ref">{{ lead.ref }}</span>
-                            · {{ shortDate(lead.created_at) }} · {{ t(`cms.leads.list.${lead.source}`) }}
+                            · {{ shortDate(lead.created_at) }} · {{ t(`cms.leads.list.${lead.source}`) }}<template v-if="(lead.trip_no ?? 1) > 1"> · {{ t('cms.leads.trip.number', { n: lead.trip_no }) }}</template>
                         </span>
                     </td>
 

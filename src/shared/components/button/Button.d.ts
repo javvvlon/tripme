@@ -14,4 +14,5 @@ export interface IButtonProps {
   icon?: string
   iconRight?: string
   disabled?: boolean
+  loading?: boolean
 }

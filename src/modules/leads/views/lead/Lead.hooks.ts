@@ -22,7 +22,7 @@ export const useLead = () => {
 
   const {
     one, patch, archive: archiveLead, restore: restoreLead,
-    ordersFor, createOrder,
+    ordersFor, createOrder, newTrip,
   } = useLeadsRepository()
 
   const id = computed(() => String(route.params.id ?? ''))
@@ -143,6 +143,35 @@ export const useLead = () => {
     await save({ trip: null }, t('cms.leads.offer.cleared'))
   }
 
+  const CLOSED_ORDERS = ['completed', 'cancelled']
+
+  const tripDone = computed(() => orders.value.length > 0 && orders.value.every(order => CLOSED_ORDERS.includes(order.status)))
+
+  const canStartTrip = computed(() => Boolean(lead.value) && !lead.value?.archived_at
+    && (tripDone.value || lead.value?.status === 'rejected'))
+
+  const lastOrder = computed(() => orders.value.at(-1) ?? null)
+
+  async function startTrip() {
+    if (!lead.value || !await ask({
+      title: t('cms.leads.trip.confirmTitle', { n: (lead.value.trip_no ?? 1) + 1 }),
+      description: t('cms.leads.trip.confirmText'),
+      confirmLabel: t('cms.leads.trip.confirm'),
+    })) return
+
+    error.value = ''
+
+    try {
+      lead.value = await newTrip(id.value)
+      historyVersion.value++
+      picking.value = false
+      cheer(t('cms.leads.trip.started', { n: lead.value.trip_no ?? 1 }))
+    }
+    catch (e) {
+      error.value = failed(e)
+    }
+  }
+
   const change = (next: LeadStatus) => save({ status: next })
 
   const submit = () => save({
@@ -155,10 +184,13 @@ export const useLead = () => {
     comment: draft.comment,
   })
 
+  const creatingOrder = ref(false)
+
   async function addOrder() {
-    if (!lead.value || !hasTour.value) return
+    if (!lead.value || !hasTour.value || creatingOrder.value) return
 
     error.value = ''
+    creatingOrder.value = true
 
     try {
       const trip = tripFromLead(lead.value)
@@ -177,6 +209,7 @@ export const useLead = () => {
     }
     catch (e) {
       error.value = failed(e)
+      creatingOrder.value = false
     }
   }
 
@@ -216,5 +249,6 @@ export const useLead = () => {
     lead, draft, orders, status, error, saving, saved, historyVersion,
     statusOptions, change, submit, addOrder, archive, restore, refresh, owned,
     picking, hasTour, pickerSeed, assign, clearTour,
+    tripDone, canStartTrip, lastOrder, startTrip, creatingOrder,
   }
 }

@@ -54,6 +54,7 @@ export interface ITripRoute {
 
 export interface ILeadRaw {
   uuid: string
+  trip_no?: number
   archived_at?: string | null
   order_id: number
   ref: string
@@ -220,7 +221,7 @@ export interface IOrderEvent {
   at: string
 }
 
-export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored'
+export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored' | 'trip_started'
 
 export interface ILeadEvent {
   kind: LeadEventKind

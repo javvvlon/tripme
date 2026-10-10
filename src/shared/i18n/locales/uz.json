@@ -891,6 +891,18 @@
         "take": "Olish",
         "guests": "0 mehmon | {n} mehmon | {n} mehmon | {n} mehmon",
         "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda."
+      },
+      "trip": {
+        "number": "{n}-sayohat",
+        "start": "Yangi sayohat",
+        "confirmTitle": "{n}-sayohatni boshlaysizmi?",
+        "confirmText": "Joriy taklif tarixga o‘tadi, lid holati «Ishda» bo‘ladi. Avvalgi buyurtmalar o‘zgarmaydi.",
+        "confirm": "Boshlash",
+        "started": "{n}-sayohat boshlandi — tur tanlang",
+        "doneWithOrder": "Sayohat yakunlandi: {order} — {status}. Keyingi turni tanlash uchun yangi sayohat boshlang.",
+        "doneRejected": "Mijoz rad etdi. Agar qaytgan bo‘lsa, yangi sayohat boshlang.",
+        "historyStarted": "{n}-sayohat boshlandi",
+        "historyPrevious": "Avvalgi: {trip}"
       }
     },
     "orders": {
@@ -1411,7 +1423,10 @@
         "receipt": "Chek yoki kvitansiya",
         "receiptRequired": "Mijoz pullari uchun chek majburiy",
         "note": "Izoh",
-        "save": "Toʻlovni saqlash"
+        "save": "Toʻlovni saqlash",
+        "receiptPick": "Chekni biriktirish",
+        "receiptHint": "Rasm yoki PDF",
+        "receiptRemove": "Faylni olib tashlash"
       },
       "directions": {
         "customer_in": "Mijoz toʻlovi",

@@ -1,7 +1,7 @@
 <template>
     <NuxtLink v-if="post" :to="localePath(post.href ?? '/blog')" class="tm-featured-post">
         <span v-if="post.imageUrl" class="tm-featured-post__media">
-            <img :src="post.imageUrl" :alt="post.title" loading="eager" decoding="async">
+            <Photo :photo="{ src: post.imageUrl, alt: post.title }" ratio="fill" eager sizes="(max-width: 900px) 100vw, 640px" />
         </span>
 
         <span class="tm-featured-post__body">

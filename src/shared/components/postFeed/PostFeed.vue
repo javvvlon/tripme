@@ -7,7 +7,7 @@
                 class="tm-post-feed__card"
             >
                 <span class="tm-post-feed__media">
-                    <img v-if="post.imageUrl" :src="post.imageUrl" :alt="post.title" loading="lazy" decoding="async">
+                    <Photo :photo="{ src: post.imageUrl ?? null, alt: post.title }" ratio="fill" sizes="(max-width: 900px) 100vw, 360px" />
                 </span>
 
                 <span class="tm-post-feed__body">

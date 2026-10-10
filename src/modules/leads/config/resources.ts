@@ -13,6 +13,7 @@ export const resource: IResource = {
     adminLead: { url: 'cms/leads/:id', method: 'GET' },
     leadHistory: { url: 'cms/leads/:id/history', method: 'GET' },
     takeLead: { url: 'cms/leads/:id/take', method: 'POST' },
+    newTrip: { url: 'cms/leads/:id/new-trip', method: 'POST' },
     staff: { url: 'cms/leads/staff', method: 'GET' },
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },

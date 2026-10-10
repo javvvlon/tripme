@@ -6,8 +6,5 @@ import type { IFinanceRaw } from '~/modules/finance/contracts/finance'
 export interface IOrderFinanceProps {
   orderId: string
   version?: number
-}
-
-export interface IOrderFinanceEmits {
-  changed: [finance: IFinanceRaw]
+  onChanged?: (finance: IFinanceRaw) => Promise<void> | void
 }

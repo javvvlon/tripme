@@ -464,6 +464,7 @@ async function confirmService(itemId: string, supplierRef: string) {
 
     try {
         adoptFresh(await confirmItem(order.value.uuid, itemId, supplierRef))
+        itemsBlock.value?.done()
         rateSaved(t('cms.orders.items.confirmed'))
     }
     catch (e) {

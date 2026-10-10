@@ -229,6 +229,97 @@
         font-weight: 600;
     }
 
+    &__drop,
+    &__picked {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1.5px dashed var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-2);
+    }
+
+    &__drop {
+        position: relative;
+        cursor: pointer;
+        transition: border-color .15s, background .15s;
+
+        &:hover,
+        &:focus-within {
+            border-color: var(--tm-brand-primary);
+            background: var(--tm-brand-primary-soft);
+        }
+
+        &.is-required { border-color: color-mix(in srgb, var(--tm-brand-primary) 45%, var(--tm-border-1)); }
+    }
+
+    &__file-input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    &__drop-icon {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-1);
+        color: var(--tm-brand-primary);
+        box-shadow: var(--tm-shadow-sm);
+    }
+
+    &__drop-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        strong { color: var(--tm-ink-1); font-size: size(14); }
+
+        small { color: var(--tm-ink-3); font-size: size(12); }
+    }
+
+    &__picked {
+        border-style: solid;
+        background: var(--tm-surface-1);
+    }
+
+    &__picked-name {
+        flex: 1;
+        overflow: hidden;
+        min-width: 0;
+        color: var(--tm-ink-1);
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__picked-size {
+        flex: none;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+    }
+
+    &__picked-remove {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: none;
+        color: var(--tm-ink-3);
+        cursor: pointer;
+
+        &:hover { background: var(--tm-surface-2); color: var(--tm-ink-1); }
+    }
+
     &__form-foot {
         display: flex;
         flex-wrap: wrap;

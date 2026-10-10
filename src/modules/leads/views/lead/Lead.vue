@@ -51,9 +51,18 @@
             <div v-show="tab === 'tour'" class="tm-cms-lead__pane">
             <section class="tm-cms-lead__card">
                 <header class="tm-cms-lead__offer-head">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+                    <h2 class="tm-cms-lead__card-title">
+                        {{ t('cms.leads.sections.offer') }}
+                        <span v-if="(lead.trip_no ?? 1) > 1" class="tm-cms-lead__trip-no">{{ t('cms.leads.trip.number', { n: lead.trip_no }) }}</span>
+                    </h2>
 
-                    <div v-if="hasTour && !picking" class="tm-cms-lead__offer-actions">
+                    <div v-if="canStartTrip && !picking" class="tm-cms-lead__offer-actions">
+                        <Button type="button" size="sm" icon="plus" :disabled="saving" @click="startTrip">
+                            {{ t('cms.leads.trip.start') }}
+                        </Button>
+                    </div>
+
+                    <div v-else-if="hasTour && !picking" class="tm-cms-lead__offer-actions">
                         <Button
                             type="button" size="sm" variant="ghost" icon="pencil"
                             :disabled="saving"
@@ -71,6 +80,11 @@
                         </Button>
                     </div>
                 </header>
+
+                <p v-if="canStartTrip && !picking" class="tm-cms-lead__trip-done" role="status">
+                    <Icon name="check" :size="16" />
+                    <span>{{ lastOrder && tripDone ? t('cms.leads.trip.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.trip.doneRejected') }}</span>
+                </p>
 
                 <template v-if="picking">
                     <TourPicker :selected="null" :initial="pickerSeed" @update:selected="assign" />
@@ -224,6 +238,7 @@
                     <Button
                         type="button" size="sm" variant="ghost" icon="plus"
                         :disabled="!hasTour"
+                        :loading="creatingOrder"
                         :title="hasTour ? undefined : t('cms.leads.orderNeedsTour')"
                         @click="addOrder"
                     >
@@ -297,6 +312,7 @@ const {
     historyVersion, owned,
     statusOptions, change, submit, addOrder, archive, restore,
     picking, hasTour, pickerSeed, assign, clearTour,
+    tripDone, canStartTrip, lastOrder, startTrip, creatingOrder,
 } = useLead()
 
 const route = useRoute()

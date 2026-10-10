@@ -48,6 +48,23 @@
         font-size: size(13);
         white-space: nowrap;
     }
+
+    &__item.is-trip {
+        margin: 6px 0;
+        padding: 10px 12px;
+        border-radius: radius('sm');
+        background: var(--tm-brand-secondary-soft);
+
+        .tm-lead-history__what { color: var(--tm-brand-secondary); font-weight: 700; }
+    }
+
+    &__previous {
+        display: block;
+        margin-top: 2px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 400;
+    }
 }
 
 @media #{$until-md} {

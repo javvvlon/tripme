@@ -19,4 +19,5 @@ export interface IComboboxProps {
   variant?: 'panel' | 'bar' | 'field'
   note?: string
   unavailable?: boolean
+  menuAlign?: 'start' | 'end'
 }

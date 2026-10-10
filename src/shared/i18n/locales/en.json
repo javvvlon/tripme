@@ -891,6 +891,18 @@
         "take": "Take",
         "guests": "0 guests | {n} guest | {n} guests | {n} guests",
         "noFree": "No free leads — everyone is on it."
+      },
+      "trip": {
+        "number": "trip {n}",
+        "start": "New trip",
+        "confirmTitle": "Start trip {n}?",
+        "confirmText": "The current offer moves to the history and the lead becomes «In progress». Past orders stay as they are.",
+        "confirm": "Start",
+        "started": "Trip {n} started — pick a tour",
+        "doneWithOrder": "Trip finished: {order} — {status}. Start a new trip to pick the next tour.",
+        "doneRejected": "The client declined. If they are back, start a new trip.",
+        "historyStarted": "Trip {n} started",
+        "historyPrevious": "Previous: {trip}"
       }
     },
     "orders": {
@@ -1411,7 +1423,10 @@
         "receipt": "Receipt",
         "receiptRequired": "A receipt is required for client money",
         "note": "Note",
-        "save": "Save payment"
+        "save": "Save payment",
+        "receiptPick": "Attach the receipt",
+        "receiptHint": "Photo or PDF",
+        "receiptRemove": "Remove the file"
       },
       "directions": {
         "customer_in": "Client payment",

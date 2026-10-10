@@ -20,6 +20,7 @@
 
                         <button
                             type="button" class="tm-modal__close"
+                            :disabled="busy"
                             :aria-label="t('common.close')"
                             @click="dismiss"
                         >
@@ -40,7 +41,8 @@
                             <Button
                                 type="submit"
                                 :variant="tone === 'danger' ? 'danger' : 'primary'"
-                                :disabled="busy || disabled"
+                                :disabled="disabled"
+                                :loading="busy"
                             >
                                 {{ busy ? t('common.saving') : (confirmLabel ?? t('common.save')) }}
                             </Button>

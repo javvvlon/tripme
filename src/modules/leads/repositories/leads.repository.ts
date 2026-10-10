@@ -116,6 +116,12 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
+  const newTrip = async (id: string): Promise<ILeadRaw> => {
+    const response = await http.call<ILeadRaw>('Leads', 'newTrip', { id })
+
+    return response.data
+  }
+
   const staff = async (): Promise<IStaffMember[]> => {
     const response = await http.call<IStaffMember[]>('Leads', 'staff')
 
@@ -301,7 +307,7 @@ export const useLeadsRepository = () => {
   const restoreOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'restoreOrder', { id })).data
 
   return {
-    submit, all, page, one, history, take, staff, create, patch, setStatus, archive, restore,
+    submit, all, page, one, history, take, newTrip, staff, create, patch, setStatus, archive, restore,
     orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder, orderTravellers,
     orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
     addItem, updateItem, removeItem, issueItem,

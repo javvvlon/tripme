@@ -1,7 +1,7 @@
 <template>
     <article class="tm-media-text" :class="[`is-${side}`, { 'has-image': imageUrl }]">
         <figure v-if="imageUrl" class="tm-media-text__media">
-            <img :src="imageUrl" :alt="title" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+            <Photo :photo="{ src: imageUrl, alt: title ?? '' }" ratio="4 / 3" :eager="eager" sizes="(max-width: 900px) 100vw, 560px" />
         </figure>
 
         <div class="tm-media-text__text">

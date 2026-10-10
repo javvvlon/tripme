@@ -2,7 +2,7 @@
     <div v-if="lead" class="tm-spotlight" :class="{ 'is-solo': !rest.length }">
         <NuxtLink :to="localePath(lead.href ?? '/blog')" class="tm-spotlight__lead">
             <span class="tm-spotlight__media">
-                <img v-if="lead.imageUrl" :src="lead.imageUrl" :alt="lead.title" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+                <Photo :photo="{ src: lead.imageUrl ?? null, alt: lead.title }" ratio="fill" :eager="eager" sizes="(max-width: 900px) 100vw, 640px" />
             </span>
             <span class="tm-spotlight__lead-body">
                 <Badge v-if="lead.badge" :tone="lead.badge.type">{{ lead.badge.label }}</Badge>
@@ -20,8 +20,8 @@
                         <span class="tm-spotlight__item-title">{{ post.title }}</span>
                         <span class="tm-spotlight__by">{{ postByline(post, locale) }}</span>
                     </span>
-                    <span v-if="post.imageUrl" class="tm-spotlight__thumb">
-                        <img :src="post.imageUrl" alt="" loading="lazy" decoding="async">
+                    <span class="tm-spotlight__thumb">
+                        <Photo :photo="{ src: post.imageUrl ?? null, alt: '' }" ratio="fill" sizes="76px" />
                     </span>
                 </NuxtLink>
             </li>

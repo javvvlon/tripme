@@ -124,13 +124,29 @@
                     <Input v-model="draft.paidAt" type="date" :label="t('cms.finance.form.paidAt')" />
                 </div>
 
-                <label class="tm-finance__file">
+                <div class="tm-finance__file">
                     <span class="tm-finance__file-label">
                         {{ t('cms.finance.form.receipt') }}<template v-if="needsReceipt"> *</template>
                     </span>
-                    <input type="file" accept="image/png,image/jpeg,image/webp,application/pdf" @change="pickReceipt">
-                    <span v-if="needsReceipt && !draft.receipt" class="tm-finance__muted">{{ t('cms.finance.form.receiptRequired') }}</span>
-                </label>
+
+                    <label v-if="!draft.receipt" class="tm-finance__drop" :class="{ 'is-required': needsReceipt }">
+                        <input type="file" class="tm-finance__file-input" accept="image/png,image/jpeg,image/webp,application/pdf" @change="pickReceipt">
+                        <span class="tm-finance__drop-icon" aria-hidden="true"><Icon name="upload" :size="18" /></span>
+                        <span class="tm-finance__drop-text">
+                            <strong>{{ t('cms.finance.form.receiptPick') }}</strong>
+                            <small>{{ needsReceipt ? t('cms.finance.form.receiptRequired') : t('cms.finance.form.receiptHint') }}</small>
+                        </span>
+                    </label>
+
+                    <div v-else class="tm-finance__picked">
+                        <span class="tm-finance__drop-icon" aria-hidden="true"><Icon :name="draft.receipt.type.startsWith('image/') ? 'image' : 'doc'" :size="18" /></span>
+                        <span class="tm-finance__picked-name">{{ draft.receipt.name }}</span>
+                        <span class="tm-finance__picked-size">{{ fileSize(draft.receipt.size) }}</span>
+                        <button type="button" class="tm-finance__picked-remove" :aria-label="t('cms.finance.form.receiptRemove')" :disabled="busy" @click="draft.receipt = null">
+                            <Icon name="close" :size="16" />
+                        </button>
+                    </div>
+                </div>
 
                 <Input v-model="draft.note" :label="t('cms.finance.form.note')" />
 
@@ -147,10 +163,11 @@ import Modal from '~/shared/components/modal/Modal.vue'
 import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import { useOrderFinance } from './OrderFinance.hooks'
-import type { IOrderFinanceEmits, IOrderFinanceProps } from './OrderFinance.d'
+import type { IOrderFinanceProps } from './OrderFinance.d'
 
 const props = defineProps<IOrderFinanceProps>()
-const emit = defineEmits<IOrderFinanceEmits>()
+
+const fileSize = (bytes: number) => bytes >= 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`
 
 const { t } = useI18n()
 
@@ -158,7 +175,7 @@ const {
     finance, loading, busy, paying, draft, rows, directions, methods, currencies,
     needsReceipt, draftUzs, canSave, depositProgress, editingDeposit, depositDraft,
     sum, openForm, pickReceipt, submit, undo, editDeposit, saveDeposit, reload,
-} = useOrderFinance(props, next => emit('changed', next))
+} = useOrderFinance(props, next => props.onChanged?.(next))
 
 defineExpose({ reload, openForm })
 </script>

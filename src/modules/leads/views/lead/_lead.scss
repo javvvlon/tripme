@@ -304,6 +304,31 @@
     }
 
 
+    &__trip-no {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 1px 8px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-secondary-soft);
+        color: var(--tm-brand-secondary);
+        font-size: size(11);
+        letter-spacing: 0;
+        text-transform: none;
+        vertical-align: 1px;
+    }
+
+    &__trip-done {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 12px;
+        padding: 10px 14px;
+        border-radius: radius('sm');
+        background: var(--tm-status-success-soft);
+        color: var(--tm-status-success);
+        font-size: size(13);
+    }
+
     &__offer-head {
         display: flex;
         align-items: center;

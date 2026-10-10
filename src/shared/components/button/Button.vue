@@ -4,16 +4,18 @@
         :to="to ? localePath(to) : undefined"
         :href="href"
         :type="to || href ? undefined : type"
-        :disabled="to || href ? undefined : disabled"
+        :disabled="to || href ? undefined : disabled || loading"
         :aria-disabled="(to || href) && disabled ? 'true' : undefined"
+        :aria-busy="loading ? 'true' : undefined"
         class="tm-button"
         :class="[
             `tm-button--${variant}`,
             `tm-button--${size}`,
-            { 'tm-button--block': block, 'tm-button--disabled': disabled },
+            { 'tm-button--block': block, 'tm-button--disabled': disabled, 'tm-button--loading': loading },
         ]"
     >
-        <Icon v-if="icon" :name="icon" :size="size === 'lg' ? 20 : 18" />
+        <span v-if="loading" class="tm-button__spinner" aria-hidden="true" />
+        <Icon v-else-if="icon" :name="icon" :size="size === 'lg' ? 20 : 18" />
         <span v-if="$slots.default"><slot /></span>
         <Icon v-if="iconRight" :name="iconRight" :size="size === 'lg' ? 20 : 18" />
     </component>

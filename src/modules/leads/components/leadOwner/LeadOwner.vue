@@ -27,6 +27,7 @@
                 :options="assignOptions"
                 :placeholder="t('cms.ownership.assignPlaceholder')"
                 :disabled="busy"
+                menu-align="end"
                 class="tm-lead-owner__assign"
                 @update:model-value="assign"
             />

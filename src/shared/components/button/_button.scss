@@ -78,4 +78,20 @@
     }
 
     &--disabled { opacity: .5; pointer-events: none; }
+
+    &--loading { pointer-events: none; cursor: progress; }
+
+    &__spinner {
+        flex: none;
+        width: 1em;
+        height: 1em;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: tm-button-spin .7s linear infinite;
+    }
+}
+
+@keyframes tm-button-spin {
+    to { transform: rotate(360deg); }
 }
