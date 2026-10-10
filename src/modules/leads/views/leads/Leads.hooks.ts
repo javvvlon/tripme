@@ -1,16 +1,16 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
-import type { ILeadRaw, LeadSort, LeadStatus, SortDirection } from '~/modules/leads/contracts/leads'
+import type { ILeadRaw, LeadSort, LeadStatus, ManagerFilter, SortDirection } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useLeads = () => {
   const { t } = useI18n()
-  const { fail, loadFailed } = useToast()
-  const { page: leadsPage, setStatus } = useLeadsRepository()
-  const { managerFilter, filterOptions, elevated, me } = useManagers('leads')
+  const { fail, failed, saved } = useToast()
+  const { page: leadsPage, setStatus, take } = useLeadsRepository()
+  const { managerFilter, elevated, me, people } = useManagers('leads')
   const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
@@ -55,6 +55,47 @@ export const useLeads = () => {
     fresh: data.value?.counts.fresh ?? 0,
   }))
 
+  const TABS = ['none', 'me', 'all'] as const
+
+  const tab = computed({
+    get: () => (TABS as readonly string[]).includes(managerFilter.value) ? managerFilter.value : 'all',
+    set: (value: string) => { managerFilter.value = value as ManagerFilter },
+  })
+
+  const tabs = computed(() => [
+    { value: 'none', label: t('cms.leads.queues.free'), count: data.value?.counts.free ?? 0, attention: true },
+    { value: 'me', label: t('cms.leads.queues.mine'), count: data.value?.counts.mine ?? 0 },
+    { value: 'all', label: t(elevated.value ? 'cms.leads.queues.all' : 'cms.leads.queues.allMine'), count: data.value?.counts.all ?? 0 },
+  ])
+
+  const person = computed({
+    get: () => (TABS as readonly string[]).includes(managerFilter.value) ? '' : managerFilter.value,
+    set: (value: string) => { managerFilter.value = (value || 'all') as ManagerFilter },
+  })
+
+  const personOptions = computed(() => [
+    { value: '', label: t('cms.ownership.filter.anyone') },
+    ...(people.value ?? []).filter(member => member.uuid !== me.value).map(member => ({ value: member.uuid, label: member.name })),
+  ])
+
+  const taking = ref('')
+
+  async function takeLead(lead: ILeadRaw) {
+    taking.value = lead.uuid
+
+    try {
+      await take(lead.uuid)
+      saved(t('cms.ownership.taken'))
+      await refresh()
+    }
+    catch (e) {
+      failed(e)
+    }
+    finally {
+      taking.value = ''
+    }
+  }
+
   const TEXT_COLUMNS: LeadSort[] = ['client', 'tour', 'supplier', 'status', 'phone']
 
   function sortBy(column: LeadSort) {
@@ -87,7 +128,7 @@ export const useLeads = () => {
 
   return {
     leads, status, error, query, sort, direction, archived,
-    managerFilter, filterOptions, elevated, me,
+    elevated, me, tab, tabs, person, personOptions, taking, takeLead,
     rowOptions, counts, sortBy, change, refresh,
     page, pages, total, perPage, setPage, setPerPage,
   }

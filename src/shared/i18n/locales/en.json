@@ -876,6 +876,21 @@
         "request": "Client & request",
         "orders": "Orders",
         "history": "History"
+      },
+      "queues": {
+        "free": "Free",
+        "mine": "Mine",
+        "all": "All",
+        "allMine": "All available"
+      },
+      "list": {
+        "tour": "Tour",
+        "noTour": "No tour picked",
+        "site": "from the site",
+        "manual": "added by hand",
+        "take": "Take",
+        "guests": "0 guests | {n} guest | {n} guests | {n} guests",
+        "noFree": "No free leads — everyone is on it."
       }
     },
     "orders": {
@@ -908,7 +923,9 @@
         "price": "Price",
         "supplierOrder": "Operator ref",
         "status": "Status",
-        "payment": "Payment"
+        "payment": "Payment",
+        "order": "Order",
+        "sum": "Amount"
       },
       "fields": {
         "traveller": "Lead traveller",
@@ -1084,7 +1101,13 @@
         "history": "History"
       },
       "autoStatus": "Order status: \"{status}\"",
-      "fromProfile": "From the client profile"
+      "fromProfile": "From the client profile",
+      "queues": {
+        "mine": "Mine",
+        "all": "All",
+        "allMine": "All available",
+        "none": "No manager"
+      }
     },
     "operators": {
       "title": "Tour operators",
@@ -1333,7 +1356,8 @@
         "mine": "Mine",
         "none": "No manager",
         "queue": "Queue",
-        "allMine": "Everything I can see"
+        "allMine": "Everything I can see",
+        "anyone": "Everyone"
       },
       "history": {
         "title": "History",

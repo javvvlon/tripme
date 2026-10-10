@@ -876,6 +876,21 @@
         "request": "Mijoz va so'rov",
         "orders": "Buyurtmalar",
         "history": "Tarix"
+      },
+      "queues": {
+        "free": "Bo‘sh",
+        "mine": "Meniki",
+        "all": "Barchasi",
+        "allMine": "Barcha mavjud"
+      },
+      "list": {
+        "tour": "Tur",
+        "noTour": "Tur tanlanmagan",
+        "site": "saytdan",
+        "manual": "qo‘lda",
+        "take": "Olish",
+        "guests": "0 mehmon | {n} mehmon | {n} mehmon | {n} mehmon",
+        "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda."
       }
     },
     "orders": {
@@ -908,7 +923,9 @@
         "price": "Narx",
         "supplierOrder": "Operator raqami",
         "status": "Holat",
-        "payment": "Toʻlov"
+        "payment": "Toʻlov",
+        "order": "Buyurtma",
+        "sum": "Summa"
       },
       "fields": {
         "traveller": "Asosiy sayohatchi FIO",
@@ -1084,7 +1101,13 @@
         "history": "Tarix"
       },
       "autoStatus": "Buyurtma holati: «{status}»",
-      "fromProfile": "Mijoz profilidan"
+      "fromProfile": "Mijoz profilidan",
+      "queues": {
+        "mine": "Meniki",
+        "all": "Barchasi",
+        "allMine": "Barcha mavjud",
+        "none": "Menejersiz"
+      }
     },
     "operators": {
       "title": "Turoperatorlar",
@@ -1333,7 +1356,8 @@
         "mine": "Meniki",
         "none": "Menejersiz",
         "queue": "Navbat",
-        "allMine": "Barcha mavjudlar"
+        "allMine": "Barcha mavjudlar",
+        "anyone": "Barcha xodimlar"
       },
       "history": {
         "title": "Tarix",

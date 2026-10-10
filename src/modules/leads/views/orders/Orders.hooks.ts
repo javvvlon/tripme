@@ -1,7 +1,7 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { ORDER_STATUSES } from '~/modules/leads/contracts/leads'
-import type { IOrderRaw } from '~/modules/leads/contracts/leads'
+import type { IOrderRaw, ManagerFilter } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -9,7 +9,7 @@ import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 export const useOrders = () => {
   const { t } = useI18n()
   const { ordersPage } = useLeadsRepository()
-  const { managerFilter, filterOptions: managerOptions, me } = useManagers('orders')
+  const { managerFilter, elevated, me, people } = useManagers('orders')
   const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
   const query = ref('')
@@ -54,13 +54,36 @@ export const useOrders = () => {
     live: data.value?.counts.live ?? 0,
   }))
 
+  const TABS = ['me', 'all', 'none'] as const
+
+  const tab = computed({
+    get: () => (TABS as readonly string[]).includes(managerFilter.value) ? managerFilter.value : 'all',
+    set: (value: string) => { managerFilter.value = value as ManagerFilter },
+  })
+
+  const tabs = computed(() => [
+    { value: 'me', label: t('cms.orders.queues.mine'), count: data.value?.counts.mine ?? 0 },
+    { value: 'all', label: t(elevated.value ? 'cms.orders.queues.all' : 'cms.orders.queues.allMine'), count: data.value?.counts.all ?? 0 },
+    ...(elevated.value ? [{ value: 'none', label: t('cms.orders.queues.none'), count: data.value?.counts.free ?? 0, attention: true }] : []),
+  ])
+
+  const person = computed({
+    get: () => (TABS as readonly string[]).includes(managerFilter.value) ? '' : managerFilter.value,
+    set: (value: string) => { managerFilter.value = (value || 'all') as ManagerFilter },
+  })
+
+  const personOptions = computed(() => [
+    { value: '', label: t('cms.ownership.filter.anyone') },
+    ...(people.value ?? []).filter(member => member.uuid !== me.value).map(member => ({ value: member.uuid, label: member.name })),
+  ])
+
   onBeforeUnmount(() => {
     if (timer) clearTimeout(timer)
   })
 
   return {
     orders, status, error, query, filter, filterOptions, counts, refresh, archived,
-    managerFilter, managerOptions, me,
+    elevated, me, tab, tabs, person, personOptions,
     page, pages, total, perPage, setPage, setPerPage,
   }
 }

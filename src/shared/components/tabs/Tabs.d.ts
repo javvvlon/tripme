@@ -7,6 +7,8 @@ export interface ITabItem {
   value: string
   label: string
   icon?: string
+  count?: number
+  attention?: boolean
 }
 
 export interface ITabsProps {

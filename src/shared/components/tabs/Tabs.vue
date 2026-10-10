@@ -12,6 +12,10 @@
         >
             <Icon v-if="tab.icon" :name="tab.icon" :size="17" />
             {{ tab.label }}
+            <span
+                v-if="tab.count !== undefined"
+                class="tm-tabs__count" :class="{ 'is-attention': tab.attention && tab.count > 0 }"
+            >{{ tab.count }}</span>
         </button>
     </div>
 </template>

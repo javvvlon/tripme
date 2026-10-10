@@ -83,7 +83,7 @@ export const useLeadsRepository = () => {
   const page = async (
     query: { q?: string, status?: LeadStatus, sort?: LeadSort, dir?: SortDirection, manager?: ManagerFilter, archived?: boolean },
     paging: IPageQuery,
-  ): Promise<IPageRaw<ILeadRaw, { all: number, fresh: number }>> => {
+  ): Promise<IPageRaw<ILeadRaw, { all: number, fresh: number, free?: number, mine?: number }>> => {
     const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
 
     if (query.q) params.q = query.q
@@ -93,7 +93,7 @@ export const useLeadsRepository = () => {
     if (query.manager && query.manager !== 'all') params.manager = query.manager
     if (query.archived) params.archived = '1'
 
-    const response = await http.call<IPageRaw<ILeadRaw, { all: number, fresh: number }>>('Leads', 'adminLeads', params)
+    const response = await http.call<IPageRaw<ILeadRaw, { all: number, fresh: number, free?: number, mine?: number }>>('Leads', 'adminLeads', params)
 
     return response.data
   }
@@ -168,7 +168,7 @@ export const useLeadsRepository = () => {
   const ordersPage = async (
     query: { q?: string, status?: string, manager?: ManagerFilter, archived?: boolean },
     paging: IPageQuery,
-  ): Promise<IPageRaw<IOrderRaw, { all: number, live: number }>> => {
+  ): Promise<IPageRaw<IOrderRaw, { all: number, live: number, mine?: number, free?: number }>> => {
     const params: Record<string, string> = { page: String(paging.page), per_page: String(paging.perPage) }
 
     if (query.q) params.q = query.q
@@ -176,7 +176,7 @@ export const useLeadsRepository = () => {
     if (query.manager && query.manager !== 'all') params.manager = query.manager
     if (query.archived) params.archived = '1'
 
-    const response = await http.call<IPageRaw<IOrderRaw, { all: number, live: number }>>('Leads', 'orders', params)
+    const response = await http.call<IPageRaw<IOrderRaw, { all: number, live: number, mine?: number, free?: number }>>('Leads', 'orders', params)
 
     return response.data
   }

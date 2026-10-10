@@ -6,8 +6,9 @@
             :sub="archived ? t('cms.archive.ordersLead') : t('cms.orders.lead', counts)"
         />
 
+        <div class="tm-cms-orders__bar">
+            <Tabs v-if="!archived" v-model="tab" :items="tabs" variant="segment" :aria-label="t('cms.orders.title')" />
 
-        <div class="tm-cms-orders__actions">
             <SearchField
                 v-model="query"
                 :label="t('cms.orders.search')"
@@ -17,12 +18,8 @@
                 class="tm-cms-orders__search"
             />
 
-            <SelectMenu
-                v-model="managerFilter"
-                :options="managerOptions"
-                class="tm-cms-orders__owner"
-            />
-            <SelectMenu v-model="filter" :options="filterOptions" align="right" />
+            <SelectMenu v-if="elevated && !archived" v-model="person" :options="personOptions" class="tm-cms-orders__person" />
+            <SelectMenu v-model="filter" :options="filterOptions" align="right" class="tm-cms-orders__filter" />
         </div>
 
         <EditorSkeleton v-if="status === 'pending' && !orders.length" variant="rows" />
@@ -31,20 +28,14 @@
             {{ archived ? t('cms.archive.empty') : query || filter ? t('cms.orders.noMatches') : t('cms.orders.empty') }}
         </p>
 
-        <div v-else class="tm-cms-orders__scroll">
-        <table class="tm-cms-orders__table">
+        <table v-else class="tm-cms-orders__table">
             <thead>
                 <tr>
-                    <th scope="col" class="is-num is-no">{{ t('cms.orders.columns.number') }}</th>
-                    <th scope="col" class="is-traveller">{{ t('cms.orders.columns.traveller') }}</th>
-                    <th scope="col">{{ t('cms.orders.columns.trip') }}</th>
-                    <th scope="col" class="is-date">{{ t('cms.orders.columns.departure') }}</th>
-                    <th scope="col" class="is-num is-party">{{ t('cms.orders.columns.party') }}</th>
-                    <th scope="col" class="is-num is-price">{{ t('cms.orders.columns.price') }}</th>
-                    <th scope="col" class="is-payment">{{ t('cms.orders.columns.payment') }}</th>
-                    <th scope="col" class="is-ref">{{ t('cms.orders.columns.supplierOrder') }}</th>
-                    <th scope="col" class="is-owner">{{ t('cms.ownership.column') }}</th>
-                    <th scope="col" class="is-status">{{ t('cms.orders.columns.status') }}</th>
+                    <th scope="col" class="is-order"><span class="tm-cms-orders__head">{{ t('cms.orders.columns.order') }}</span></th>
+                    <th scope="col" class="is-tour"><span class="tm-cms-orders__head">{{ t('cms.leads.list.tour') }}</span></th>
+                    <th scope="col" class="is-price"><span class="tm-cms-orders__head">{{ t('cms.orders.columns.sum') }}</span></th>
+                    <th scope="col" class="is-status"><span class="tm-cms-orders__head">{{ t('cms.orders.columns.status') }}</span></th>
+                    <th scope="col" class="is-owner"><span class="tm-cms-orders__head">{{ t('cms.ownership.column') }}</span></th>
                 </tr>
             </thead>
 
@@ -55,22 +46,26 @@
                     @click="go(order)"
                     @keydown.enter="go(order)"
                 >
-                    <td class="is-num tm-cms-orders__no">{{ order.ref }}</td>
-                    <td class="tm-cms-orders__strong">{{ order.traveller_name || '—' }}</td>
-
-                    <td class="tm-cms-orders__truncate">
-                        {{ [order.country, order.hotel_name].filter(Boolean).join(' · ') || '—' }}
+                    <td class="is-order">
+                        <span class="tm-cms-orders__name">{{ order.traveller_name || '—' }}</span>
+                        <span class="tm-cms-orders__meta">
+                            <span class="tm-cms-orders__ref">{{ order.ref }}</span>
+                            <template v-if="order.country"> · {{ order.country }}</template>
+                            <template v-if="order.supplier_order_id"> · {{ order.supplier_order_id }}</template>
+                        </span>
                     </td>
 
-                    <td class="is-muted">{{ order.check_in ? `${shortDate(order.check_in)} · ${order.nights}` : '—' }}</td>
-                    <td class="is-num">{{ order.adults }}<template v-if="order.children">+{{ order.children }}</template></td>
-                    <td class="is-num">{{ money(order) }}</td>
-                    <td class="is-payment">
+                    <td class="is-tour">
+                        <template v-if="order.hotel_name">
+                            <span class="tm-cms-orders__name is-plain">{{ order.hotel_name }}</span>
+                            <span class="tm-cms-orders__line">{{ tripOf(order) }}</span>
+                        </template>
+                        <span v-else class="tm-cms-orders__line is-faint">—</span>
+                    </td>
+
+                    <td class="is-price">
+                        <span class="tm-cms-orders__price">{{ money(order) }}</span>
                         <PaymentBadge :status="order.payment_status ?? 'unpaid'" class="tm-cms-orders__payment" />
-                    </td>
-                    <td class="is-muted tm-cms-orders__truncate">{{ order.supplier_order_id || '—' }}</td>
-                    <td class="is-owner tm-cms-orders__truncate">
-                        {{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}
                     </td>
 
                     <td class="is-status">
@@ -78,10 +73,17 @@
                             {{ t(`cms.orders.status.${order.status}`) }}
                         </span>
                     </td>
+
+                    <td class="is-owner">
+                        <span v-if="order.manager_id" class="tm-cms-orders__owner" :class="{ 'is-me': order.manager_id === me }">
+                            <span class="tm-cms-orders__avatar" aria-hidden="true">{{ initials(order.manager_name) }}</span>
+                            <span class="tm-cms-orders__owner-name">{{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}</span>
+                        </span>
+                        <span v-else class="tm-cms-orders__line is-faint">{{ t('cms.orders.queues.none') }}</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        </div>
 
         <Pagination
             :page="page" :pages="pages" :total="total" :per-page="perPage"
@@ -95,6 +97,7 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import Pagination from '~/shared/components/pagination/Pagination.vue'
 import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
+import Tabs from '~/shared/components/tabs/Tabs.vue'
 import { useOrders } from './Orders.hooks'
 import type { IOrderRaw } from '~/modules/leads/contracts/leads'
 
@@ -102,10 +105,22 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const {
-  orders, status, error, query, filter, filterOptions, counts, archived,
-  managerFilter, managerOptions, me,
+  orders, status, query, filter, filterOptions, counts, archived,
+  elevated, me, tab, tabs, person, personOptions,
   page, pages, total, perPage, setPage, setPerPage,
 } = useOrders()
+
+const initials = (name: string) => name.split(/\s+/).map(part => part[0] ?? '').join('').slice(0, 2).toUpperCase() || '—'
+
+const tripOf = (order: IOrderRaw): string => {
+    const guests = order.adults + order.children
+
+    return [
+        order.check_in ? shortDate(order.check_in) : '',
+        order.nights ? t('search.nights', { n: order.nights }, order.nights) : '',
+        guests ? t('cms.leads.list.guests', { n: guests }, guests) : '',
+    ].filter(Boolean).join(' · ')
+}
 
 const go = (order: IOrderRaw) => navigateTo(localePath(`/app/orders/${order.uuid}`))
 
