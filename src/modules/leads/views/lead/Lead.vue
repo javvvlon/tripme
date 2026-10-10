@@ -53,16 +53,9 @@
                 <header class="tm-cms-lead__offer-head">
                     <h2 class="tm-cms-lead__card-title">
                         {{ t('cms.leads.sections.offer') }}
-                        <span v-if="(lead.trip_no ?? 1) > 1" class="tm-cms-lead__trip-no">{{ t('cms.leads.trip.number', { n: lead.trip_no }) }}</span>
                     </h2>
 
-                    <div v-if="canStartTrip && !picking" class="tm-cms-lead__offer-actions">
-                        <Button type="button" size="sm" icon="plus" :disabled="saving" @click="startTrip">
-                            {{ t('cms.leads.trip.start') }}
-                        </Button>
-                    </div>
-
-                    <div v-else-if="hasTour && !picking" class="tm-cms-lead__offer-actions">
+                    <div v-if="hasTour && !picking && !finished" class="tm-cms-lead__offer-actions">
                         <Button
                             type="button" size="sm" variant="ghost" icon="pencil"
                             :disabled="saving"
@@ -81,10 +74,13 @@
                     </div>
                 </header>
 
-                <p v-if="canStartTrip && !picking" class="tm-cms-lead__trip-done" role="status">
+                <div v-if="finished && !picking" class="tm-cms-lead__trip-done" role="status">
                     <Icon name="check" :size="16" />
-                    <span>{{ lastOrder && tripDone ? t('cms.leads.trip.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.trip.doneRejected') }}</span>
-                </p>
+                    <span>{{ lastOrder && tripDone ? t('cms.leads.next.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.next.doneRejected') }}</span>
+                    <Button type="button" size="sm" variant="secondary" icon="plus" :loading="requesting" @click="startRequest">
+                        {{ t('cms.leads.next.action') }}
+                    </Button>
+                </div>
 
                 <template v-if="picking">
                     <TourPicker :selected="null" :initial="pickerSeed" @update:selected="assign" />
@@ -135,7 +131,7 @@
                     </div>
                 </template>
 
-                <div v-else class="tm-cms-lead__offer-empty">
+                <div v-else-if="!finished" class="tm-cms-lead__offer-empty">
                     <p class="tm-cms-lead__offer-title">{{ t('cms.leads.offer.empty') }}</p>
                     <blockquote v-if="lead.comment" class="tm-cms-lead__offer-quote">{{ lead.comment }}</blockquote>
                     <p class="tm-cms-lead__offer-hint">{{ t('cms.leads.offer.emptyHint') }}</p>
@@ -169,7 +165,12 @@
 
             <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
                 <section class="tm-cms-lead__card">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
+                    <header class="tm-cms-lead__client-head">
+                        <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
+                        <span v-if="lead.account" class="tm-cms-lead__account">
+                            <Icon name="user" :size="14" />{{ t('cms.leads.account') }}
+                        </span>
+                    </header>
 
                     <dl class="tm-cms-lead__facts is-columns">
                         <div>
@@ -180,11 +181,42 @@
                             <dt>{{ t('cms.leads.columns.phone') }}</dt>
                             <dd><a :href="`tel:${lead.phone}`">{{ lead.phone }}</a></dd>
                         </div>
+                        <div v-if="lead.account?.email">
+                            <dt>{{ t('cms.leads.columns.email') }}</dt>
+                            <dd><a :href="`mailto:${lead.account.email}`">{{ lead.account.email }}</a></dd>
+                        </div>
                         <div>
                             <dt>{{ t('cms.leads.columns.locale') }}</dt>
                             <dd>{{ lead.locale.toUpperCase() }}</dd>
                         </div>
                     </dl>
+                </section>
+
+                <section v-if="related.length" class="tm-cms-lead__card">
+                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.related.title') }}</h2>
+
+                    <ul class="tm-cms-lead__related">
+                        <li v-for="item in related" :key="item.uuid">
+                            <component
+                                :is="item.visible ? NuxtLink : 'div'"
+                                :to="item.visible ? localePath(`/app/leads/${item.uuid}`) : undefined"
+                                class="tm-cms-lead__related-item"
+                                :class="{ 'is-locked': !item.visible }"
+                            >
+                                <span class="tm-cms-lead__order-no">{{ item.ref }}</span>
+                                <span class="tm-cms-lead__order-main">
+                                    <span class="tm-cms-lead__order-hotel">{{ item.hotel_name || item.destination || t('cms.leads.related.noTour') }}</span>
+                                    <span class="tm-cms-lead__order-meta">
+                                        {{ shortDate(item.created_at) }}
+                                        <template v-if="item.manager_name"> · {{ item.manager_name }}</template>
+                                        <template v-for="order in item.orders" :key="order.ref"> · {{ order.ref }} {{ t(`cms.orders.status.${order.status}`).toLowerCase() }}</template>
+                                    </span>
+                                </span>
+                                <span v-if="item.archived_at" class="tm-cms-lead__order-status is-archived">{{ t('cms.archive.badge') }}</span>
+                                <span class="tm-cms-lead__order-status" :class="`is-${item.status}`">{{ t(`cms.leads.status.${item.status}`) }}</span>
+                            </component>
+                        </li>
+                    </ul>
                 </section>
 
                 <section class="tm-cms-lead__card">
@@ -197,7 +229,7 @@
                             :label="t('cms.leads.fields.plannedDates')"
                             :hint="t('cms.leads.fields.plannedDatesHint')"
                         />
-                        <Input v-model="draft.partySize" type="number" :label="t('cms.leads.fields.partySize')" />
+                        <TravellersPicker v-model="draft.party" :label="t('cms.leads.fields.party')" variant="field" :max-adults="12" :max-kids="8" />
                     </div>
 
                     <div class="tm-cms-lead__row">
@@ -296,6 +328,8 @@ import CustomerPoints from '~/modules/points/components/customerPoints/CustomerP
 import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
 import ChatButton from '~/modules/messages/components/chatButton/ChatButton.vue'
 import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
+import TravellersPicker from '~/shared/components/travellersPicker/TravellersPicker.vue'
+import { NuxtLink } from '#components'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
 import type { LeadStatus } from '~/modules/leads/contracts/leads'
@@ -312,15 +346,21 @@ const {
     historyVersion, owned,
     statusOptions, change, submit, addOrder, archive, restore,
     picking, hasTour, pickerSeed, assign, clearTour,
-    tripDone, canStartTrip, lastOrder, startTrip, creatingOrder,
+    tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
 } = useLead()
 
 const route = useRoute()
 const router = useRouter()
 
-const moreItems = computed(() => [{ key: 'archive', label: t('cms.archive.action'), icon: 'folder' }])
+const moreItems = computed(() => [
+    { key: 'request', label: t('cms.leads.next.action'), icon: 'plus' },
+    { key: 'archive', label: t('cms.archive.action'), icon: 'folder' },
+])
 
-const onMore = (key: string) => { if (key === 'archive') void archive() }
+const onMore = (key: string) => {
+    if (key === 'archive') void archive()
+    if (key === 'request') void startRequest()
+}
 
 const tab = computed<LeadTab>({
     get: () => {

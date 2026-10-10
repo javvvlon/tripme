@@ -11,7 +11,10 @@
             >
                 <span class="tm-lead-history__at">{{ when(event.at) }}</span>
                 <span class="tm-lead-history__what">
-                    {{ describe(event) }}
+                    <template v-if="linked(event)">
+                        {{ linked(event)!.before }}<NuxtLink :to="localePath(`/app/leads/${linked(event)!.id}`)" class="tm-lead-history__link">{{ event.subject }}</NuxtLink>
+                    </template>
+                    <template v-else>{{ describe(event) }}</template>
                     <small v-if="event.kind === 'trip_started' && previousOf(event)" class="tm-lead-history__previous">{{ previousOf(event) }}</small>
                 </span>
                 <span v-if="event.actor_name" class="tm-lead-history__who">{{ event.actor_name }}</span>
@@ -28,6 +31,7 @@ import type { ILeadHistoryProps } from './LeadHistory.d'
 const props = defineProps<ILeadHistoryProps>()
 
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const { history } = useLeadsRepository()
 
 const { data: events } = useAsyncData(
@@ -39,6 +43,14 @@ const { data: events } = useAsyncData(
 const status = (value: string | null) => (value ? t(`cms.leads.status.${value}`) : '—')
 
 const person = (name: string | null, id: string | null) => name || (id ? '—' : t('cms.ownership.queue'))
+
+function linked(event: ILeadEvent): { before: string, id: string } | null {
+  if (!event.subject) return null
+  if (event.kind === 'next_request' && event.to) return { before: t('cms.leads.next.historyNext'), id: event.to }
+  if (event.kind === 'created' && event.from) return { before: t('cms.leads.next.historyFrom'), id: event.from }
+
+  return null
+}
 
 function describe(event: ILeadEvent): string {
   switch (event.kind) {

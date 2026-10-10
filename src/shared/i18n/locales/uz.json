@@ -780,7 +780,8 @@
         "passportExpires": "Amal qilish muddati",
         "hotel": "Mehmonxona",
         "checkIn": "Kelish",
-        "nights": "Kecha"
+        "nights": "Kecha",
+        "email": "Email"
       },
       "backToList": "Lidlar roʻyxatiga",
       "missing": "Lid topilmadi.",
@@ -838,10 +839,10 @@
         "destination": "Yoʻnalish",
         "plannedDates": "Rejalashtirilgan sanalar",
         "plannedDatesHint": "Mijoz aytganidek — «avgust oxiri», «15.08 — 22.08».",
-        "partySize": "Sayohatchilar soni",
         "budget": "Taxminiy byudjet",
         "budgetCurrency": "Valyuta",
-        "rejectReason": "Rad etish sababi"
+        "rejectReason": "Rad etish sababi",
+        "party": "Kim boradi"
       },
       "offer": {
         "repeatSearch": "Qidiruvni takrorlash",
@@ -894,17 +895,22 @@
         "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda."
       },
       "trip": {
-        "number": "{n}-sayohat",
-        "start": "Yangi sayohat",
-        "confirmTitle": "{n}-sayohatni boshlaysizmi?",
-        "confirmText": "Joriy taklif tarixga o‘tadi, lid holati «Ishda» bo‘ladi. Avvalgi buyurtmalar o‘zgarmaydi.",
-        "confirm": "Boshlash",
-        "started": "{n}-sayohat boshlandi — tur tanlang",
-        "doneWithOrder": "Sayohat yakunlandi: {order} — {status}. Keyingi turni tanlash uchun yangi sayohat boshlang.",
-        "doneRejected": "Mijoz rad etdi. Agar qaytgan bo‘lsa, yangi sayohat boshlang.",
         "historyStarted": "{n}-sayohat boshlandi",
         "historyPrevious": "Avvalgi: {trip}"
-      }
+      },
+      "next": {
+        "action": "Yangi so‘rov",
+        "created": "{ref} yaratildi",
+        "doneWithOrder": "Sayohat yakunlandi: {order} — {status}.",
+        "doneRejected": "Mijoz rad etdi.",
+        "historyNext": "Yangi so‘rov yaratildi ",
+        "historyFrom": "So‘rov asosida yaratildi "
+      },
+      "related": {
+        "title": "Mijozning boshqa so‘rovlari",
+        "noTour": "Tursiz"
+      },
+      "account": "Akkaunt ma’lumotlari"
     },
     "orders": {
       "title": "Buyurtmalar",

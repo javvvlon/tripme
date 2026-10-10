@@ -303,20 +303,6 @@
         .tm-cms-lead__card-title { margin: 0; }
     }
 
-
-    &__trip-no {
-        display: inline-block;
-        margin-left: 8px;
-        padding: 1px 8px;
-        border-radius: radius('pill');
-        background: var(--tm-brand-secondary-soft);
-        color: var(--tm-brand-secondary);
-        font-size: size(11);
-        letter-spacing: 0;
-        text-transform: none;
-        vertical-align: 1px;
-    }
-
     &__trip-done {
         display: flex;
         align-items: center;
@@ -327,6 +313,24 @@
         background: var(--tm-status-success-soft);
         color: var(--tm-status-success);
         font-size: size(13);
+
+        > span { flex: 1; }
+    }
+
+    &__client-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    &__account {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--tm-brand-secondary);
+        font-size: size(12);
+        font-weight: 600;
     }
 
     &__offer-head {
@@ -442,7 +446,8 @@
         font-size: size(14);
     }
 
-    &__order-list {
+    &__order-list,
+    &__related {
         list-style: none;
         display: flex;
         flex-direction: column;
@@ -451,7 +456,8 @@
         padding: 0;
     }
 
-    &__order {
+    &__order,
+    &__related-item {
         display: flex;
         align-items: center;
         gap: 16px;
@@ -462,6 +468,12 @@
         transition: border-color .15s;
 
         &:hover { border-color: var(--tm-brand-primary); }
+    }
+
+    &__related-item.is-locked {
+        background: var(--tm-surface-2);
+
+        &:hover { border-color: var(--tm-border-1); }
     }
 
     &__order-no {
@@ -511,6 +523,10 @@
         &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
         &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
         &.is-archived { border-style: dashed; color: var(--tm-ink-3); }
+        &.is-new,
+        &.is-quote_sent { border-color: var(--tm-brand-primary); color: var(--tm-brand-primary); }
+        &.is-won { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-rejected { color: var(--tm-ink-4); }
     }
 }
 
@@ -520,4 +536,17 @@
 
 @media #{$until-md} {
     .tm-cms-lead__row { grid-template-columns: minmax(0, 1fr); }
+
+    .tm-cms-lead__order,
+    .tm-cms-lead__related-item {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+    }
+
+    .tm-cms-lead__order-no { flex: 1; }
+
+    .tm-cms-lead__order-main {
+        flex-basis: 100%;
+        order: 3;
+    }
 }

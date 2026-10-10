@@ -5,7 +5,7 @@ export interface ITravellersPickerProps {
   label: string
   maxAdults?: number
   maxKids?: number
-  variant?: 'panel' | 'bar'
+  variant?: 'panel' | 'bar' | 'field'
 }
 
 export interface ITravellers {

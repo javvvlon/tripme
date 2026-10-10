@@ -780,7 +780,8 @@
         "passportExpires": "Valid until",
         "hotel": "Hotel",
         "checkIn": "Check-in",
-        "nights": "Nights"
+        "nights": "Nights",
+        "email": "Email"
       },
       "backToList": "Back to leads",
       "missing": "Lead not found.",
@@ -838,10 +839,10 @@
         "destination": "Destination",
         "plannedDates": "Planned dates",
         "plannedDatesHint": "However the client put it — \"end of August\", \"15.08 — 22.08\".",
-        "partySize": "Party size",
         "budget": "Rough budget",
         "budgetCurrency": "Currency",
-        "rejectReason": "Reason for rejection"
+        "rejectReason": "Reason for rejection",
+        "party": "Who is travelling"
       },
       "offer": {
         "repeatSearch": "Repeat the search",
@@ -894,17 +895,22 @@
         "noFree": "No free leads — everyone is on it."
       },
       "trip": {
-        "number": "trip {n}",
-        "start": "New trip",
-        "confirmTitle": "Start trip {n}?",
-        "confirmText": "The current offer moves to the history and the lead becomes «In progress». Past orders stay as they are.",
-        "confirm": "Start",
-        "started": "Trip {n} started — pick a tour",
-        "doneWithOrder": "Trip finished: {order} — {status}. Start a new trip to pick the next tour.",
-        "doneRejected": "The client declined. If they are back, start a new trip.",
         "historyStarted": "Trip {n} started",
         "historyPrevious": "Previous: {trip}"
-      }
+      },
+      "next": {
+        "action": "New request",
+        "created": "{ref} created",
+        "doneWithOrder": "Trip finished: {order} — {status}.",
+        "doneRejected": "The client declined.",
+        "historyNext": "New request created ",
+        "historyFrom": "Created from request "
+      },
+      "related": {
+        "title": "Other requests from this client",
+        "noTour": "No tour"
+      },
+      "account": "Details from the account"
     },
     "orders": {
       "title": "Orders",

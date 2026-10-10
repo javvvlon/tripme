@@ -1,4 +1,4 @@
-import type { FieldInput, FieldValue } from '~/shared/helpers/numbers'
+import type { FieldValue } from '~/shared/helpers/numbers'
 import { DEFAULT_BRANCH } from '~/modules/leads/config/orders'
 import { DEFAULT_CURRENCY } from '~/shared/helpers/money'
 import { today } from '~/shared/helpers/dates'
@@ -6,9 +6,12 @@ import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
 import { tripFromLead, tripFromTour } from '~/modules/leads/helpers/trip'
 import { HOME_DEPARTURE } from '~/shared/composables/useSearchCriteria'
-import type { ILeadRaw, IOrderRaw, ITripRoute, LeadStatus } from '~/modules/leads/contracts/leads'
+import type { ILeadRaw, ILeadRelated, IOrderRaw, ITripRoute, LeadStatus } from '~/modules/leads/contracts/leads'
+import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
 import type { ITourPickerCriteria } from '~/modules/leads/components/tourPicker/TourPicker.d'
 import type { Tour } from '~/search_engine/models/Tour'
+
+const DEFAULT_ADULTS = 2
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -22,7 +25,7 @@ export const useLead = () => {
 
   const {
     one, patch, archive: archiveLead, restore: restoreLead,
-    ordersFor, createOrder, newTrip,
+    ordersFor, createOrder, newRequest, related: relatedOf,
   } = useLeadsRepository()
 
   const id = computed(() => String(route.params.id ?? ''))
@@ -32,12 +35,13 @@ export const useLead = () => {
   const error = ref('')
 
   const orders = ref<IOrderRaw[]>([])
+  const related = ref<ILeadRelated[]>([])
   const historyVersion = ref(0)
 
   const draft = reactive({
     destination: '',
     plannedDates: '',
-    partySize: '' as FieldInput,
+    party: { adults: DEFAULT_ADULTS, kidAges: [] } as ITravellers,
     budgetAmount: '' as FieldValue,
     budgetCurrency: '',
     rejectReason: '',
@@ -47,7 +51,7 @@ export const useLead = () => {
   const adopt = (found: ILeadRaw) => {
     draft.destination = found.destination
     draft.plannedDates = found.planned_dates
-    draft.partySize = String(found.party_size || '')
+    draft.party = { adults: found.adults || DEFAULT_ADULTS, kidAges: [...(found.children_ages ?? [])] }
     draft.budgetAmount = found.budget_amount === null ? '' : String(found.budget_amount)
     draft.budgetCurrency = found.budget_currency
     draft.rejectReason = found.reject_reason
@@ -55,13 +59,19 @@ export const useLead = () => {
   }
 
   const { data: lead, status, refresh } = useAsyncData<ILeadRaw | null>(
-    'cms:lead',
+    () => `cms:lead:${id.value}`,
     async () => {
       try {
         const found = await one(id.value)
 
+        const [leadOrders, others] = await Promise.all([
+          ordersFor(id.value),
+          relatedOf(id.value).catch(() => [] as ILeadRelated[]),
+        ])
+
         adopt(found)
-        orders.value = await ordersFor(id.value)
+        orders.value = leadOrders
+        related.value = others
 
         return found
       }
@@ -147,28 +157,30 @@ export const useLead = () => {
 
   const tripDone = computed(() => orders.value.length > 0 && orders.value.every(order => CLOSED_ORDERS.includes(order.status)))
 
-  const canStartTrip = computed(() => Boolean(lead.value) && !lead.value?.archived_at
-    && (tripDone.value || lead.value?.status === 'rejected'))
+  const finished = computed(() => Boolean(lead.value) && (tripDone.value || lead.value?.status === 'rejected'))
 
   const lastOrder = computed(() => orders.value.at(-1) ?? null)
 
-  async function startTrip() {
-    if (!lead.value || !await ask({
-      title: t('cms.leads.trip.confirmTitle', { n: (lead.value.trip_no ?? 1) + 1 }),
-      description: t('cms.leads.trip.confirmText'),
-      confirmLabel: t('cms.leads.trip.confirm'),
-    })) return
+  const requesting = ref(false)
+
+  async function startRequest() {
+    if (!lead.value || requesting.value) return
 
     error.value = ''
+    requesting.value = true
 
     try {
-      lead.value = await newTrip(id.value)
-      historyVersion.value++
-      picking.value = false
-      cheer(t('cms.leads.trip.started', { n: lead.value.trip_no ?? 1 }))
+      const created = await newRequest(id.value)
+
+      cheer(t('cms.leads.next.created', { ref: created.ref }))
+
+      await navigateTo(localePath(`/app/leads/${created.uuid}`))
     }
     catch (e) {
       error.value = failed(e)
+    }
+    finally {
+      requesting.value = false
     }
   }
 
@@ -177,7 +189,8 @@ export const useLead = () => {
   const submit = () => save({
     destination: draft.destination,
     planned_dates: draft.plannedDates,
-    party_size: asCount(draft.partySize),
+    adults: draft.party.adults,
+    children_ages: draft.party.kidAges,
     budget_amount: asAmount(draft.budgetAmount),
     budget_currency: draft.budgetCurrency,
     reject_reason: draft.rejectReason,
@@ -249,6 +262,6 @@ export const useLead = () => {
     lead, draft, orders, status, error, saving, saved, historyVersion,
     statusOptions, change, submit, addOrder, archive, restore, refresh, owned,
     picking, hasTour, pickerSeed, assign, clearTour,
-    tripDone, canStartTrip, lastOrder, startTrip, creatingOrder,
+    tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
   }
 }

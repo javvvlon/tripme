@@ -52,9 +52,30 @@ export interface ITripRoute {
   kidAges?: number[]
 }
 
+export interface ILeadAccount {
+  first_name: string
+  last_name: string
+  phone: string
+  email: string
+}
+
+export interface ILeadRelated {
+  uuid: string
+  ref: string
+  status: LeadStatus
+  visible: boolean
+  archived_at: string | null
+  destination: string
+  hotel_name: string
+  check_in: string | null
+  nights: number
+  manager_name: string
+  orders: Array<{ ref: string, status: OrderStatus }>
+  created_at: string
+}
+
 export interface ILeadRaw {
   uuid: string
-  trip_no?: number
   archived_at?: string | null
   order_id: number
   ref: string
@@ -65,6 +86,7 @@ export interface ILeadRaw {
   reject_reason: string
   channel: string
   user_id: string | null
+  account?: ILeadAccount | null
   destination: string
   planned_dates: string
   party_size: number
@@ -83,6 +105,7 @@ export interface ILeadRaw {
   nights: number
   adults: number
   children: number
+  children_ages?: number[]
   price_amount: number | null
   price_currency: string
   route_from: string
@@ -221,7 +244,7 @@ export interface IOrderEvent {
   at: string
 }
 
-export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored' | 'trip_started'
+export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored' | 'trip_started' | 'next_request'
 
 export interface ILeadEvent {
   kind: LeadEventKind

@@ -58,6 +58,14 @@
         .tm-lead-history__what { color: var(--tm-brand-secondary); font-weight: 700; }
     }
 
+    &__link {
+        color: var(--tm-brand-secondary);
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+
     &__previous {
         display: block;
         margin-top: 2px;

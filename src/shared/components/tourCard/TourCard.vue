@@ -23,11 +23,6 @@
                 <span v-if="tour.location()" class="tm-tour-card__place">
                     <Icon name="pin" :size="13" />{{ tour.location() }}
                 </span>
-                <ClientOnly>
-                    <Badge v-if="agentView" :tone="availabilityTone" class="tm-tour-card__badge">
-                        {{ t(`availability.${tour.get('availability')}`) }}
-                    </Badge>
-                </ClientOnly>
             </div>
 
             <h3 class="tm-tour-card__name">
@@ -150,14 +145,12 @@
 
 <script setup lang="ts">
 import { mealText } from '~/shared/helpers/meal'
-import { Availability } from '~/search_engine/models/Tour'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
 import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
-import type { BadgeTone } from '../badge/Badge.d'
 import type { ITourCardEmits, ITourCardProps } from './TourCard.d'
 
 const props = defineProps<ITourCardProps>()
@@ -251,14 +244,6 @@ const { asking, sending, sent, request } = useTourRequest(() => trip.value)
 
 const stopReason = computed(() =>
   props.tour.isStopped() ? props.tour.get('availabilityNote') : null)
-
-const availabilityTone = computed<BadgeTone>(() => {
-  switch (props.tour.get('availability')) {
-    case Availability.Available: return 'deal'
-    case Availability.OnRequest: return 'glass'
-    default: return 'hot'
-  }
-})
 </script>
 
 <style lang="scss">

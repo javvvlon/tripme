@@ -1,6 +1,6 @@
 import { toE164 } from '~/shared/helpers/phone'
 import type {
-  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadTrip, IOrderDocument, IOrderEvent, IOrderItemBody, IOrderRaw,
+  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadRelated, ILeadTrip, IOrderDocument, IOrderEvent, IOrderItemBody, IOrderRaw,
   IStaffMember, LeadSort, LeadStatus, ManagerFilter, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -17,7 +17,8 @@ export interface ILeadPatchBody {
   channel: string
   destination: string
   planned_dates: string
-  party_size: number
+  adults: number
+  children_ages: number[]
   budget_amount: number | null
   budget_currency: string
   manager_id: string | null
@@ -116,10 +117,16 @@ export const useLeadsRepository = () => {
     return response.data
   }
 
-  const newTrip = async (id: string): Promise<ILeadRaw> => {
-    const response = await http.call<ILeadRaw>('Leads', 'newTrip', { id })
+  const newRequest = async (id: string): Promise<ILeadRaw> => {
+    const response = await http.call<ILeadRaw>('Leads', 'newRequest', { id })
 
     return response.data
+  }
+
+  const related = async (id: string): Promise<ILeadRelated[]> => {
+    const response = await http.call<ILeadRelated[]>('Leads', 'relatedLeads', { id })
+
+    return response.data ?? []
   }
 
   const staff = async (): Promise<IStaffMember[]> => {
@@ -307,7 +314,7 @@ export const useLeadsRepository = () => {
   const restoreOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'restoreOrder', { id })).data
 
   return {
-    submit, all, page, one, history, take, newTrip, staff, create, patch, setStatus, archive, restore,
+    submit, all, page, one, history, take, newRequest, related, staff, create, patch, setStatus, archive, restore,
     orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder, orderTravellers,
     orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
     addItem, updateItem, removeItem, issueItem,
