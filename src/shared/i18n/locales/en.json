@@ -222,7 +222,10 @@
       "AI": "All inclusive",
       "UAI": "Ultra all inclusive",
       "PROGRAM": "As per tour programme"
-    }
+    },
+    "hotels": "Hotel",
+    "hotelSearch": "Hotel name",
+    "hotelNothing": "No operator sells this hotel"
   },
   "results": {
     "headline": "Tours {destination}, {dates}, from {price}",

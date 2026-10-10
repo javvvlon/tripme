@@ -58,6 +58,10 @@
                     />
                 </Accordion>
 
+                <Accordion v-else-if="group.key === 'hotels'" :title="t(group.titleKey)" :count="filters.hotels.length" class="tm-filter-panel__group">
+                    <HotelFilter :from="from ?? ''" :to="to ?? ''" :selected="filters.hotels" @toggle="toggle('hotels', $event)" />
+                </Accordion>
+
                 <Accordion v-else-if="group.key === 'suppliers'" :title="t(group.titleKey)" :count="filters.suppliers.length" class="tm-filter-panel__group">
                     <FilterList :options="suppliers" :selected="filters.suppliers" :limit="8" @toggle="toggle('suppliers', $event)" />
                     <p class="tm-filter-panel__note">{{ t('filters.suppliersNote') }}</p>
@@ -70,6 +74,7 @@
 <script setup lang="ts">
 import FilterList from '~/shared/components/filterList/FilterList.vue'
 import PriceRange from '~/shared/components/priceRange/PriceRange.vue'
+import HotelFilter from '~/shared/components/hotelFilter/HotelFilter.vue'
 import type { SearchFilters } from '~/search_engine/contracts/search'
 import type { IFilterPanelProps } from './FilterPanel.d'
 import { useFilterPanel } from './FilterPanel.hooks'

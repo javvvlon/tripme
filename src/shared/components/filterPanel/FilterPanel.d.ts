@@ -10,6 +10,8 @@ export interface IFilterPanelProps {
   currency?: string
   loading?: boolean
   agentView?: boolean
+  from?: string
+  to?: string
 }
 
 export interface IFilterPanelEmits {

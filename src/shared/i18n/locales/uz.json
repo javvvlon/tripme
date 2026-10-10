@@ -222,7 +222,10 @@
       "AI": "Hammasi kiritilgan",
       "UAI": "Ultra hammasi kiritilgan",
       "PROGRAM": "Tur dasturi bo'yicha"
-    }
+    },
+    "hotels": "Mehmonxona",
+    "hotelSearch": "Mehmonxona nomi",
+    "hotelNothing": "Bunday mehmonxona operatorlarda yo‘q"
   },
   "results": {
     "headline": "Turlar {destination}, {dates}, {price} dan",

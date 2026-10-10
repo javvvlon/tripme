@@ -222,7 +222,10 @@
       "AI": "Всё включено",
       "UAI": "Ультра всё включено",
       "PROGRAM": "По программе тура"
-    }
+    },
+    "hotels": "Отель",
+    "hotelSearch": "Название отеля",
+    "hotelNothing": "Такого отеля нет у операторов"
   },
   "results": {
     "headline": "Туры {destination}, {dates}, от {price}",

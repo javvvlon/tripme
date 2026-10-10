@@ -20,6 +20,7 @@ export interface ITourRaw {
   id: string
   supplier: ISupplierRef
   hotelName: string
+  hotelKey?: string
   hotelStars: number | null
   hotelSupplierCode: string
   hotelSlug: string | null

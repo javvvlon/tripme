@@ -3,6 +3,7 @@
  */
 export const FILTER_GROUPS = [
   { key: 'suppliers', titleKey: 'filters.suppliers', agentOnly: true },
+  { key: 'hotels', titleKey: 'filters.hotels' },
   { key: 'stars', titleKey: 'filters.stars' },
   { key: 'price', titleKey: 'filters.price' },
   { key: 'meals', titleKey: 'filters.meals' },

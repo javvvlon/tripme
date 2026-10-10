@@ -29,13 +29,14 @@
                 <ClientOnly>
                     <FilterPanel
                         v-model="filters" :facets="facets" :loading="busy && !facets.total"
-                        :agent-view="isStaff"
+                        :agent-view="isStaff" :from="criteria.from" :to="criteria.to"
                         class="tm-search-view__filters" :class="{ 'is-refreshing': busy }"
                     />
 
                     <template #fallback>
                         <FilterPanel
                             v-model="filters" :facets="facets" :loading="busy && !facets.total"
+                            :from="criteria.from" :to="criteria.to"
                             class="tm-search-view__filters"
                         />
                     </template>

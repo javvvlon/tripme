@@ -3,7 +3,7 @@ import type { IFilterPanelProps } from './FilterPanel.d'
 import { mealText } from '~/shared/helpers/meal'
 import { EMPTY_FILTERS, FILTER_GROUPS, PRICE_DEBOUNCE_MS } from './FilterPanel.config'
 
-type ListField = 'meals' | 'resorts' | 'suppliers'
+type ListField = 'meals' | 'resorts' | 'suppliers' | 'hotels'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -19,6 +19,7 @@ export const useFilterPanel = (props: IFilterPanelProps, filters: Ref<SearchFilt
 
     return chosen.filter((group) => {
       if ('agentOnly' in group && group.agentOnly && !props.agentView) return false
+      if (group.key === 'hotels') return Boolean(props.from && props.to)
       if (group.key === 'suppliers') return (props.facets.suppliers?.length ?? 0) > 1
       if (group.key === 'stars') return (props.facets.stars?.length ?? 0) > 0
       if (group.key === 'meals') return (props.facets.meals?.length ?? 0) > 0

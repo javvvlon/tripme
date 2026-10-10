@@ -34,6 +34,13 @@ export interface SearchCriteria {
   kidAges: number[]
 }
 
+export interface IHotelSuggestion {
+  key: string
+  name: string
+  stars: number | null
+  suppliers: number
+}
+
 export interface SearchFilters {
   stars: number[]
   meals: string[]

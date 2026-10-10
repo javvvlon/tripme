@@ -1,4 +1,5 @@
 import { useToursRepository } from '~/search_engine/repositories/tours.repository'
+import { useHotelLabels } from '~/shared/composables/useHotelLabels'
 import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
 import { SearchSort } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
@@ -103,7 +104,15 @@ export const useSearch = () => {
   let stop: (() => void) | null = null
   let ticket = 0
 
+  const { remember: rememberHotel } = useHotelLabels()
+
   const merge = (incoming: Tour[]) => {
+    for (const tour of incoming) {
+      const key = tour.get('hotelKey')
+
+      if (key && filters.value.hotels.includes(key)) rememberHotel(key, tour.displayName())
+    }
+
     const byId = new Map(offers.value.map(tour => [tour.get('id'), tour]))
 
     for (const tour of incoming) {
