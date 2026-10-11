@@ -59,7 +59,7 @@ export default defineNuxtConfig({
 
   i18n: {
     restructureDir: 'src/shared/i18n',
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://tripme.uz',
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.tripme.uz',
     langDir: 'locales',
     defaultLocale: 'ru',
     strategy: 'prefix',
@@ -108,7 +108,7 @@ export default defineNuxtConfig({
 
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.tripme.uz/api/v1',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://tripme.uz',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.tripme.uz',
     },
   },
 

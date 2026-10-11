@@ -1,6 +1,7 @@
 import { useContentRepository } from '~/modules/content/repositories'
 import { failRenderOnServer, withRetry } from '~/shared/helpers/resilient'
 import type { ContentLocale } from '~/modules/content/contracts/content'
+import type { IPageSeo } from '~/modules/content/models/PageContent'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -16,9 +17,9 @@ export const useHome = async () => {
     async () => {
       const home = await withRetry(() => pageContent('home', locale.value as ContentLocale))
 
-      return { sections: home.get('sections') }
+      return { sections: home.get('sections'), seo: home.get('seo') }
     },
-    { default: () => ({ sections: [] }) },
+    { default: () => ({ sections: [], seo: null as IPageSeo | null }) },
   )
   const { data: content, error, refresh } = loading
 
@@ -31,6 +32,7 @@ export const useHome = async () => {
   failRenderOnServer(error.value)
 
   const sections = computed(() => content.value?.sections ?? [])
+  const seo = computed(() => content.value?.seo ?? null)
 
-  return { sections }
+  return { sections, seo }
 }

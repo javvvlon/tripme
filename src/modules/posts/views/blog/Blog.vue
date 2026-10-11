@@ -17,10 +17,12 @@
 <script setup lang="ts">
 import Skeleton from '~/shared/components/skeleton/Skeleton.vue'
 import { useBlog } from './Blog.hooks'
+import { useSiteUrl } from '~/shared/composables/useSiteUrl'
+import { OG_IMAGE, SITE_NAME } from '~/shared/config/seo'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
-const url = useRequestURL()
+const { absolute } = useSiteUrl()
 
 const { sections, seo, status } = await useBlog()
 
@@ -32,10 +34,13 @@ useSeoMeta({
   description: () => description.value,
   ogTitle: () => title.value,
   ogDescription: () => description.value,
+  ogImage: absolute(OG_IMAGE.path),
+  ogSiteName: SITE_NAME,
+  twitterCard: 'summary_large_image',
 })
 
 useHead(() => ({
-  link: [{ rel: 'canonical', href: url.origin + localePath('/blog') }],
+  link: [{ rel: 'canonical', href: absolute(localePath('/blog')) }],
 }))
 </script>
 

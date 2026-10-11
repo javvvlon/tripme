@@ -16,33 +16,44 @@
 import Hero from '~/landing/components/hero/Hero.vue'
 import ContactPanel from '~/landing/components/contactPanel/ContactPanel.vue'
 import { useHome } from './Home.hooks'
+import { useSiteUrl } from '~/shared/composables/useSiteUrl'
+import { OG_IMAGE, SITE_NAME } from '~/shared/config/seo'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const localePath = useLocalePath()
-const url = useRequestURL()
+const { absolute } = useSiteUrl()
 
-const { sections } = await useHome()
+const { sections, seo } = await useHome()
+
+const title = computed(() => seo.value?.title || t('home.seo.title'))
+const description = computed(() => seo.value?.description || t('home.seo.description'))
+const home = computed(() => absolute(localePath('/')))
 
 useSeoMeta({
-  title: () => t('home.seo.title'),
-  description: () => t('home.seo.description'),
+  title: () => title.value,
+  description: () => description.value,
   ogTitle: () => t('home.seo.ogTitle'),
   ogDescription: () => t('home.seo.ogDescription'),
-  ogImage: '/og-image.jpg',
+  ogImage: absolute(OG_IMAGE.path),
+  ogImageWidth: OG_IMAGE.width,
+  ogImageHeight: OG_IMAGE.height,
+  ogImageAlt: () => t('home.seo.ogTitle'),
   ogType: 'website',
-  ogLocale: () => locale.value,
+  ogSiteName: SITE_NAME,
   twitterCard: 'summary_large_image',
+  twitterImage: absolute(OG_IMAGE.path),
 })
 
 useHead(() => ({
-  link: [{ rel: 'canonical', href: url.origin + localePath('/') }],
+  link: [{ rel: 'canonical', href: home.value }],
   script: [{
     type: 'application/ld+json',
     innerHTML: JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'TravelAgency',
       'name': 'TripMe',
-      'url': url.origin + localePath('/'),
+      'url': home.value,
+      'logo': absolute('/tripme-logo.png'),
       'areaServed': 'UZ',
       'address': {
         '@type': 'PostalAddress',
@@ -51,7 +62,7 @@ useHead(() => ({
       },
       'potentialAction': {
         '@type': 'SearchAction',
-        'target': `${url.origin}${localePath('/search')}?to={search_term_string}`,
+        'target': `${absolute(localePath('/search'))}?to={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     }),

@@ -54,10 +54,12 @@
 import TourOffer from '~/modules/leads/components/tourOffer/TourOffer.vue'
 import { usePostPage } from './Post.hooks'
 import { renderMarkdown } from '~/shared/helpers/markdown'
+import { useSiteUrl } from '~/shared/composables/useSiteUrl'
+import { OG_IMAGE, SITE_NAME } from '~/shared/config/seo'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const url = useRequestURL()
+const { absolute } = useSiteUrl()
 
 const { post, status } = usePostPage()
 
@@ -76,7 +78,8 @@ useSeoMeta({
     description: () => post.value?.excerpt ?? '',
     ogTitle: () => post.value?.title ?? '',
     ogDescription: () => post.value?.excerpt ?? '',
-    ogImage: () => post.value?.imageUrl ?? '/og-image.jpg',
+    ogImage: () => absolute(post.value?.imageUrl ?? OG_IMAGE.path),
+    ogSiteName: SITE_NAME,
     ogType: 'article',
     twitterCard: 'summary_large_image',
     robots: () => (post.value ? 'index, follow' : 'noindex, follow'),
@@ -84,7 +87,7 @@ useSeoMeta({
 
 useHead(() => ({
     link: post.value
-        ? [{ rel: 'canonical', href: `${url.origin}${localePath(`/blog/${post.value.slug}`)}` }]
+        ? [{ rel: 'canonical', href: absolute(localePath(`/blog/${post.value.slug}`)) }]
         : [],
 }))
 </script>
