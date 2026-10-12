@@ -62,12 +62,13 @@
 import Modal from '~/shared/components/modal/Modal.vue'
 import { useQuoteModal } from './QuoteModal.hooks'
 import type { IQuoteModalProps, QuoteLanguage } from './QuoteModal.d'
+import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 
 const props = defineProps<IQuoteModalProps>()
 
 const opened = defineModel<boolean>({ default: false })
 
-const emit = defineEmits<{ pdf: [] }>()
+const emit = defineEmits<{ pdf: [], marked: [lead: ILeadRaw] }>()
 
 const LANGUAGES: QuoteLanguage[] = ['ru', 'uz', 'en']
 
@@ -77,7 +78,7 @@ const textId = useId()
 const {
     language, client, passport, includes, text, lead, markLead, canMarkLead,
     passportIssues, tours, copy, share, canSendToChat, sendToChat, sending,
-} = useQuoteModal(props, opened)
+} = useQuoteModal(props, opened, found => emit('marked', found))
 </script>
 
 <style lang="scss">

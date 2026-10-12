@@ -9,7 +9,7 @@ import type { IQuoteModalProps, QuoteLanguage } from './QuoteModal.d'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => {
+export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>, onMarked?: (lead: ILeadRaw) => void) => {
   const { t, locale } = useI18n()
   const { $i18n } = useNuxtApp()
   const { user } = useAuthSession()
@@ -86,6 +86,7 @@ export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => 
 
     try {
       lead.value = await setStatus(lead.value.uuid, 'quote_sent')
+      onMarked?.(lead.value)
       toast.success(t('quote.leadMarked', { ref: lead.value.ref }))
     }
     catch {

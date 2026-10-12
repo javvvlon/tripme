@@ -855,6 +855,7 @@
       },
       "offer": {
         "repeatSearch": "Repeat the search",
+        "quote": "Send a quote",
         "empty": "The client hasn’t picked a tour yet",
         "emptyHint": "Pick a tour here, or find one in the full search and press “Pick for lead” on its card.",
         "pick": "Pick a tour",

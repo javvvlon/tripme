@@ -109,6 +109,10 @@
                     </div>
 
                     <div class="tm-cms-lead__offer-links">
+                        <Button v-if="canQuote" type="button" size="sm" icon="doc" @click="quoteOpen = true">
+                            {{ t('cms.leads.offer.quote') }}
+                        </Button>
+
                         <Button size="sm" variant="secondary" icon="search" :to="pickToursLink">
                             {{ t('cms.leads.offer.repeatSearch') }}
                         </Button>
@@ -307,6 +311,18 @@
             <div v-show="tab === 'history'" class="tm-cms-lead__pane">
                 <LeadHistory :lead-id="lead.uuid" :version="historyVersion" class="tm-cms-lead__card tm-cms-lead__history" />
             </div>
+
+            <ClientOnly>
+                <QuoteModal
+                    v-if="hasTour"
+                    v-model="quoteOpen"
+                    :tours="quoteTours"
+                    :lead-id="lead.uuid"
+                    :destination="quoteDestination"
+                    :departure="quoteDeparture"
+                    @marked="quoteMarked"
+                />
+            </ClientOnly>
         </template>
     </div>
 </template>
@@ -332,7 +348,10 @@ import TravellersPicker from '~/shared/components/travellersPicker/TravellersPic
 import { NuxtLink } from '#components'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
-import type { LeadStatus } from '~/modules/leads/contracts/leads'
+import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
+import { tourFromLead } from '~/modules/leads/helpers/quote'
+import { LEAD_TRANSITIONS } from '~/modules/leads/contracts/leads'
+import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 import type { Money } from '~/search_engine/contracts/search'
 
 const { t, locale } = useI18n()
@@ -348,6 +367,26 @@ const {
     picking, hasTour, pickerSeed, assign, clearTour,
     tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
 } = useLead()
+
+const { label } = useCatalogLabel()
+
+const quoteOpen = ref(false)
+
+const canQuote = computed(() =>
+    Boolean(lead.value) && !finished.value && (LEAD_TRANSITIONS[lead.value!.status] ?? []).includes('quote_sent'))
+
+const quoteTours = computed(() => (lead.value && hasTour.value ? [tourFromLead(lead.value)] : []))
+
+const quoteDestination = computed(() =>
+    label(lead.value?.route_to || String(lead.value?.trip.route_to ?? '')) || lead.value?.destination || '')
+
+const quoteDeparture = computed(() =>
+    label(lead.value?.route_from || String(lead.value?.trip.route_from ?? ''), 'city'))
+
+const quoteMarked = (found: ILeadRaw) => {
+    lead.value = found
+    historyVersion.value++
+}
 
 const route = useRoute()
 const router = useRouter()

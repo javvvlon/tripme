@@ -855,6 +855,7 @@
       },
       "offer": {
         "repeatSearch": "Qidiruvni takrorlash",
+        "quote": "Tijorat taklifini yuborish",
         "empty": "Mijoz hali tur tanlamagan",
         "emptyHint": "Turni shu yerda tanlang yoki toʻliq qidiruvda toping va kartochkadagi «Lid uchun tanlash» tugmasini bosing.",
         "pick": "Tur tanlash",

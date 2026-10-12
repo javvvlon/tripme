@@ -2,7 +2,7 @@ import { passportProblem } from './compliance'
 import { mealText } from '~/shared/helpers/meal'
 import { Availability, Tour } from '~/search_engine/models/Tour'
 import type { CurrencyCode } from '~/search_engine/contracts/search'
-import type { ILeadTrip, IOrderRaw, ITripRoute } from '~/modules/leads/contracts/leads'
+import type { ILeadRaw, ILeadTrip, IOrderRaw, ITripRoute } from '~/modules/leads/contracts/leads'
 import { tripFromTour } from './trip'
 
 /**
@@ -30,7 +30,17 @@ export interface IQuoteOptions {
 const textOf = (value: unknown): string | null =>
   typeof value === 'string' && value.trim() ? value.trim() : null
 
+type TourSource = Pick<IOrderRaw, 'uuid' | 'trip' | 'hotel_name' | 'supplier_name' | 'check_in' | 'nights' | 'adults' | 'children' | 'price_amount' | 'price_currency'>
+
 export function tourFromOrder(order: IOrderRaw): Tour {
+  return tourFrom(order, `order:${order.uuid}`)
+}
+
+export function tourFromLead(lead: ILeadRaw): Tour {
+  return tourFrom(lead, `lead:${lead.uuid}`)
+}
+
+function tourFrom(order: TourSource, id: string): Tour {
   const trip = (order.trip ?? {}) as Partial<ILeadTrip> & Record<string, unknown>
   const money = {
     amount: Number(order.price_amount ?? trip.price_amount ?? 0),
@@ -38,7 +48,7 @@ export function tourFromOrder(order: IOrderRaw): Tour {
   }
 
   return new Tour({
-    id: `order:${order.uuid}`,
+    id,
     supplier: { id: textOf(trip.supplier_id) ?? '', name: order.supplier_name || textOf(trip.supplier_name) || '' },
     hotelName: order.hotel_name || textOf(trip.hotel_name) || '',
     hotelStars: Number(trip.hotel_stars) || null,
