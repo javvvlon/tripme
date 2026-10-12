@@ -18,7 +18,7 @@ import { ICON_FALLBACK, ICON_PATHS } from './Icon.config'
 const props = withDefaults(defineProps<IIconProps>(), {
   size: 20,
   filled: false,
-  stroke: 1.7,
+  stroke: 1.5,
 })
 
 const d = computed(() => ICON_PATHS[props.name] ?? ICON_PATHS[ICON_FALLBACK]!)

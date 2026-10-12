@@ -1,11 +1,7 @@
 <template>
     <div class="tm-splash" :class="{ 'is-leaving': leaving }" role="progressbar" :aria-valuenow="Math.round(progress)" aria-valuemin="0" aria-valuemax="100" :aria-label="steps[step]">
         <div class="tm-splash__card">
-            <img
-                class="tm-splash__logo"
-                :src="BRAND_LOGO.onLight.src" :alt="BRAND_NAME"
-                :width="BRAND_LOGO.onLight.width" :height="BRAND_LOGO.onLight.height"
-            >
+            <Logo class="tm-splash__logo" :width="168" />
 
             <div class="tm-splash__track">
                 <span class="tm-splash__bar" :style="{ transform: `scaleX(${progress / 100})` }" />
@@ -22,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { BRAND_LOGO, BRAND_NAME } from '~/shared/config/brand'
 import type { IBuilderSplashEmits, IBuilderSplashProps } from './BuilderSplash.d'
 
 const props = withDefaults(defineProps<IBuilderSplashProps>(), { minDuration: 1300 })

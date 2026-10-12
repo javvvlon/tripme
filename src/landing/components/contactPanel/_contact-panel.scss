@@ -8,9 +8,9 @@
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 48px;
         padding: 48px;
-        border-radius: radius('xl');
+        border-radius: radius('card');
         background: var(--tm-surface-1);
-        box-shadow: shadow('md');
+        border: 1px solid var(--tm-border-1);
     }
 
     &__title {
@@ -40,12 +40,12 @@
     &__icon {
         display: grid;
         place-items: center;
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         margin-bottom: 14px;
-        border-radius: radius('md');
-        background: var(--tm-surface-2);
-        color: var(--tm-brand-secondary);
+        border-radius: 50%;
+        background: var(--tm-brand-primary-tint);
+        color: var(--tm-brand-primary);
     }
 
     &__channel-name {

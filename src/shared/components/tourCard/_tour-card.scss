@@ -8,12 +8,13 @@
     grid-template-columns: 128px minmax(0, 1fr) 232px;
     background: var(--tm-surface-1);
     border: 1px solid var(--tm-border-1);
-    border-radius: radius('lg');
-    transition: border-color .2s, box-shadow .2s, transform .2s;
+    border-radius: radius('card');
+    transition: border-color .3s, box-shadow .3s, transform .3s;
 
     &:hover {
-        border-color: transparent;
-        box-shadow: var(--tm-shadow-lg);
+        border-color: var(--tm-brand-primary);
+        box-shadow: var(--tm-shadow-glow);
+        transform: translateY(-4px);
     }
 
     &.is-stopped { opacity: .62; }
@@ -25,8 +26,8 @@
         gap: 10px;
         padding: 16px 16px 16px 18px;
         border-right: 2px dashed var(--tm-border-1);
-        border-radius: radius('lg') 0 0 radius('lg');
-        background: var(--tm-brand-primary-soft);
+        border-radius: radius('card') 0 0 radius('card');
+        background: var(--tm-surface-3);
 
         &::before,
         &::after {
@@ -303,7 +304,7 @@
             padding: 10px 16px;
             border-right: 0;
             border-bottom: 2px dashed var(--tm-border-1);
-            border-radius: radius('lg') radius('lg') 0 0;
+            border-radius: radius('card') radius('card') 0 0;
 
             &::before,
             &::after { display: none; }

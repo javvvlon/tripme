@@ -1,8 +1,11 @@
 <template>
     <ul class="tm-features">
         <li v-for="item in items" :key="item.uuid" class="tm-features__item">
+            <span v-if="item.icon" class="tm-features__icon" aria-hidden="true">
+                <Icon :name="item.icon" :size="24" />
+            </span>
             <img
-                v-if="item.imageUrl"
+                v-else-if="item.imageUrl"
                 class="tm-features__art"
                 :src="item.imageUrl" alt=""
                 width="128" height="120"

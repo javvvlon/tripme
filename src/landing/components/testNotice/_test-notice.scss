@@ -9,8 +9,9 @@
     gap: 10px;
     min-height: 34px;
     padding: 6px 16px;
-    background: var(--tm-brand-secondary-dark);
-    color: var(--tm-common-white);
+    background: var(--tm-night-card);
+    border-bottom: 1px solid var(--tm-night-line);
+    color: var(--tm-night-ink-2);
     font-size: size(13);
     font-weight: 600;
     letter-spacing: .01em;

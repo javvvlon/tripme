@@ -16,7 +16,7 @@
 .ph {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--tm-surface-3), #DDE3EA);
+    background: linear-gradient(135deg, var(--tm-surface-3), var(--tm-border-1));
 
     &::after {
         content: '';
@@ -25,10 +25,10 @@
         background: radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, .55), transparent 60%);
     }
 
-    &--a { background: linear-gradient(135deg, #B9D4F2, #7FA9D9); }
-    &--b { background: linear-gradient(135deg, #F6D9BC, #E0A574); }
-    &--c { background: linear-gradient(135deg, #BFE3D6, #7EBFA8); }
-    &--d { background: linear-gradient(135deg, #D6CDF0, #A392D8); }
+    &--a { background: linear-gradient(135deg, var(--tm-brand-navy), #1E3A5F); }
+    &--b { background: linear-gradient(135deg, var(--tm-brand-gold), #8A6B3F); }
+    &--c { background: linear-gradient(135deg, var(--tm-brand-teal), #1F5050); }
+    &--d { background: linear-gradient(135deg, var(--tm-surface-3), var(--tm-border-1)); }
 }
 
 .scrim {

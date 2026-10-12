@@ -9,16 +9,11 @@
         display: block;
         flex: 0 0 auto;
 
-        img {
-            display: block;
-            width: 112px;
-            height: auto;
+        color: var(--tm-ink-1);
 
-            &.is-mark {
-                width: auto;
-                height: 30px;
-            }
-        }
+        .tm-logo { width: 120px; }
+
+        .tm-logo.is-mark { width: auto; height: 30px; }
     }
 
     &__collapse {

@@ -27,7 +27,33 @@
 @mixin container($size: 'default') {
     max-width: map.get($container, $size);
     margin: 0 auto;
-    padding: 0 $gutter;
+    padding: 0 map.get($container-pad, $size);
+}
+
+@mixin display($weight: 900) {
+    font-family: var(--tm-font-display-primary);
+    font-weight: $weight;
+    letter-spacing: -.02em;
+    text-transform: uppercase;
+}
+
+@mixin badge-type {
+    font-family: var(--tm-font-display-primary);
+    font-size: size(12);
+    font-weight: 700;
+    letter-spacing: .1em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+@mixin card-hover {
+    transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+
+    &:hover {
+        border-color: var(--tm-brand-primary);
+        box-shadow: var(--tm-shadow-glow);
+        transform: translateY(-4px);
+    }
 }
 
 @mixin bottom-sheet {
@@ -42,7 +68,7 @@
     overflow-y: auto;
     border-radius: radius('lg') radius('lg') 0 0;
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    box-shadow: 0 0 0 100vmax rgba(6, 16, 43, .45), var(--tm-shadow-lg);
+    box-shadow: 0 0 0 100vmax rgba(10, 10, 10, .6), var(--tm-shadow-lg);
     overscroll-behavior: contain;
 }
 
@@ -68,8 +94,8 @@
 @mixin photo-scrim {
     background: linear-gradient(
         to top,
-        rgba(10, 14, 20, .78) 0%,
-        rgba(10, 14, 20, .30) 42%,
-        rgba(10, 14, 20, 0) 72%
+        rgba(10, 10, 10, .7) 0%,
+        rgba(10, 10, 10, .28) 45%,
+        rgba(10, 10, 10, 0) 75%
     );
 }

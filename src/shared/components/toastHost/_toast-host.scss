@@ -76,9 +76,9 @@
     }
 
     &--info {
-        border-left-color: var(--tm-brand-secondary);
+        border-left-color: var(--tm-brand-primary);
 
-        .tm-toast__icon { background: var(--tm-brand-secondary); }
+        .tm-toast__icon { background: var(--tm-brand-primary); color: var(--tm-brand-on-primary); }
     }
 }
 

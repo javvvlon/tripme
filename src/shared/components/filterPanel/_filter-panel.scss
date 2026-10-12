@@ -77,7 +77,7 @@
 
     &__star-glyph {
         margin-left: 2px;
-        color: #f5a524;
+        color: var(--tm-status-warning);
     }
 
     &__loading { padding: 8px 0; }

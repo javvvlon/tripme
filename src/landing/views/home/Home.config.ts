@@ -8,7 +8,7 @@ import { HOME_DEPARTURE } from '~/shared/composables/useSearchCriteria'
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const HERO: IHeroContent = {
-  image: '/hero_placeholder.png',
+  image: '/hero-default.jpg',
   imageAlt: '',
   titleKey: 'home.hero.title',
   subtitleKey: 'home.hero.subtitle',

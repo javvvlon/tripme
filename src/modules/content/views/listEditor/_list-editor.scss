@@ -240,6 +240,39 @@
             max-height: 100%;
             object-fit: contain;
         }
+
+        &.is-line {
+            width: 48px;
+            height: 48px;
+            margin: 8px;
+            border-radius: 50%;
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary);
+        }
+    }
+
+    &__icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    &__icon-pick {
+        display: inline-grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: 50%;
+        color: var(--tm-ink-3);
+
+        &:hover { color: var(--tm-ink-1); border-color: var(--tm-ink-4); }
+
+        &.is-active {
+            border-color: var(--tm-brand-primary);
+            background: var(--tm-brand-primary-soft);
+            color: var(--tm-brand-primary);
+        }
     }
 
     &__name {

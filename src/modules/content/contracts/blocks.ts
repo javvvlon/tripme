@@ -9,6 +9,10 @@ export const BADGE_TYPES = ['primary', 'secondary', 'sale'] as const
 
 export type BadgeType = typeof BADGE_TYPES[number]
 
+export const FEATURE_ICONS = ['trophy', 'support', 'shield', 'doc', 'medal', 'plane', 'star', 'clock', 'users', 'globe', 'tag', 'check', 'calendar', 'pin', 'wave', 'kids'] as const
+
+export type FeatureIcon = typeof FEATURE_ICONS[number]
+
 export const PAGES = ['home', 'blog'] as const
 
 export type ContentPage = typeof PAGES[number]
@@ -50,6 +54,7 @@ export interface IItemFields {
   description: boolean
   link: boolean
   badge: boolean
+  icon?: boolean
 }
 
 export interface IBlock {
@@ -146,7 +151,7 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     layout: false,
     link: false,
     titleRequired: true,
-    item: { image: true, description: true, link: false, badge: false },
+    item: { image: true, description: true, link: false, badge: false, icon: true },
   },
   faq: {
     ...PLAIN,
@@ -305,6 +310,7 @@ export interface IContentItemRaw {
   translations: IContentTranslationRaw[]
   image_url: string | null
   badge_type: BadgeType | null
+  icon?: FeatureIcon | null
   link: string | null
   position: number
 }

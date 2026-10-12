@@ -8,9 +8,9 @@
     gap: 24px 40px;
     overflow: hidden;
     padding: 36px 44px;
-    border-radius: radius('lg');
+    border-radius: radius('card');
     background: var(--tm-surface-1);
-    box-shadow: var(--tm-shadow-sm);
+    border: 1px solid var(--tm-border-1);
 
     &::before {
         content: '';
@@ -52,18 +52,18 @@
     &__cta { flex: none; }
 
     &.is-brand {
-        background: var(--tm-brand-primary);
+        background: var(--tm-brand-navy);
+        border-color: var(--tm-brand-navy);
         color: var(--tm-common-white);
-        box-shadow: none;
 
         .tm-cta-strip__title { color: var(--tm-common-white); }
-        .tm-cta-strip__lead { color: rgba(255, 255, 255, .9); }
+        .tm-cta-strip__lead { color: rgba(255, 255, 255, .8); }
     }
 
     &.is-dark {
-        background: var(--tm-common-night);
+        background: var(--tm-night-card);
+        border-color: var(--tm-night-line);
         color: var(--tm-common-white);
-        box-shadow: none;
 
         .tm-cta-strip__title { color: var(--tm-common-white); }
         .tm-cta-strip__lead { color: rgba(255, 255, 255, .75); }

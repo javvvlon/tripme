@@ -2,10 +2,7 @@
     <header class="tm-site-header" :class="`tm-site-header--${variant}`">
         <div class="container-wide tm-site-header__row">
             <NuxtLink :to="localePath('/')" class="tm-site-header__logo" :aria-label="t('nav.home')">
-                <img
-                    :src="BRAND_LOGO.onDark.src" :alt="BRAND_NAME"
-                    :width="BRAND_LOGO.onDark.width" :height="BRAND_LOGO.onDark.height"
-                >
+                <Logo :width="160" />
             </NuxtLink>
 
             <nav
@@ -23,7 +20,8 @@
             </nav>
 
             <div class="tm-site-header__tools">
-                <LangSwitcher />
+                <LangSwitcher tone="onLight" />
+                <ThemeToggle />
                 <NuxtLink
                     v-if="user"
                     :to="localePath(user.homePath())" class="tm-site-header__account tm-site-header__account--user"
@@ -38,6 +36,13 @@
                 >
                     <Icon name="user" :size="18" />
                 </NuxtLink>
+                <Button
+                    v-if="!withSearch"
+                    to="/search" size="sm" icon="search"
+                    class="tm-site-header__cta"
+                >
+                    {{ t('search.submit') }}
+                </Button>
             </div>
 
             <button

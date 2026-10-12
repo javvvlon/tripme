@@ -30,7 +30,18 @@ const testNotice = computed(() => useRuntimeConfig().public.testMode && route.me
     flex-direction: column;
     min-height: 100vh;
     background: var(--tm-surface-2);
+    color: var(--tm-ink-1);
 
-    &__main { flex: 1; }
+    &__main {
+        flex: 1;
+
+        h1 {
+            font-weight: 900;
+            line-height: 1.02;
+            letter-spacing: -.02em;
+            text-transform: uppercase;
+            text-wrap: balance;
+        }
+    }
 }
 </style>

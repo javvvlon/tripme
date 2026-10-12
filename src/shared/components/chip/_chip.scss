@@ -7,36 +7,36 @@
     padding: 9px 16px;
     border-radius: radius('pill');
     font-size: size(14);
-    font-weight: 500;
-    transition: background .15s, border-color .15s, color .15s;
+    font-weight: 600;
+    transition: background .2s, border-color .2s, color .2s;
 
     &--onLight {
         background: var(--tm-surface-1);
         color: var(--tm-ink-2);
         border: 1px solid var(--tm-border-1);
 
-        &:hover { border-color: var(--tm-ink-4); color: var(--tm-ink-1); }
+        &:hover { border-color: var(--tm-brand-primary); color: var(--tm-ink-1); }
 
         &.tm-chip--active {
             background: var(--tm-brand-primary-soft);
             border-color: var(--tm-brand-primary);
-            color: var(--tm-brand-primary-dark);
-            font-weight: 600;
+            color: var(--tm-ink-1);
         }
     }
 
     &--onDark {
-        background: rgba(255, 255, 255, .13);
-        color: var(--tm-common-white);
-        border: 1px solid rgba(255, 255, 255, .24);
+        background: var(--tm-night-glass);
+        color: var(--tm-night-ink-2);
+        border: 1px solid var(--tm-night-line);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
 
-        &:hover { background: rgba(255, 255, 255, .22); }
+        &:hover { color: var(--tm-common-white); border-color: var(--tm-brand-primary); }
 
         &.tm-chip--active {
-            background: var(--tm-common-white);
-            color: var(--tm-brand-secondary-dark);
-            border-color: var(--tm-common-white);
-            font-weight: 600;
+            background: var(--tm-brand-primary);
+            color: var(--tm-brand-on-primary);
+            border-color: var(--tm-brand-primary);
         }
     }
 }

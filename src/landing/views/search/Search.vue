@@ -470,7 +470,7 @@ useSeoMeta({
     &__error {
         padding: 14px;
         text-align: center;
-        color: #A32B2B;
+        color: var(--tm-status-danger);
         font-size: size(13);
     }
 

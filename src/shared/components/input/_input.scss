@@ -6,9 +6,9 @@
     gap: 6px;
 
     &__label {
-        font-size: size(13);
+        font-size: size(14);
         font-weight: 600;
-        color: var(--tm-ink-2);
+        color: var(--tm-ink-3);
     }
 
     &__control {
@@ -19,11 +19,12 @@
 
     &__field {
         width: 100%;
-        padding: 12px 14px;
+        padding: 12px 16px;
         border: 1px solid var(--tm-border-1);
-        border-radius: radius('sm');
-        background: var(--tm-surface-1);
-        font-size: size(15);
+        border-radius: radius('md');
+        background: var(--tm-surface-field);
+        color: var(--tm-ink-1);
+        font-size: size(16);
         transition: border-color .15s, box-shadow .15s;
 
         @include placeholder {
@@ -33,7 +34,7 @@
         &:focus {
             outline: none;
             border-color: var(--tm-brand-primary);
-            box-shadow: 0 0 0 3px var(--tm-brand-primary-soft);
+            box-shadow: 0 0 0 2px var(--tm-brand-primary-ring);
         }
 
         &:disabled {

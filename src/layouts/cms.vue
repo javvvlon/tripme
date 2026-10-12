@@ -3,17 +3,8 @@
         <Sidebar :collapsed="collapsed">
             <template #brand>
                 <NuxtLink :to="localePath('/app/leads')" class="tm-cms__logo" :aria-label="BRAND_NAME">
-                    <img
-                        v-if="collapsed"
-                        :src="BRAND_MARK.onLight.src" :alt="BRAND_NAME"
-                        :width="BRAND_MARK.onLight.width" :height="BRAND_MARK.onLight.height"
-                        class="is-mark"
-                    >
-                    <img
-                        v-else
-                        :src="BRAND_LOGO.onLight.src" :alt="BRAND_NAME"
-                        :width="BRAND_LOGO.onLight.width" :height="BRAND_LOGO.onLight.height"
-                    >
+                    <Logo v-if="collapsed" variant="mark" :width="16" class="is-mark" />
+                    <Logo v-else :width="120" />
                 </NuxtLink>
             </template>
 
@@ -93,7 +84,7 @@
 <script setup lang="ts">
 import { useMessagesRepository } from '~/modules/messages/repositories'
 import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
-import { BRAND_LOGO, BRAND_MARK, BRAND_NAME } from '~/shared/config/brand'
+import { BRAND_NAME } from '~/shared/config/brand'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { CMS_NAVIGATION } from '~/modules/content/config/navigation'
 import { findNavTrail } from '~/shared/helpers/navigation'

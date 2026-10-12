@@ -2,7 +2,7 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import { BLOCKS } from '~/modules/content/contracts/blocks'
-import type { BadgeType, ListKind } from '~/modules/content/contracts/blocks'
+import type { BadgeType, FeatureIcon, ListKind } from '~/modules/content/contracts/blocks'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -12,6 +12,7 @@ export interface IDraftItem {
   imageUrl: string
   link: string
   badgeType: BadgeType | ''
+  icon: FeatureIcon | ''
   translations: Record<ContentLocale, { title: string, description: string, badgeLabel: string }>
 }
 
@@ -63,6 +64,7 @@ export const useListEditor = (id: string) => {
       imageUrl: item.image_url ?? '',
       link: item.link ?? '',
       badgeType: item.badge_type ?? '',
+      icon: item.icon ?? '',
       translations: {
         ...blankTranslations(),
         ...Object.fromEntries(item.translations.map(translation => [
@@ -95,6 +97,7 @@ export const useListEditor = (id: string) => {
       imageUrl: '',
       link: '',
       badgeType: '',
+      icon: '',
       translations: blankTranslations(),
     }
 
@@ -226,6 +229,7 @@ export const useListEditor = (id: string) => {
           image_url: fields.value.image ? item.imageUrl.trim() || null : null,
           link: fields.value.link ? item.link.trim() || null : null,
           badge_type: fields.value.badge ? item.badgeType || null : null,
+          icon: fields.value.icon ? item.icon || null : null,
           translations: CONTENT_LOCALES.map(code => ({
             locale: code,
             title: item.translations[code].title,

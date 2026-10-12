@@ -20,10 +20,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 input, select, textarea { font: inherit; color: inherit; }
 ul, ol { list-style: none; }
 
-h1, h2, h3 { letter-spacing: -.025em; line-height: 1.15; font-weight: 800; }
-h1 { font-size: clamp(#{size(28)}, 4.6vw, #{size(50)}); }
+h1, h2, h3 { font-family: var(--tm-font-display-primary); letter-spacing: -.02em; line-height: 1.1; font-weight: 800; }
+h1 { font-size: clamp(#{size(28)}, 4.6vw, #{size(50)}); font-weight: 900; }
 h2 { font-size: clamp(#{size(21)}, 2.6vw, #{size(28)}); }
-h3 { font-size: size(19); font-weight: 700; letter-spacing: -.015em; }
+h3 { font-size: size(19); letter-spacing: -.01em; }
+
+::selection { background: var(--tm-brand-primary); color: var(--tm-brand-on-primary); }
 
 :focus-visible {
     outline: 3px solid var(--tm-brand-primary);

@@ -75,8 +75,9 @@
                         </template>
 
                         <template v-else-if="kind === 'features'">
-                            <span class="tm-list-studio__icon">
-                                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy" @error="hideBroken">
+                            <span class="tm-list-studio__icon" :class="{ 'is-line': item.icon }">
+                                <Icon v-if="item.icon" :name="item.icon" :size="24" />
+                                <img v-else-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy" @error="hideBroken">
                                 <Icon v-else name="star" :size="24" />
                             </span>
                             <strong class="tm-list-studio__name">{{ titleOf(item) }}</strong>
@@ -135,7 +136,30 @@
                             <span v-if="kind !== 'faq'" class="tm-list-studio__help">{{ t('cms.lists.descriptionPlain') }}</span>
                         </div>
 
-                        <div v-if="fields.image" class="tm-list-studio__field">
+                        <div v-if="fields.icon" class="tm-list-studio__field">
+                            <span class="tm-list-studio__label">{{ t('cms.lists.itemIcon') }}</span>
+                            <div class="tm-list-studio__icons" role="radiogroup" :aria-label="t('cms.lists.itemIcon')">
+                                <button
+                                    type="button" role="radio" class="tm-list-studio__icon-pick"
+                                    :class="{ 'is-active': !current.icon }"
+                                    :aria-checked="!current.icon" :title="t('cms.lists.badgeNone')"
+                                    @click="current!.icon = ''"
+                                >
+                                    <Icon name="close" :size="16" />
+                                </button>
+                                <button
+                                    v-for="icon in FEATURE_ICONS" :key="icon"
+                                    type="button" role="radio" class="tm-list-studio__icon-pick"
+                                    :class="{ 'is-active': current.icon === icon }"
+                                    :aria-checked="current.icon === icon" :aria-label="icon"
+                                    @click="current!.icon = icon"
+                                >
+                                    <Icon :name="icon" :size="20" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div v-if="fields.image && !current.icon" class="tm-list-studio__field">
                             <span class="tm-list-studio__label">{{ t('cms.lists.itemImage') }}</span>
                             <FileUpload
                                 :accept="['image/png', 'image/jpeg', 'image/webp']"
@@ -245,7 +269,7 @@ import { markdownToText } from '~/shared/helpers/markdown'
 import { useListEditor } from './ListEditor.hooks'
 import type { IDraftItem } from './ListEditor.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
-import { BADGE_TYPES, BLOCKS, LIST_KINDS } from '~/modules/content/contracts/blocks'
+import { BADGE_TYPES, BLOCKS, FEATURE_ICONS, LIST_KINDS } from '~/modules/content/contracts/blocks'
 import type { ListKind } from '~/modules/content/contracts/blocks'
 
 const { t } = useI18n()

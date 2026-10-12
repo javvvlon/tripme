@@ -3,13 +3,16 @@
         <img
             class="tm-hero__image"
             :src="image" :alt="HERO.imageAlt"
-            width="1440" height="574"
+            width="1920" height="765"
             fetchpriority="high" decoding="async"
         >
         <div class="tm-hero__scrim" aria-hidden="true" />
+        <div class="tm-hero__glow" aria-hidden="true" />
 
         <div class="container-wide tm-hero__inner">
-            <h1 class="tm-hero__title">{{ title }}</h1>
+            <h1 class="tm-hero__title">
+                {{ headline.lead }}<span class="tm-hero__accent">{{ headline.accent }}</span>{{ headline.tail }}
+            </h1>
             <p v-if="subtitle" class="tm-hero__subtitle">{{ subtitle }}</p>
 
             <nav v-if="products.length > 1" class="tm-hero__products" :aria-label="t('home.products.label')">
@@ -35,7 +38,7 @@
             </template>
 
             <template v-else>
-                <SearchWidget class="tm-hero__widget" />
+                <SearchWidget ref="widget" class="tm-hero__widget" />
 
                 <ul class="tm-hero__quick">
                     <li v-for="item in QUICK_SEARCHES" :key="item.id">
@@ -44,6 +47,14 @@
                 </ul>
             </template>
         </div>
+
+        <Teleport to="body">
+            <Transition name="tm-hero-dock">
+                <div v-if="docked && product === 'tours'" class="tm-hero__dock">
+                    <Button block size="lg" icon="search" @click="back">{{ t('search.submit') }}</Button>
+                </div>
+            </Transition>
+        </Teleport>
     </section>
 </template>
 
@@ -54,6 +65,7 @@ import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { countryName, flagOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
 import type { HeroProduct, IHeroProps } from './Hero.d'
+import { useSearchDock } from './Hero.hooks'
 
 const props = defineProps<IHeroProps>()
 
@@ -83,6 +95,10 @@ const esimCountries = computed(() => POPULAR_ESIM_COUNTRIES.slice(0, 5).map(code
 const title = computed(() => props.banner?.title || t(HERO.titleKey))
 const subtitle = computed(() => props.banner?.subtitle || t(HERO.subtitleKey))
 const image = computed(() => props.banner?.imageUrl || HERO.image)
+const headline = computed(() => splitHeadline(title.value))
+
+const widget = ref<Element | null>(null)
+const { docked, back } = useSearchDock(widget)
 </script>
 
 <style lang="scss">

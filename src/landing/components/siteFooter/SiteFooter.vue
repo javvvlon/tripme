@@ -27,11 +27,10 @@
         <div class="container-wide tm-site-footer__main">
             <div class="tm-site-footer__brand">
                 <NuxtLink :to="localePath('/')" class="tm-site-footer__logo" :aria-label="BRAND_NAME">
-                    <img
-                        :src="BRAND_LOGO.onLight.src" :alt="BRAND_NAME"
-                        :width="BRAND_LOGO.onLight.width" :height="BRAND_LOGO.onLight.height"
-                    >
+                    <Logo :width="140" />
                 </NuxtLink>
+
+                <p class="tm-site-footer__tagline">{{ t('footer.tagline') }}</p>
 
                 <template v-if="socials.length">
                     <p class="tm-site-footer__heading">{{ t('footer.social') }}</p>
@@ -128,7 +127,7 @@
 
 <script setup lang="ts">
 import { NuxtLink } from '#components'
-import { BRAND_LOGO, BRAND_NAME } from '~/shared/config/brand'
+import { BRAND_NAME } from '~/shared/config/brand'
 import {
   FOOTER_COLUMNS, FOOTER_COMPANY, FOOTER_LEGAL, FOOTER_SOCIALS, PAYMENT_METHODS,
 } from './SiteFooter.config'

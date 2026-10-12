@@ -1,0 +1,10 @@
+.tm-logo {
+    display: block;
+    flex: none;
+    height: auto;
+
+    &__trip { fill: currentColor; }
+
+    &__me,
+    &__suitcase { fill: #FF6B00; }
+}

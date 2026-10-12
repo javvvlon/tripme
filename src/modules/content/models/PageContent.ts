@@ -26,6 +26,7 @@ export interface IContentItem {
   title: string
   description: string | null
   imageUrl: string | null
+  icon: string | null
   link: string | null
   badge: { label: string, type: BadgeType } | null
   author: string | null
@@ -243,6 +244,7 @@ function mapItem(raw: IContentItemRaw, locale: ContentLocale): IContentItem | nu
     title: translation.title,
     description: translation.description,
     imageUrl: raw.image_url,
+    icon: raw.icon ?? null,
     link: raw.link,
     badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
     author: null,
@@ -263,6 +265,7 @@ function postAsItem(raw: IPostRaw, locale: ContentLocale): IContentItem | null {
     title: translation.title,
     description: translation.excerpt || null,
     imageUrl: raw.image_url,
+    icon: null,
     link: raw.link,
     badge: label && raw.badge_type ? { label, type: raw.badge_type } : null,
     author: [raw.author?.first_name, raw.author?.last_name].filter(Boolean).join(' ') || null,

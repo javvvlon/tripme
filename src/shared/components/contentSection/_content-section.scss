@@ -2,10 +2,26 @@
 
 .tm-content-section {
     @include container();
-    margin-block: 64px;
-    scroll-margin-top: 24px;
+    margin-block: 80px;
+    scroll-margin-top: 96px;
 
-    &__head { margin-bottom: 24px; }
+    &__head {
+        margin-bottom: 32px;
+
+        .tm-section-head__title {
+            @include display(900);
+            font-size: clamp(#{size(28)}, 3.4vw, #{size(48)});
+            line-height: 1;
+        }
+
+        .tm-section-head__sub { margin-top: 12px; font-size: size(16); }
+    }
+
+    @media #{$until-md} {
+        margin-block: 40px;
+
+        &__head { margin-bottom: 24px; }
+    }
 
     &.is-hero { margin-block: 44px 32px; }
 
@@ -23,12 +39,13 @@
         align-items: center;
         gap: 6px;
         padding-block: 8px;
-        color: var(--tm-brand-secondary);
+        color: var(--tm-ink-2);
         font-size: size(15);
-        font-weight: 600;
+        font-weight: 700;
         text-decoration: none;
+        transition: color .2s;
 
-        &:hover { text-decoration: underline; }
+        &:hover { color: var(--tm-brand-secondary); }
     }
 }
 

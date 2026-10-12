@@ -3,10 +3,7 @@
         <div class="tm-auth__card">
             <div class="tm-auth__panel">
                 <NuxtLink :to="localePath('/')">
-                    <img
-                        :src="BRAND_LOGO.onLight.src" :alt="BRAND_NAME"
-                        :width="BRAND_LOGO.onLight.width" :height="BRAND_LOGO.onLight.height" class="tm-auth__logo"
-                    >
+                    <Logo :width="140" class="tm-auth__logo" />
                 </NuxtLink>
 
                 <div class="tm-auth__content">

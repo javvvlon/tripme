@@ -87,7 +87,7 @@
   },
   "home": {
     "hero": {
-      "title": "Win the trip of your dreams",
+      "title": "Create the trip of your dreams",
       "subtitle": "Tours from Tashkent to 40 countries — every operator's price, compared at once"
     },
     "quick": {
@@ -138,7 +138,8 @@
       "title": "Payment and security",
       "note": "Payment happens on the bank’s secure page, with 3D Secure support. We accept:"
     },
-    "agentStatus": "TRIPME LLC is a travel agent. Travel services are provided by the partner tour operators named in the contract. Prices on the site are for reference; payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment."
+    "agentStatus": "TRIPME LLC is a travel agent. Travel services are provided by the partner tour operators named in the contract. Prices on the site are for reference; payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+    "tagline": "Compare. Choose. Travel."
   },
   "country": {
     "turkey": "Turkey",
@@ -520,7 +521,8 @@
       "answerPlaceholder": "A short, clear answer",
       "settings": "List settings",
       "untitledItem": "Untitled",
-      "descriptionPlain": "Cards show this text briefly, without formatting."
+      "descriptionPlain": "Cards show this text briefly, without formatting.",
+      "itemIcon": "Icon"
     },
     "sections": {
       "empty": "No sections yet — add the first one.",
@@ -2153,5 +2155,15 @@
     "prev": "Previous slide",
     "next": "Next slide",
     "open": "Learn more"
+  },
+  "theme": {
+    "toggle": "Light or dark theme"
+  },
+  "errorPage": {
+    "notFoundTitle": "Page not found",
+    "notFoundText": "The link may be out of date. Start with a tour search or go back home.",
+    "title": "Something went wrong",
+    "text": "We are looking into it. Please refresh the page a little later.",
+    "home": "Back home"
   }
 }

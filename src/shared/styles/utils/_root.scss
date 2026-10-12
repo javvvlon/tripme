@@ -1,6 +1,19 @@
+@use 'sass:map';
 @use 'colors' as *;
 @use 'typography' as *;
 @use 'layout' as *;
+
+@mixin palette($palette, $shadows) {
+    @each $group, $shades in $palette {
+        @each $shade, $value in $shades {
+            --tm-#{$group}-#{$shade}: #{$value};
+        }
+    }
+
+    @each $key, $value in $shadows {
+        --tm-shadow-#{$key}: #{$value};
+    }
+}
 
 :root {
     @each $ff, $shades in $font-family {
@@ -9,11 +22,7 @@
         }
     }
 
-    @each $group, $shades in $colors {
-        @each $shade, $value in $shades {
-            --tm-#{$group}-#{$shade}: #{$value};
-        }
-    }
+    @include palette($colors, $shadow);
 
     @each $key, $value in $size {
         --tm-size-#{$key}: #{$value};
@@ -23,11 +32,15 @@
         --tm-radius-#{$key}: #{$value};
     }
 
-    @each $key, $value in $shadow {
-        --tm-shadow-#{$key}: #{$value};
-    }
-
     @each $key, $value in $container {
         --tm-container-#{$key}: #{$value};
     }
+
+    color-scheme: light;
+}
+
+:root:not([data-theme='light']) {
+    @include palette($colors-dark, $shadow-dark);
+
+    color-scheme: dark;
 }

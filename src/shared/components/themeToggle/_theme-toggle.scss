@@ -1,0 +1,25 @@
+@use '../../styles/utils' as *;
+
+.tm-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('pill');
+    color: var(--tm-ink-3);
+    transition: color .2s, border-color .2s;
+
+    &:hover {
+        color: var(--tm-brand-primary);
+        border-color: var(--tm-brand-primary);
+    }
+
+    &__moon { display: none; }
+}
+
+:root[data-theme='light'] .tm-theme-toggle {
+    &__sun { display: none; }
+    &__moon { display: block; }
+}

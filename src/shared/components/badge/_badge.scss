@@ -1,32 +1,44 @@
 @use '../../styles/utils' as *;
 
 .tm-badge {
+    @include badge-type;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 12px;
+    padding: 6px 12px 5px;
+    border: 1px solid transparent;
     border-radius: radius('pill');
-    font-size: size(13);
-    font-weight: 600;
-    line-height: 1.35;
     white-space: nowrap;
 
-    &--hot { background: var(--tm-status-danger); color: var(--tm-common-white); }
-    &--deal { background: var(--tm-brand-primary); color: var(--tm-common-white); }
+    &--primary,
+    &--deal,
+    &--hot {
+        background: var(--tm-brand-gold);
+        color: var(--tm-brand-on-gold);
+    }
 
-    &--primary { background: var(--tm-brand-secondary); color: var(--tm-common-white); }
-    &--secondary { background: var(--tm-surface-3); color: var(--tm-ink-2); }
-    &--sale { background: var(--tm-status-danger); color: var(--tm-common-white); }
+    &--sale {
+        background: var(--tm-night-glass);
+        border-color: var(--tm-brand-gold);
+        color: var(--tm-brand-gold);
+    }
+
+    &--secondary {
+        background: var(--tm-surface-3);
+        border-color: var(--tm-border-1);
+        color: var(--tm-ink-2);
+    }
 
     &--onPhoto {
-        background: var(--tm-common-white);
+        background: var(--tm-surface-1);
         color: var(--tm-ink-1);
         box-shadow: shadow('sm');
     }
 
     &--glass {
-        background: rgba(14, 17, 22, .55);
+        background: var(--tm-night-glass);
         color: var(--tm-common-white);
+        -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
     }
 }

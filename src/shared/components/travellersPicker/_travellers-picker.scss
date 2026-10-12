@@ -201,7 +201,7 @@
         .tm-travellers__control:focus-visible .tm-travellers__value,
         .tm-travellers__control[aria-expanded='true'] .tm-travellers__value {
             border-color: var(--tm-brand-primary);
-            box-shadow: 0 0 0 3px var(--tm-brand-primary-soft);
+            box-shadow: 0 0 0 2px var(--tm-brand-primary-ring);
         }
 
         .tm-travellers__panel {

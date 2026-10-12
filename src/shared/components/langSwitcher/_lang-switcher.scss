@@ -43,10 +43,16 @@
     }
 
     &--onLight {
-        background: var(--tm-surface-1);
+        height: 38px;
+        background: transparent;
         border: 1px solid var(--tm-border-1);
         color: var(--tm-ink-2);
+        font-weight: 600;
+        transition: color .2s, border-color .2s;
 
-        &:hover { border-color: var(--tm-ink-4); }
+        &:hover {
+            border-color: var(--tm-brand-primary);
+            color: var(--tm-ink-1);
+        }
     }
 }

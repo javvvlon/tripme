@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { AppBootstrap } from './src/shared/bootstrap/service'
 import { modules as appModules } from './src/modules'
 import { LOCALES } from './src/shared/config/locales'
+import { THEME_BOOT, THEME_COLOR } from './src/shared/config/theme'
 
 const bootstrap = new AppBootstrap(appModules).bootSync()
 
@@ -84,11 +85,12 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '@fontsource/inter/400.css',
-    '@fontsource/inter/500.css',
-    '@fontsource/inter/600.css',
-    '@fontsource/inter/700.css',
-    '@fontsource/inter/800.css',
+    '@fontsource/nunito/400.css',
+    '@fontsource/nunito/600.css',
+    '@fontsource/nunito/700.css',
+    '@fontsource/montserrat/700.css',
+    '@fontsource/montserrat/800.css',
+    '@fontsource/montserrat/900.css',
     '~/shared/styles/main.scss',
   ],
 
@@ -97,8 +99,15 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#0B4FD4' },
+        { name: 'theme-color', content: THEME_COLOR.dark },
+        { name: 'color-scheme', content: 'dark light' },
       ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+      ],
+      script: [{ innerHTML: THEME_BOOT, tagPosition: 'head' }],
     },
   },
 

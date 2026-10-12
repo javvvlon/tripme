@@ -87,7 +87,7 @@
   },
   "home": {
     "hero": {
-      "title": "Orzuingizdagi sayohatni yutib oling",
+      "title": "Orzuingizdagi sayohatni yarating",
       "subtitle": "Toshkentdan 40 davlatga turlar — barcha operatorlar narxini bir joyda taqqoslaymiz"
     },
     "quick": {
@@ -138,7 +138,8 @@
       "title": "To‘lov va xavfsizlik",
       "note": "To‘lov bankning himoyalangan sahifasida, 3D Secure qo‘llab-quvvatlanadi. Biz qabul qilamiz:"
     },
-    "agentStatus": "«TRIPME» MChJ — turagent. Turistik xizmatlarni shartnomada ko‘rsatilgan hamkor turoperatorlar ko‘rsatadi. Saytdagi narxlar ma’lumot uchun; to‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi."
+    "agentStatus": "«TRIPME» MChJ — turagent. Turistik xizmatlarni shartnomada ko‘rsatilgan hamkor turoperatorlar ko‘rsatadi. Saytdagi narxlar ma’lumot uchun; to‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+    "tagline": "Turlarni solishtiring. Tanlov aniq."
   },
   "country": {
     "turkey": "Turkiya",
@@ -520,7 +521,8 @@
       "answerPlaceholder": "Qisqa va tushunarli javob",
       "settings": "Roʻyxat sozlamalari",
       "untitledItem": "Sarlavhasiz",
-      "descriptionPlain": "Kartochkada matn bezaksiz va qisqa koʻrsatiladi."
+      "descriptionPlain": "Kartochkada matn bezaksiz va qisqa koʻrsatiladi.",
+      "itemIcon": "Belgi"
     },
     "sections": {
       "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",
@@ -2153,5 +2155,15 @@
     "prev": "Oldingi slayd",
     "next": "Keyingi slayd",
     "open": "Batafsil"
+  },
+  "theme": {
+    "toggle": "Yorug‘ yoki qorong‘i mavzu"
+  },
+  "errorPage": {
+    "notFoundTitle": "Sahifa topilmadi",
+    "notFoundText": "Havola eskirgan bo‘lishi mumkin. Turlarni qidirishdan boshlang yoki bosh sahifaga qayting.",
+    "title": "Nimadir xato ketdi",
+    "text": "Biz buni hal qilyapmiz. Sahifani birozdan so‘ng yangilang.",
+    "home": "Bosh sahifa"
   }
 }
