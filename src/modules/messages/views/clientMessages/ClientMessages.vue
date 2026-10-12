@@ -7,9 +7,10 @@
 
         <ChatThread
             :messages="messages" me="client"
-            :busy="busy" :loading="loading"
+            :busy="busy" :loading="loading" :answering="answering"
             class="tm-client-messages__chat"
             @send="send"
+            @answer="answer"
         />
     </div>
 </template>
@@ -18,11 +19,11 @@
 import ChatThread from '~/modules/messages/components/chatThread/ChatThread.vue'
 import { useMessagesRepository } from '~/modules/messages/repositories'
 import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
-import type { IMessage } from '~/modules/messages/contracts/messages'
+import type { IMessage, VariantDecision } from '~/modules/messages/contracts/messages'
 
 const { t } = useI18n()
 const { failed } = useToast()
-const { mine, sendMine } = useMessagesRepository()
+const { mine, sendMine, answerVariant } = useMessagesRepository()
 const unread = useState<number>('account:unread-messages', () => 0)
 
 const POLL_MS = 60000
@@ -30,14 +31,37 @@ const POLL_MS = 60000
 const messages = ref<IMessage[]>([])
 const loading = ref(true)
 const busy = ref(false)
+const answering = ref('')
 
 let timer: ReturnType<typeof setInterval> | null = null
 
 const { onEvent } = useMessageStream()
 
 onEvent((event) => {
-    if (event.type === 'message' && !messages.value.some(message => message.id === event.message.id)) void load()
+    if (event.type !== 'message') return
+
+    if (messages.value.some(message => message.id === event.message.id)) replace(event.message)
+    else void load()
 })
+
+const replace = (next: IMessage) => {
+    messages.value = messages.value.map(message => (message.id === next.id ? next : message))
+}
+
+async function answer(id: string, n: number, decision: VariantDecision) {
+    answering.value = `${id}:${n}:${decision}`
+
+    try {
+        replace(await answerVariant(id, n, decision))
+        await load()
+    }
+    catch (e) {
+        failed(e)
+    }
+    finally {
+        answering.value = ''
+    }
+}
 
 async function load() {
     try {

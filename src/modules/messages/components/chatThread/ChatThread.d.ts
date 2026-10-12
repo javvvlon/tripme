@@ -1,4 +1,4 @@
-import type { IMessage, MessageAuthor } from '~/modules/messages/contracts/messages'
+import type { IMessage, MessageAuthor, VariantDecision } from '~/modules/messages/contracts/messages'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -10,8 +10,10 @@ export interface IChatThreadProps {
   loading?: boolean
   placeholder?: string
   emptyText?: string
+  answering?: string
 }
 
 export interface IChatThreadEmits {
   send: [body: string]
+  answer: [id: string, n: number, decision: VariantDecision]
 }

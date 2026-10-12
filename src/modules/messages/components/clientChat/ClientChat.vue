@@ -33,7 +33,12 @@ let timer: ReturnType<typeof setInterval> | null = null
 const { onEvent } = useMessageStream()
 
 onEvent((event) => {
-    if (event.type === 'message' && event.clientId === props.clientId && !messages.value.some(message => message.id === event.message.id)) void load()
+    if (event.type !== 'message' || event.clientId !== props.clientId) return
+
+    if (messages.value.some(message => message.id === event.message.id)) {
+        messages.value = messages.value.map(message => (message.id === event.message.id ? event.message : message))
+    }
+    else void load()
 })
 
 async function load() {

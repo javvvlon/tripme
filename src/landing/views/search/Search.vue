@@ -159,6 +159,7 @@
                     v-model="quoteOpen"
                     :tours="quoteTours" :lead-id="quoteLead"
                     :destination="label(criteria.to)" :departure="label(criteria.from, 'city')"
+                    :route="{ from: criteria.from, to: criteria.to, toLabel: label(criteria.to), kidAges: criteria.kidAges }"
                 />
             </template>
         </ClientOnly>

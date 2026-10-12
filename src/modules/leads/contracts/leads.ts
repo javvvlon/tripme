@@ -244,7 +244,7 @@ export interface IOrderEvent {
   at: string
 }
 
-export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored' | 'trip_started' | 'next_request'
+export type LeadEventKind = 'created' | 'taken' | 'assigned' | 'status' | 'order_assigned' | 'archived' | 'restored' | 'trip_started' | 'next_request' | 'quote_accepted' | 'quote_declined'
 
 export interface ILeadEvent {
   kind: LeadEventKind

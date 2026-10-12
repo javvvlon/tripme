@@ -2,6 +2,7 @@
     <Modal
         v-model="opened"
         :title="t('quote.title')"
+        :busy="sending"
         :description="t('quote.lead', { n: tours.length })"
         :footer="false"
         size="md"
@@ -45,7 +46,8 @@
             <Checkbox v-if="canMarkLead && lead" v-model="markLead" :label="t('quote.markLead', { ref: lead.ref })" />
 
             <div class="tm-quote__actions">
-                <Button icon="doc" @click="copy">{{ t('quote.copy') }}</Button>
+                <Button v-if="canSendToChat" icon="mail" :loading="sending" @click="sendToChat">{{ t('quote.sendToChat') }}</Button>
+                <Button :variant="canSendToChat ? 'secondary' : 'primary'" icon="doc" @click="copy">{{ t('quote.copy') }}</Button>
                 <Button v-if="pdf" variant="secondary" icon="doc" :disabled="pdfBusy" @click="emit('pdf')">
                     {{ pdfBusy ? t('cms.orders.documents.making') : t('quote.pdf') }}
                 </Button>
@@ -74,7 +76,7 @@ const textId = useId()
 
 const {
     language, client, passport, includes, text, lead, markLead, canMarkLead,
-    passportIssues, tours, copy, share,
+    passportIssues, tours, copy, share, canSendToChat, sendToChat, sending,
 } = useQuoteModal(props, opened)
 </script>
 

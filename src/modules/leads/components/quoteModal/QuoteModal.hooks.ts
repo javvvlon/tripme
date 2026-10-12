@@ -1,7 +1,8 @@
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_TRANSITIONS } from '~/modules/leads/contracts/leads'
-import { buildQuote, byPrice, quotePassportIssues } from '~/modules/leads/helpers/quote'
+import { buildQuote, byPrice, quotePassportIssues, quoteVariantsFor } from '~/modules/leads/helpers/quote'
+import { useMessagesRepository } from '~/modules/messages/repositories'
 import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 import type { IQuoteModalProps, QuoteLanguage } from './QuoteModal.d'
 
@@ -16,6 +17,8 @@ export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => 
   const { one, setStatus } = useLeadsRepository()
   const { rates } = useUzsRates()
   const toast = useToast()
+  const { sendQuote } = useMessagesRepository()
+  const sending = ref(false)
 
   const language = ref<QuoteLanguage>((['ru', 'uz', 'en'].includes(locale.value) ? locale.value : 'ru') as QuoteLanguage)
   const ready = ref(true)
@@ -127,6 +130,39 @@ export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => 
     await afterSend()
   }
 
+  const canSendToChat = computed(() => Boolean(lead.value?.user_id) && tours.value.length > 0)
+
+  async function sendToChat() {
+    const found = lead.value
+
+    if (!found?.user_id || sending.value || !text.value.trim()) return
+
+    sending.value = true
+
+    try {
+      await sendQuote(found.user_id, {
+        body: text.value.trim(),
+        lead_id: found.uuid,
+        locale: language.value,
+        variants: quoteVariantsFor(tours.value, {
+          locale: language.value,
+          t: translate,
+          route: props.route ?? { from: found.route_from, to: found.route_to, toLabel: found.destination, kidAges: found.children_ages ?? [] },
+        }),
+      })
+
+      toast.success(t('quote.sentToChat'))
+      await afterSend()
+      opened.value = false
+    }
+    catch (e) {
+      toast.failed(e)
+    }
+    finally {
+      sending.value = false
+    }
+  }
+
   async function share(channel: 'telegram' | 'whatsapp') {
     const encoded = encodeURIComponent(text.value)
     const url = channel === 'telegram'
@@ -139,6 +175,6 @@ export const useQuoteModal = (props: IQuoteModalProps, opened: Ref<boolean>) => 
 
   return {
     language, client, passport, includes, text, lead, markLead, canMarkLead,
-    passportIssues, tours, copy, share,
+    passportIssues, tours, copy, share, canSendToChat, sendToChat, sending,
   }
 }

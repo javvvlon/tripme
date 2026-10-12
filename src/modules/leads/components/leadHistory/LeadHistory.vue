@@ -66,6 +66,10 @@ function describe(event: ILeadEvent): string {
       return t('cms.archive.history.restored')
     case 'trip_started':
       return t('cms.leads.trip.historyStarted', { n: event.to ?? '' })
+    case 'quote_accepted':
+      return t('cms.leads.next.quoteAccepted', { title: event.subject ?? '' })
+    case 'quote_declined':
+      return t('cms.leads.next.quoteDeclined', { title: event.subject ?? '' })
     case 'order_assigned':
       return t('cms.ownership.history.orderAssigned', { order: event.subject ?? '', to: person(event.to_name, event.to) })
     default:

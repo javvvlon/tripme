@@ -907,7 +907,9 @@
         "doneWithOrder": "Trip finished: {order} — {status}.",
         "doneRejected": "The client declined.",
         "historyNext": "New request created ",
-        "historyFrom": "Created from request "
+        "historyFrom": "Created from request ",
+        "quoteAccepted": "Client chose in chat: {title}",
+        "quoteDeclined": "Client turned down: {title}"
       },
       "related": {
         "title": "Other requests from this client",
@@ -1918,7 +1920,9 @@
       "validity": "Prices are valid as of {date} and may change until the booking is confirmed.",
       "manager": "Your manager: {name}, TripMe"
     },
-    "pdf": "Save PDF to the order"
+    "pdf": "Save PDF to the order",
+    "sendToChat": "Send to client chat",
+    "sentToChat": "The offer is in the client's chat"
   },
   "pagination": {
     "label": "Pages",
@@ -2069,6 +2073,19 @@
       "foreign": "This client belongs to another agent."
     },
     "write": "Message the client",
-    "unreadLabel": "Unread: {n}"
+    "unreadLabel": "Unread: {n}",
+    "quote": {
+      "choose": "Which one works for you?",
+      "answers": "Client's answer",
+      "variant": "Variant {n}",
+      "accept": "Works for me",
+      "decline": "Not for me",
+      "accepted": "Works",
+      "declined": "Not for them",
+      "waiting": "Waiting for an answer"
+    }
+  },
+  "testNotice": {
+    "text": "The site is running in test mode"
   }
 }

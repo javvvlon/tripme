@@ -8,13 +8,69 @@
                 <p v-if="entry.dayBreak" class="tm-chat__day">{{ entry.day }}</p>
 
                 <p v-if="entry.message.author === 'system'" class="tm-chat__system">
-                    <Icon name="megaphone" :size="13" /> {{ entry.message.body }}
+                    <Icon name="megaphone" :size="13" />
+                    <span>
+                        <template v-for="(part, p) in segments(entry.message)" :key="p">
+                            <NuxtLink v-if="part.to" :to="part.to" class="tm-chat__ref">{{ part.text }}</NuxtLink>
+                            <template v-else>{{ part.text }}</template>
+                        </template>
+                    </span>
                     <span class="tm-chat__time">{{ entry.time }}</span>
                 </p>
 
                 <div v-else class="tm-chat__bubble" :class="{ 'is-mine': entry.mine, 'is-grouped': entry.grouped }">
                     <span v-if="!entry.mine && !entry.grouped && entry.message.author_name" class="tm-chat__author">{{ entry.message.author_name }}</span>
-                    <p class="tm-chat__text">{{ entry.message.body }}</p>
+                    <p class="tm-chat__text">
+                        <template v-for="(part, p) in segments(entry.message)" :key="p">
+                            <NuxtLink v-if="part.to" :to="part.to" class="tm-chat__ref">{{ part.text }}</NuxtLink>
+                            <template v-else>{{ part.text }}</template>
+                        </template>
+                    </p>
+
+                    <div v-if="entry.message.quote?.variants.length" class="tm-chat__quote">
+                        <p class="tm-chat__quote-title">{{ me === 'client' ? t('messages.quote.choose') : t('messages.quote.answers') }}</p>
+
+                        <ul class="tm-chat__variants">
+                            <li
+                                v-for="variant in entry.message.quote.variants" :key="variant.n"
+                                class="tm-chat__variant" :class="variant.decision ? `is-${variant.decision}` : ''"
+                            >
+                                <span class="tm-chat__variant-main">
+                                    <span class="tm-chat__variant-name">{{ t('messages.quote.variant', { n: variant.n }) }} · {{ variant.title }}</span>
+                                    <span v-if="variant.price" class="tm-chat__variant-price">{{ variant.price }}</span>
+                                </span>
+
+                                <span v-if="me === 'client'" class="tm-chat__variant-actions">
+                                    <button
+                                        type="button" class="tm-chat__choice is-yes"
+                                        :class="{ 'is-on': variant.decision === 'accepted' }"
+                                        :aria-pressed="variant.decision === 'accepted'"
+                                        :disabled="Boolean(answering)"
+                                        @click="answer(entry.message.id, variant.n, 'accepted', variant.decision)"
+                                    >
+                                        <Spinner v-if="answering === `${entry.message.id}:${variant.n}:accepted`" :size="12" />
+                                        <Icon v-else name="check" :size="13" />
+                                        {{ t('messages.quote.accept') }}
+                                    </button>
+                                    <button
+                                        type="button" class="tm-chat__choice is-no"
+                                        :class="{ 'is-on': variant.decision === 'declined' }"
+                                        :aria-pressed="variant.decision === 'declined'"
+                                        :disabled="Boolean(answering)"
+                                        @click="answer(entry.message.id, variant.n, 'declined', variant.decision)"
+                                    >
+                                        <Spinner v-if="answering === `${entry.message.id}:${variant.n}:declined`" :size="12" />
+                                        {{ t('messages.quote.decline') }}
+                                    </button>
+                                </span>
+
+                                <span v-else class="tm-chat__variant-state">
+                                    {{ variant.decision ? t(`messages.quote.${variant.decision}`) : t('messages.quote.waiting') }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
                     <span class="tm-chat__time">{{ entry.time }}</span>
                 </div>
 
@@ -39,12 +95,31 @@
 </template>
 
 <script setup lang="ts">
+import Spinner from '~/shared/components/spinner/Spinner.vue'
+import type { IMessage, VariantDecision } from '~/modules/messages/contracts/messages'
 import type { IChatThreadEmits, IChatThreadProps } from './ChatThread.d'
 
 const props = defineProps<IChatThreadProps>()
 const emit = defineEmits<IChatThreadEmits>()
 
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
+
+const ORDER_REF = /(ORD-\d{4}-\d+)/
+
+function segments(message: IMessage): Array<{ text: string, to?: string }> {
+  if (props.me !== 'staff') return [{ text: message.body }]
+
+  return message.body.split(ORDER_REF).filter(Boolean).map(text => (ORDER_REF.test(text)
+    ? { text, to: localePath(message.order_id ? `/app/orders/${message.order_id}` : `/app/orders?q=${encodeURIComponent(text)}`) }
+    : { text }))
+}
+
+function answer(id: string, n: number, decision: VariantDecision, current: VariantDecision | null) {
+  if (props.answering || decision === current) return
+
+  emit('answer', id, n, decision)
+}
 
 const draft = ref('')
 const scroller = useTemplateRef<HTMLElement>('scroller')

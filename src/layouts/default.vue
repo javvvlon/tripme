@@ -1,5 +1,6 @@
 <template>
     <div class="tm-shell">
+        <TestNotice v-if="testNotice" />
         <SiteHeader :variant="header" :with-search="withSearch" />
         <main class="tm-shell__main"><slot /></main>
         <SiteFooter />
@@ -12,6 +13,7 @@
 <script setup lang="ts">
 import SiteHeader from '~/landing/components/siteHeader/SiteHeader.vue'
 import SiteFooter from '~/landing/components/siteFooter/SiteFooter.vue'
+import TestNotice from '~/landing/components/testNotice/TestNotice.vue'
 import ModalHost from '~/shared/components/modalHost/ModalHost.vue'
 import ToastHost from '~/shared/components/toastHost/ToastHost.vue'
 
@@ -19,6 +21,7 @@ const route = useRoute()
 
 const header = computed(() => (route.meta.header === 'over' ? 'over' : 'solid'))
 const withSearch = computed(() => route.meta.headerSearch === true)
+const testNotice = computed(() => useRuntimeConfig().public.testMode && route.meta.testNotice === true)
 </script>
 
 <style lang="scss">

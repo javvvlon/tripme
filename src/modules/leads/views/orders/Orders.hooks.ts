@@ -12,11 +12,13 @@ export const useOrders = () => {
   const { managerFilter, elevated, me, people } = useManagers('orders')
   const { page, perPage, pageQuery, setPage, setPerPage, toFirst } = usePageQuery()
 
-  const query = ref('')
+  const route = useRoute()
+
+  const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
   const filter = ref('')
   const error = ref('')
 
-  const debounced = ref('')
+  const debounced = ref(query.value)
   let timer: ReturnType<typeof setTimeout> | null = null
 
   watch(query, (next) => {
@@ -25,7 +27,6 @@ export const useOrders = () => {
     timer = setTimeout(() => { debounced.value = next.trim() }, 300)
   })
 
-  const route = useRoute()
   const archived = computed(() => route.query.archived === '1')
 
   watch([debounced, filter, managerFilter, archived], toFirst)

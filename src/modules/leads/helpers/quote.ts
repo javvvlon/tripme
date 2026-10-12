@@ -2,7 +2,8 @@ import { passportProblem } from './compliance'
 import { mealText } from '~/shared/helpers/meal'
 import { Availability, Tour } from '~/search_engine/models/Tour'
 import type { CurrencyCode } from '~/search_engine/contracts/search'
-import type { ILeadTrip, IOrderRaw } from '~/modules/leads/contracts/leads'
+import type { ILeadTrip, IOrderRaw, ITripRoute } from '~/modules/leads/contracts/leads'
+import { tripFromTour } from './trip'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -103,6 +104,29 @@ const money = (amount: number, currency: string, locale: string): string =>
 
 const sum = (amount: number, locale: string): string =>
   new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(Math.round(amount / 1000) * 1000)
+
+export function quoteVariantsFor(
+  list: Tour[],
+  options: { locale: string, t: Translate, route?: ITripRoute },
+): Array<{ title: string, summary: string, price: string, trip: Record<string, unknown> }> {
+  const { t, locale } = options
+
+  return byPrice(list).map((tour) => {
+    const price = tour.get('comparablePrice')
+    const stars = tour.stars() ? ` ${tour.stars()}*` : ''
+    const dates = tour.get('checkIn')
+      ? `${day(tour.get('checkIn'), locale)} – ${day(tour.get('checkIn'), locale, tour.get('nights'))}, ${t('search.nights', { n: tour.get('nights') }, tour.get('nights'))}`
+      : ''
+    const meal = tour.get('mealName') ? mealText(t, tour.get('mealPlan'), tour.get('mealName')) : ''
+
+    return {
+      title: `${tour.displayName()}${stars}`,
+      summary: [dates, meal].filter(Boolean).join(' · '),
+      price: price.amount > 0 ? money(price.amount, price.currency, locale) : '',
+      trip: { ...tripFromTour(tour, options.route) } as Record<string, unknown>,
+    }
+  })
+}
 
 export function buildQuote(options: IQuoteOptions): string {
   const { t, locale } = options

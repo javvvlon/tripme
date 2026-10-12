@@ -109,6 +109,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.tripme.uz/api/v1',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.tripme.uz',
+      testMode: process.env.NUXT_PUBLIC_TEST_MODE !== 'false',
     },
   },
 

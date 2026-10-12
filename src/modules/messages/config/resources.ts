@@ -15,6 +15,8 @@ export const resource: IResource = {
     clientThread: { url: 'cms/clients/:id/messages', method: 'GET' },
     clientUnread: { url: 'cms/clients/:id/messages/unread', method: 'GET' },
     sendToClient: { url: 'cms/clients/:id/messages', method: 'POST' },
+    sendQuote: { url: 'cms/clients/:id/messages/quote', method: 'POST' },
+    answerVariant: { url: 'account/messages/:id/variants/:n', method: 'POST' },
     streamTicket: { url: 'messages/stream-ticket', method: 'POST' },
   },
 }
