@@ -382,7 +382,8 @@
       "messages": "Messages",
       "archive": "Archive",
       "work": "My work",
-      "team": "Team"
+      "team": "Team",
+      "media": "Media"
     },
     "roles": {
       "CLIENT": "Client",
@@ -1579,6 +1580,46 @@
         "leads": "0 leads | {n} lead | {n} leads | {n} leads",
         "orders": "0 orders | {n} order | {n} orders | {n} orders"
       }
+    },
+    "media": {
+      "title": "Media library",
+      "upload": "Upload",
+      "uploading": "Uploading {done} of {total}",
+      "drop": "Drop to upload",
+      "tooLarge": "{name}: the file is larger than 8 MB",
+      "badType": "{name}: this format isn’t supported",
+      "uploaded": "Uploaded: {n}",
+      "used": "On the site · {n}",
+      "usedIn": "Where it’s used",
+      "unused": "Not used anywhere yet",
+      "copyLink": "Copy link",
+      "linkCopied": "Link copied",
+      "open": "Open original",
+      "duplicate": "Duplicate",
+      "duplicated": "Copy created",
+      "selected": "Selected: {n}",
+      "selectAll": "Select all",
+      "clear": "Clear selection",
+      "moveTo": "Move to folder",
+      "moved": "Moved",
+      "remove": "Delete",
+      "removeTitle": "Delete the images? | Delete the image? | Delete {n} images? | Delete {n} images?",
+      "removeLead": "The files will be removed from storage for good.",
+      "removeUsed": "Some of them are on the site — those places will be left empty.",
+      "removed": "Deleted",
+      "more": "Show more",
+      "select": "Select",
+      "kinds": {
+        "post": "Post",
+        "list": "List",
+        "section": "Page block",
+        "banner": "Banner"
+      },
+      "pages": {
+        "home": "Home",
+        "blog": "Blog"
+      },
+      "dimensions": "{w} × {h} px"
     }
   },
   "richEditor": {

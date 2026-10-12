@@ -15,6 +15,7 @@ export const useMediaLibrary = () => {
       folderId: item.folder_id ?? null,
       size: item.size ?? 0,
       uploadedAt: item.uploaded_at,
+      used: item.used ?? 0,
     }))
 
   const mediaFolders = async (): Promise<IMediaFolder[]> =>
@@ -32,5 +33,8 @@ export const useMediaLibrary = () => {
     deleteFolder: repository.deleteFolder,
     removeMedia: repository.removeUpload,
     describeMedia: repository.describeUpload,
+    uploadMedia: repository.upload,
+    duplicateMedia: repository.duplicateUpload,
+    mediaUsage: repository.uploadUsage,
   }
 }

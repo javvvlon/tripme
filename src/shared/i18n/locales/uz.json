@@ -382,7 +382,8 @@
       "messages": "Xabarlar",
       "archive": "Arxiv",
       "work": "Mening ishim",
-      "team": "Jamoa"
+      "team": "Jamoa",
+      "media": "Mediateka"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -1579,6 +1580,46 @@
         "leads": "0 ta lid | {n} ta lid | {n} ta lid | {n} ta lid",
         "orders": "0 ta buyurtma | {n} ta buyurtma | {n} ta buyurtma | {n} ta buyurtma"
       }
+    },
+    "media": {
+      "title": "Mediateka",
+      "upload": "Yuklash",
+      "uploading": "Yuklanmoqda: {done} / {total}",
+      "drop": "Yuklash uchun qo‘yib yuboring",
+      "tooLarge": "{name}: fayl 8 MB dan katta",
+      "badType": "{name}: bu format qo‘llab-quvvatlanmaydi",
+      "uploaded": "Yuklandi: {n}",
+      "used": "Saytda · {n}",
+      "usedIn": "Qayerda ishlatilgan",
+      "unused": "Hozircha hech qayerda ishlatilmagan",
+      "copyLink": "Havolani nusxalash",
+      "linkCopied": "Havola nusxalandi",
+      "open": "Asl faylni ochish",
+      "duplicate": "Nusxa yaratish",
+      "duplicated": "Nusxa yaratildi",
+      "selected": "Tanlandi: {n}",
+      "selectAll": "Hammasini tanlash",
+      "clear": "Tanlovni bekor qilish",
+      "moveTo": "Papkaga",
+      "moved": "Ko‘chirildi",
+      "remove": "O‘chirish",
+      "removeTitle": "Rasmlarni o‘chirasizmi? | Rasmni o‘chirasizmi? | {n} ta rasmni o‘chirasizmi? | {n} ta rasmni o‘chirasizmi?",
+      "removeLead": "Fayllar ombordan butunlay o‘chiriladi.",
+      "removeUsed": "Ularning bir qismi saytda turibdi — o‘chirilgach, u yerlar bo‘sh qoladi.",
+      "removed": "O‘chirildi",
+      "more": "Yana ko‘rsatish",
+      "select": "Tanlash",
+      "kinds": {
+        "post": "Maqola",
+        "list": "Ro‘yxat",
+        "section": "Sahifa bloki",
+        "banner": "Banner"
+      },
+      "pages": {
+        "home": "Bosh sahifa",
+        "blog": "Blog"
+      },
+      "dimensions": "{w} × {h} px"
     }
   },
   "richEditor": {

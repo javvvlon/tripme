@@ -389,6 +389,16 @@ export interface IStoredFileRaw {
   folder_id: string | null
   size: number
   uploaded_at: string | null
+  used?: number
+}
+
+export type MediaUseKind = 'post' | 'list' | 'section' | 'banner'
+
+export interface IMediaUseRaw {
+  kind: MediaUseKind
+  id: string
+  label: string
+  page: string | null
 }
 
 export interface IMediaFolderRaw {

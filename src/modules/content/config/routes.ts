@@ -37,6 +37,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'auth' },
   },
   {
+    name: 'cms-media',
+    path: '/app/content/media',
+    file: 'modules/content/views/media/Media.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', wide: true },
+  },
+  {
     name: 'cms-list-edit',
     path: '/app/content/lists/:id',
     file: 'modules/content/views/listEditor/ListEditor.vue',

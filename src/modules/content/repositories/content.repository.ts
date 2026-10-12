@@ -14,6 +14,7 @@ import type {
   ISectionDraft,
   IListSummaryRaw,
   IMediaFolderRaw,
+  IMediaUseRaw,
   IStoredFileRaw,
 } from '~/modules/content/contracts/blocks'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -144,6 +145,18 @@ export const useContentRepository = () => {
     await http.call<void>('Content', 'renameUpload', {}, { url, ...changes })
   }
 
+  const duplicateUpload = async (url: string): Promise<IStoredFileRaw> => {
+    const response = await http.call<IStoredFileRaw>('Content', 'duplicateUpload', {}, { url })
+
+    return response.data
+  }
+
+  const uploadUsage = async (url: string): Promise<IMediaUseRaw[]> => {
+    const response = await http.call<{ items: IMediaUseRaw[] }>('Content', 'uploadUsage', { url })
+
+    return response.data.items
+  }
+
   const previewPage = (
     page: ContentPage,
     sections: Array<ISectionDraft & { key: string }>,
@@ -162,6 +175,6 @@ export const useContentRepository = () => {
   return {
     pageContent, pageMeta, savePageMeta,
     layouts, createLayout, deleteLayout, lists, list, createList, updateList, deleteList, sections, saveSections, previewPage, upload, library, removeUpload, describeUpload,
-    folders, createFolder, renameFolder, deleteFolder,
+    folders, createFolder, renameFolder, deleteFolder, duplicateUpload, uploadUsage,
   }
 }

@@ -8,6 +8,7 @@ export interface IMediaFile {
   folderId: string | null
   size: number
   uploadedAt: string | null
+  used: number
 }
 
 export interface IMediaFolder {

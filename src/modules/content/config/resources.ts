@@ -30,5 +30,7 @@ export const resource: IResource = {
     deleteFolder: { url: 'media/folders/:id', method: 'DELETE' },
     removeUpload: { url: 'uploads', method: 'DELETE', params: ['url'] },
     renameUpload: { url: 'uploads', method: 'PATCH' },
+    duplicateUpload: { url: 'uploads/duplicate', method: 'POST' },
+    uploadUsage: { url: 'uploads/usage', method: 'GET', params: ['url'] },
   },
 }

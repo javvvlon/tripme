@@ -2,7 +2,7 @@
     <div class="tm-user-card" :class="{ 'is-compact': compact }">
         <component :is="to ? NuxtLink : 'span'" v-bind="to ? { to } : {}" class="tm-user-card__link" :title="name">
             <span class="tm-user-card__avatar" aria-hidden="true">
-                <img v-if="avatar" :src="avatar" :alt="''" width="36" height="36">
+                <img v-if="avatar" :src="avatar" :alt="''" width="24" height="24">
                 <span v-else class="tm-user-card__initials">{{ initials }}</span>
             </span>
 
@@ -17,7 +17,7 @@
             :aria-label="actionLabel" :title="actionLabel"
             @click="$emit('action')"
         >
-            <Icon :name="actionIcon ?? 'logout'" :size="18" />
+            <Icon :name="actionIcon ?? 'logout'" :size="16" />
         </button>
     </div>
 </template>
