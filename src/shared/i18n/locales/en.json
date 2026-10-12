@@ -1313,7 +1313,8 @@
         "text": "Text",
         "spotlight": "Lead + list",
         "search": "Search",
-        "contact": "Contacts"
+        "contact": "Contacts",
+        "carousel": "Carousel"
       },
       "sources": {
         "list": "List",
@@ -2071,5 +2072,12 @@
   },
   "testNotice": {
     "text": "The site is running in test mode"
+  },
+  "carousel": {
+    "label": "Carousel",
+    "slide": "Slide {n} of {total}",
+    "prev": "Previous slide",
+    "next": "Next slide",
+    "open": "Learn more"
   }
 }

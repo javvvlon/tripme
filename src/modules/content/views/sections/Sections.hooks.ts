@@ -2,7 +2,7 @@ import { useContentRepository } from '~/modules/content/repositories'
 import { usePostsRepository } from '~/modules/posts/repositories'
 import { CMS_DEFAULT_LOCALE, CONTENT_LOCALES, preferredTranslation } from '~/modules/content/contracts/content'
 import { parseGrid } from '~/shared/helpers/grid'
-import { BLOCKS, SINGLE_KINDS, defaultSettings, kindsFor, needsTitle } from '~/modules/content/contracts/blocks'
+import { BLOCKS, SINGLE_KINDS, defaultSettings, kindsFor, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { ContentPage, IContentListRaw, IPageMetaDraft, ISectionDraft, SectionKind } from '~/modules/content/contracts/blocks'
 import type { IBuilderContext } from '~/modules/content/contracts/builder'
@@ -105,7 +105,7 @@ export const useSections = (page: ContentPage) => {
   })))
 
   const listOptions = (kind: SectionKind) => (data.value?.lists ?? [])
-    .filter(list => (list.kind ?? 'cards') === kind)
+    .filter(list => (list.kind ?? 'cards') === listKindFor(kind))
     .map(list => ({
       value: list.uuid,
       label: list.name,

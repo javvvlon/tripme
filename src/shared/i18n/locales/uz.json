@@ -1313,7 +1313,8 @@
         "text": "Matn",
         "spotlight": "Asosiy + roʻyxat",
         "search": "Qidiruv",
-        "contact": "Kontaktlar"
+        "contact": "Kontaktlar",
+        "carousel": "Karusel"
       },
       "sources": {
         "list": "Ro‘yxat",
@@ -2071,5 +2072,12 @@
   },
   "testNotice": {
     "text": "Sayt test rejimida ishlamoqda"
+  },
+  "carousel": {
+    "label": "Karusel",
+    "slide": "{total} tadan {n}-slayd",
+    "prev": "Oldingi slayd",
+    "next": "Keyingi slayd",
+    "open": "Batafsil"
   }
 }

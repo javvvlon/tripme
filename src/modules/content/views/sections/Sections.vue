@@ -265,7 +265,7 @@
                                 :label="t('cms.sections.list')"
                                 :options="listOptions(current.kind)"
                                 :placeholder="t('cms.sections.listPlaceholder')"
-                                :note="listOptions(current.kind).length ? undefined : t('cms.sections.noLists', { kind: t(`cms.blocks.kinds.${current.kind}`) })"
+                                :note="listOptions(current.kind).length ? undefined : t('cms.sections.noLists', { kind: t(`cms.blocks.kinds.${listKindFor(current.kind)}`) })"
                             />
                             <NuxtLink
                                 :to="localePath(current.listId ? `/app/content/lists/${current.listId}` : '/app/content/lists')"
@@ -407,7 +407,7 @@ import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, needsTitle } from '~/modules/content/contracts/blocks'
+import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
 import { excerptFrom } from '~/shared/helpers/markdown'
 import { DEVICES } from '~/modules/content/contracts/builder'
 import type { BlockField, BlockOption, ContentPage, SectionKind } from '~/modules/content/contracts/blocks'

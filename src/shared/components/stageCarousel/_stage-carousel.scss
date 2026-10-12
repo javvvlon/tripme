@@ -1,0 +1,255 @@
+@use '../../styles/utils' as *;
+
+.tm-stage {
+    --gap: 16px;
+    --slide: 78%;
+
+    &__viewport {
+        position: relative;
+        height: clamp(320px, 42vw, 520px);
+        overflow: hidden;
+        touch-action: pan-y;
+        user-select: none;
+        outline: none;
+
+        &:focus-visible .tm-stage__slide.is-current { outline: 3px solid var(--tm-brand-primary); outline-offset: 3px; }
+    }
+
+    &__slide {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc((100% - var(--slide)) / 2);
+        width: var(--slide);
+        overflow: hidden;
+        border-radius: radius('xl');
+        background: var(--tm-surface-3);
+        color: var(--tm-common-white);
+        text-decoration: none;
+        translate: calc(var(--offset) * (100% + var(--gap)) + var(--drag, 0px)) 0;
+        scale: .88;
+        opacity: .5;
+        cursor: pointer;
+        transition: translate .7s cubic-bezier(.2, .8, .2, 1), scale .7s cubic-bezier(.2, .8, .2, 1), opacity .5s;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgb(9 14 30 / 72%) 0%, rgb(9 14 30 / 25%) 38%, transparent 62%);
+            pointer-events: none;
+        }
+
+        &.is-current {
+            scale: 1;
+            opacity: 1;
+            cursor: default;
+
+            &[href] { cursor: pointer; }
+        }
+
+        &.is-away {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    &.is-dragging .tm-stage__slide { transition: none; }
+
+    &__photo {
+        position: absolute;
+        inset: 0;
+        transition: scale 6s ease-out;
+    }
+
+    &__slide.is-current &__photo { scale: 1.05; }
+
+    &__text {
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 36px 40px;
+        opacity: 0;
+        translate: 0 12px;
+        transition: opacity .4s .15s, translate .5s .15s;
+    }
+
+    &__slide.is-current &__text {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    &__title {
+        max-width: 22ch;
+        margin: 0;
+        font-size: size(38);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1.1;
+        text-wrap: balance;
+    }
+
+    &__lead {
+        max-width: 52ch;
+        margin: 0;
+        font-size: size(16);
+        line-height: 1.5;
+        opacity: .9;
+    }
+
+    &__go {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+        padding: 9px 16px;
+        border-radius: radius('pill');
+        background: var(--tm-common-white);
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 700;
+        transition: gap .2s;
+    }
+
+    &__slide[href]:hover &__go { gap: 10px; }
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: var(--slide);
+        margin: 18px auto 0;
+    }
+
+    &__count {
+        flex: none;
+        min-width: 64px;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: .04em;
+
+        strong { color: var(--tm-ink-1); font-weight: 700; }
+    }
+
+    &__dots {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    &__dot {
+        position: relative;
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+        border-radius: radius('pill');
+        background: color-mix(in srgb, var(--tm-ink-4) 45%, transparent);
+        cursor: pointer;
+        transition: width .35s cubic-bezier(.2, .8, .2, 1), background .2s;
+
+        &:hover { background: var(--tm-ink-4); }
+
+        &:focus-visible { outline: 2px solid var(--tm-brand-primary); outline-offset: 2px; }
+
+        &.is-on {
+            width: 44px;
+            background: var(--tm-brand-primary-soft);
+        }
+    }
+
+    &__fill {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: var(--tm-brand-primary);
+        transform-origin: left center;
+        animation: tm-stage-fill linear forwards;
+
+        &.is-paused { animation-play-state: paused; }
+    }
+
+    &__arrows {
+        display: flex;
+        flex: none;
+        gap: 8px;
+        min-width: 64px;
+        justify-content: flex-end;
+    }
+
+    &__arrow {
+        display: inline-grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 1px solid var(--tm-border-1);
+        border-radius: 50%;
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        cursor: pointer;
+        transition: border-color .15s, background .15s;
+
+        &:hover { border-color: var(--tm-ink-4); }
+
+        &:focus-visible { outline: 2px solid var(--tm-brand-primary); outline-offset: 2px; }
+    }
+
+    &.is-single .tm-stage__slide {
+        left: 0;
+        width: 100%;
+    }
+}
+
+@keyframes tm-stage-fill {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-stage {
+        &__slide,
+        &__text,
+        &__photo { transition: none; }
+
+        &__slide.is-current .tm-stage__photo { scale: 1; }
+
+        &__fill { animation: none; transform: scaleX(1); }
+    }
+}
+
+@media #{$until-md} {
+    .tm-stage {
+        --gap: 10px;
+        --slide: 80%;
+
+        &__viewport { height: 440px; }
+
+        &__text { padding: 24px 22px; }
+
+        &__title { font-size: size(24); }
+
+        &__lead {
+            font-size: size(14);
+            @include line-clamp(3);
+        }
+
+        &__bar { width: 100%; gap: 10px; }
+
+        &__count { min-width: 0; }
+
+        &__arrows { min-width: 0; }
+
+        &__arrow { width: 36px; height: 36px; }
+    }
+}

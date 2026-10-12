@@ -17,7 +17,7 @@ export const LIST_KINDS = ['cards', 'features', 'faq'] as const
 
 export type ListKind = typeof LIST_KINDS[number]
 
-export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight', 'search', 'contact'] as const
+export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight', 'search', 'contact', 'carousel'] as const
 
 export type SectionKind = typeof SECTION_KINDS[number]
 
@@ -259,6 +259,17 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     title: false,
     alwaysShown: true,
   },
+  carousel: {
+    ...PLAIN,
+    kind: 'carousel',
+    icon: 'layers',
+    pages: ['home', 'blog'],
+    sources: ['list', 'posts'],
+    layout: false,
+    link: false,
+    titleRequired: false,
+    item: { image: true, description: true, link: true, badge: true },
+  },
 }
 
 export const SINGLE_KINDS: SectionKind[] = ['search', 'contact']
@@ -422,6 +433,10 @@ export interface ISectionDraft {
 export interface IPageMetaDraft {
   seo: Record<ContentLocale, { title: string, description: string }>
 }
+
+const LIST_FOR: Partial<Record<SectionKind, ListKind>> = { carousel: 'cards' }
+
+export const listKindFor = (kind: SectionKind): string => LIST_FOR[kind] ?? kind
 
 export const needsTitle = (kind: SectionKind, imageUrl?: string | null): boolean =>
   BLOCKS[kind].titleRequired && !(BLOCKS[kind].image && imageUrl)
