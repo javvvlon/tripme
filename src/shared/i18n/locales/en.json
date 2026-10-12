@@ -306,7 +306,8 @@
       "invalidCredentials": "Wrong email or password",
       "failed": "Could not sign in. Please try again.",
       "taken": "That email is already registered — try signing in.",
-      "registerFailed": "Could not create the account. Please try again."
+      "registerFailed": "Could not create the account. Please try again.",
+      "deactivated": "Your account is deactivated. Contact the administration for details."
     },
     "expired": "Your session has expired — please sign in again.",
     "registerTitle": "Create an account",

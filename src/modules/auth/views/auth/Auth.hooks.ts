@@ -1,6 +1,7 @@
 import { useAuthRepository } from '~/modules/auth/repositories/auth.repository'
 import { useAuthorize } from '~/modules/auth/hooks/use-authorize'
 import { useAuthForm } from './Auth.form'
+import { ACCOUNT_DEACTIVATED } from './Auth.config'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -25,11 +26,11 @@ export const useAuth = () => {
       await authorize(await login({ ...form.values }))
     }
     catch (e) {
-      const response = e as { status?: number }
+      const response = e as { status?: number, data?: { code?: string } }
 
-      error.value = response.status === 401 || response.status === 400
-        ? t('auth.errors.invalidCredentials')
-        : t('auth.errors.failed')
+      if (response.data?.code === ACCOUNT_DEACTIVATED) error.value = t('auth.errors.deactivated')
+      else if (response.status === 401 || response.status === 400) error.value = t('auth.errors.invalidCredentials')
+      else error.value = t('auth.errors.failed')
     }
     finally {
       pending.value = false

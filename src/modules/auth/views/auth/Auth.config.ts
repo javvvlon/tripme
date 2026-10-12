@@ -9,3 +9,5 @@ export const AUTH_BANNER = {
   width: 1000,
   height: 1250,
 } as const
+
+export const ACCOUNT_DEACTIVATED = 'account_deactivated'

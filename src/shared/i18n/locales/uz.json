@@ -306,7 +306,8 @@
       "invalidCredentials": "Pochta yoki parol noto‘g‘ri",
       "failed": "Kirib bo‘lmadi. Yana urinib ko‘ring.",
       "taken": "Bu pochta allaqachon ro‘yxatdan o‘tgan — kirib ko‘ring.",
-      "registerFailed": "Hisob yaratib bo‘lmadi. Yana urinib ko‘ring."
+      "registerFailed": "Hisob yaratib bo‘lmadi. Yana urinib ko‘ring.",
+      "deactivated": "Akkauntingiz o‘chirilgan. Batafsil ma’lumot uchun administratsiyaga murojaat qiling."
     },
     "expired": "Sessiya tugadi — qaytadan kiring.",
     "registerTitle": "Hisob yaratish",

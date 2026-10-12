@@ -8,7 +8,7 @@ export const CMS_NAVIGATION: INavNode[] = [
     key: 'work',
     labelKey: 'cms.nav.groups.work',
     children: [
-      { key: 'work', labelKey: 'cms.nav.work', icon: 'inbox', to: '/app/work' },
+      { key: 'my-work', labelKey: 'cms.nav.work', icon: 'inbox', to: '/app/work' },
       { key: 'analytics', labelKey: 'cms.nav.analytics', icon: 'pie', to: '/app/analytics' },
       {
         key: 'leads', labelKey: 'cms.nav.leads', icon: 'users', to: '/app/leads',
