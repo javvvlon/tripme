@@ -52,6 +52,9 @@
     }
 
     &__group-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
         margin: 0;
         padding: 6px 10px 6px;
         color: var(--tm-ink-4);
@@ -61,6 +64,8 @@
         text-transform: uppercase;
         white-space: nowrap;
     }
+
+    &__group-icon { flex: none; color: var(--tm-brand-primary); }
 
     &__site {
         display: flex;

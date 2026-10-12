@@ -38,7 +38,15 @@ export const CMS_NAVIGATION: INavNode[] = [
     children: [
       { key: 'operators', labelKey: 'cms.nav.operators', icon: 'globe', to: '/app/operators' },
       { key: 'points', labelKey: 'cms.nav.points', icon: 'medal', to: '/app/points' },
-      { key: 'team', labelKey: 'cms.nav.team', icon: 'shield', to: '/app/team', elevated: true },
+    ],
+  },
+  {
+    key: 'admin',
+    labelKey: 'cms.nav.groups.admin',
+    icon: 'shield',
+    admin: true,
+    children: [
+      { key: 'team', labelKey: 'cms.nav.team', to: '/app/team' },
     ],
   },
 ]

@@ -371,7 +371,8 @@
       "groups": {
         "work": "Ish",
         "site": "Sayt",
-        "settings": "Sozlamalar"
+        "settings": "Sozlamalar",
+        "admin": "Boshqaruv"
       },
       "collapse": "Menyuni yigʻish",
       "expand": "Menyuni yoyish",
@@ -1527,7 +1528,7 @@
     "team": {
       "title": "Jamoa",
       "add": "Xodim qo‘shish",
-      "noAccess": "Bo‘lim faqat rahbarlar va administratorlar uchun.",
+      "noAccess": "Bo‘lim faqat administratorlar uchun.",
       "tabs": {
         "active": "Ishlayapti",
         "archived": "O‘chirilgan"

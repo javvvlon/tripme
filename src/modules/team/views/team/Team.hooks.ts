@@ -12,8 +12,7 @@ export const useTeam = () => {
   const { user } = useAuthSession()
   const repository = useTeamRepository()
 
-  const allowed = computed(() => user.value?.canSeeAllClients() ?? false)
-  const isAdmin = computed(() => user.value?.get('role') === 'ADMIN')
+  const allowed = computed(() => user.value?.get('role') === 'ADMIN')
   const me = computed(() => user.value?.get('id') ?? '')
 
   const { data: members, status, refresh } = useAsyncData<ITeamMember[]>(
@@ -33,7 +32,7 @@ export const useTeam = () => {
     { value: 'archived', label: t('cms.team.tabs.archived'), count: archived.value.length },
   ])
 
-  const roles = computed<TeamRole[]>(() => (isAdmin.value ? ['AGENT', 'MANAGER', 'ADMIN'] : ['AGENT', 'MANAGER']))
+  const roles = computed<TeamRole[]>(() => ['AGENT', 'MANAGER', 'ADMIN'])
 
   const canManage = (member: ITeamMember) => member.uuid !== me.value && roles.value.includes(member.role)
 

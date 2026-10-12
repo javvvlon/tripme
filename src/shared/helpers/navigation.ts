@@ -9,7 +9,7 @@ export interface INavNode {
   children?: INavNode[]
   disabled?: boolean
   query?: Record<string, string>
-  elevated?: boolean
+  admin?: boolean
 }
 
 export function findNavTrail(

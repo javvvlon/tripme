@@ -371,7 +371,8 @@
       "groups": {
         "work": "Work",
         "site": "Site",
-        "settings": "Settings"
+        "settings": "Settings",
+        "admin": "Administration"
       },
       "collapse": "Collapse menu",
       "expand": "Expand menu",
@@ -1527,7 +1528,7 @@
     "team": {
       "title": "Team",
       "add": "Add a team member",
-      "noAccess": "Managers and admins only.",
+      "noAccess": "Administrators only.",
       "tabs": {
         "active": "Active",
         "archived": "Deactivated"

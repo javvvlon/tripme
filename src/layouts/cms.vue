@@ -29,13 +29,15 @@
                 </button>
             </template>
 
-            <section v-for="group in CMS_NAVIGATION" :key="group.key" class="tm-cms__group">
-                <h2 class="tm-cms__group-title">{{ t(group.labelKey) }}</h2>
+            <section v-for="group in CMS_NAVIGATION.filter(entry => !entry.admin || isAdmin)" :key="group.key" class="tm-cms__group">
+                <h2 class="tm-cms__group-title">
+                    <Icon v-if="group.icon" :name="group.icon" :size="13" :stroke="2.2" class="tm-cms__group-icon" />{{ t(group.labelKey) }}
+                </h2>
 
-                <template v-for="node in (group.children ?? []).filter(child => !child.elevated || elevated)" :key="node.key">
+                <template v-for="node in group.children ?? []" :key="node.key">
                     <NavbarItem
                         :label="t(node.labelKey)"
-                        :icon="node.icon"
+                        :icon="node.icon ?? (collapsed ? group.icon : undefined)"
                         :to="node.to"
                         :active="isActive(node) && !subActive(node)"
                         :disabled="node.disabled"
@@ -104,7 +106,7 @@ const localePath = useLocalePath()
 
 const { user, logout } = useAuthSession()
 
-const elevated = computed(() => user.value?.canSeeAllClients() ?? false)
+const isAdmin = computed(() => user.value?.get('role') === 'ADMIN')
 
 const trail = computed(() => findNavTrail(CMS_NAVIGATION, route.path, localePath))
 
