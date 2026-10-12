@@ -422,3 +422,6 @@ export interface ISectionDraft {
 export interface IPageMetaDraft {
   seo: Record<ContentLocale, { title: string, description: string }>
 }
+
+export const needsTitle = (kind: SectionKind, imageUrl?: string | null): boolean =>
+  BLOCKS[kind].titleRequired && !(BLOCKS[kind].image && imageUrl)

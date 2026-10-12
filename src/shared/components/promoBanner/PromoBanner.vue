@@ -1,5 +1,15 @@
 <template>
+    <component
+        :is="link ? NuxtLink : 'figure'"
+        v-if="bare && imageUrl"
+        v-bind="link ? { to: link.trim() } : {}"
+        class="tm-promo-picture"
+    >
+        <img :src="imageUrl" alt="" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+    </component>
+
     <article
+        v-else
         class="tm-promo"
         :class="[`is-${look}`, `is-${tone}`, { 'has-image': imageUrl }]"
     >
@@ -11,7 +21,7 @@
 
         <div class="tm-promo__text">
             <span v-if="eyebrow" class="tm-promo__eyebrow">{{ eyebrow }}</span>
-            <h2 class="tm-promo__title">{{ title }}</h2>
+            <h2 v-if="title" class="tm-promo__title">{{ title }}</h2>
             <p v-if="text" class="tm-promo__lead">{{ text }}</p>
             <Button
                 v-if="ctaLabel && link"
@@ -27,10 +37,13 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import { linkProps } from '~/shared/helpers/link'
 import type { IPromoBannerProps } from './PromoBanner.d'
 
-withDefaults(defineProps<IPromoBannerProps>(), { look: 'card', tone: 'light' })
+const props = withDefaults(defineProps<IPromoBannerProps>(), { look: 'card', tone: 'light' })
+
+const bare = computed(() => !props.title?.trim() && !props.eyebrow?.trim() && !props.text?.trim() && !props.ctaLabel?.trim())
 </script>
 
 <style lang="scss">

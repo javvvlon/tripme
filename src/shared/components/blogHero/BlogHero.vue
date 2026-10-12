@@ -3,7 +3,7 @@
         <img v-if="imageUrl" :src="imageUrl" alt="" class="tm-blog-hero__image" loading="eager" decoding="async">
 
         <div class="tm-blog-hero__text">
-            <h1 class="tm-blog-hero__title">{{ title }}</h1>
+            <h1 v-if="title" class="tm-blog-hero__title">{{ title }}</h1>
             <p v-if="subtitle" class="tm-blog-hero__lead">{{ subtitle }}</p>
         </div>
     </header>

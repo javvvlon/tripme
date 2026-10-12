@@ -4,7 +4,6 @@
             v-for="kind in kinds" :key="kind"
             type="button" role="listitem" class="tm-palette__tile"
             draggable="true"
-            :title="t(`cms.blocks.kindHints.${kind}`)"
             @dragstart="start(kind, $event)"
             @click="emit('add', kind)"
         >

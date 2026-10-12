@@ -4,7 +4,7 @@ import type { BannerStyle, BlockTone } from '~/modules/content/contracts/blocks'
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export interface IPromoBannerProps {
-  title: string
+  title?: string | null
   eyebrow?: string | null
   text?: string | null
   ctaLabel?: string | null

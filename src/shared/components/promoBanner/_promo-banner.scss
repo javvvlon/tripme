@@ -1,5 +1,19 @@
 @use '../../styles/utils' as *;
 
+.tm-promo-picture {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    border-radius: radius('lg');
+    box-shadow: var(--tm-shadow-sm);
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
 .tm-promo {
     position: relative;
     display: grid;

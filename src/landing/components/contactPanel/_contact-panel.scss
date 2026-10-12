@@ -55,6 +55,12 @@
         color: var(--tm-ink-1);
     }
 
+    &__channel-hint {
+        margin: 0;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+    }
+
     &__channel-value {
         display: inline-block;
         margin: 0;

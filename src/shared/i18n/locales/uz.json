@@ -121,13 +121,13 @@
     "sitemap": "Sayt xaritasi",
     "allCountries": "Barcha davlatlar",
     "allDirections": "Barcha yo‘nalishlar",
-    "city": "Toshkent",
+    "city": "Farg‘ona",
     "company": "Kompaniya",
     "about": "Kompaniya haqida",
     "blog": "Blog",
     "contacts": "Kontaktlar",
     "contactUs": "Biz bilan bog‘laning",
-    "hours": "Har kuni, 09:00 — 21:00",
+    "hours": "Du–Sha, 09:00 — 18:00",
     "entity": "",
     "socials": {
       "telegram": "Telegram",
@@ -1315,22 +1315,6 @@
         "search": "Qidiruv",
         "contact": "Kontaktlar"
       },
-      "kindHints": {
-        "cards": "O‘z joylashuviga ega kartochkalar — ro‘yxatdan yoki blog maqolalaridan.",
-        "features": "Qisqa afzalliklar qatori: belgi, sarlavha va bir-ikki so‘z.",
-        "faq": "Akkordeon: savol bosilganda javob ochiladi.",
-        "hero": "Sahifa sarlavhasi, kichik sarlavha va xohlasangiz to‘liq kenglikdagi rasm.",
-        "featured": "Bitta maqola katta kartochkada — tanlangan yoki eng yangisi.",
-        "feed": "Barcha chop etilgan maqolalar «Yana ko‘rsatish» tugmasi bilan.",
-        "banner": "Belgi, sarlavha, tugma va rasmli promo — kartochka yoki butun kenglikda.",
-        "media": "Chap yoki oʻngda rasm, yonida bezatilgan matn va tugma.",
-        "cta": "Chaqiriq va tugmali yorqin chiziq.",
-        "quote": "Fikr yoki iqtibos: matn, muallif va rasm.",
-        "text": "Sarlavha, roʻyxat va rasmli erkin matn.",
-        "spotlight": "Jurnal bloki: katta maqola va keyingilari roʻyxati.",
-        "search": "Tur qidiruvi bilan birinchi ekran: sarlavha, kichik sarlavha va rasm.",
-        "contact": "Kontaktlar va aloqa formasi."
-      },
       "sources": {
         "list": "Ro‘yxat",
         "posts": "Blog maqolalari",
@@ -1585,9 +1569,9 @@
       "chat": "Onlayn chat",
       "chatValue": "Yangi chat boshlash",
       "office": "Ofis",
-      "officeValue": "Toshkent, Amir Temur koʻchasi, 15",
+      "officeValue": "Farg‘ona sh., B. Marg‘iloniy ko‘chasi, 129/1",
       "phone": "Telefon",
-      "phoneValue": "+998 (77) 000-00-00"
+      "phoneValue": "+998 93 644 55 55"
     },
     "fields": {
       "firstName": "Ism",

@@ -18,6 +18,7 @@
                                 {{ t(channel.valueKey) }}
                             </a>
                             <p v-else class="tm-contact__channel-value">{{ t(channel.valueKey) }}</p>
+                            <p v-if="'hintKey' in channel" class="tm-contact__channel-hint">{{ t(channel.hintKey) }}</p>
                         </li>
                     </ul>
                 </div>

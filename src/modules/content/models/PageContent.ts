@@ -75,14 +75,14 @@ const DEFAULT_SPOTLIGHT = 4
 
 const ruleOf = (section: IContentSectionRaw) => BLOCKS[isSectionKind(section.kind) ? section.kind : 'cards']
 
-const isVisible = (kind: SectionKind, translation: ISectionTranslationRaw | null, items: number): boolean => {
+const isVisible = (kind: SectionKind, translation: ISectionTranslationRaw | null, items: number, pictureOnly: boolean): boolean => {
   const rule = BLOCKS[kind]
 
   if (rule.alwaysShown) return true
 
   if (rule.bodyRequired) return Boolean(translation?.body?.trim())
 
-  if (rule.sources.includes('none')) return Boolean(translation?.title?.trim())
+  if (rule.sources.includes('none')) return Boolean(translation?.title?.trim()) || pictureOnly
 
   return items > 0
 }
@@ -168,7 +168,10 @@ export class PageContent extends Model<IPageContent> {
         const translation = pick(section.translations, locale)
         const items = itemsOf(section, grid?.capacity)
 
-        if (!isVisible(section.kind, translation, items.length)) return null
+        const pictureOnly = block.image && Boolean(section.settings?.image_url)
+          && !(section.translations ?? []).some(entry => entry.title?.trim())
+
+        if (!isVisible(section.kind, translation, items.length, pictureOnly)) return null
 
         return {
           uuid: section.uuid,

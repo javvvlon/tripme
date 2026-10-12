@@ -9,7 +9,6 @@
             <span class="tm-kind-picker__icon"><Icon :name="BLOCKS[kind].icon" :size="20" /></span>
             <span class="tm-kind-picker__text">
                 <strong>{{ t(`cms.blocks.kinds.${kind}`) }}</strong>
-                <span>{{ t(`cms.blocks.kindHints.${kind}`) }}</span>
             </span>
             <Icon v-if="model === kind" name="check" :size="18" :stroke="2.4" class="tm-kind-picker__check" />
         </button>

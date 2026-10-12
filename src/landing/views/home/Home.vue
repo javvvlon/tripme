@@ -55,8 +55,11 @@ useHead(() => ({
       'url': home.value,
       'logo': absolute('/tripme-logo.png'),
       'areaServed': 'UZ',
+      'telephone': '+998936445555',
+      'openingHours': 'Mo-Sa 09:00-18:00',
       'address': {
         '@type': 'PostalAddress',
+        'streetAddress': t('contact.channels.officeValue'),
         'addressLocality': t('footer.city'),
         'addressCountry': 'UZ',
       },

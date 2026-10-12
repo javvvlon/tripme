@@ -127,12 +127,7 @@
 
             <aside v-show="!clean" class="tm-builder__right">
                 <template v-if="current">
-                    <header class="tm-builder__inspector-head">
-                        <span class="tm-builder__kind"><Icon :name="BLOCKS[current.kind].icon" :size="20" /></span>
-                        <div>
-                            <strong>{{ t(`cms.blocks.kinds.${current.kind}`) }}</strong>
-                            <span>{{ t(`cms.blocks.kindHints.${current.kind}`) }}</span>
-                        </div>
+                    <div class="tm-builder__inspector-close">
                         <button
                             type="button" class="tm-builder__icon-button is-small"
                             :title="t('cms.builder.close')" :aria-label="t('cms.builder.close')"
@@ -140,7 +135,7 @@
                         >
                             <Icon name="close" :size="16" />
                         </button>
-                    </header>
+                    </div>
 
                     <p v-if="problems[current.key]" class="tm-builder__problem">{{ problems[current.key] }}</p>
 
@@ -412,7 +407,7 @@ import Modal from '~/shared/components/modal/Modal.vue'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES } from '~/modules/content/contracts/blocks'
+import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, needsTitle } from '~/modules/content/contracts/blocks'
 import { excerptFrom } from '~/shared/helpers/markdown'
 import { DEVICES } from '~/modules/content/contracts/builder'
 import type { BlockField, BlockOption, ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
@@ -499,7 +494,7 @@ const fieldLabel = (section: IDraftSection, field: BlockField) => {
 
   if (custom) return t(`cms.sections.fieldLabels.${custom}`)
 
-  if (field === 'title') return t(BLOCKS[section.kind].titleRequired ? 'cms.sections.heading' : 'cms.sections.headingOptional')
+  if (field === 'title') return t(needsTitle(section.kind, section.settings.imageUrl) ? 'cms.sections.heading' : 'cms.sections.headingOptional')
 
   return t(`cms.sections.${field === 'body' ? 'body' : field}`)
 }
@@ -548,7 +543,7 @@ const missingFor = (section: IDraftSection | null): ContentLocale[] => {
 
   const missing = missingLocales(section)
 
-  return missing.length && (BLOCKS[section.kind].titleRequired || missing.length < CONTENT_LOCALES.length) ? missing : []
+  return missing.length && (needsTitle(section.kind, section.settings.imageUrl) || missing.length < CONTENT_LOCALES.length) ? missing : []
 }
 
 let dismiss: ReturnType<typeof setTimeout> | null = null

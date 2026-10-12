@@ -1,5 +1,18 @@
 @use '../../styles/utils' as *;
 
+.tm-media-text-picture {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    border-radius: radius('lg');
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
 .tm-media-text {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

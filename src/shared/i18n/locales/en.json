@@ -121,13 +121,13 @@
     "sitemap": "Site map",
     "allCountries": "All countries",
     "allDirections": "All directions",
-    "city": "Tashkent",
+    "city": "Fergana",
     "company": "Company",
     "about": "About us",
     "blog": "Blog",
     "contacts": "Contacts",
     "contactUs": "Get in touch",
-    "hours": "Daily, 09:00 — 21:00",
+    "hours": "Mon–Sat, 09:00 — 18:00",
     "entity": "",
     "socials": {
       "telegram": "Telegram",
@@ -1315,22 +1315,6 @@
         "search": "Search",
         "contact": "Contacts"
       },
-      "kindHints": {
-        "cards": "Cards in a layout of your choice — from a list or from blog posts.",
-        "features": "A row of short selling points: icon, title, a few words.",
-        "faq": "An accordion: each question opens into its answer.",
-        "hero": "The page title, a subtitle and, if you like, a full-width photo.",
-        "featured": "One post as a large card — the one you pick or the latest.",
-        "feed": "Every published post in a grid with a “Show more” button.",
-        "banner": "A promo with a label, heading, button and photo, as a card or full width.",
-        "media": "A photo on the left or right with formatted text and a button.",
-        "cta": "A bold strip with a call to action and a button.",
-        "quote": "A review or quote: the text, the author and a photo.",
-        "text": "Free text with headings, lists and images.",
-        "spotlight": "Magazine block: one large article and a list of the next ones.",
-        "search": "The first screen with tour search: heading, subtitle and photo.",
-        "contact": "Contacts and the enquiry form."
-      },
       "sources": {
         "list": "List",
         "posts": "Blog posts",
@@ -1585,9 +1569,9 @@
       "chat": "Live chat",
       "chatValue": "Start new chat",
       "office": "Office",
-      "officeValue": "15 Amir Temur Street, Tashkent",
+      "officeValue": "129/1 B. Marg‘iloniy Street, Fergana",
       "phone": "Phone",
-      "phoneValue": "+998 (77) 000-00-00"
+      "phoneValue": "+998 93 644 55 55"
     },
     "fields": {
       "firstName": "First name",

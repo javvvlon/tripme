@@ -1,11 +1,20 @@
 <template>
-    <article class="tm-media-text" :class="[`is-${side}`, { 'has-image': imageUrl }]">
+    <component
+        :is="link ? NuxtLink : 'figure'"
+        v-if="bare && imageUrl"
+        v-bind="link ? { to: link.trim() } : {}"
+        class="tm-media-text-picture"
+    >
+        <img :src="imageUrl" alt="" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+    </component>
+
+    <article v-else class="tm-media-text" :class="[`is-${side}`, { 'has-image': imageUrl }]">
         <figure v-if="imageUrl" class="tm-media-text__media">
             <Photo :photo="{ src: imageUrl, alt: title ?? '' }" ratio="4 / 3" :eager="eager" sizes="(max-width: 900px) 100vw, 560px" />
         </figure>
 
         <div class="tm-media-text__text">
-            <h2 class="tm-media-text__title">{{ title }}</h2>
+            <h2 v-if="title" class="tm-media-text__title">{{ title }}</h2>
             <div v-if="html" class="tm-media-text__body" v-html="html" />
             <Button
                 v-if="ctaLabel && link"
@@ -20,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import { linkProps } from '~/shared/helpers/link'
 import { renderMarkdown } from '~/shared/helpers/markdown'
 import type { IMediaTextProps } from './MediaText.d'
@@ -27,6 +37,8 @@ import type { IMediaTextProps } from './MediaText.d'
 const props = withDefaults(defineProps<IMediaTextProps>(), { side: 'left' })
 
 const html = computed(() => renderMarkdown(props.body))
+
+const bare = computed(() => !props.title?.trim() && !html.value && !props.ctaLabel?.trim())
 </script>
 
 <style lang="scss">
