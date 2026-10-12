@@ -4,7 +4,7 @@ import { UserRole } from '~/modules/auth/contracts/auth'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const WORKSPACE_HOME = '/app/leads'
+export const WORKSPACE_HOME = '/app/work'
 
 export const ACCOUNT_HOME = '/account'
 

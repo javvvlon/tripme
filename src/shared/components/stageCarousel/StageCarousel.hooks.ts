@@ -5,33 +5,50 @@ import { SWIPE_PX } from './StageCarousel.config'
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useStageCarousel = (props: IStageCarouselProps, root: Ref<HTMLElement | null>) => {
-  const index = ref(0)
+  const count = computed(() => props.items.length)
+  const looped = computed(() => count.value > 1)
+
+  const cursor = ref(looped.value ? count.value : 0)
+  const jumping = ref(false)
   const hovered = ref(false)
   const focused = ref(false)
   const visible = ref(false)
   const calm = ref(false)
   const dragX = ref(0)
 
-  const count = computed(() => props.items.length)
+  const index = computed(() => (count.value ? ((cursor.value % count.value) + count.value) % count.value : 0))
   const paused = computed(() => hovered.value || focused.value || !visible.value || calm.value)
 
-  const go = (next: number) => {
-    if (!count.value) return
+  const strip = computed(() => (looped.value
+    ? [0, 1, 2].flatMap(copy => props.items.map((item, position) => ({ item, position, key: `${copy}:${item.uuid}`, at: copy * count.value + position })))
+    : props.items.map((item, position) => ({ item, position, key: item.uuid, at: position }))))
 
-    index.value = (next + count.value) % count.value
+  const step = (delta: number) => {
+    if (!looped.value) return
+
+    cursor.value += delta
   }
 
-  const next = () => go(index.value + 1)
-  const prev = () => go(index.value - 1)
+  const next = () => step(1)
+  const prev = () => step(-1)
 
-  const offsetOf = (position: number): number => {
+  const go = (position: number) => {
+    if (!looped.value || position === index.value) return
+
+    cursor.value += position - index.value
+  }
+
+  function settle(event: TransitionEvent) {
+    if (event.target !== event.currentTarget || event.propertyName !== 'translate' || !looped.value) return
+
     const n = count.value
-    let offset = position - index.value
 
-    if (offset > n / 2) offset -= n
-    if (offset < -n / 2) offset += n
+    if (cursor.value >= n && cursor.value < 2 * n) return
 
-    return offset
+    jumping.value = true
+    cursor.value = n + index.value
+
+    requestAnimationFrame(() => requestAnimationFrame(() => { jumping.value = false }))
   }
 
   let startX: number | null = null
@@ -40,7 +57,7 @@ export const useStageCarousel = (props: IStageCarouselProps, root: Ref<HTMLEleme
   function onDown(event: PointerEvent) {
     dragged = false
 
-    if (count.value < 2 || event.button !== 0) return
+    if (!looped.value || event.button !== 0) return
 
     startX = event.clientX
   }
@@ -84,10 +101,14 @@ export const useStageCarousel = (props: IStageCarouselProps, root: Ref<HTMLEleme
 
   onBeforeUnmount(() => observer?.disconnect())
 
-  watch(count, () => { if (index.value >= count.value) index.value = 0 })
+  watch(count, (n) => {
+    jumping.value = true
+    cursor.value = n > 1 ? n : 0
+    requestAnimationFrame(() => { jumping.value = false })
+  })
 
   return {
-    index, count, paused, hovered, focused, dragX,
-    go, next, prev, offsetOf, onDown, onMove, onUp, onKey, moved,
+    index, count, cursor, strip, jumping, paused, hovered, focused, dragX,
+    go, next, prev, settle, onDown, onMove, onUp, onKey, moved,
   }
 }

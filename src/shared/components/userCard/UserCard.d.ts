@@ -6,6 +6,7 @@ export interface IUserCardProps {
   role?: string
   avatar?: string | null
   compact?: boolean
+  to?: string
   actionLabel?: string
   actionIcon?: string
 }

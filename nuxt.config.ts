@@ -32,7 +32,7 @@ for (const route of bootstrap.routes) {
   }
 }
 
-for (const locale of LOCALES) routeRules[`/${locale}/app`] = { redirect: `/${locale}/app/leads` }
+for (const locale of LOCALES) routeRules[`/${locale}/app`] = { redirect: `/${locale}/app/work` }
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-01',

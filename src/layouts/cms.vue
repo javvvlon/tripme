@@ -32,7 +32,7 @@
             <section v-for="group in CMS_NAVIGATION" :key="group.key" class="tm-cms__group">
                 <h2 class="tm-cms__group-title">{{ t(group.labelKey) }}</h2>
 
-                <template v-for="node in group.children" :key="node.key">
+                <template v-for="node in (group.children ?? []).filter(child => !child.elevated || elevated)" :key="node.key">
                     <NavbarItem
                         :label="t(node.labelKey)"
                         :icon="node.icon"
@@ -65,6 +65,7 @@
 
                 <UserCard
                     :name="user?.fullName() ?? ''"
+                    :to="localePath('/app/profile')"
                     :role="roleLabel"
                     :action-label="t('nav.logout')"
                     :compact="collapsed"
@@ -102,6 +103,8 @@ const route = useRoute()
 const localePath = useLocalePath()
 
 const { user, logout } = useAuthSession()
+
+const elevated = computed(() => user.value?.canSeeAllClients() ?? false)
 
 const trail = computed(() => findNavTrail(CMS_NAVIGATION, route.path, localePath))
 

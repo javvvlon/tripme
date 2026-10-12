@@ -3,49 +3,54 @@
         v-if="items.length"
         ref="root"
         class="tm-stage"
-        :class="{ 'is-single': count < 2, 'is-dragging': dragX !== 0 }"
+        :class="{ 'is-single': count < 2 }"
         role="region" aria-roledescription="carousel" :aria-label="t('carousel.label')"
         @mouseenter="hovered = true" @mouseleave="hovered = false"
         @focusin="focused = true" @focusout="focused = false"
     >
         <div
             class="tm-stage__viewport"
-            :style="{ '--drag': `${dragX}px` }"
             tabindex="0"
             @keydown="onKey"
             @pointerdown="onDown" @pointermove="onMove" @pointerup="onUp" @pointercancel="onUp" @pointerleave="onUp"
         >
-            <component
-                :is="linkOf(item) ? (external(item) ? 'a' : NuxtLink) : 'div'"
-                v-for="(item, position) in items" :key="item.uuid"
-                v-bind="linkOf(item) ?? {}"
-                class="tm-stage__slide"
-                :class="{ 'is-current': offsetOf(position) === 0, 'is-away': Math.abs(offsetOf(position)) > 1 }"
-                :style="{ '--offset': offsetOf(position) }"
-                role="group" aria-roledescription="slide"
-                :aria-label="t('carousel.slide', { n: position + 1, total: count })"
-                :aria-hidden="offsetOf(position) !== 0"
-                :tabindex="offsetOf(position) === 0 ? undefined : -1"
-                draggable="false"
-                @click.capture="onSlide($event, position)"
+            <div
+                class="tm-stage__track"
+                :class="{ 'is-jumping': jumping || dragX !== 0 }"
+                :style="{ '--cursor': cursor, '--drag': `${dragX}px` }"
+                @transitionend="settle"
             >
-                <Photo
-                    :photo="{ src: item.imageUrl, alt: '' }" ratio="fill"
-                    :eager="eager && position === 0"
-                    sizes="(max-width: 720px) 90vw, 960px"
-                    class="tm-stage__photo"
-                />
+                <component
+                    :is="linkOf(slide.item) ? (external(slide.item) ? 'a' : NuxtLink) : 'div'"
+                    v-for="slide in strip" :key="slide.key"
+                    v-bind="linkOf(slide.item) ?? {}"
+                    class="tm-stage__slide"
+                    :class="{ 'is-current': slide.at === cursor }"
+                    role="group" aria-roledescription="slide"
+                    :aria-label="t('carousel.slide', { n: slide.position + 1, total: count })"
+                    :aria-hidden="slide.at !== cursor"
+                    :tabindex="slide.at === cursor ? undefined : -1"
+                    draggable="false"
+                    @click.capture="onSlide($event, slide.at)"
+                >
+                    <Photo
+                        :photo="{ src: slide.item.imageUrl, alt: '' }" ratio="fill"
+                        :eager="eager && slide.at === cursor"
+                        sizes="(max-width: 720px) 90vw, 960px"
+                        class="tm-stage__photo"
+                    />
 
-                <div class="tm-stage__text">
-                    <Badge v-if="item.badge" :tone="item.badge.type" class="tm-stage__badge">{{ item.badge.label }}</Badge>
-                    <h3 v-if="item.title" class="tm-stage__title">{{ item.title }}</h3>
-                    <p v-if="item.description" class="tm-stage__lead">{{ markdownToText(item.description) }}</p>
-                    <span v-if="linkOf(item)" class="tm-stage__go">
-                        {{ t('carousel.open') }}
-                        <Icon name="arrow-right" :size="16" />
-                    </span>
-                </div>
-            </component>
+                    <div class="tm-stage__text">
+                        <Badge v-if="slide.item.badge" :tone="slide.item.badge.type" class="tm-stage__badge">{{ slide.item.badge.label }}</Badge>
+                        <h3 v-if="slide.item.title" class="tm-stage__title">{{ slide.item.title }}</h3>
+                        <p v-if="slide.item.description" class="tm-stage__lead">{{ markdownToText(slide.item.description) }}</p>
+                        <span v-if="linkOf(slide.item)" class="tm-stage__go">
+                            {{ t('carousel.open') }}
+                            <Icon name="arrow-right" :size="16" />
+                        </span>
+                    </div>
+                </component>
+            </div>
         </div>
 
         <div v-if="count > 1" class="tm-stage__bar">
@@ -100,8 +105,8 @@ const localePath = useLocalePath()
 const root = useTemplateRef<HTMLElement>('root')
 
 const {
-    index, count, paused, hovered, focused, dragX,
-    go, next, prev, offsetOf, onDown, onMove, onUp, onKey, moved,
+    index, count, cursor, strip, jumping, paused, hovered, focused, dragX,
+    go, next, prev, settle, onDown, onMove, onUp, onKey, moved,
 } = useStageCarousel(props, root)
 
 const pad = (value: number) => String(value).padStart(2, '0')
@@ -117,10 +122,10 @@ const linkOf = (item: IContentItem): Record<string, string> | null => {
     return { to: localePath(href) }
 }
 
-function onSlide(event: MouseEvent, position: number) {
-    if (moved() || offsetOf(position) !== 0) {
+function onSlide(event: MouseEvent, at: number) {
+    if (moved() || at !== cursor.value) {
         event.preventDefault()
-        if (!moved()) go(position)
+        if (!moved()) cursor.value = at
     }
 }
 </script>

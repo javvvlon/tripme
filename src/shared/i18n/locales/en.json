@@ -377,7 +377,9 @@
       "expand": "Expand menu",
       "esim": "eSIM",
       "messages": "Messages",
-      "archive": "Archive"
+      "archive": "Archive",
+      "work": "My work",
+      "team": "Team"
     },
     "roles": {
       "CLIENT": "Client",
@@ -1502,7 +1504,77 @@
       "ordersTitle": "Order archive",
       "ordersLead": "Orders taken out of work. Open one to restore it."
     },
-    "more": "More actions"
+    "more": "More actions",
+    "work": {
+      "title": "My work",
+      "greeting": {
+        "morning": "Good morning, {name}",
+        "day": "Good afternoon, {name}",
+        "evening": "Good evening, {name}"
+      },
+      "allClear": "All caught up",
+      "tiles": {
+        "free_leads": "free leads | free lead | free leads | free leads",
+        "unanswered_leads": "of my leads await a reply | of my leads awaits a reply | of my leads await a reply | of my leads await a reply",
+        "unread_messages": "unread messages | unread message | unread messages | unread messages",
+        "requested_orders": "orders await the operator | order awaits the operator | orders await the operator | orders await the operator",
+        "draft_orders": "draft orders | draft order | draft orders | draft orders"
+      }
+    },
+    "profile": {
+      "title": "My profile"
+    },
+    "team": {
+      "title": "Team",
+      "add": "Add a team member",
+      "noAccess": "Managers and admins only.",
+      "tabs": {
+        "active": "Active",
+        "archived": "Deactivated"
+      },
+      "emptyActive": "No team members yet",
+      "emptyArchived": "Nobody is deactivated",
+      "neverSeen": "never signed in",
+      "archivedBadge": "Deactivated",
+      "openLeads": "Open leads",
+      "openOrders": "Open orders",
+      "restored": "{name} is back on the team",
+      "actions": {
+        "reset": "Reset password",
+        "archive": "Deactivate",
+        "restore": "Restore"
+      },
+      "errors": {
+        "required": "Enter an email and a first name"
+      },
+      "create": {
+        "title": "New team member",
+        "confirm": "Create",
+        "phone": "Phone (optional)",
+        "role": "Role"
+      },
+      "reveal": {
+        "title": "Password for {name}",
+        "once": "Shown once — pass it on to them.",
+        "done": "Done",
+        "copy": "Copy",
+        "copied": "Copied"
+      },
+      "reset": {
+        "title": "Reset the password for {name}?",
+        "text": "The old password stops working and they are signed out everywhere.",
+        "confirm": "Reset"
+      },
+      "archive": {
+        "title": "Deactivate {name}?",
+        "confirm": "Deactivate",
+        "handTo": "Hand their work to",
+        "toQueue": "The shared queue",
+        "done": "{name} is deactivated",
+        "leads": "0 leads | {n} lead | {n} leads | {n} leads",
+        "orders": "0 orders | {n} order | {n} orders | {n} orders"
+      }
+    }
   },
   "richEditor": {
     "toolbar": "Formatting",

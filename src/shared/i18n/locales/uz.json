@@ -377,7 +377,9 @@
       "expand": "Menyuni yoyish",
       "esim": "eSIM",
       "messages": "Xabarlar",
-      "archive": "Arxiv"
+      "archive": "Arxiv",
+      "work": "Mening ishim",
+      "team": "Jamoa"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -1502,7 +1504,77 @@
       "ordersTitle": "Buyurtmalar arxivi",
       "ordersLead": "Ishdan olingan buyurtmalar. Tiklash uchun buyurtmani oching."
     },
-    "more": "Boshqa amallar"
+    "more": "Boshqa amallar",
+    "work": {
+      "title": "Mening ishim",
+      "greeting": {
+        "morning": "Xayrli tong, {name}",
+        "day": "Xayrli kun, {name}",
+        "evening": "Xayrli kech, {name}"
+      },
+      "allClear": "Hammasi bajarilgan",
+      "tiles": {
+        "free_leads": "bo‘sh lid | bo‘sh lid | bo‘sh lid | bo‘sh lid",
+        "unanswered_leads": "lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda",
+        "unread_messages": "o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar",
+        "requested_orders": "buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda",
+        "draft_orders": "buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi"
+      }
+    },
+    "profile": {
+      "title": "Mening profilim"
+    },
+    "team": {
+      "title": "Jamoa",
+      "add": "Xodim qo‘shish",
+      "noAccess": "Bo‘lim faqat rahbarlar va administratorlar uchun.",
+      "tabs": {
+        "active": "Ishlayapti",
+        "archived": "O‘chirilgan"
+      },
+      "emptyActive": "Hozircha xodimlar yo‘q",
+      "emptyArchived": "O‘chirilganlar yo‘q",
+      "neverSeen": "hali kirmagan",
+      "archivedBadge": "O‘chirilgan",
+      "openLeads": "Ochiq lidlar",
+      "openOrders": "Ochiq buyurtmalar",
+      "restored": "{name} jamoaga qaytdi",
+      "actions": {
+        "reset": "Parolni tiklash",
+        "archive": "O‘chirish",
+        "restore": "Tiklash"
+      },
+      "errors": {
+        "required": "Email va ismni kiriting"
+      },
+      "create": {
+        "title": "Yangi xodim",
+        "confirm": "Yaratish",
+        "phone": "Telefon (ixtiyoriy)",
+        "role": "Rol"
+      },
+      "reveal": {
+        "title": "{name} uchun parol",
+        "once": "Parol bir marta ko‘rsatiladi — uni xodimga bering.",
+        "done": "Tayyor",
+        "copy": "Nusxalash",
+        "copied": "Nusxalandi"
+      },
+      "reset": {
+        "title": "{name} parolini tiklaysizmi?",
+        "text": "Eski parol ishlamaydi, xodim barcha qurilmalardan chiqadi.",
+        "confirm": "Tiklash"
+      },
+      "archive": {
+        "title": "{name}ni o‘chirasizmi?",
+        "confirm": "O‘chirish",
+        "handTo": "Ishni kimga topshirish",
+        "toQueue": "Umumiy navbatga",
+        "done": "{name} o‘chirildi",
+        "leads": "0 ta lid | {n} ta lid | {n} ta lid | {n} ta lid",
+        "orders": "0 ta buyurtma | {n} ta buyurtma | {n} ta buyurtma | {n} ta buyurtma"
+      }
+    }
   },
   "richEditor": {
     "toolbar": "Formatlash",

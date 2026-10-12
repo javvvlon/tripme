@@ -12,6 +12,7 @@ import { AnalyticsModule } from './analytics'
 import { FinanceModule } from './finance'
 import { EsimModule } from './esim'
 import { MessagesModule } from './messages'
+import { TeamModule } from './team'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -30,4 +31,5 @@ export const modules: IModule[] = [
   FinanceModule,
   EsimModule,
   MessagesModule,
+  TeamModule,
 ]

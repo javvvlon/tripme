@@ -31,6 +31,8 @@ export const useLeads = () => {
   const route = useRoute()
   const archived = computed(() => route.query.archived === '1')
 
+  if (typeof route.query.manager === 'string') managerFilter.value = route.query.manager as ManagerFilter
+
   watch([debounced, sort, direction, managerFilter, archived], toFirst)
 
   const { data, status, refresh } = useAsyncData(

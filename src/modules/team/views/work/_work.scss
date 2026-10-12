@@ -1,0 +1,109 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-work {
+    &__head { margin: 8px 0 24px; }
+
+    &__date {
+        margin: 0 0 4px;
+        color: var(--tm-ink-3);
+        font-size: size(14);
+
+        &::first-letter { text-transform: uppercase; }
+    }
+
+    &__title {
+        margin: 0;
+        font-size: size(28);
+        letter-spacing: -.01em;
+    }
+
+    &__calm {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 10px 0 0;
+        color: var(--tm-status-success);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__tile {
+        position: relative;
+        display: grid;
+        grid-template-areas: 'icon go' 'count count' 'label label';
+        grid-template-columns: auto 1fr;
+        gap: 6px;
+        height: 100%;
+        padding: 18px 18px 16px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        text-decoration: none;
+        transition: border-color .15s, transform .15s;
+
+        &:hover {
+            border-color: var(--tm-ink-4);
+            transform: translateY(-1px);
+        }
+
+        &:focus-visible { outline: 2px solid var(--tm-brand-primary); outline-offset: 2px; }
+
+        &.is-urgent {
+            border-color: color-mix(in srgb, var(--tm-brand-primary) 45%, var(--tm-border-1));
+            background: color-mix(in srgb, var(--tm-brand-primary) 6%, var(--tm-surface-1));
+
+            .tm-work__icon {
+                background: var(--tm-brand-primary);
+                color: var(--tm-common-white);
+            }
+        }
+
+        &.is-empty {
+            .tm-work__count,
+            .tm-work__label { color: var(--tm-ink-4); }
+        }
+    }
+
+    &__icon {
+        grid-area: icon;
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+    }
+
+    &__go {
+        grid-area: go;
+        justify-self: end;
+        color: var(--tm-ink-4);
+    }
+
+    &__count {
+        grid-area: count;
+        margin-top: 10px;
+        font-size: size(32);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+    }
+
+    &__label {
+        grid-area: label;
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        line-height: 1.35;
+    }
+}

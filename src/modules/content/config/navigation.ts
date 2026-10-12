@@ -8,6 +8,7 @@ export const CMS_NAVIGATION: INavNode[] = [
     key: 'work',
     labelKey: 'cms.nav.groups.work',
     children: [
+      { key: 'work', labelKey: 'cms.nav.work', icon: 'inbox', to: '/app/work' },
       { key: 'analytics', labelKey: 'cms.nav.analytics', icon: 'pie', to: '/app/analytics' },
       {
         key: 'leads', labelKey: 'cms.nav.leads', icon: 'users', to: '/app/leads',
@@ -37,6 +38,7 @@ export const CMS_NAVIGATION: INavNode[] = [
     children: [
       { key: 'operators', labelKey: 'cms.nav.operators', icon: 'globe', to: '/app/operators' },
       { key: 'points', labelKey: 'cms.nav.points', icon: 'medal', to: '/app/points' },
+      { key: 'team', labelKey: 'cms.nav.team', icon: 'shield', to: '/app/team', elevated: true },
     ],
   },
 ]

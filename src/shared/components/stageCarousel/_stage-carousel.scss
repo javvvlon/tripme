@@ -2,35 +2,54 @@
 
 .tm-stage {
     --gap: 16px;
-    --slide: 78%;
+    --slide: 78;
 
     &__viewport {
         position: relative;
         height: clamp(320px, 42vw, 520px);
         overflow: hidden;
+        container-type: inline-size;
         touch-action: pan-y;
         user-select: none;
         outline: none;
 
-        &:focus-visible .tm-stage__slide.is-current { outline: 3px solid var(--tm-brand-primary); outline-offset: 3px; }
+        &:focus-visible .tm-stage__slide.is-current { outline: 3px solid var(--tm-brand-primary); outline-offset: -3px; }
     }
 
-    &__slide {
+    &__track {
+        --step: calc(var(--slide) * 1cqw + var(--gap));
+
         position: absolute;
         top: 0;
         bottom: 0;
-        left: calc((100% - var(--slide)) / 2);
-        width: var(--slide);
+        left: calc((100cqw - var(--slide) * 1cqw) / 2);
+        display: flex;
+        gap: var(--gap);
+        translate: calc(var(--cursor) * var(--step) * -1 + var(--drag, 0px)) 0;
+        transition: translate .65s cubic-bezier(.22, .8, .24, 1);
+        will-change: translate;
+
+        &.is-jumping {
+            transition: none;
+
+            .tm-stage__slide,
+            .tm-stage__text { transition: none; }
+        }
+    }
+
+    &__slide {
+        position: relative;
+        flex: none;
+        width: calc(var(--slide) * 1cqw);
+        height: 100%;
         overflow: hidden;
         border-radius: radius('xl');
         background: var(--tm-surface-3);
         color: var(--tm-common-white);
         text-decoration: none;
-        translate: calc(var(--offset) * (100% + var(--gap)) + var(--drag, 0px)) 0;
-        scale: .88;
-        opacity: .5;
+        opacity: .55;
         cursor: pointer;
-        transition: translate .7s cubic-bezier(.2, .8, .2, 1), scale .7s cubic-bezier(.2, .8, .2, 1), opacity .5s;
+        transition: opacity .5s;
 
         &::after {
             content: '';
@@ -41,28 +60,17 @@
         }
 
         &.is-current {
-            scale: 1;
             opacity: 1;
             cursor: default;
 
             &[href] { cursor: pointer; }
         }
-
-        &.is-away {
-            opacity: 0;
-            pointer-events: none;
-        }
     }
-
-    &.is-dragging .tm-stage__slide { transition: none; }
 
     &__photo {
         position: absolute;
         inset: 0;
-        transition: scale 6s ease-out;
     }
-
-    &__slide.is-current &__photo { scale: 1.05; }
 
     &__text {
         position: absolute;
@@ -123,7 +131,7 @@
         display: flex;
         align-items: center;
         gap: 16px;
-        width: var(--slide);
+        width: calc(var(--slide) * 1%);
         margin: 18px auto 0;
     }
 
@@ -205,9 +213,10 @@
         &:focus-visible { outline: 2px solid var(--tm-brand-primary); outline-offset: 2px; }
     }
 
-    &.is-single .tm-stage__slide {
-        left: 0;
-        width: 100%;
+    &.is-single {
+        --slide: 100;
+
+        .tm-stage__slide { opacity: 1; }
     }
 }
 
@@ -218,11 +227,9 @@
 
 @media (prefers-reduced-motion: reduce) {
     .tm-stage {
+        &__track,
         &__slide,
-        &__text,
-        &__photo { transition: none; }
-
-        &__slide.is-current .tm-stage__photo { scale: 1; }
+        &__text { transition: none; }
 
         &__fill { animation: none; transform: scaleX(1); }
     }
@@ -231,7 +238,7 @@
 @media #{$until-md} {
     .tm-stage {
         --gap: 10px;
-        --slide: 80%;
+        --slide: 82;
 
         &__viewport { height: 440px; }
 

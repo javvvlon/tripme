@@ -15,7 +15,9 @@ export const useOrders = () => {
   const route = useRoute()
 
   const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
-  const filter = ref('')
+  const filter = ref(typeof route.query.status === 'string' ? route.query.status : '')
+
+  if (typeof route.query.manager === 'string') managerFilter.value = route.query.manager as ManagerFilter
   const error = ref('')
 
   const debounced = ref(query.value)

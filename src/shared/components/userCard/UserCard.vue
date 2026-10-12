@@ -1,14 +1,16 @@
 <template>
     <div class="tm-user-card" :class="{ 'is-compact': compact }">
-        <span class="tm-user-card__avatar" aria-hidden="true">
-            <img v-if="avatar" :src="avatar" :alt="''" width="36" height="36">
-            <span v-else class="tm-user-card__initials">{{ initials }}</span>
-        </span>
+        <component :is="to ? NuxtLink : 'span'" v-bind="to ? { to } : {}" class="tm-user-card__link" :title="name">
+            <span class="tm-user-card__avatar" aria-hidden="true">
+                <img v-if="avatar" :src="avatar" :alt="''" width="36" height="36">
+                <span v-else class="tm-user-card__initials">{{ initials }}</span>
+            </span>
 
-        <span v-if="!compact" class="tm-user-card__identity">
-            <span class="tm-user-card__name" :title="name">{{ name }}</span>
-            <span v-if="role" class="tm-user-card__role">{{ role }}</span>
-        </span>
+            <span v-if="!compact" class="tm-user-card__identity">
+                <span class="tm-user-card__name">{{ name }}</span>
+                <span v-if="role" class="tm-user-card__role">{{ role }}</span>
+            </span>
+        </component>
 
         <button
             type="button" class="tm-user-card__action"
@@ -21,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import type { IUserCardProps } from './UserCard.d'
 
 const props = defineProps<IUserCardProps>()
