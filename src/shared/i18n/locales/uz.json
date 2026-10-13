@@ -1150,15 +1150,15 @@
       "configureLead": "Oʻchirilgan operator qidiruvda qatnashmaydi.",
       "keySet": "Kalit saqlangan",
       "keyMissing": "Kalit yoʻq",
-      "stored": "saqlangan — boʻsh qoldiring",
-      "secretHint": "Boʻsh maydon saqlangan kalitni oʻzgartirmaydi.",
+      "stored": "•••• saqlangan",
+      "secretHint": "Bo‘sh maydon saqlangan qiymatni o‘zgartirmaydi.",
       "connections": {
         "mirror": "Oyna",
         "api": "API"
       },
       "hints": {
-        "mirror": "Operator saytida xuddi agent kabi qidiramiz.",
-        "api": "Toʻgʻridan-toʻgʻri integratsiya. Kalitlarni oldindan saqlash mumkin."
+        "mirror": "Turlarni operator saytidan agent kabi qidiramiz",
+        "api": "Kalitlar orqali to‘g‘ridan-to‘g‘ri integratsiya"
       },
       "fields": {
         "name": "Nomi",
@@ -1169,6 +1169,12 @@
         "apiKey": "API kalit",
         "apiSecret": "Secret",
         "note": "Eslatma"
+      },
+      "inSearch": "Qidiruvda qatnashadi",
+      "offSearch": "Qidiruvda qatnashmaydi",
+      "notePlaceholder": "Operator menejeri kontaktlari, shartlar, komissiya…",
+      "tips": {
+        "siteUrl": "Ma’lumot uchun: operator sayti manzili. Qidiruvga ta’sir qilmaydi."
       }
     },
     "points": {

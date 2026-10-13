@@ -12,4 +12,6 @@ export interface IInputProps {
   required?: boolean
   revealable?: boolean
   rows?: number
+  tip?: string
+  dense?: boolean
 }

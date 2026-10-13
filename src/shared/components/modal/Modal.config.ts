@@ -4,6 +4,7 @@
 export const ModalSize = {
   Small: 'sm',
   Medium: 'md',
+  Large: 'lg',
 } as const
 
 export type ModalSizeValue = typeof ModalSize[keyof typeof ModalSize]

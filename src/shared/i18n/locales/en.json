@@ -1150,15 +1150,15 @@
       "configureLead": "An operator that is off takes no part in search.",
       "keySet": "Key stored",
       "keyMissing": "No key",
-      "stored": "stored — leave blank to keep",
-      "secretHint": "Leaving this blank keeps the stored key.",
+      "stored": "•••• saved",
+      "secretHint": "Leaving it empty keeps the saved value.",
       "connections": {
         "mirror": "Mirror",
         "api": "API"
       },
       "hints": {
-        "mirror": "We search their own site the way an agent would.",
-        "api": "A direct integration. Credentials can be stored ahead of the connection being built."
+        "mirror": "We search the operator’s site the way an agent does",
+        "api": "Direct integration with keys"
       },
       "fields": {
         "name": "Name",
@@ -1169,6 +1169,12 @@
         "apiKey": "API key",
         "apiSecret": "Secret",
         "note": "Note"
+      },
+      "inSearch": "Included in search",
+      "offSearch": "Not included in search",
+      "notePlaceholder": "Operator contact, terms, commission…",
+      "tips": {
+        "siteUrl": "For reference: the operator’s website. It doesn’t affect search."
       }
     },
     "points": {

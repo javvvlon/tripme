@@ -48,51 +48,71 @@
         <Modal
             :model-value="Boolean(editing)"
             :title="current?.name ?? ''"
-            :description="t('cms.operators.configureLead')"
             :confirm-label="t('cms.save')"
             :busy="saving"
-            :size="ModalSize.Medium"
+            :size="ModalSize.Large"
             :error="error"
             @update:model-value="editing = $event ? editing : null"
             @confirm="submit"
         >
-            <p v-if="saved" class="tm-cms-operators__saved" role="status">{{ t('cms.saved') }}</p>
+            <div v-if="current" class="tm-cms-operators__form">
+                <div class="tm-cms-operators__status">
+                    <button
+                        type="button" class="tm-cms-operators__switch"
+                        :class="{ 'is-on': current.is_enabled }"
+                        :aria-pressed="current.is_enabled"
+                        :aria-label="t(current.is_enabled ? 'cms.operators.turnOff' : 'cms.operators.turnOn', { name: current.name })"
+                        @click="flip(current)"
+                    >
+                        <span class="tm-cms-operators__knob" />
+                    </button>
+                    <span class="tm-cms-operators__state">{{ t(current.is_enabled ? 'cms.operators.inSearch' : 'cms.operators.offSearch') }}</span>
+                    <code class="tm-cms-operators__code">{{ current.slug }}</code>
+                    <span v-if="saved" class="tm-cms-operators__saved" role="status"><Icon name="check" :size="14" />{{ t('cms.saved') }}</span>
+                </div>
 
-            <Input v-model="draft.name" :label="t('cms.operators.fields.name')" />
+                <div class="tm-cms-operators__grid">
+                    <Input v-model="draft.name" dense :label="t('cms.operators.fields.name')" />
+                    <Input v-model="draft.siteUrl" dense :label="t('cms.operators.fields.siteUrl')" :tip="t('cms.operators.tips.siteUrl')" placeholder="https://" />
+                </div>
 
-            <div class="tm-cms-operators__field">
-                <span class="tm-cms-operators__label">{{ t('cms.operators.fields.connection') }}</span>
-                <SelectMenu v-model="draft.connection" :options="connectionOptions" />
-                <p class="tm-cms-operators__hint">{{ t(`cms.operators.hints.${draft.connection}`) }}</p>
-            </div>
+                <div class="tm-cms-operators__field">
+                    <span class="tm-cms-operators__label">{{ t('cms.operators.fields.connection') }}</span>
+                    <div class="tm-cms-operators__kinds" role="radiogroup" :aria-label="t('cms.operators.fields.connection')">
+                        <button
+                            v-for="option in connectionOptions" :key="option.value"
+                            type="button" role="radio" class="tm-cms-operators__kind"
+                            :class="{ 'is-on': draft.connection === option.value }"
+                            :aria-checked="draft.connection === option.value"
+                            @click="draft.connection = option.value"
+                        >
+                            <Icon :name="option.value === 'api' ? 'link' : 'globe'" :size="16" />
+                            <span>
+                                <strong>{{ option.label }}</strong>
+                                <small>{{ t(`cms.operators.hints.${option.value}`) }}</small>
+                            </span>
+                        </button>
+                    </div>
+                </div>
 
-            <Input v-model="draft.siteUrl" :label="t('cms.operators.fields.siteUrl')" placeholder="https://" />
+                <div v-if="draft.connection === 'api'" class="tm-cms-operators__grid">
+                    <Input v-model="draft.apiBaseUrl" dense :label="t('cms.operators.fields.apiBaseUrl')" placeholder="https://" />
+                    <Input v-model="draft.apiLogin" dense :label="t('cms.operators.fields.apiLogin')" />
+                    <Input
+                        v-model="draft.apiKey" dense revealable type="password"
+                        :label="t('cms.operators.fields.apiKey')"
+                        :tip="t('cms.operators.secretHint')"
+                        :placeholder="current.has_api_key ? t('cms.operators.stored') : ''"
+                    />
+                    <Input
+                        v-model="draft.apiSecret" dense revealable type="password"
+                        :label="t('cms.operators.fields.apiSecret')"
+                        :tip="t('cms.operators.secretHint')"
+                        :placeholder="current.has_api_secret ? t('cms.operators.stored') : ''"
+                    />
+                </div>
 
-            <template v-if="draft.connection === 'api'">
-                <Input v-model="draft.apiBaseUrl" :label="t('cms.operators.fields.apiBaseUrl')" placeholder="https://" />
-                <Input v-model="draft.apiLogin" :label="t('cms.operators.fields.apiLogin')" />
-
-                <Input
-                    v-model="draft.apiKey"
-                    type="password"
-                    :label="t('cms.operators.fields.apiKey')"
-                    :placeholder="current?.has_api_key ? t('cms.operators.stored') : ''"
-                    :hint="t('cms.operators.secretHint')"
-                    revealable
-                />
-
-                <Input
-                    v-model="draft.apiSecret"
-                    type="password"
-                    :label="t('cms.operators.fields.apiSecret')"
-                    :placeholder="current?.has_api_secret ? t('cms.operators.stored') : ''"
-                    revealable
-                />
-            </template>
-
-            <div class="tm-cms-operators__field">
-                <label :for="noteId" class="tm-cms-operators__label">{{ t('cms.operators.fields.note') }}</label>
-                <textarea :id="noteId" v-model="draft.note" class="tm-cms-operators__textarea" rows="3" />
+                <Input v-model="draft.note" dense :rows="2" :label="t('cms.operators.fields.note')" :placeholder="t('cms.operators.notePlaceholder')" />
             </div>
         </Modal>
     </div>
@@ -106,7 +126,6 @@ import { ModalSize } from '~/shared/components/modal/Modal.config'
 import { useOperators } from './Operators.hooks'
 
 const { t } = useI18n()
-const noteId = useId()
 
 const {
     operators, status, error, saving, saved,

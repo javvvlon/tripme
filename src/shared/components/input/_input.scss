@@ -5,6 +5,27 @@
     flex-direction: column;
     gap: 6px;
 
+    &__head {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    &--dense {
+        gap: 4px;
+
+        .tm-input__label { font-size: size(13); }
+
+        .tm-input__field {
+            padding: 8px 12px;
+            font-size: size(14);
+        }
+
+        .tm-input__field--revealable { padding-right: 40px; }
+
+        .tm-input__reveal { width: 32px; height: 32px; }
+    }
+
     &__label {
         font-size: size(14);
         font-weight: 600;

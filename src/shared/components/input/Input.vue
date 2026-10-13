@@ -1,8 +1,11 @@
 <template>
-    <div class="tm-input">
-        <label v-if="label" :for="id" class="tm-input__label">
-            {{ label }}<span v-if="required" aria-hidden="true"> *</span>
-        </label>
+    <div class="tm-input" :class="{ 'tm-input--dense': dense }">
+        <span v-if="label" class="tm-input__head">
+            <label :for="id" class="tm-input__label">
+                {{ label }}<span v-if="required" aria-hidden="true"> *</span>
+            </label>
+            <InfoTip v-if="tip" :text="tip" />
+        </span>
 
         <div class="tm-input__control">
             <textarea
