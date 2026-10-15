@@ -283,7 +283,14 @@
       "replace": "Replace in lead",
       "title": "Attach this tour to {ref}"
     },
-    "showTours": "Nothing found | Show {count} tour | Show {count} tours | Show {count} tours"
+    "showTours": "Nothing found | Show {count} tour | Show {count} tours | Show {count} tours",
+    "group": {
+      "more": "{variants} more",
+      "moreFrom": "{variants} more from {operators}",
+      "hide": "Hide options",
+      "variants": "{count} options | {count} option | {count} options | {count} options",
+      "operators": "{count} operators | {count} operator | {count} operators | {count} operators"
+    }
   },
   "auth": {
     "mode": "Sign in or sign up",

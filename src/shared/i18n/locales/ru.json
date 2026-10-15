@@ -283,7 +283,14 @@
       "replace": "Заменить в лиде",
       "title": "Привязать тур к {ref}"
     },
-    "showTours": "Ничего не найдено | Показать {count} тур | Показать {count} тура | Показать {count} туров"
+    "showTours": "Ничего не найдено | Показать {count} тур | Показать {count} тура | Показать {count} туров",
+    "group": {
+      "more": "Ещё {variants}",
+      "moreFrom": "Ещё {variants} от {operators}",
+      "hide": "Свернуть варианты",
+      "variants": "{count} вариантов | {count} вариант | {count} варианта | {count} вариантов",
+      "operators": "{count} операторов | {count} оператора | {count} операторов | {count} операторов"
+    }
   },
   "auth": {
     "mode": "Вход или регистрация",

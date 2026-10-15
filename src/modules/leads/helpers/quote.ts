@@ -46,6 +46,8 @@ function tourFrom(order: TourSource, id: string): Tour {
     amount: Number(order.price_amount ?? trip.price_amount ?? 0),
     currency: (order.price_currency || textOf(trip.price_currency) || 'USD') as CurrencyCode,
   }
+  const uzsAmount = Number(trip.price_uzs)
+  const samePrice = Number(trip.price_amount) === money.amount && (textOf(trip.price_currency) ?? money.currency) === money.currency
 
   return new Tour({
     id,
@@ -66,6 +68,9 @@ function tourFrom(order: TourSource, id: string): Tour {
     children: order.children,
     price: money,
     comparablePrice: money,
+    uzs: samePrice && uzsAmount > 0
+      ? { amount: uzsAmount, currency: 'UZS', basis: trip.price_uzs_basis === 'cbu' ? 'cbu' : 'operator', rate: Number(trip.price_uzs_rate) || 0 }
+      : null,
     availability: (textOf(trip.availability) as Availability | null) ?? Availability.Unknown,
     availabilityNote: null,
     flightNote: null,
@@ -168,9 +173,9 @@ export function buildQuote(options: IQuoteOptions): string {
     const stars = tour.stars() ? ` ${tour.stars()}*` : ''
     const place = tour.location() ? `, ${tour.location()}` : ''
     const price = tour.get('comparablePrice')
-    const uzs = options.uzsRate && price.currency === 'USD'
-      ? ` (${t('quote.text.approxUzs', { amount: sum(price.amount * options.uzsRate, locale) })})`
-      : ''
+    const uzsAmount = tour.get('uzs')?.amount
+      ?? (options.uzsRate && price.currency === 'USD' ? price.amount * options.uzsRate : null)
+    const uzs = uzsAmount ? ` (${t('quote.text.approxUzs', { amount: sum(uzsAmount, locale) })})` : ''
 
     lines.push('')
     lines.push(heading)

@@ -283,7 +283,14 @@
       "replace": "Lidda almashtirish",
       "title": "Turni {ref} ga biriktirish"
     },
-    "showTours": "Hech narsa topilmadi | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish"
+    "showTours": "Hech narsa topilmadi | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish | {count} ta turni ko'rsatish",
+    "group": {
+      "more": "Yana {variants}",
+      "moreFrom": "Yana {variants} · {operators}",
+      "hide": "Variantlarni yig‘ish",
+      "variants": "{count} ta variant | {count} ta variant | {count} ta variant | {count} ta variant",
+      "operators": "{count} ta operator | {count} ta operator | {count} ta operator | {count} ta operator"
+    }
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",

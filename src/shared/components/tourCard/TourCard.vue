@@ -179,9 +179,13 @@ const inQuote = computed(() => quoted(props.tour))
 const programme = computed(() =>
   (props.tour.get('programme') ?? '').replace(/<[^>]*>?/g, ' ').replace(/\s+/g, ' ').trim())
 
-const { approxUzs } = useUzsRates()
+const { approxUzs, uzsLabel } = useUzsRates()
 
-const priceUzs = computed(() => approxUzs(props.tour.get('comparablePrice')))
+const priceUzs = computed(() => {
+  const uzs = props.tour.get('uzs')
+
+  return uzs ? uzsLabel(uzs.amount) : approxUzs(props.tour.get('comparablePrice'))
+})
 
 const sourcePrice = computed(() => {
   const source = props.tour.get('price')

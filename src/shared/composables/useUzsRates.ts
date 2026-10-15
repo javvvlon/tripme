@@ -46,5 +46,7 @@ export const useUzsRates = () => {
     return rate ? amount(Math.round(rate)) : ''
   })
 
-  return { rates, toUzs, approxUzs, usdRate }
+  const uzsLabel = (value: number): string => t('price.uzsApprox', { amount: amount(value) })
+
+  return { rates, toUzs, approxUzs, uzsLabel, usdRate }
 }

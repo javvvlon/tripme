@@ -11,6 +11,15 @@ export enum Availability {
   Unknown = 'unknown',
 }
 
+export type UzsBasis = 'operator' | 'cbu'
+
+export interface IUzsPrice {
+  amount: number
+  currency: 'UZS'
+  basis: UzsBasis
+  rate: number
+}
+
 export interface ISupplierRef {
   id: string
   name: string
@@ -35,7 +44,7 @@ export interface ITourRaw {
   roomName: string | null
   adults: number
   children: number
-  price: { source: Money, converted?: Money }
+  price: { source: Money, converted?: Money, uzs?: IUzsPrice }
   availability: Availability
   availabilityNote: string | null
   flightNote: string | null
@@ -47,6 +56,7 @@ export interface ITourRaw {
 export interface ITour extends Omit<ITourRaw, 'price'> {
   price: Money
   comparablePrice: Money
+  uzs?: IUzsPrice | null
 }
 
 export class Tour extends Model<ITour> {
@@ -55,7 +65,16 @@ export class Tour extends Model<ITour> {
       ...raw,
       price: raw.price.source,
       comparablePrice: raw.price.converted ?? raw.price.source,
+      uzs: raw.price.uzs ?? null,
     }
+  }
+
+  public rankPrice(): number {
+    return this.get('uzs')?.amount ?? this.get('comparablePrice').amount
+  }
+
+  public groupKey(): string {
+    return this.get('hotelKey') || this.get('hotelName').trim().toLowerCase()
   }
 
   public isBookable(): boolean {

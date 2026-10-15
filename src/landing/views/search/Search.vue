@@ -104,16 +104,49 @@
 
                 <template v-else-if="tours.length">
                     <ul class="tm-search-view__list">
-                        <li v-for="tour in tours" :key="tour.get('id')" class="tm-search-view__item">
+                        <li v-for="group in hotels" :key="group.key" class="tm-search-view__item">
                             <TourCard
-                                :tour="tour"
+                                :tour="group.lead"
                                 :agent-view="isStaff"
-                                :route="{ from: criteria.from, to: criteria.to, toLabel: label(criteria.to), kidAges: criteria.kidAges }"
+                                :route="cardRoute"
                                 :assign-label="assignLabel"
                                 :assign-title="assignTitle"
-                                :assigning="assigning === tour.get('id')"
+                                :assigning="assigning === group.lead.get('id')"
                                 @assign="assignTour"
                             />
+
+                            <div v-if="group.others.length" class="tm-search-view__variants" :class="{ 'is-open': variantsShown(group.key) }">
+                                <button
+                                    type="button" class="tm-search-view__variants-toggle"
+                                    :aria-expanded="variantsShown(group.key) > 0"
+                                    @click="toggleVariants(group.key)"
+                                >
+                                    <Icon :name="variantsShown(group.key) ? 'chevron-up' : 'chevron'" :size="16" />
+                                    {{ variantsShown(group.key) ? t('results.group.hide') : variantsLabel(group) }}
+                                </button>
+
+                                <ul v-if="variantsShown(group.key)" class="tm-search-view__variants-list">
+                                    <li v-for="tour in group.others.slice(0, variantsShown(group.key))" :key="tour.get('id')">
+                                        <TourCard
+                                            :tour="tour"
+                                            :agent-view="isStaff"
+                                            :route="cardRoute"
+                                            :assign-label="assignLabel"
+                                            :assign-title="assignTitle"
+                                            :assigning="assigning === tour.get('id')"
+                                            @assign="assignTour"
+                                        />
+                                    </li>
+                                </ul>
+
+                                <Button
+                                    v-if="variantsShown(group.key) && group.others.length > variantsShown(group.key)"
+                                    size="sm" variant="ghost" class="tm-search-view__variants-more"
+                                    @click="moreVariants(group.key)"
+                                >
+                                    {{ t('results.showMore', { count: Math.min(group.others.length - variantsShown(group.key), VARIANTS_STEP) }) }}
+                                </Button>
+                            </div>
                         </li>
                     </ul>
 
@@ -182,6 +215,7 @@ import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
+import type { IHotelGroup } from './Search.hooks'
 
 const { t, locale } = useI18n()
 const { label } = useCatalogLabel()
@@ -190,7 +224,7 @@ const { isStaff } = useAuthSession()
 
 const {
   criteria, filters, sort, day,
-  tours, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
+  tours, hotels, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
   remaining, hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
 } = useSearch()
 
@@ -214,6 +248,31 @@ onBeforeUnmount(() => {
 })
 
 const route = useRoute()
+const VARIANTS_STEP = 6
+
+const openVariants = ref<Record<string, number>>({})
+
+const variantsShown = (key: string): number => openVariants.value[key] ?? 0
+
+const toggleVariants = (key: string) => {
+  openVariants.value = { ...openVariants.value, [key]: variantsShown(key) ? 0 : VARIANTS_STEP }
+}
+
+const moreVariants = (key: string) => {
+  openVariants.value = { ...openVariants.value, [key]: variantsShown(key) + VARIANTS_STEP }
+}
+
+const variantsLabel = (group: IHotelGroup): string => {
+  const count = group.others.length
+  const variants = t('results.group.variants', { count }, count)
+
+  if (group.operators < 2) return t('results.group.more', { variants })
+
+  return t('results.group.moreFrom', { variants, operators: t('results.group.operators', { count: group.operators }, group.operators) })
+}
+
+const cardRoute = computed(() => ({ from: criteria.value.from, to: criteria.value.to, toLabel: label(criteria.value.to), kidAges: criteria.value.kidAges }))
+
 const { count: quoteCount, leadId: quoteLead, tours: quoteTours, opened: quoteOpen } = useQuote()
 const { one: fetchLead } = useLeadsRepository()
 const quoteLeadRef = ref('')
@@ -402,6 +461,38 @@ useSeoMeta({
     &__progress-text { min-width: 0; }
 
     &__item { animation: tm-search-item-in .35s ease both; }
+
+    &__variants {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: -4px 0 0 24px;
+        padding-left: 16px;
+        border-left: 2px solid var(--tm-border-1);
+
+        &.is-open { border-left-color: var(--tm-brand-primary); }
+    }
+
+    &__variants-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        align-self: flex-start;
+        padding: 6px 0;
+        color: var(--tm-brand-secondary);
+        font-size: size(14);
+        font-weight: 700;
+
+        &:hover { text-decoration: underline; }
+    }
+
+    &__variants-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__variants-more { align-self: flex-start; }
 
     @keyframes tm-search-item-in {
         from { opacity: 0; transform: translateY(6px); }

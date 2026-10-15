@@ -4,14 +4,14 @@ import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
 import { SearchSort } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
 import type { ISupplierStatus } from '~/search_engine/repositories/tours.repository'
-import type { SearchFacets, SearchRequest } from '~/search_engine/contracts/search'
+import type { FacetOption, SearchFacets, SearchRequest } from '~/search_engine/contracts/search'
 import { EMPTY_FACETS, RESULTS_PAGE_SIZE } from './Search.config'
 import type { IChosenDate } from './Search.config'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-const priceOf = (tour: Tour): number => tour.get('comparablePrice').amount
+const priceOf = (tour: Tour): number => tour.rankPrice()
 
 const SORTERS: Record<SearchSort, (a: Tour, b: Tour) => number> = {
   [SearchSort.Popular]: (a, b) => priceOf(a) - priceOf(b),
@@ -21,6 +21,56 @@ const SORTERS: Record<SearchSort, (a: Tour, b: Tour) => number> = {
 }
 
 const RETRY_DELAYS_MS = [1500, 4000]
+
+export interface IHotelGroup {
+  key: string
+  lead: Tour
+  others: Tour[]
+  operators: number
+}
+
+export const mergeSupplierOptions = (
+  known: FacetOption[],
+  current: FacetOption[],
+  selected: string[],
+  statuses: ISupplierStatus[],
+): FacetOption[] => {
+  const merged = new Map<string, FacetOption>(known.map(option => [option.value, { ...option }]))
+
+  for (const option of current) {
+    const seen = merged.get(option.value)
+
+    if (!seen || selected.includes(option.value)) merged.set(option.value, { ...option })
+  }
+
+  for (const id of selected) {
+    if (merged.has(id)) continue
+
+    const name = statuses.find(status => status.supplier.id === id)?.supplier.name ?? id
+
+    merged.set(id, { value: id, label: name, count: 0 })
+  }
+
+  return [...merged.values()]
+}
+
+export const groupByHotel = (tours: Tour[]): IHotelGroup[] => {
+  const groups = new Map<string, IHotelGroup>()
+
+  for (const tour of tours) {
+    const key = tour.groupKey()
+    const group = groups.get(key)
+
+    if (group) group.others.push(tour)
+    else groups.set(key, { key, lead: tour, others: [], operators: 1 })
+  }
+
+  for (const group of groups.values()) {
+    group.operators = new Set([group.lead, ...group.others].map(tour => tour.get('supplier').id)).size
+  }
+
+  return [...groups.values()]
+}
 
 async function withRetry<T>(task: () => Promise<T>): Promise<T> {
   for (const delay of RETRY_DELAYS_MS) {
@@ -89,7 +139,8 @@ export const useSearch = () => {
   let lastScope = ''
 
   const offers = shallowRef<Tour[]>([])
-  const facets = shallowRef<SearchFacets>(EMPTY_FACETS)
+  const rawFacets = shallowRef<SearchFacets>(EMPTY_FACETS)
+  const knownSuppliers = shallowRef<FacetOption[]>([])
   const statuses = shallowRef<ISupplierStatus[]>([])
   const streaming = ref(isSearchable.value)
   const finished = ref(false)
@@ -163,7 +214,8 @@ export const useSearch = () => {
       if (mine !== ticket) return
 
       merge(result.items)
-      facets.value = result.facets ?? EMPTY_FACETS
+      rawFacets.value = result.facets ?? EMPTY_FACETS
+      rememberSuppliers()
       statuses.value = result.statuses
       hasMore.value = result.hasMore
     }
@@ -175,6 +227,15 @@ export const useSearch = () => {
     }
   }
 
+  const rememberSuppliers = () => {
+    if (!filters.value.suppliers.length) knownSuppliers.value = rawFacets.value.suppliers ?? []
+  }
+
+  const facets = computed<SearchFacets>(() => ({
+    ...rawFacets.value,
+    suppliers: mergeSupplierOptions(knownSuppliers.value, rawFacets.value.suppliers ?? [], filters.value.suppliers, statuses.value),
+  }))
+
   const run = () => {
     stop?.()
     stop = null
@@ -183,7 +244,10 @@ export const useSearch = () => {
     const forDate = criteria.value.date
 
     offers.value = []
-    if (scopeKey.value !== lastScope) facets.value = EMPTY_FACETS
+    if (scopeKey.value !== lastScope) {
+      rawFacets.value = EMPTY_FACETS
+      knownSuppliers.value = []
+    }
     lastScope = scopeKey.value
     statuses.value = []
     finished.value = false
@@ -211,7 +275,8 @@ export const useSearch = () => {
 
         if (event.type === 'offers') {
           merge(event.items)
-          facets.value = event.facets
+          rawFacets.value = event.facets
+          rememberSuppliers()
         }
 
         if (event.type === 'done') {
@@ -242,9 +307,13 @@ export const useSearch = () => {
   const filtered = computed(() =>
     day.value ? sorted.value.filter(tour => tour.get('checkIn') === day.value) : sorted.value)
 
-  const tours = computed(() => filtered.value.slice(0, shown.value))
+  const groups = computed(() => groupByHotel(filtered.value))
 
-  const remaining = computed(() => filtered.value.length - tours.value.length)
+  const hotels = computed(() => groups.value.slice(0, shown.value))
+
+  const tours = computed(() => hotels.value.map(group => group.lead))
+
+  const remaining = computed(() => groups.value.length - hotels.value.length)
 
   const moreAvailable = computed(() => remaining.value > 0 || (finished.value && hasMore.value))
 
@@ -295,7 +364,7 @@ export const useSearch = () => {
 
   return {
     criteria, filters, sort, day,
-    tours, facets, total, statuses, progress, settling, busy,
+    tours, hotels, facets, total, statuses, progress, settling, busy,
     streaming, finished, failed, waitingForFirst,
     isSearchable, remaining,
     hasMore: moreAvailable, canLoadMore, loadingMore, loadMoreError, loadMore, refresh: run,
