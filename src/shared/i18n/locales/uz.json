@@ -530,7 +530,17 @@
       "settings": "Roʻyxat sozlamalari",
       "untitledItem": "Sarlavhasiz",
       "descriptionPlain": "Kartochkada matn bezaksiz va qisqa koʻrsatiladi.",
-      "itemIcon": "Belgi"
+      "itemIcon": "Belgi",
+      "reviewName": "Ism",
+      "reviewNamePlaceholder": "Masalan, Malika T.",
+      "reviewText": "Sharh",
+      "reviewTextPlaceholder": "Sayohatda nima yoqdi",
+      "reviewTrip": "Sayohat",
+      "reviewTripPlaceholder": "Turkiya, Antalya · sentyabr 2026",
+      "ratingLabel": "Baho",
+      "rating": "5 dan {n}",
+      "reviewPhoto": "Rasm",
+      "reviewPhotoHint": "Kvadrat rasm. Bo‘sh — bosh harflar ko‘rinadi."
     },
     "sections": {
       "empty": "Hozircha bo‘lim yo‘q — birinchisini qo‘shing.",
@@ -1335,7 +1345,8 @@
         "spotlight": "Asosiy + roʻyxat",
         "search": "Qidiruv",
         "contact": "Kontaktlar",
-        "carousel": "Karusel"
+        "carousel": "Karusel",
+        "reviews": "Sharhlar"
       },
       "sources": {
         "list": "Ro‘yxat",
@@ -2220,5 +2231,12 @@
     "title": "Nimadir xato ketdi",
     "text": "Biz buni hal qilyapmiz. Sahifani birozdan so‘ng yangilang.",
     "home": "Bosh sahifa"
+  },
+  "reviews": {
+    "average": "O‘rtacha baho: 5 dan {score}",
+    "count": "0 ta sharh | {n} ta sharh | {n} ta sharh | {n} ta sharh",
+    "stars": "5 dan {n}",
+    "prev": "Oldingi sharhlar",
+    "next": "Keyingi sharhlar"
   }
 }

@@ -84,6 +84,23 @@
                             <span class="tm-list-studio__text">{{ markdownToText(item.translations[locale].description) }}</span>
                         </template>
 
+                        <template v-else-if="kind === 'reviews'">
+                            <span class="tm-list-studio__stars" :aria-label="t('cms.lists.rating', { n: item.rating })">
+                                <Icon v-for="star in RATINGS" :key="star" name="star" :size="14" :class="{ 'is-on': star <= item.rating }" />
+                            </span>
+                            <span class="tm-list-studio__text is-quote">{{ markdownToText(item.translations[locale].description) }}</span>
+                            <span class="tm-list-studio__person">
+                                <span class="tm-list-studio__avatar">
+                                    <img v-if="item.imageUrl" :src="item.imageUrl" alt="" loading="lazy" @error="hideBroken">
+                                    <template v-else>{{ initialsOf(titleOf(item)) }}</template>
+                                </span>
+                                <span class="tm-list-studio__who">
+                                    <strong>{{ titleOf(item) }}</strong>
+                                    <span v-if="item.translations[locale].subtitle">{{ item.translations[locale].subtitle }}</span>
+                                </span>
+                            </span>
+                        </template>
+
                         <template v-else>
                             <span class="tm-list-studio__qa">
                                 <strong class="tm-list-studio__name">{{ titleOf(item) }}</strong>
@@ -119,21 +136,44 @@
                     <div class="tm-list-studio__fields">
                         <Input
                             v-model="current.translations[locale].title"
-                            :label="`${t(kind === 'faq' ? 'cms.lists.question' : 'cms.lists.itemTitle')} · ${locale.toUpperCase()}`"
-                            :placeholder="t(kind === 'faq' ? 'cms.lists.questionPlaceholder' : 'cms.lists.itemTitlePlaceholder')"
+                            :label="`${t(copy.title)} · ${locale.toUpperCase()}`"
+                            :placeholder="t(copy.titlePlaceholder)"
                         />
+
+                        <Input
+                            v-if="fields.subtitle"
+                            v-model="current.translations[locale].subtitle"
+                            :label="`${t('cms.lists.reviewTrip')} · ${locale.toUpperCase()}`"
+                            :placeholder="t('cms.lists.reviewTripPlaceholder')"
+                        />
+
+                        <div v-if="fields.rating" class="tm-list-studio__field">
+                            <span class="tm-list-studio__label">{{ t('cms.lists.ratingLabel') }}</span>
+                            <div class="tm-list-studio__rating" role="radiogroup" :aria-label="t('cms.lists.ratingLabel')">
+                                <button
+                                    v-for="star in RATINGS" :key="star"
+                                    type="button" role="radio" class="tm-list-studio__star"
+                                    :class="{ 'is-on': star <= current.rating }"
+                                    :aria-checked="current.rating === star"
+                                    :aria-label="t('cms.lists.rating', { n: star })"
+                                    @click="current!.rating = star"
+                                >
+                                    <Icon name="star" :size="22" />
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="tm-list-studio__field">
                             <span class="tm-list-studio__label">
-                                {{ t(kind === 'faq' ? 'cms.lists.answer' : 'cms.lists.itemDescription') }} · {{ locale.toUpperCase() }}
+                                {{ t(copy.body) }} · {{ locale.toUpperCase() }}
                             </span>
                             <RichEditor
                                 :key="current.key"
                                 v-model="current.translations[locale].description"
                                 compact
-                                :placeholder="t(kind === 'faq' ? 'cms.lists.answerPlaceholder' : 'cms.lists.itemDescriptionPlaceholder')"
+                                :placeholder="t(copy.bodyPlaceholder)"
                             />
-                            <span v-if="kind !== 'faq'" class="tm-list-studio__help">{{ t('cms.lists.descriptionPlain') }}</span>
+                            <span v-if="kind === 'cards' || kind === 'features'" class="tm-list-studio__help">{{ t('cms.lists.descriptionPlain') }}</span>
                         </div>
 
                         <div v-if="fields.icon" class="tm-list-studio__field">
@@ -160,12 +200,12 @@
                         </div>
 
                         <div v-if="fields.image && !current.icon" class="tm-list-studio__field">
-                            <span class="tm-list-studio__label">{{ t('cms.lists.itemImage') }}</span>
+                            <span class="tm-list-studio__label">{{ t(kind === 'reviews' ? 'cms.lists.reviewPhoto' : 'cms.lists.itemImage') }}</span>
                             <FileUpload
                                 :accept="['image/png', 'image/jpeg', 'image/webp']"
                                 :max-size="8 * 1024 * 1024"
                                 :current="current.imageUrl || null"
-                                :hint="uploading === current.key ? t('cms.lists.uploading') : t('cms.lists.itemImageHint')"
+                                :hint="uploading === current.key ? t('cms.lists.uploading') : t(kind === 'reviews' ? 'cms.lists.reviewPhotoHint' : 'cms.lists.itemImageHint')"
                                 :disabled="uploading === current.key"
                                 :library="mediaLibrary"
                                 override
@@ -269,7 +309,8 @@ import { markdownToText } from '~/shared/helpers/markdown'
 import { useListEditor } from './ListEditor.hooks'
 import type { IDraftItem } from './ListEditor.hooks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
-import { BADGE_TYPES, BLOCKS, FEATURE_ICONS, LIST_KINDS } from '~/modules/content/contracts/blocks'
+import { BADGE_TYPES, BLOCKS, FEATURE_ICONS, LIST_KINDS, RATINGS } from '~/modules/content/contracts/blocks'
+import { initialsOf } from '~/shared/helpers/initials'
 import type { ListKind } from '~/modules/content/contracts/blocks'
 
 const { t } = useI18n()
@@ -285,6 +326,14 @@ const titleOf = (item: IDraftItem) =>
   item.translations[locale.value].title.trim()
   || CONTENT_LOCALES.map(code => item.translations[code].title.trim()).find(Boolean)
   || t('cms.lists.untitledItem')
+
+const COPY = {
+  faq: { title: 'cms.lists.question', titlePlaceholder: 'cms.lists.questionPlaceholder', body: 'cms.lists.answer', bodyPlaceholder: 'cms.lists.answerPlaceholder' },
+  reviews: { title: 'cms.lists.reviewName', titlePlaceholder: 'cms.lists.reviewNamePlaceholder', body: 'cms.lists.reviewText', bodyPlaceholder: 'cms.lists.reviewTextPlaceholder' },
+  other: { title: 'cms.lists.itemTitle', titlePlaceholder: 'cms.lists.itemTitlePlaceholder', body: 'cms.lists.itemDescription', bodyPlaceholder: 'cms.lists.itemDescriptionPlaceholder' },
+}
+
+const copy = computed(() => kind.value === 'faq' || kind.value === 'reviews' ? COPY[kind.value] : COPY.other)
 
 const hideBroken = (event: Event) => {
   (event.target as HTMLImageElement).hidden = true

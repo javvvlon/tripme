@@ -530,7 +530,17 @@
       "settings": "List settings",
       "untitledItem": "Untitled",
       "descriptionPlain": "Cards show this text briefly, without formatting.",
-      "itemIcon": "Icon"
+      "itemIcon": "Icon",
+      "reviewName": "Name",
+      "reviewNamePlaceholder": "For example, Malika T.",
+      "reviewText": "Review",
+      "reviewTextPlaceholder": "What they loved about the trip",
+      "reviewTrip": "Trip",
+      "reviewTripPlaceholder": "Turkey, Antalya · September 2026",
+      "ratingLabel": "Rating",
+      "rating": "{n} of 5",
+      "reviewPhoto": "Photo",
+      "reviewPhotoHint": "A square photo. Empty shows initials."
     },
     "sections": {
       "empty": "No sections yet — add the first one.",
@@ -1335,7 +1345,8 @@
         "spotlight": "Lead + list",
         "search": "Search",
         "contact": "Contacts",
-        "carousel": "Carousel"
+        "carousel": "Carousel",
+        "reviews": "Reviews"
       },
       "sources": {
         "list": "List",
@@ -2220,5 +2231,12 @@
     "title": "Something went wrong",
     "text": "We are looking into it. Please refresh the page a little later.",
     "home": "Back home"
+  },
+  "reviews": {
+    "average": "Average rating {score} of 5",
+    "count": "0 reviews | {n} review | {n} reviews | {n} reviews",
+    "stars": "{n} of 5",
+    "prev": "Previous reviews",
+    "next": "Next reviews"
   }
 }

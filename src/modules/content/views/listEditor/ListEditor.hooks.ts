@@ -13,11 +13,12 @@ export interface IDraftItem {
   link: string
   badgeType: BadgeType | ''
   icon: FeatureIcon | ''
-  translations: Record<ContentLocale, { title: string, description: string, badgeLabel: string }>
+  rating: number
+  translations: Record<ContentLocale, { title: string, description: string, badgeLabel: string, subtitle: string }>
 }
 
 const blankTranslations = () => Object.fromEntries(
-  CONTENT_LOCALES.map(locale => [locale, { title: '', description: '', badgeLabel: '' }]),
+  CONTENT_LOCALES.map(locale => [locale, { title: '', description: '', badgeLabel: '', subtitle: '' }]),
 ) as IDraftItem['translations']
 
 let counter = 0
@@ -65,6 +66,7 @@ export const useListEditor = (id: string) => {
       link: item.link ?? '',
       badgeType: item.badge_type ?? '',
       icon: item.icon ?? '',
+      rating: item.rating ?? 5,
       translations: {
         ...blankTranslations(),
         ...Object.fromEntries(item.translations.map(translation => [
@@ -73,6 +75,7 @@ export const useListEditor = (id: string) => {
             title: translation.title,
             description: translation.description ?? '',
             badgeLabel: translation.badge_label ?? '',
+            subtitle: translation.subtitle ?? '',
           },
         ])),
       },
@@ -98,6 +101,7 @@ export const useListEditor = (id: string) => {
       link: '',
       badgeType: '',
       icon: '',
+      rating: 5,
       translations: blankTranslations(),
     }
 
@@ -230,11 +234,13 @@ export const useListEditor = (id: string) => {
           link: fields.value.link ? item.link.trim() || null : null,
           badge_type: fields.value.badge ? item.badgeType || null : null,
           icon: fields.value.icon ? item.icon || null : null,
+          rating: fields.value.rating ? item.rating : null,
           translations: CONTENT_LOCALES.map(code => ({
             locale: code,
             title: item.translations[code].title,
             description: item.translations[code].description,
             badge_label: item.translations[code].badgeLabel,
+            subtitle: fields.value.subtitle ? item.translations[code].subtitle : null,
           })),
         })),
       })

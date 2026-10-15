@@ -17,11 +17,11 @@ export const PAGES = ['home', 'blog'] as const
 
 export type ContentPage = typeof PAGES[number]
 
-export const LIST_KINDS = ['cards', 'features', 'faq'] as const
+export const LIST_KINDS = ['cards', 'features', 'faq', 'reviews'] as const
 
 export type ListKind = typeof LIST_KINDS[number]
 
-export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight', 'search', 'contact', 'carousel'] as const
+export const SECTION_KINDS = ['hero', 'featured', 'cards', 'features', 'faq', 'feed', 'banner', 'media', 'cta', 'quote', 'text', 'spotlight', 'search', 'contact', 'carousel', 'reviews'] as const
 
 export type SectionKind = typeof SECTION_KINDS[number]
 
@@ -55,7 +55,11 @@ export interface IItemFields {
   link: boolean
   badge: boolean
   icon?: boolean
+  rating?: boolean
+  subtitle?: boolean
 }
+
+export const RATINGS = [1, 2, 3, 4, 5] as const
 
 export interface IBlock {
   kind: SectionKind
@@ -275,6 +279,18 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     titleRequired: false,
     item: { image: true, description: true, link: true, badge: true },
   },
+  reviews: {
+    ...PLAIN,
+    kind: 'reviews',
+    icon: 'star',
+    pages: ['home', 'blog'],
+    sources: ['list'],
+    layout: false,
+    link: false,
+    titleRequired: false,
+    subtitle: true,
+    item: { image: true, description: true, link: false, badge: false, rating: true, subtitle: true },
+  },
 }
 
 export const SINGLE_KINDS: SectionKind[] = ['search', 'contact']
@@ -303,6 +319,7 @@ export interface IContentTranslationRaw {
   title: string
   description: string | null
   badge_label: string | null
+  subtitle?: string | null
 }
 
 export interface IContentItemRaw {
@@ -311,6 +328,7 @@ export interface IContentItemRaw {
   image_url: string | null
   badge_type: BadgeType | null
   icon?: FeatureIcon | null
+  rating?: number | null
   link: string | null
   position: number
 }
