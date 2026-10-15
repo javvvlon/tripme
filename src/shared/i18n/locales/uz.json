@@ -290,7 +290,8 @@
       "hide": "Variantlarni yig‘ish",
       "variants": "{count} ta variant | {count} ta variant | {count} ta variant | {count} ta variant",
       "operators": "{count} ta operator | {count} ta operator | {count} ta operator | {count} ta operator"
-    }
+    },
+    "twins": "Xuddi shu tur boshqa operatorlarda"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",

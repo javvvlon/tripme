@@ -1,5 +1,6 @@
 import { useToursRepository } from '~/search_engine/repositories/tours.repository'
 import { useHotelLabels } from '~/shared/composables/useHotelLabels'
+import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
 import { SearchSort } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
@@ -72,6 +73,55 @@ export const groupByHotel = (tours: Tour[]): IHotelGroup[] => {
   return [...groups.values()]
 }
 
+export const packagesOf = (tours: Tour[]): Map<string, Tour[]> => {
+  const packages = new Map<string, Tour[]>()
+
+  for (const tour of tours) {
+    const key = tour.packageKey()
+    const list = packages.get(key)
+
+    if (list) list.push(tour)
+    else packages.set(key, [tour])
+  }
+
+  for (const list of packages.values()) list.sort((a, b) => priceOf(a) - priceOf(b))
+
+  return packages
+}
+
+export const cheapestPackages = (tours: Tour[]): Tour[] => {
+  const best = new Set([...packagesOf(tours).values()].map(list => list[0]!.get('id')))
+
+  return tours.filter(tour => best.has(tour.get('id')))
+}
+
+export const twinsOf = (tours: Tour[]): Map<string, Tour[]> => {
+  const twins = new Map<string, Tour[]>()
+
+  for (const list of packagesOf(tours).values()) {
+    if (list.length < 2) continue
+
+    for (const tour of list) {
+      const own = tour.get('supplier').id
+      const seen = new Set<string>([own])
+      const others: Tour[] = []
+
+      for (const other of list) {
+        const supplier = other.get('supplier').id
+
+        if (seen.has(supplier)) continue
+
+        seen.add(supplier)
+        others.push(other)
+      }
+
+      if (others.length) twins.set(tour.get('id'), others)
+    }
+  }
+
+  return twins
+}
+
 async function withRetry<T>(task: () => Promise<T>): Promise<T> {
   for (const delay of RETRY_DELAYS_MS) {
     try {
@@ -87,6 +137,7 @@ async function withRetry<T>(task: () => Promise<T>): Promise<T> {
 
 export const useSearch = () => {
   const { search, stream, soonestDeparture } = useToursRepository()
+  const { isStaff } = useAuthSession()
 
   const criteria = useAppliedCriteria()
   const route = useRoute()
@@ -307,7 +358,11 @@ export const useSearch = () => {
   const filtered = computed(() =>
     day.value ? sorted.value.filter(tour => tour.get('checkIn') === day.value) : sorted.value)
 
-  const groups = computed(() => groupByHotel(filtered.value))
+  const visible = computed(() => (isStaff.value ? filtered.value : cheapestPackages(filtered.value)))
+
+  const twins = computed(() => (isStaff.value ? twinsOf(filtered.value) : new Map<string, Tour[]>()))
+
+  const groups = computed(() => groupByHotel(visible.value))
 
   const hotels = computed(() => groups.value.slice(0, shown.value))
 
@@ -360,11 +415,11 @@ export const useSearch = () => {
 
   const busy = computed(() => waitingForFirst.value || seeking.value)
 
-  const total = computed(() => filtered.value.length)
+  const total = computed(() => visible.value.length)
 
   return {
     criteria, filters, sort, day,
-    tours, hotels, facets, total, statuses, progress, settling, busy,
+    tours, hotels, twins, facets, total, statuses, progress, settling, busy,
     streaming, finished, failed, waitingForFirst,
     isSearchable, remaining,
     hasMore: moreAvailable, canLoadMore, loadingMore, loadMoreError, loadMore, refresh: run,

@@ -290,7 +290,8 @@
       "hide": "Hide options",
       "variants": "{count} options | {count} option | {count} options | {count} options",
       "operators": "{count} operators | {count} operator | {count} operators | {count} operators"
-    }
+    },
+    "twins": "Same package at other operators"
   },
   "auth": {
     "mode": "Sign in or sign up",

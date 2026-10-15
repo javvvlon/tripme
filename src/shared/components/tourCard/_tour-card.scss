@@ -207,6 +207,31 @@
 
     &__code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
+    &__twins {
+        flex-basis: 100%;
+        flex-wrap: wrap;
+        align-items: baseline;
+
+        dd {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 6px;
+        }
+    }
+
+    &__twin {
+        padding: 1px 8px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+
+        &.is-cheaper {
+            border-color: var(--tm-brand-primary);
+            color: var(--tm-brand-primary);
+        }
+    }
+
     &__aside {
         display: flex;
         flex-direction: column;

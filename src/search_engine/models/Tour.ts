@@ -59,6 +59,14 @@ export interface ITour extends Omit<ITourRaw, 'price'> {
   uzs?: IUzsPrice | null
 }
 
+const roomKey = (room: string | null): string => (room ?? '')
+  .toLowerCase()
+  .replace(/\d+\s*(adl|adt|adults?|взр)\.?/g, ' ')
+  .replace(/\d+\s*(chd|child|children|inf|реб)\.?/g, ' ')
+  .replace(/\b(rooms?)\b|номера?/g, ' ')
+  .replace(/[^\p{L}\p{N}]+/gu, ' ')
+  .trim()
+
 export class Tour extends Model<ITour> {
   protected static override mapRaw(raw: ITourRaw): ITour {
     return {
@@ -75,6 +83,12 @@ export class Tour extends Model<ITour> {
 
   public groupKey(): string {
     return this.get('hotelKey') || this.get('hotelName').trim().toLowerCase()
+  }
+
+  public packageKey(): string {
+    const meal = this.get('mealPlan') || this.get('mealCode')?.toUpperCase() || this.get('mealName')?.trim().toLowerCase() || ''
+
+    return [this.groupKey(), this.get('checkIn'), this.get('nights'), roomKey(this.get('roomName')), meal].join('|')
   }
 
   public isBookable(): boolean {

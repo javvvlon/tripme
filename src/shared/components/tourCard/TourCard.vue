@@ -65,6 +65,18 @@
                         <dt>{{ t('results.operator') }}</dt>
                         <dd>{{ tour.get('supplier').name }}</dd>
                     </div>
+
+                    <div v-if="twins?.length" class="tm-tour-card__spec tm-tour-card__twins">
+                        <dt>{{ t('results.twins') }}</dt>
+                        <dd>
+                            <span
+                                v-for="twin in twins" :key="twin.get('id')"
+                                class="tm-tour-card__twin" :class="{ 'is-cheaper': twin.rankPrice() < tour.rankPrice() }"
+                            >
+                                {{ twin.get('supplier').name }} {{ formatMoney(twin.get('comparablePrice'), locale) }}
+                            </span>
+                        </dd>
+                    </div>
                 </dl>
             </ClientOnly>
         </div>

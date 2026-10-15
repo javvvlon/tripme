@@ -11,6 +11,7 @@ export interface ITourCardProps {
   assignLabel?: string
   assignTitle?: string
   assigning?: boolean
+  twins?: Tour[]
 }
 
 export interface ITourCardEmits {

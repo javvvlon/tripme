@@ -108,6 +108,7 @@
                             <TourCard
                                 :tour="group.lead"
                                 :agent-view="isStaff"
+                                :twins="twins.get(group.lead.get('id'))"
                                 :route="cardRoute"
                                 :assign-label="assignLabel"
                                 :assign-title="assignTitle"
@@ -130,6 +131,7 @@
                                         <TourCard
                                             :tour="tour"
                                             :agent-view="isStaff"
+                                            :twins="twins.get(tour.get('id'))"
                                             :route="cardRoute"
                                             :assign-label="assignLabel"
                                             :assign-title="assignTitle"
@@ -224,7 +226,7 @@ const { isStaff } = useAuthSession()
 
 const {
   criteria, filters, sort, day,
-  tours, hotels, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
+  tours, hotels, twins, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
   remaining, hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
 } = useSearch()
 
@@ -266,7 +268,7 @@ const variantsLabel = (group: IHotelGroup): string => {
   const count = group.others.length
   const variants = t('results.group.variants', { count }, count)
 
-  if (group.operators < 2) return t('results.group.more', { variants })
+  if (!isStaff.value || group.operators < 2) return t('results.group.more', { variants })
 
   return t('results.group.moreFrom', { variants, operators: t('results.group.operators', { count: group.operators }, group.operators) })
 }
