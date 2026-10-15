@@ -56,6 +56,7 @@ export class EditableSection extends Model<IEditableSection> {
         tone: raw.settings?.tone ?? defaults.tone,
         imageSide: raw.settings?.image_side ?? defaults.imageSide,
         listSize: raw.settings?.list_size ?? defaults.listSize,
+        accent: raw.settings?.accent ?? defaults.accent,
       },
     }
   }

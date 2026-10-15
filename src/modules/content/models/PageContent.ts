@@ -8,6 +8,7 @@ import type {
   BannerStyle,
   BlockTone,
   ImageSide,
+  HeroAccent,
   ContentPage,
   IContentItemRaw,
   IContentSectionRaw,
@@ -45,6 +46,7 @@ export interface IContentSection {
   style: BannerStyle
   tone: BlockTone
   imageSide: ImageSide
+  accent: HeroAccent
   imageUrl: string | null
   pageSize: number
   link: string | null
@@ -186,6 +188,7 @@ export class PageContent extends Model<IPageContent> {
           style: section.settings?.style ?? 'card',
           tone: section.settings?.tone ?? (section.kind === 'cta' ? 'brand' : 'light'),
           imageSide: section.settings?.image_side ?? 'left',
+          accent: section.settings?.accent ?? 'pill',
           imageUrl: section.settings?.image_url ?? null,
           pageSize: section.settings?.page_size ?? DEFAULT_PAGE_SIZE,
           link: block.link ? section.link : null,

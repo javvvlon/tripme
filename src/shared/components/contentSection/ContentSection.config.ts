@@ -82,7 +82,7 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
   }),
   text: section => ({ body: section.body }),
   spotlight: (section, eager) => ({ items: section.items, eager }),
-  search: section => ({ banner: { title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl } }),
+  search: section => ({ banner: { title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl }, accent: section.accent }),
   contact: () => ({}),
   carousel: (section, eager) => ({ items: section.items, eager }),
   reviews: section => ({ items: section.items, lead: section.subtitle }),

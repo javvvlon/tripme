@@ -65,16 +65,6 @@
         text-wrap: balance;
     }
 
-    &__accent {
-        display: inline-block;
-        margin-top: .08em;
-        padding: .06em .28em .02em;
-        border-radius: radius('pill');
-        background: var(--tm-brand-primary);
-        color: var(--tm-brand-on-primary);
-        transform: skewX(-3deg) rotate(-1deg);
-    }
-
     &__subtitle {
         overflow-wrap: anywhere;
         max-width: 52ch;

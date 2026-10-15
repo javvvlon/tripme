@@ -1,0 +1,65 @@
+@use '../../styles/utils' as *;
+
+.tm-headline {
+    &__accent { display: inline-block; }
+
+    &--pill &__accent {
+        margin-top: .08em;
+        padding: .06em .28em .02em;
+        border-radius: radius('pill');
+        background: var(--tm-brand-primary);
+        color: var(--tm-brand-on-primary);
+        transform: skewX(-3deg) rotate(-1deg);
+    }
+
+    &--none &__accent { display: inline; }
+
+    &--color &__accent { color: var(--tm-brand-primary); }
+
+    &--underline &__accent {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: -.03em;
+            bottom: -.04em;
+            left: -.03em;
+            height: .13em;
+            border-radius: .07em;
+            background: var(--tm-brand-primary);
+            transform: skewX(-14deg) rotate(-1.2deg);
+            transform-origin: left center;
+        }
+    }
+
+    &--marker &__accent {
+        padding: 0 .1em;
+        background: linear-gradient(180deg, transparent 54%, color-mix(in srgb, var(--tm-brand-primary) 75%, transparent) 54%, color-mix(in srgb, var(--tm-brand-primary) 75%, transparent) 90%, transparent 90%);
+        box-decoration-break: clone;
+    }
+
+    &--shadow &__accent {
+        text-shadow:
+            .015em .015em 0 var(--tm-brand-primary),
+            .03em .03em 0 var(--tm-brand-primary),
+            .045em .045em 0 var(--tm-brand-primary),
+            .06em .06em 0 var(--tm-brand-primary),
+            .075em .075em 0 var(--tm-brand-primary);
+        transform: translate(-.035em, -.035em);
+    }
+
+    &--frame &__accent {
+        margin-top: .08em;
+        padding: .02em .26em 0;
+        border: .055em solid var(--tm-brand-primary);
+        border-radius: radius('pill');
+    }
+
+    &--gold &__accent {
+        background: linear-gradient(105deg, color-mix(in srgb, var(--tm-brand-gold) 45%, var(--tm-common-white)) 0%, var(--tm-brand-gold) 48%, var(--tm-brand-gold-ink) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+}

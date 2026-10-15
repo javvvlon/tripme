@@ -11,7 +11,7 @@
 
         <div class="container-wide tm-hero__inner">
             <h1 class="tm-hero__title">
-                {{ headline.lead }}<span class="tm-hero__accent">{{ headline.accent }}</span>{{ headline.tail }}
+                <HeroHeadline :title="title" :accent="accent" />
             </h1>
             <p v-if="subtitle" class="tm-hero__subtitle">{{ subtitle }}</p>
 
@@ -64,6 +64,7 @@ import EsimSearch from '~/modules/esim/components/esimSearch/EsimSearch.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { countryName, flagOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
+import HeroHeadline from '~/shared/components/heroHeadline/HeroHeadline.vue'
 import type { HeroProduct, IHeroProps } from './Hero.d'
 import { useSearchDock } from './Hero.hooks'
 
@@ -95,7 +96,6 @@ const esimCountries = computed(() => POPULAR_ESIM_COUNTRIES.slice(0, 5).map(code
 const title = computed(() => props.banner?.title || t(HERO.titleKey))
 const subtitle = computed(() => props.banner?.subtitle || t(HERO.subtitleKey))
 const image = computed(() => props.banner?.imageUrl || HERO.image)
-const headline = computed(() => splitHeadline(title.value))
 
 const widget = ref<Element | null>(null)
 const { docked, back } = useSearchDock(widget)

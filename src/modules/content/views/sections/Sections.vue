@@ -154,6 +154,15 @@
                             :placeholder="t(`cms.sections.headingPlaceholders.${current.kind}`)"
                         />
 
+                        <div v-if="BLOCKS[current.kind].options.includes('accent')" class="tm-builder__field">
+                            <span class="tm-builder__label">{{ t('cms.sections.accent.label') }}</span>
+                            <AccentPicker
+                                v-model="current.settings.accent"
+                                v-model:title="current.titles[locale]"
+                                :image-url="current.settings.imageUrl"
+                            />
+                        </div>
+
                         <Input
                             v-if="BLOCKS[current.kind].subtitle"
                             v-model="current.subtitles[locale]"
@@ -195,7 +204,7 @@
                         </div>
 
                         <div
-                            v-for="option in BLOCKS[current.kind].options" :key="option"
+                            v-for="option in tabOptions(current.kind)" :key="option"
                             class="tm-builder__field"
                         >
                             <span class="tm-builder__label">{{ t(`cms.sections.options.${option}`) }}</span>
@@ -404,10 +413,12 @@ import BlockPalette from '~/modules/content/components/blockPalette/BlockPalette
 import BuilderCanvas from '~/modules/content/components/builderCanvas/BuilderCanvas.vue'
 import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
+import AccentPicker from '~/modules/content/components/accentPicker/AccentPicker.vue'
+import { plainHeadline } from '~/shared/helpers/headline'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
+import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, HERO_ACCENTS, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
 import { excerptFrom } from '~/shared/helpers/markdown'
 import { DEVICES } from '~/modules/content/contracts/builder'
 import type { BlockField, BlockOption, ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
@@ -484,8 +495,8 @@ const sourceTabs = (kind: SectionKind) => BLOCKS[kind].sources.map(source => ({
 }))
 
 const headingOf = (section: IDraftSection) =>
-  section.titles[locale.value].trim()
-  || CONTENT_LOCALES.map(code => section.titles[code].trim()).find(Boolean)
+  plainHeadline(section.titles[locale.value].trim())
+  || plainHeadline(CONTENT_LOCALES.map(code => section.titles[code].trim()).find(Boolean) ?? '')
   || excerptFrom(section.bodies[locale.value] || CONTENT_LOCALES.map(code => section.bodies[code]).find(Boolean), 48)
   || summaryOf(section)
 
@@ -504,7 +515,10 @@ const OPTION_VALUES: Record<BlockOption, readonly (string | number)[]> = {
   tone: BLOCK_TONES,
   imageSide: IMAGE_SIDES,
   listSize: SPOTLIGHT_SIZES,
+  accent: HERO_ACCENTS,
 }
+
+const tabOptions = (kind: SectionKind) => BLOCKS[kind].options.filter(option => option !== 'accent')
 
 const optionTabs = (option: BlockOption) => OPTION_VALUES[option].map(value => ({
   value: String(value),

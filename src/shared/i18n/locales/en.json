@@ -638,7 +638,8 @@
         "style": "Look",
         "tone": "Colour",
         "imageSide": "Photo",
-        "listSize": "Articles in the list"
+        "listSize": "Articles in the list",
+        "accent": "Headline accent"
       },
       "optionValues": {
         "style": {
@@ -665,6 +666,23 @@
       "placeholders": {
         "role": "For example, went to Turkey in May",
         "quote": "For example, The best holiday in years — every detail was thought through."
+      },
+      "accent": {
+        "label": "Headline accent",
+        "title": "Headline accent",
+        "all": "All variants",
+        "values": {
+          "pill": "Pill",
+          "none": "No accent",
+          "color": "Colour",
+          "underline": "Underline",
+          "marker": "Marker",
+          "shadow": "Depth",
+          "frame": "Frame",
+          "gold": "Gold"
+        },
+        "words": "Words to accent",
+        "wordTip": "Click a word. Shift-click to select several in a row."
       }
     },
     "builder": {

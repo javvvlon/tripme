@@ -87,6 +87,7 @@ export class SectionsIntention {
       ...(block.options.includes('tone') ? { tone: settings.tone } : {}),
       ...(block.options.includes('imageSide') ? { image_side: settings.imageSide } : {}),
       ...(block.options.includes('listSize') ? { list_size: settings.listSize } : {}),
+      ...(block.options.includes('accent') ? { accent: settings.accent } : {}),
     }
   }
 }

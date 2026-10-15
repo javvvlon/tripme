@@ -45,7 +45,11 @@ export const IMAGE_SIDES = ['left', 'right'] as const
 
 export type ImageSide = typeof IMAGE_SIDES[number]
 
-export type BlockOption = 'style' | 'tone' | 'imageSide' | 'listSize'
+export const HERO_ACCENTS = ['pill', 'none', 'color', 'underline', 'marker', 'shadow', 'frame', 'gold'] as const
+
+export type HeroAccent = typeof HERO_ACCENTS[number]
+
+export type BlockOption = 'style' | 'tone' | 'imageSide' | 'listSize' | 'accent'
 
 export type BlockField = 'title' | 'subtitle' | 'body' | 'image'
 
@@ -258,6 +262,7 @@ export const BLOCKS: Record<SectionKind, IBlock> = {
     subtitle: true,
     image: true,
     alwaysShown: true,
+    options: ['accent'],
   },
   contact: {
     ...STANDALONE,
@@ -303,6 +308,7 @@ export const defaultSettings = (kind?: SectionKind): ISectionSettings => ({
   tone: kind === 'cta' ? 'brand' : 'light',
   imageSide: 'left',
   listSize: 4,
+  accent: 'pill',
 })
 
 export const kindsFor = (page: ContentPage): SectionKind[] =>
@@ -354,6 +360,7 @@ export interface ISectionSettingsRaw {
   tone?: BlockTone
   image_side?: ImageSide
   list_size?: number
+  accent?: HeroAccent
 }
 
 export interface ISectionTranslationRaw {
@@ -445,6 +452,7 @@ export interface ISectionSettings {
   tone: BlockTone
   imageSide: ImageSide
   listSize: number
+  accent: HeroAccent
 }
 
 export interface ISectionDraft {

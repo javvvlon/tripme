@@ -1,0 +1,182 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-accent-picker {
+    &__current {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+
+        > .tm-accent-picker__thumb {
+            width: 100%;
+            border: 0;
+            cursor: pointer;
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: inset 0 0 0 3px var(--tm-cms-accent);
+            }
+        }
+    }
+
+    &__words {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 12px 12px;
+
+        &.is-off { opacity: .5; }
+    }
+
+    &__word {
+        padding: 4px 10px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-2);
+        font-size: size(12);
+        font-weight: 600;
+        cursor: pointer;
+        transition: border-color .15s, background .15s, color .15s;
+
+        &:hover { border-color: var(--tm-ink-4); color: var(--tm-ink-1); }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--tm-cms-accent-soft);
+        }
+
+        &.is-active {
+            border-color: var(--tm-brand-primary);
+            background: var(--tm-brand-primary);
+            color: var(--tm-brand-on-primary);
+        }
+    }
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 9px 12px;
+        font-size: size(13);
+
+        strong { font-weight: 700; }
+    }
+
+    &__more {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--tm-cms-accent);
+        font-size: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    &__thumb {
+        position: relative;
+        display: grid;
+        place-items: center;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        padding: 10px 14px;
+        border-radius: radius('sm');
+        background-color: var(--tm-night-bg);
+        background-position: center;
+        background-size: cover;
+        isolation: isolate;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 92% 0%, rgba(255, 107, 0, .18) 0%, transparent 55%),
+                rgba(10, 10, 10, .72);
+        }
+
+        &.is-small {
+            aspect-ratio: 21 / 9;
+            border-radius: 0;
+        }
+    }
+
+    &__headline {
+        @include display(900);
+        max-width: 17ch;
+        color: var(--tm-common-white);
+        font-size: size(15);
+        line-height: 1.08;
+        text-align: center;
+        overflow-wrap: anywhere;
+
+        .is-small & { font-size: size(12); }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    &__option {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 6px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        text-align: left;
+        cursor: pointer;
+        transition: border-color .15s, box-shadow .15s, transform .15s;
+
+        &:hover {
+            border-color: var(--tm-ink-4);
+            transform: translateY(-2px);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--tm-cms-accent-soft);
+        }
+
+        &.is-active {
+            border-color: var(--tm-cms-accent);
+            box-shadow: 0 0 0 3px var(--tm-cms-accent-soft);
+        }
+    }
+
+    &__check {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--tm-cms-accent);
+        color: var(--tm-common-white);
+    }
+
+    &__name {
+        padding: 0 4px 2px;
+        font-size: size(13);
+        font-weight: 600;
+    }
+}
+
+@media #{$until-md} {
+    .tm-accent-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

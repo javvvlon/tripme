@@ -638,7 +638,8 @@
         "style": "Koʻrinish",
         "tone": "Rang",
         "imageSide": "Rasm",
-        "listSize": "Roʻyxatdagi maqolalar"
+        "listSize": "Roʻyxatdagi maqolalar",
+        "accent": "Sarlavhadagi urg‘u"
       },
       "optionValues": {
         "style": {
@@ -665,6 +666,23 @@
       "placeholders": {
         "role": "Masalan, may oyida Turkiyaga borgan",
         "quote": "Masalan, Soʻnggi yillardagi eng yaxshi taʼtil — hammasi mayda-chuydasigacha oʻylangan."
+      },
+      "accent": {
+        "label": "Sarlavhadagi urg‘u",
+        "title": "Sarlavhadagi urg‘u",
+        "all": "Barcha variantlar",
+        "values": {
+          "pill": "Plashka",
+          "none": "Urg‘usiz",
+          "color": "Rang",
+          "underline": "Tagiga chiziq",
+          "marker": "Marker",
+          "shadow": "Hajm",
+          "frame": "Ramka",
+          "gold": "Oltin"
+        },
+        "words": "Urg‘u uchun so‘zlar",
+        "wordTip": "So‘zni bosing. Shift — ketma-ket bir nechtasini tanlash."
       }
     },
     "builder": {
