@@ -250,6 +250,19 @@
 
     &__pay { width: 100%; font-weight: 700; }
 
+    &__sent {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        padding: 12px 14px;
+        border-radius: radius('md');
+        background: var(--tm-brand-primary-soft);
+        color: var(--tm-brand-primary);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
     &__legal {
         margin: 0;
         color: var(--tm-ink-3);

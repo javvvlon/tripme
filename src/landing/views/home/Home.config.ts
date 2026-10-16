@@ -16,7 +16,7 @@ export const HERO: IHeroContent = {
 
 export const HERO_PRODUCTS = [
   { value: 'tours', labelKey: 'home.products.tours', icon: 'briefcase' },
-  { value: 'esim', labelKey: 'home.products.esim', icon: 'mobile' },
+  { value: 'esim', labelKey: 'home.products.esim', icon: 'sim' },
 ] as const
 
 export const HOT_ANCHOR = 'hot'

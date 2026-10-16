@@ -1,5 +1,5 @@
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
-import { TRACKED_ITEM_KINDS } from '~/modules/leads/contracts/leads'
+import { MAIN_ITEM_KINDS, TRACKED_ITEM_KINDS } from '~/modules/leads/contracts/leads'
 import { ITEM_ICONS } from './OrderItems.config'
 import type { Money } from '~/search_engine/contracts/search'
 import type { IOrderItemBody, IOrderItemRaw } from '~/modules/leads/contracts/leads'
@@ -103,7 +103,7 @@ export const useOrderItems = (props: IOrderItemsProps, emit: Emit) => {
     const nights = count(details.nights)
     const adults = count(details.adults)
     const children = count(details.children)
-    const manual = item.kind !== 'package'
+    const manual = !MAIN_ITEM_KINDS.includes(item.kind)
     const tracked = TRACKED_ITEM_KINDS.includes(item.kind)
     const inactive = INACTIVE_STATUSES.includes(item.status)
     const awaiting = item.status === 'draft' || item.status === 'requested'

@@ -72,6 +72,7 @@ export const ICON_PATHS: Record<string, string> = {
   desktop: 'M3.5 5h17v11h-17zM9 20h6M12 16v4',
   tablet: 'M6 3h12v18H6zM11 18h2',
   mobile: 'M8 3h8v18H8zM11 18h2',
+  sim: 'M7 3h7.5L18 6.5V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM9.5 11h5a.75.75 0 0 1 .75.75v5a.75.75 0 0 1-.75.75h-5a.75.75 0 0 1-.75-.75v-5A.75.75 0 0 1 9.5 11zM12 11v6.5M8.75 14.25h6.5',
   'align-left': 'M4 6h16M4 10h9M4 14h16M4 18h9',
   'align-center': 'M4 6h16M7.5 10h9M4 14h16M7.5 18h9',
   'align-right': 'M4 6h16M11 10h9M4 14h16M11 18h9',

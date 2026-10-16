@@ -1,0 +1,67 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-service-menu {
+    position: relative;
+    display: inline-flex;
+
+    &__list {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        z-index: 20;
+        display: grid;
+        gap: 2px;
+        min-width: 240px;
+        margin: 0;
+        padding: 6px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-md);
+        list-style: none;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 8px 10px;
+        border: 0;
+        border-radius: radius('sm');
+        background: none;
+        color: var(--tm-ink-1);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+            outline: none;
+            background: var(--tm-surface-2);
+        }
+    }
+
+    &__icon {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: radius('sm');
+        background: var(--tm-surface-2);
+        color: var(--tm-ink-2);
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+
+        strong { font-size: size(14); }
+
+        small {
+            color: var(--tm-ink-3);
+            font-size: size(12);
+        }
+    }
+}

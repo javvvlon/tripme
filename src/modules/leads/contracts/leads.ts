@@ -184,12 +184,13 @@ export interface IOrderConfirmation {
   contract: { ok: boolean, signed_at: string | null }
   deposit: { ok: boolean, received_uzs: number, deposit_uzs: number, legacy: boolean }
   passport: { ok: boolean, problem: 'missing' | 'expired' | 'short' | null }
+  checks?: ConfirmationCheck[]
   missing: ConfirmationCheck[]
   ready: boolean
   mode: 'warn' | 'enforce'
 }
 
-export const ORDER_ITEM_KINDS = ['package', 'flight', 'hotel', 'transfer', 'insurance', 'excursion', 'visa'] as const
+export const ORDER_ITEM_KINDS = ['package', 'flight', 'hotel', 'transfer', 'insurance', 'excursion', 'visa', 'esim'] as const
 
 export type OrderItemKind = typeof ORDER_ITEM_KINDS[number]
 
@@ -197,7 +198,9 @@ export const MANUAL_ITEM_KINDS = ['visa', 'insurance', 'transfer', 'excursion', 
 
 export type ManualItemKind = typeof MANUAL_ITEM_KINDS[number]
 
-export const TRACKED_ITEM_KINDS: OrderItemKind[] = ['package', 'flight', 'hotel']
+export const TRACKED_ITEM_KINDS: OrderItemKind[] = ['package', 'flight', 'hotel', 'esim']
+
+export const MAIN_ITEM_KINDS: OrderItemKind[] = ['package', 'esim']
 
 export const ITEM_CURRENCIES = ['USD', 'EUR', 'UZS'] as const
 

@@ -19,7 +19,7 @@ export const CMS_NAVIGATION: INavNode[] = [
         children: [{ key: 'orders.archive', labelKey: 'cms.nav.archive', to: '/app/orders', query: { archived: '1' } }],
       },
       { key: 'messages', labelKey: 'cms.nav.messages', icon: 'mail', to: '/app/messages' },
-      { key: 'esim', labelKey: 'cms.nav.esim', icon: 'mobile', to: '/app/esim' },
+      { key: 'esim', labelKey: 'cms.nav.esim', icon: 'sim', to: '/app/esim' },
     ],
   },
   {

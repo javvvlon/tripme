@@ -893,20 +893,21 @@
       "offer": {
         "repeatSearch": "Qidiruvni takrorlash",
         "quote": "Tijorat taklifini yuborish",
-        "empty": "Mijoz hali tur tanlamagan",
-        "emptyHint": "Turni shu yerda tanlang yoki toʻliq qidiruvda toping va kartochkadagi «Lid uchun tanlash» tugmasini bosing.",
-        "pick": "Tur tanlash",
-        "replace": "Turni almashtirish",
-        "inSearch": "Toʻliq qidiruvni ochish",
+        "empty": "Mijoz hali xizmat tanlamagan",
+        "replace": "Xizmatni almashtirish",
         "assigned": "Tur lidga biriktirildi",
-        "confirmTitle": "Liddagi tur almashtirilsinmi?",
-        "confirmText": "Hozir lidda «{hotel}». Yangi tur uning oʻrnini egallaydi, yaratilgan buyurtmalar oʻzgarmaydi.",
+        "confirmTitle": "Liddagi xizmat almashtirilsinmi?",
+        "confirmText": "Hozir lidda «{hotel}». Yangi xizmat uning o‘rnini egallaydi, yaratilgan buyurtmalar o‘zgarmaydi.",
         "confirm": "Almashtirish",
-        "clear": "Turni olib tashlash",
-        "clearTitle": "Tur liddan olib tashlansinmi?",
-        "clearText": "«{hotel}» liddan olib tashlanadi. Yaratilgan buyurtmalar oʻzgarmaydi.",
+        "clear": "Xizmatni olib tashlash",
+        "clearTitle": "Xizmat liddan olib tashlansinmi?",
+        "clearText": "«{hotel}» liddan olib tashlanadi. Yaratilgan buyurtmalar o‘zgarmaydi.",
         "clearConfirm": "Olib tashlash",
-        "cleared": "Tur liddan olib tashlandi"
+        "cleared": "Xizmat liddan olib tashlandi",
+        "add": "Xizmat qo‘shish",
+        "tourHint": "To‘liq qidiruvda tanlash",
+        "esimHint": "Mamlakat va tarif",
+        "assignedEsim": "eSIM lidga qo‘shildi"
       },
       "registered": "Ro‘yxatdan o‘tgan mijoz",
       "consentGiven": "Ma’lumotlarni qayta ishlashga rozilik: {date}",
@@ -921,7 +922,7 @@
       },
       "orderNeedsTour": "Avval lid uchun turni tanlang",
       "tabs": {
-        "tour": "Tur",
+        "tour": "Xizmat",
         "request": "Mijoz va so'rov",
         "orders": "Buyurtmalar",
         "history": "Tarix"
@@ -933,13 +934,17 @@
         "allMine": "Barcha mavjud"
       },
       "list": {
-        "tour": "Tur",
-        "noTour": "Tur tanlanmagan",
+        "tour": "Xizmat",
+        "noTour": "Xizmat tanlanmagan",
         "site": "saytdan",
         "manual": "qo‘lda",
         "take": "Olish",
         "guests": "0 mehmon | {n} mehmon | {n} mehmon | {n} mehmon",
-        "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda."
+        "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda.",
+        "kinds": {
+          "tour": "Tur",
+          "esim": "eSIM"
+        }
       },
       "trip": {
         "historyStarted": "{n}-sayohat boshlandi",
@@ -957,9 +962,16 @@
       },
       "related": {
         "title": "Mijozning boshqa so‘rovlari",
-        "noTour": "Tursiz"
+        "noTour": "Xizmatsiz"
       },
-      "account": "Akkaunt ma’lumotlari"
+      "account": "Akkaunt ma’lumotlari",
+      "esim": {
+        "country": "Mamlakat",
+        "countryPlaceholder": "Mijoz qayerga boradi",
+        "from": "{price} dan",
+        "loading": "Tariflar yuklanmoqda…",
+        "noPlans": "Bu mamlakat uchun hozircha tarif yo‘q"
+      }
     },
     "orders": {
       "title": "Buyurtmalar",
@@ -1073,7 +1085,8 @@
           "transfer": "Transfer",
           "insurance": "Sugʻurta",
           "excursion": "Ekskursiya",
-          "visa": "Viza"
+          "visa": "Viza",
+          "esim": "eSIM"
         },
         "status": {
           "draft": "Qoralama",
@@ -1159,7 +1172,8 @@
         "progress": "{total} dan {done}",
         "goServices": "Xizmatni tasdiqlash",
         "goFinance": "Toʻlovni qabul qilish",
-        "goDetails": "Pasportni kiritish"
+        "goDetails": "Pasportni kiritish",
+        "payment": "To‘lov qabul qilindi"
       },
       "tabs": {
         "services": "Xizmatlar",
@@ -2195,7 +2209,26 @@
       }
     },
     "payPrice": "{price} to'lash",
-    "soon": "eSIM tez orada saytda paydo bo'ladi."
+    "soon": "eSIM tez orada saytda paydo bo'ladi.",
+    "request": {
+      "title": "eSIM uchun ariza",
+      "sent": "Ariza yuborildi — menejer QR-kod yuboradi",
+      "comment": "Masalan: sayohat sanalari, telefon modeli",
+      "steps": {
+        "1": {
+          "title": "Ariza qoldiring",
+          "text": "Tarifni tanlang — to‘lov va ro‘yxatdan o‘tish shart emas."
+        },
+        "2": {
+          "title": "QR-kodni oling",
+          "text": "Menejer arizani tasdiqlaydi va QR-kod yuboradi. eSIM’ni uyda, Wi-Fi orqali o‘rnating."
+        },
+        "3": {
+          "title": "Yetib borgach yoqing",
+          "text": "eSIM uchun mobil internetni yoqing — internet ishlaydi."
+        }
+      }
+    }
   },
   "messages": {
     "title": "Xabarlar",

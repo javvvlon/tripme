@@ -112,6 +112,16 @@
         &.is-plain { font-weight: 500; }
     }
 
+    &__kind {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 3px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 700;
+    }
+
     &__line {
         overflow: hidden;
         margin-top: 2px;

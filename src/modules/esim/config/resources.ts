@@ -9,6 +9,7 @@ export const resource: IResource = {
   resources: {
     countries: { url: 'esim/countries', method: 'GET' },
     plans: { url: 'esim/countries/:code', method: 'GET' },
+    mode: { url: 'esim/mode', method: 'GET' },
     methods: { url: 'esim/methods', method: 'GET' },
     checkout: { url: 'esim/purchases', method: 'POST' },
     purchase: { url: 'esim/purchases/:token', method: 'GET' },

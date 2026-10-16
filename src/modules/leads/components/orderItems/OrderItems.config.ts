@@ -11,4 +11,5 @@ export const ITEM_ICONS: Record<OrderItemKind, string> = {
   insurance: 'shield',
   excursion: 'pin',
   visa: 'doc',
+  esim: 'sim',
 }

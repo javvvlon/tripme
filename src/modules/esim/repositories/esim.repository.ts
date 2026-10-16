@@ -1,7 +1,7 @@
 import type { AnyObject } from '~/shared/contracts/data'
 import type { IPageRaw } from '~/shared/contracts/pagination'
 import type {
-  IEsimCheckout, IEsimCountry, IEsimMethod, IEsimPlan, IEsimPurchase, IEsimPurchaseRow,
+  IEsimCheckout, IEsimCountry, IEsimMethod, IEsimMode, IEsimPlan, IEsimPurchase, IEsimPurchaseRow,
 } from '../contracts/esim'
 
 /**
@@ -14,6 +14,8 @@ export const useEsimRepository = () => {
 
   const plans = async (code: string): Promise<IEsimPlan[]> =>
     (await http.call<IEsimPlan[]>('Esim', 'plans', { code: code.toLowerCase() })).data
+
+  const mode = async (): Promise<IEsimMode> => (await http.call<IEsimMode>('Esim', 'mode')).data
 
   const methods = async (): Promise<IEsimMethod[]> => (await http.call<IEsimMethod[]>('Esim', 'methods')).data
 
@@ -41,5 +43,5 @@ export const useEsimRepository = () => {
   const retry = async (id: string): Promise<IEsimPurchaseRow> =>
     (await http.call<IEsimPurchaseRow>('Esim', 'retry', { id })).data
 
-  return { countries, plans, methods, checkout, purchase, sandboxPay, purchases, retry }
+  return { countries, plans, mode, methods, checkout, purchase, sandboxPay, purchases, retry }
 }

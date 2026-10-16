@@ -60,6 +60,7 @@ import Button from '~/shared/components/button/Button.vue'
 import Icon from '~/shared/components/icon/Icon.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import type { ChecklistTarget, IOrderChecklistEmits, IOrderChecklistProps } from './OrderChecklist.d'
+import type { ConfirmationCheck } from '~/modules/leads/contracts/leads'
 
 const props = defineProps<IOrderChecklistProps>()
 const emit = defineEmits<IOrderChecklistEmits>()
@@ -85,6 +86,8 @@ interface IRow {
     action?: string
 }
 
+const fullPayment = computed(() => Boolean(props.confirmation.checks) && !props.confirmation.checks!.includes('passport'))
+
 const rows = computed<IRow[]>(() => {
     const c = props.confirmation
     const passport = {
@@ -93,7 +96,7 @@ const rows = computed<IRow[]>(() => {
         short: t('cms.orders.checklist.passportShort'),
     }
 
-    return [
+    const all: IRow[] = [
         {
             key: 'suppliers',
             ok: c.suppliers.ok,
@@ -115,7 +118,7 @@ const rows = computed<IRow[]>(() => {
         {
             key: 'deposit',
             ok: c.deposit.ok,
-            label: t('cms.orders.checklist.deposit'),
+            label: t(fullPayment.value ? 'cms.orders.checklist.payment' : 'cms.orders.checklist.deposit'),
             detail: c.deposit.legacy
                 ? t('cms.orders.checklist.depositLegacy')
                 : t('cms.orders.checklist.depositDetail', {
@@ -134,6 +137,8 @@ const rows = computed<IRow[]>(() => {
             action: t('cms.orders.checklist.goDetails'),
         },
     ]
+
+    return all.filter(row => !c.checks || c.checks.includes(row.key as ConfirmationCheck))
 })
 
 const doneCount = computed(() => rows.value.filter(row => row.ok).length)

@@ -26,6 +26,13 @@ export interface IEsimPlan {
   price_uzs: number
 }
 
+export type EsimMode = 'catalog' | 'checkout'
+
+export interface IEsimMode {
+  mode: EsimMode
+  provider: string | null
+}
+
 export interface IEsimMethod {
   method: EsimPaymentMethod
   sandbox: boolean

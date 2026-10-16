@@ -1,7 +1,7 @@
 <template>
     <Modal
         v-model="open"
-        :title="t('lead.title')"
+        :title="title || t('lead.title')"
         :description="summary || t('lead.lead')"
         :confirm-label="t('lead.submit')"
         :busy="sending"
@@ -51,7 +51,7 @@
                 <textarea
                     :id="commentId" v-model="draft.comment"
                     class="tm-lead__textarea" rows="3" maxlength="2000"
-                    :placeholder="t('lead.fields.commentPlaceholder')"
+                    :placeholder="commentPlaceholder || t('lead.fields.commentPlaceholder')"
                 />
             </div>
 

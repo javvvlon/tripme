@@ -893,20 +893,21 @@
       "offer": {
         "repeatSearch": "Repeat the search",
         "quote": "Send a quote",
-        "empty": "The client hasn’t picked a tour yet",
-        "emptyHint": "Pick a tour here, or find one in the full search and press “Pick for lead” on its card.",
-        "pick": "Pick a tour",
-        "replace": "Replace tour",
-        "inSearch": "Open the full search",
+        "empty": "No service picked yet",
+        "replace": "Replace service",
         "assigned": "Tour attached to the lead",
-        "confirmTitle": "Replace the tour on this lead?",
-        "confirmText": "The lead currently has “{hotel}”. The new tour replaces it; existing orders stay as they are.",
+        "confirmTitle": "Replace the service in this lead?",
+        "confirmText": "The lead has «{hotel}» now. The new service replaces it; existing orders stay as they are.",
         "confirm": "Replace",
-        "clear": "Remove tour",
-        "clearTitle": "Remove the tour from this lead?",
-        "clearText": "“{hotel}” will be removed from the lead. Existing orders stay as they are.",
+        "clear": "Remove service",
+        "clearTitle": "Remove the service from this lead?",
+        "clearText": "«{hotel}» will be removed from the lead. Existing orders stay as they are.",
         "clearConfirm": "Remove",
-        "cleared": "Tour removed from the lead"
+        "cleared": "Service removed from the lead",
+        "add": "Add service",
+        "tourHint": "Pick in the full search",
+        "esimHint": "Country and plan",
+        "assignedEsim": "eSIM added to the lead"
       },
       "registered": "Registered customer",
       "consentGiven": "Consent to data processing: {date}",
@@ -921,7 +922,7 @@
       },
       "orderNeedsTour": "Pick a tour for the lead first",
       "tabs": {
-        "tour": "Tour",
+        "tour": "Service",
         "request": "Client & request",
         "orders": "Orders",
         "history": "History"
@@ -933,13 +934,17 @@
         "allMine": "All available"
       },
       "list": {
-        "tour": "Tour",
-        "noTour": "No tour picked",
+        "tour": "Service",
+        "noTour": "No service picked",
         "site": "from the site",
         "manual": "added by hand",
         "take": "Take",
         "guests": "0 guests | {n} guest | {n} guests | {n} guests",
-        "noFree": "No free leads — everyone is on it."
+        "noFree": "No free leads — everyone is on it.",
+        "kinds": {
+          "tour": "Tour",
+          "esim": "eSIM"
+        }
       },
       "trip": {
         "historyStarted": "Trip {n} started",
@@ -957,9 +962,16 @@
       },
       "related": {
         "title": "Other requests from this client",
-        "noTour": "No tour"
+        "noTour": "No service"
       },
-      "account": "Details from the account"
+      "account": "Details from the account",
+      "esim": {
+        "country": "Country",
+        "countryPlaceholder": "Where the client is going",
+        "from": "from {price}",
+        "loading": "Loading plans…",
+        "noPlans": "No plans for this country yet"
+      }
     },
     "orders": {
       "title": "Orders",
@@ -1073,7 +1085,8 @@
           "transfer": "Transfer",
           "insurance": "Insurance",
           "excursion": "Excursion",
-          "visa": "Visa"
+          "visa": "Visa",
+          "esim": "eSIM"
         },
         "status": {
           "draft": "Draft",
@@ -1159,7 +1172,8 @@
         "progress": "{done} of {total}",
         "goServices": "Confirm a service",
         "goFinance": "Record a payment",
-        "goDetails": "Enter passport"
+        "goDetails": "Enter passport",
+        "payment": "Payment received"
       },
       "tabs": {
         "services": "Services",
@@ -2195,7 +2209,26 @@
       }
     },
     "payPrice": "Pay {price}",
-    "soon": "eSIM is coming to the site soon."
+    "soon": "eSIM is coming to the site soon.",
+    "request": {
+      "title": "eSIM request",
+      "sent": "Request sent — a manager will send you the QR code",
+      "comment": "For example: travel dates, phone model",
+      "steps": {
+        "1": {
+          "title": "Leave a request",
+          "text": "Pick a plan — no payment or sign-up needed."
+        },
+        "2": {
+          "title": "Get the QR code",
+          "text": "A manager confirms the request and sends the QR code. Install the eSIM at home over Wi-Fi."
+        },
+        "3": {
+          "title": "Switch on when you land",
+          "text": "Turn on data for the eSIM — the internet starts working."
+        }
+      }
+    }
   },
   "messages": {
     "title": "Messages",

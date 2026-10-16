@@ -36,13 +36,17 @@
                 >
                     <Icon name="user" :size="18" />
                 </NuxtLink>
-                <Button
-                    v-if="!withSearch"
-                    to="/search" size="sm" icon="search"
-                    class="tm-site-header__cta"
-                >
-                    {{ t('search.submit') }}
-                </Button>
+                <span v-if="!withSearch" class="tm-site-header__cta-slot" :class="{ 'is-hidden': ctaHidden }" :aria-hidden="ctaHidden || undefined">
+                    <span class="tm-site-header__cta-clip">
+                        <Button
+                            to="/search" size="sm" icon="search"
+                            class="tm-site-header__cta"
+                            :tabindex="ctaHidden ? -1 : undefined"
+                        >
+                            {{ t('search.submit') }}
+                        </Button>
+                    </span>
+                </span>
             </div>
 
             <button
@@ -66,6 +70,7 @@ import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import type { ISiteHeaderProps } from './SiteHeader.d'
 import { NuxtLink } from '#components'
 import { HEADER_NAV } from './SiteHeader.config'
+import { HERO_SEARCH_IN_VIEW } from '~/landing/components/hero/Hero.hooks'
 
 withDefaults(defineProps<ISiteHeaderProps>(), { variant: 'over' })
 
@@ -75,6 +80,14 @@ const routeExists = useRouteExists()
 const route = useRoute()
 
 const { user } = useAuthSession()
+
+const heroSearchInView = useState<boolean>(HERO_SEARCH_IN_VIEW, () => true)
+
+const ctaHidden = computed(() => route.meta.heroSearch === true && heroSearchInView.value)
+
+onMounted(() => {
+  if (route.meta.heroSearch === true && !document.querySelector('.tm-hero__widget')) heroSearchInView.value = false
+})
 
 const initials = computed(() => {
   if (!user.value) return ''

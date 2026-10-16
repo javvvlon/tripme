@@ -6,4 +6,6 @@ import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 export interface ILeadModalProps {
   trip: ILeadTrip
   summary?: string
+  title?: string
+  commentPlaceholder?: string
 }

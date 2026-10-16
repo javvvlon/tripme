@@ -55,14 +55,12 @@
                         {{ t('cms.leads.sections.offer') }}
                     </h2>
 
-                    <div v-if="hasTour && !picking && !finished" class="tm-cms-lead__offer-actions">
-                        <Button
-                            type="button" size="sm" variant="ghost" icon="pencil"
-                            :disabled="saving"
-                            @click="picking = true"
-                        >
-                            {{ t('cms.leads.offer.replace') }}
-                        </Button>
+                    <div v-if="hasTour && !pickingEsim && !finished" class="tm-cms-lead__offer-actions">
+                        <ServiceMenu
+                            :label="t('cms.leads.offer.replace')" variant="ghost"
+                            :esim="esimAvailable" :disabled="saving"
+                            @select="chooseService"
+                        />
 
                         <Button
                             type="button" size="sm" variant="danger-quiet" icon="trash"
@@ -74,7 +72,7 @@
                     </div>
                 </header>
 
-                <div v-if="finished && !picking" class="tm-cms-lead__trip-done" role="status">
+                <div v-if="finished && !pickingEsim" class="tm-cms-lead__trip-done" role="status">
                     <Icon name="check" :size="16" />
                     <span>{{ lastOrder && tripDone ? t('cms.leads.next.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.next.doneRejected') }}</span>
                     <Button type="button" size="sm" variant="secondary" icon="plus" :loading="requesting" @click="startRequest">
@@ -82,11 +80,11 @@
                     </Button>
                 </div>
 
-                <template v-if="picking">
-                    <TourPicker :selected="null" :initial="pickerSeed" @update:selected="assign" />
+                <template v-if="pickingEsim">
+                    <EsimPicker :initial-country="isEsim ? String(lead.trip.esim_country ?? '') : ''" @pick="assignEsim" />
 
                     <div class="tm-cms-lead__offer-links is-end">
-                        <Button type="button" size="sm" variant="ghost" :disabled="saving" @click="picking = false">
+                        <Button type="button" size="sm" variant="ghost" :disabled="saving" @click="pickingEsim = false">
                             {{ t('common.cancel') }}
                         </Button>
                     </div>
@@ -113,7 +111,7 @@
                             {{ t('cms.leads.offer.quote') }}
                         </Button>
 
-                        <Button size="sm" variant="secondary" icon="search" :to="pickToursLink">
+                        <Button v-if="!isEsim" size="sm" variant="secondary" icon="search" :to="pickToursLink">
                             {{ t('cms.leads.offer.repeatSearch') }}
                         </Button>
 
@@ -138,16 +136,8 @@
                 <div v-else-if="!finished" class="tm-cms-lead__offer-empty">
                     <p class="tm-cms-lead__offer-title">{{ t('cms.leads.offer.empty') }}</p>
                     <blockquote v-if="lead.comment" class="tm-cms-lead__offer-quote">{{ lead.comment }}</blockquote>
-                    <p class="tm-cms-lead__offer-hint">{{ t('cms.leads.offer.emptyHint') }}</p>
-
                     <div class="tm-cms-lead__offer-links">
-                        <Button type="button" size="sm" icon="plus" @click="picking = true">
-                            {{ t('cms.leads.offer.pick') }}
-                        </Button>
-
-                        <Button size="sm" variant="secondary" icon="search" :to="pickToursLink">
-                            {{ t('cms.leads.offer.inSearch') }}
-                        </Button>
+                        <ServiceMenu :label="t('cms.leads.offer.add')" :esim="esimAvailable" @select="chooseService" />
                     </div>
                 </div>
             </section>
@@ -338,7 +328,10 @@ import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
-import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
+import ServiceMenu from '~/modules/leads/components/serviceMenu/ServiceMenu.vue'
+import EsimPicker from '~/modules/esim/components/esimPicker/EsimPicker.vue'
+import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
+import type { ServiceChoice } from '~/modules/leads/components/serviceMenu/ServiceMenu.d'
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
 import LeadOwner from '~/modules/leads/components/leadOwner/LeadOwner.vue'
@@ -364,7 +357,7 @@ const {
     lead, draft, orders, status, error, saving, saved,
     historyVersion, owned,
     statusOptions, change, submit, addOrder, archive, restore,
-    picking, hasTour, pickerSeed, assign, clearTour,
+    pickingEsim, hasTour, assignEsim, clearTour,
     tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
 } = useLead()
 
@@ -372,8 +365,19 @@ const { label } = useCatalogLabel()
 
 const quoteOpen = ref(false)
 
+const isEsim = computed(() => lead.value?.trip.product === 'esim')
+
+const { data: esimCountries } = useEsimCountries()
+
+const esimAvailable = computed(() => esimCountries.value.length > 0)
+
+const chooseService = (choice: ServiceChoice) => {
+    if (choice === 'esim') pickingEsim.value = true
+    else navigateTo(pickToursLink.value)
+}
+
 const canQuote = computed(() =>
-    Boolean(lead.value) && !finished.value && (LEAD_TRANSITIONS[lead.value!.status] ?? []).includes('quote_sent'))
+    Boolean(lead.value) && !isEsim.value && !finished.value && (LEAD_TRANSITIONS[lead.value!.status] ?? []).includes('quote_sent'))
 
 const quoteTours = computed(() => (lead.value && hasTour.value ? [tourFromLead(lead.value)] : []))
 

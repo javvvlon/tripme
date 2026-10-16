@@ -44,12 +44,6 @@
 
         </fieldset>
 
-        <fieldset class="tm-manual-lead__group">
-            <legend>{{ t('cms.leads.sections.trip') }}</legend>
-
-            <TourPicker :selected="tour" @update:selected="choose" />
-        </fieldset>
-
         <div class="tm-manual-lead__field">
             <label :for="commentId" class="tm-manual-lead__label">{{ t('lead.fields.comment') }}</label>
 
@@ -65,7 +59,6 @@
 <script setup lang="ts">
 import Modal from '~/shared/components/modal/Modal.vue'
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
-import TourPicker from '~/modules/leads/components/tourPicker/TourPicker.vue'
 import { useManualLead } from './ManualLeadModal.hooks'
 import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 
@@ -76,7 +69,7 @@ const open = defineModel<boolean>({ default: false })
 const { t } = useI18n()
 const commentId = useId()
 
-const { draft, tour, choose, validation, saving, error, submit, reset } = useManualLead((lead) => {
+const { draft, validation, saving, error, submit, reset } = useManualLead((lead) => {
     open.value = false
     emit('created', lead)
 })

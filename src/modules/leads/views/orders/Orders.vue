@@ -57,10 +57,14 @@
 
                     <td class="is-tour">
                         <template v-if="order.hotel_name">
+                            <span class="tm-cms-orders__kind">
+                                <Icon :name="PRODUCT_ICONS[productOf(order.trip)]" :size="12" />
+                                {{ t(`cms.leads.list.kinds.${productOf(order.trip)}`) }}
+                            </span>
                             <span class="tm-cms-orders__name is-plain">{{ order.hotel_name }}</span>
-                            <span class="tm-cms-orders__line">{{ tripOf(order) }}</span>
+                            <span v-if="tripOf(order)" class="tm-cms-orders__line">{{ tripOf(order) }}</span>
                         </template>
-                        <span v-else class="tm-cms-orders__line is-faint">—</span>
+                        <span v-else class="tm-cms-orders__line is-faint">{{ t('cms.leads.list.noTour') }}</span>
                     </td>
 
                     <td class="is-price">
@@ -94,6 +98,7 @@
 
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
+import { PRODUCT_ICONS, productOf } from '~/modules/leads/helpers/product'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import Pagination from '~/shared/components/pagination/Pagination.vue'
 import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
@@ -113,6 +118,8 @@ const {
 const initials = (name: string) => name.split(/\s+/).map(part => part[0] ?? '').join('').slice(0, 2).toUpperCase() || '—'
 
 const tripOf = (order: IOrderRaw): string => {
+    if (productOf(order.trip) === 'esim') return ''
+
     const guests = order.adults + order.children
 
     return [

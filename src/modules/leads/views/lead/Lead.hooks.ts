@@ -4,12 +4,9 @@ import { DEFAULT_CURRENCY } from '~/shared/helpers/money'
 import { today } from '~/shared/helpers/dates'
 import { useLeadsRepository } from '~/modules/leads/repositories'
 import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
-import { tripFromLead, tripFromTour } from '~/modules/leads/helpers/trip'
-import { HOME_DEPARTURE } from '~/shared/composables/useSearchCriteria'
-import type { ILeadRaw, ILeadRelated, IOrderRaw, ITripRoute, LeadStatus } from '~/modules/leads/contracts/leads'
+import { tripFromLead } from '~/modules/leads/helpers/trip'
+import type { ILeadRaw, ILeadRelated, ILeadTrip, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
-import type { ITourPickerCriteria } from '~/modules/leads/components/tourPicker/TourPicker.d'
-import type { Tour } from '~/search_engine/models/Tour'
 
 const DEFAULT_ADULTS = 2
 
@@ -111,27 +108,12 @@ export const useLead = () => {
     }
   }
 
-  const picking = ref(false)
+  const pickingEsim = ref(false)
 
   const hasTour = computed(() => Boolean(lead.value?.hotel_name))
 
-  const pickerSeed = computed<Partial<ITourPickerCriteria>>(() => {
-    const found = lead.value
-
-    if (!found) return {}
-
-    return {
-      from: found.route_from || HOME_DEPARTURE,
-      to: found.route_to || found.destination,
-      date: found.check_in ?? '',
-      nights: found.nights || undefined,
-      adults: found.adults || undefined,
-      kids: found.children,
-    }
-  })
-
-  async function assign(tour: Tour | null, searched: ITripRoute | null) {
-    if (!tour || !lead.value) return
+  async function assignEsim(trip: ILeadTrip) {
+    if (!lead.value) return
 
     if (hasTour.value && !await ask({
       title: t('cms.leads.offer.confirmTitle'),
@@ -139,7 +121,7 @@ export const useLead = () => {
       confirmLabel: t('cms.leads.offer.confirm'),
     })) return
 
-    if (await save({ trip: tripFromTour(tour, searched ?? undefined) }, t('cms.leads.offer.assigned'))) picking.value = false
+    if (await save({ trip }, t('cms.leads.offer.assignedEsim'))) pickingEsim.value = false
   }
 
   async function clearTour() {
@@ -261,7 +243,7 @@ export const useLead = () => {
   return {
     lead, draft, orders, status, error, saving, saved, historyVersion,
     statusOptions, change, submit, addOrder, archive, restore, refresh, owned,
-    picking, hasTour, pickerSeed, assign, clearTour,
+    pickingEsim, hasTour, assignEsim, clearTour,
     tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
   }
 }

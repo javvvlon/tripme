@@ -40,14 +40,43 @@
                     <li v-for="step in 3" :key="step">
                         <span class="tm-esim-country__step-no">{{ step }}</span>
                         <span>
-                            <strong>{{ t(`esim.steps.${step}.title`) }}</strong>
-                            {{ t(`esim.steps.${step}.text`) }}
+                            <strong>{{ t(`${stepsKey}.${step}.title`) }}</strong>
+                            {{ t(`${stepsKey}.${step}.text`) }}
                         </span>
                     </li>
                 </ol>
             </section>
 
-            <aside class="tm-esim-checkout">
+            <aside v-if="catalog" class="tm-esim-checkout">
+                <h2 class="tm-esim-checkout__title">{{ t('esim.request.title') }}</h2>
+
+                <div v-if="plan" class="tm-esim-checkout__plan">
+                    <span>{{ flag }} {{ name }} · {{ plan.volume }} · {{ plan.period }}</span>
+                </div>
+
+                <div v-if="plan" class="tm-esim-checkout__total">
+                    <span>{{ t('esim.total') }}</span>
+                    <strong>{{ plan.price }}</strong>
+                </div>
+
+                <p v-if="requested" class="tm-esim-checkout__sent" role="status">
+                    <Icon name="check" :size="16" />
+                    {{ t('esim.request.sent') }}
+                </p>
+
+                <Button v-else type="button" size="lg" :disabled="!plan || requesting" class="tm-esim-checkout__pay" @click="request">
+                    {{ requesting ? t('lead.sending') : t('lead.cta') }}
+                </Button>
+
+                <ClientOnly>
+                    <LeadModal
+                        v-model="asking" :trip="trip" :summary="summary"
+                        :title="t('esim.request.title')" :comment-placeholder="t('esim.request.comment')"
+                    />
+                </ClientOnly>
+            </aside>
+
+            <aside v-else class="tm-esim-checkout">
                 <h2 class="tm-esim-checkout__title">{{ t('esim.checkout') }}</h2>
 
                 <div v-if="plan" class="tm-esim-checkout__plan">
@@ -100,6 +129,7 @@
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { useEsimCountry } from './EsimCountry.hooks'
 
 const { t } = useI18n()
@@ -107,8 +137,11 @@ const localePath = useLocalePath()
 
 const {
     name, flag, networks, cards, plan, selected, status, error,
+    catalog, trip, summary, asking, requesting, requested, request,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
 } = useEsimCountry()
+
+const stepsKey = computed(() => (catalog.value ? 'esim.request.steps' : 'esim.steps'))
 
 useSeoMeta({
     title: () => t('esim.seo.countryTitle', { country: name.value }),

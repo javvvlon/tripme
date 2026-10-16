@@ -2,7 +2,10 @@ import { useEsimRepository } from '~/modules/esim/repositories'
 import { countryName, flagOf, sumOf } from '~/modules/esim/helpers/esim'
 import { ESIM_PAYMENT_METHODS } from '~/modules/esim/contracts/esim'
 import { isCompletePhone, toE164 } from '~/shared/helpers/phone'
-import type { EsimPaymentMethod, IEsimPlan } from '~/modules/esim/contracts/esim'
+import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
+import { esimTitle, esimTrip } from '~/modules/esim/helpers/trip'
+import type { EsimPaymentMethod, IEsimMode, IEsimPlan } from '~/modules/esim/contracts/esim'
+import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
@@ -13,7 +16,7 @@ export const useEsimCountry = () => {
   const { t, locale } = useI18n()
   const route = useRoute()
   const { failed } = useToast()
-  const { plans, methods, checkout } = useEsimRepository()
+  const { plans, mode, methods, checkout } = useEsimRepository()
 
   const code = computed(() => String(route.params.country ?? '').toUpperCase())
 
@@ -22,6 +25,10 @@ export const useEsimCountry = () => {
     () => plans(code.value),
     { default: () => [] as IEsimPlan[] },
   )
+
+  const { data: setup } = useAsyncData('esim:mode', () => mode(), { default: (): IEsimMode => ({ mode: 'checkout', provider: null }) })
+
+  const catalog = computed(() => setup.value.mode === 'catalog')
 
   const { data: available } = useAsyncData('esim:methods', () => methods(), { default: () => [], lazy: true, server: false })
 
@@ -55,6 +62,16 @@ export const useEsimCountry = () => {
   })))
 
   const plan = computed(() => cards.value.find(entry => entry.id === selected.value) ?? null)
+
+  const title = computed(() => (plan.value ? esimTitle(name.value, plan.value.volume, plan.value.period) : ''))
+
+  const trip = computed<ILeadTrip>(() => (plan.value
+    ? esimTrip({ code: code.value, name: name.value, provider: setup.value.provider, plan: plan.value, volume: plan.value.volume, period: plan.value.period })
+    : { hotel_name: '', supplier_name: '', check_in: null, nights: 0, adults: 1, children: 0, price_amount: null, price_currency: 'UZS', route_from: '', route_to: '' }))
+
+  const summary = computed(() => (plan.value ? `${flag.value} ${title.value} · ${plan.value.price}` : ''))
+
+  const { asking, sending: requesting, sent: requested, request } = useTourRequest(() => trip.value)
 
   const methodOptions = computed(() => ESIM_PAYMENT_METHODS.map(value => ({
     value,
@@ -94,6 +111,7 @@ export const useEsimCountry = () => {
 
   return {
     code, name, flag, networks, cards, plan, selected, status, error,
+    catalog, trip, summary, asking, requesting, requested, request,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
   }
 }
