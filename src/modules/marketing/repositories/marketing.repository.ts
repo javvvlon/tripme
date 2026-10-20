@@ -1,7 +1,7 @@
 import type { AnyObject } from '~/shared/contracts/data'
 import type { IPageRaw } from '~/shared/contracts/pagination'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
-import type { AdLanguage, IAdContact, IAdTemplate, IAssistantAnswer, IBotLink, IBotStatus, IMarketingSettings, IPublicSelection, IPublishDraft, ISavedTemplate, ISelection, ISelectionPatch, ISelectionRow } from '../contracts/marketing'
+import type { AdLanguage, IAdContact, IAdTemplate, IBotLink, IBotStatus, IMarketingSettings, IPublicSelection, IPublishDraft, ISavedTemplate, ISelection, ISelectionPatch, ISelectionRow } from '../contracts/marketing'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -78,17 +78,6 @@ export const useMarketingRepository = () => {
   const saveSettings = async (changes: { voice?: string, contacts?: IAdContact[], footer?: Record<AdLanguage, string>, visual?: string }): Promise<IMarketingSettings> =>
     (await http.call<IMarketingSettings>('Marketing', 'saveSettings', {}, changes as AnyObject)).data
 
-  const assistant = async (text: string, image: Blob | null, history: Array<{ role: string, text: string }>): Promise<IAssistantAnswer> => {
-    const form = new FormData()
-
-    form.append('text', text)
-    form.append('history', JSON.stringify(history))
-
-    if (image) form.append('image', image, 'post.png')
-
-    return (await http.call<IAssistantAnswer>('Marketing', 'assistant', {}, form)).data
-  }
-
   const bot = async (): Promise<IBotStatus> =>
     (await http.call<IBotStatus>('Marketing', 'bot')).data
 
@@ -98,5 +87,5 @@ export const useMarketingRepository = () => {
   const botUnlink = async (): Promise<IBotStatus> =>
     (await http.call<IBotStatus>('Marketing', 'botUnlink', {}, {})).data
 
-  return { shared, list, create, one, patch, recheck, write, paint, background, archive, restore, publish, settings, saveSettings, designTemplates, templates, saveTemplate, archiveTemplate, assistant, bot, botLink, botUnlink }
+  return { shared, list, create, one, patch, recheck, write, paint, background, archive, restore, publish, settings, saveSettings, designTemplates, templates, saveTemplate, archiveTemplate, bot, botLink, botUnlink }
 }

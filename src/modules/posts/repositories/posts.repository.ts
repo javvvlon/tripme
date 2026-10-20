@@ -1,6 +1,6 @@
 import { Post } from '../models/Post'
 import { PostCreateIntention, PostIntention } from '../intentions/post'
-import type { IBlogAssistantAnswer, IPostAdminRaw, IPostDraft, IPostRaw } from '../contracts/posts'
+import type { IPostAdminRaw, IPostDraft, IPostRaw } from '../contracts/posts'
 import type { ContentLocale } from '~/modules/content/contracts/content'
 import type { AnyObject } from '~/shared/contracts/data'
 import type { IPageQuery, IPageRaw } from '~/shared/contracts/pagination'
@@ -63,8 +63,5 @@ export const usePostsRepository = () => {
     await http.call<void>('Posts', 'deletePost', { id })
   }
 
-  const assistant = async (body: { text: string, history: Array<{ role: string, text: string }>, post_id: string | null }): Promise<IBlogAssistantAnswer> =>
-    (await http.call<IBlogAssistantAnswer>('Posts', 'assistant', {}, body as AnyObject)).data
-
-  return { bySlug, all, page, one, create, update, remove, assistant }
+  return { bySlug, all, page, one, create, update, remove }
 }

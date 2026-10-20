@@ -398,7 +398,7 @@
       "team": "Team",
       "media": "Media",
       "selections": "Selections",
-      "ai": "AI assistant"
+      "tripmeAi": "TripMe AI"
     },
     "roles": {
       "CLIENT": "Client",
@@ -802,9 +802,6 @@
         "draft": "Drafts"
       },
       "assistant": {
-        "title": "Site AI assistant",
-        "sub": "I write blog articles in our structure in Russian, Uzbek and English, improve drafts and suggest topics.",
-        "placeholder": "What is the article about? For example: Georgia in winter for families from Tashkent",
         "created": "Draft created, not published",
         "revised": "Draft updated",
         "open": "Open in the editor",
@@ -818,22 +815,7 @@
             "title": "Topic ideas",
             "text": "I will suggest topics the blog does not have yet",
             "prompt": "Suggest 5 blog topics for the coming month"
-          },
-          "review": {
-            "title": "Article review",
-            "text": "Paste a text and I will say what to strengthen and what is missing",
-            "prompt": "Review this article and say what to improve:\n\n"
-          },
-          "revise": {
-            "title": "Improve the draft",
-            "text": "After a draft, ask to shorten it, add a section or change the tone",
-            "prompt": "Shorten the article and add a section about "
           }
-        },
-        "thinking": {
-          "read": "Reading the request",
-          "plan": "Checking the blog structure",
-          "write": "Writing in three languages"
         },
         "createdText": "The article draft is ready. Check the facts, add a cover and publish it in the editor.",
         "revisedText": "I updated the draft as you asked. Open it in the editor to check the changes.",
@@ -2017,9 +1999,6 @@
         "postTip": "Price from the operator’s post; this tour was not found in search"
       },
       "assistant": {
-        "title": "Marketing AI assistant",
-        "sub": "Send a tour operator’s post, its link or a screenshot and I will build an ad selection. Or ask for advice.",
-        "placeholder": "Paste an operator’s post, a t.me link or ask a question",
         "ready": "Selection «{title}» is ready.",
         "found": "Found in search at today’s prices: {n}",
         "kept": "At the post’s price: {n}",
@@ -2048,11 +2027,6 @@
             "prompt": "Our own offer: "
           }
         },
-        "thinking": {
-          "read": "Reading your message",
-          "search": "Finding tours at operators",
-          "build": "Preparing the answer"
-        },
         "emptyText": "I could not answer that. Try rephrasing the question.",
         "ownReady": "I built our own offer «{title}». Nothing was checked with operators — the prices and dates are yours and can be edited in the studio under «Tours»."
       },
@@ -2075,6 +2049,17 @@
         "cancel": "Cancel",
         "invalid": "A name or stars, a date, nights and a price are needed",
         "includes": "What is included"
+      }
+    },
+    "ai": {
+      "title": "TripMe AI",
+      "sub": "One assistant for ads and the site: selections from operator posts, banners and Telegram posts, blog articles and advice.",
+      "placeholder": "Paste an operator post or a t.me link, or describe the task…",
+      "emptyText": "Could not answer — try putting it differently.",
+      "thinking": {
+        "read": "Reading your request…",
+        "pick": "Choosing how to help…",
+        "work": "Preparing the answer…"
       }
     }
   },

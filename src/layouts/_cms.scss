@@ -62,6 +62,81 @@
 
     &__group-icon { flex: none; color: var(--tm-brand-primary); }
 
+    &__group.is-closed + &__group { margin-top: 2px; }
+
+    &__group-toggle {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        border-radius: radius('xs');
+        background: none;
+        color: inherit;
+        font: inherit;
+        letter-spacing: inherit;
+        text-align: left;
+        text-transform: inherit;
+        cursor: pointer;
+        transition: color .12s ease;
+
+        &:hover { color: var(--tm-ink-2); }
+
+        @include focus-ring(var(--tm-brand-primary));
+    }
+
+    &__group-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__group-badge {
+        padding: 1px 6px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-primary);
+        color: var(--tm-brand-on-primary);
+        font-size: size(11);
+        letter-spacing: 0;
+    }
+
+    &__group-chevron {
+        flex: none;
+        margin-left: auto;
+        transition: transform .15s ease;
+    }
+
+    &__group.is-closed &__group-chevron { transform: rotate(-90deg); }
+
+    &__group-items {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    &__ai {
+        position: relative;
+        margin-bottom: 14px;
+    }
+
+    &__ai-key {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        padding: 1px 6px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('xs');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-4);
+        font-family: var(--tm-font-body-mono);
+        font-size: size(11);
+        line-height: 1.4;
+        pointer-events: none;
+        transform: translateY(-50%);
+    }
+
     &__site {
         display: flex;
         align-items: center;

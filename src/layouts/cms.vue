@@ -20,20 +20,45 @@
                 </button>
             </template>
 
-            <section v-for="group in CMS_NAVIGATION.filter(entry => (!entry.admin || isAdmin) && (!entry.roles || entry.roles.includes(role)))" :key="group.key" class="tm-cms__group">
+            <div class="tm-cms__ai">
+                <NavbarItem
+                    class="is-ai"
+                    :label="t(AI_NODE.labelKey)"
+                    :icon="AI_NODE.icon"
+                    :to="AI_NODE.to"
+                    :active="aiActive"
+                />
+                <kbd v-if="!collapsed" class="tm-cms__ai-key" aria-hidden="true">{{ shortcut }}</kbd>
+            </div>
+
+            <section v-for="group in groups" :key="group.key" class="tm-cms__group" :class="{ 'is-closed': !collapsed && !groupOpen(group) }">
                 <h2 class="tm-cms__group-title">
-                    <Icon v-if="group.icon" :name="group.icon" :size="13" :stroke="2.2" class="tm-cms__group-icon" />{{ t(group.labelKey) }}
+                    <button
+                        v-if="!collapsed"
+                        type="button" class="tm-cms__group-toggle"
+                        :aria-expanded="groupOpen(group)"
+                        :aria-controls="`tm-nav-${group.key}`"
+                        @click="toggleGroup(group)"
+                    >
+                        <Icon v-if="group.icon" :name="group.icon" :size="13" :stroke="2.2" class="tm-cms__group-icon" />
+                        <span class="tm-cms__group-label">{{ t(group.labelKey) }}</span>
+                        <span v-if="!groupOpen(group) && groupBadge(group)" class="tm-cms__group-badge">{{ groupBadge(group) }}</span>
+                        <Icon name="chevron" :size="12" :stroke="2.4" class="tm-cms__group-chevron" />
+                    </button>
+                    <template v-else>
+                        <Icon v-if="group.icon" :name="group.icon" :size="13" :stroke="2.2" class="tm-cms__group-icon" />{{ t(group.labelKey) }}
+                    </template>
                 </h2>
 
+                <div v-show="collapsed || groupOpen(group)" :id="`tm-nav-${group.key}`" class="tm-cms__group-items">
                 <template v-for="node in group.children ?? []" :key="node.key">
                     <NavbarItem
-                        :class="{ 'is-ai': node.ai }"
                         :label="t(node.labelKey)"
                         :icon="node.icon ?? (collapsed ? group.icon : undefined)"
                         :to="node.to"
                         :active="isActive(node) && !subActive(node)"
                         :disabled="node.disabled"
-                        :badge="node.key === 'leads' && newLeads ? newLeads : node.key === 'messages' && unreadMessages ? unreadMessages : null"
+                        :badge="badgeOf(node)"
                         accent
                     />
 
@@ -48,6 +73,7 @@
                         </NuxtLink>
                     </template>
                 </template>
+                </div>
             </section>
 
             <template #footer>
@@ -87,7 +113,7 @@ import { useMessagesRepository } from '~/modules/messages/repositories'
 import { useMessageStream } from '~/modules/messages/hooks/use-message-stream'
 import { BRAND_NAME } from '~/shared/config/brand'
 import { useLeadsRepository } from '~/modules/leads/repositories'
-import { CMS_NAVIGATION } from '~/modules/content/config/navigation'
+import { AI_NODE, CMS_NAVIGATION, OPEN_GROUPS } from '~/modules/content/config/navigation'
 import { findNavTrail } from '~/shared/helpers/navigation'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import type { INavNode } from '~/shared/helpers/navigation'
@@ -112,6 +138,48 @@ const isChildActive = (child: INavNode) => route.path === localePath(child.to ??
     && Object.entries(child.query ?? {}).every(([key, value]) => route.query[key] === value)
 
 const subActive = (node: INavNode) => (node.children ?? []).some(isChildActive)
+
+const groups = computed(() => CMS_NAVIGATION.filter(entry => (!entry.admin || isAdmin.value) && (!entry.roles || entry.roles.includes(role.value))))
+
+const aiActive = computed(() => route.path === localePath(AI_NODE.to!))
+
+const GROUPS_KEY = 'tm-nav-groups'
+
+const groupState = ref<Record<string, boolean>>({})
+
+const groupOpen = (group: INavNode) => groupState.value[group.key] ?? OPEN_GROUPS.includes(group.key)
+
+function saveGroups() {
+  try {
+    localStorage.setItem(GROUPS_KEY, JSON.stringify(groupState.value))
+  }
+  catch {}
+}
+
+function toggleGroup(group: INavNode) {
+  groupState.value = { ...groupState.value, [group.key]: !groupOpen(group) }
+  saveGroups()
+}
+
+watch(trail, (steps) => {
+  const group = steps[0]
+
+  if (!group || !groups.value.some(entry => entry.key === group.key) || groupOpen(group)) return
+
+  groupState.value = { ...groupState.value, [group.key]: true }
+  saveGroups()
+})
+
+const shortcut = ref('Ctrl K')
+
+function onShortcut(event: KeyboardEvent) {
+  if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'k') return
+
+  if ((event.target as HTMLElement | null)?.closest('input, textarea, select, [contenteditable="true"]')) return
+
+  event.preventDefault()
+  void navigateTo(localePath(AI_NODE.to!))
+}
 
 const COLLAPSED_KEY = 'tm-sidebar-collapsed'
 
@@ -138,6 +206,11 @@ const { onEvent: onMessageEvent } = useMessageStream()
 
 onMessageEvent(async () => { unreadMessages.value = await inboxUnread().catch(() => unreadMessages.value) })
 
+const badgeOf = (node: INavNode): number | null =>
+  node.key === 'leads' && newLeads.value ? newLeads.value : node.key === 'messages' && unreadMessages.value ? unreadMessages.value : null
+
+const groupBadge = (group: INavNode): number => (group.children ?? []).reduce((sum, node) => sum + (badgeOf(node) ?? 0), 0)
+
 const countNewLeads = async () => {
   try {
     newLeads.value = (await leadsPage({ status: 'new' }, { page: 1, perPage: 25 })).counts.fresh
@@ -154,8 +227,23 @@ watch(() => route.path, () => void countNewLeads())
 onMounted(() => {
   try {
     pinned.value = localStorage.getItem(COLLAPSED_KEY) === '1'
+
+    const stored = JSON.parse(localStorage.getItem(GROUPS_KEY) ?? '{}') as unknown
+
+    if (stored && typeof stored === 'object') {
+      groupState.value = Object.fromEntries(Object.entries(stored).filter(([, open]) => typeof open === 'boolean')) as Record<string, boolean>
+    }
   }
   catch {}
+
+  const active = trail.value[0]
+
+  if (active && !groupOpen(active)) groupState.value = { ...groupState.value, [active.key]: true }
+
+  shortcut.value = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K'
+
+  window.addEventListener('keydown', onShortcut)
+  onBeforeUnmount(() => window.removeEventListener('keydown', onShortcut))
 
   const query = window.matchMedia('(max-width: 899px)')
   const sync = () => { narrow.value = query.matches }

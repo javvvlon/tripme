@@ -14,6 +14,5 @@ export const resource: IResource = {
     createPost: { url: 'cms/posts', method: 'POST' },
     updatePost: { url: 'cms/posts/:id', method: 'PUT' },
     deletePost: { url: 'cms/posts/:id', method: 'DELETE' },
-    assistant: { url: 'cms/posts/assistant', method: 'POST' },
   },
 }

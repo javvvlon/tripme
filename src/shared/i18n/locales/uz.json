@@ -398,7 +398,7 @@
       "team": "Jamoa",
       "media": "Mediateka",
       "selections": "To‘plamlar",
-      "ai": "AI yordamchi"
+      "tripmeAi": "TripMe AI"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -802,9 +802,6 @@
         "draft": "Qoralamalar"
       },
       "assistant": {
-        "title": "Sayt AI yordamchisi",
-        "sub": "Blog uchun maqolani tuzilmamiz bo‘yicha rus, o‘zbek va ingliz tillarida yozaman, qoralamani yaxshilayman yoki mavzular taklif qilaman.",
-        "placeholder": "Maqola nima haqida? Masalan: Toshkentlik oilalar uchun qishki Gruziya",
         "created": "Qoralama yaratildi, e’lon qilinmagan",
         "revised": "Qoralama yangilandi",
         "open": "Muharrirda ochish",
@@ -818,22 +815,7 @@
             "title": "Mavzu g‘oyalari",
             "text": "Blogda hali yo‘q mavzularni taklif qilaman",
             "prompt": "Yaqin bir oy uchun blogga 5 ta mavzu taklif qiling"
-          },
-          "review": {
-            "title": "Maqola tahlili",
-            "text": "Matnni qo‘ying — nimani kuchaytirish kerakligini aytaman",
-            "prompt": "Maqolani tahlil qilib, nimani yaxshilash mumkinligini ayting:\n\n"
-          },
-          "revise": {
-            "title": "Qoralamani yaxshilash",
-            "text": "Qoralamadan keyin qisqartirish, bo‘lim qo‘shish yoki ohangni o‘zgartirishni so‘rang",
-            "prompt": "Maqolani qisqartiring va bo‘lim qo‘shing: "
           }
-        },
-        "thinking": {
-          "read": "So‘rovni o‘qiyapman",
-          "plan": "Blog tuzilmasini tekshiryapman",
-          "write": "Uch tilda yozyapman"
         },
         "createdText": "Maqola qoralamasi tayyor. Faktlarni tekshiring, muqova qo‘shing va muharrirda e’lon qiling.",
         "revisedText": "Qoralamani so‘rovingiz bo‘yicha yangiladim. O‘zgarishlarni muharrirda tekshiring.",
@@ -2017,9 +1999,6 @@
         "postTip": "Narx operator postidan olingan, bu tur qidiruvda topilmadi"
       },
       "assistant": {
-        "title": "Marketing AI yordamchisi",
-        "sub": "Turoperator postini, unga havolani yoki skrinshotni yuboring — reklama uchun tanlov yig‘aman. Yoki maslahat so‘rang.",
-        "placeholder": "Turoperator postini, t.me havolasini qo‘ying yoki savol bering",
         "ready": "«{title}» tanlovi tayyor.",
         "found": "Qidiruvda bugungi narxlar bilan topildi: {n}",
         "kept": "Post narxi bilan: {n}",
@@ -2048,11 +2027,6 @@
             "prompt": "Bizning taklif: "
           }
         },
-        "thinking": {
-          "read": "Xabarni o‘qiyapman",
-          "search": "Turoperatorlardan turlarni qidiryapman",
-          "build": "Javobni tayyorlayapman"
-        },
         "emptyText": "Javob berib bo‘lmadi. Savolni boshqacha yozib ko‘ring.",
         "ownReady": "«{title}» bizning taklifimizni yig‘dim. Turoperatorlarda tekshirmadim — narx va sanalar sizniki, ularni studiyadagi «Turlar» bo‘limida tuzatish mumkin."
       },
@@ -2075,6 +2049,17 @@
         "cancel": "Bekor qilish",
         "invalid": "Nom yoki yulduzlar, sana, tunlar va narx kerak",
         "includes": "Narxga nima kiradi"
+      }
+    },
+    "ai": {
+      "title": "TripMe AI",
+      "sub": "Reklama va sayt uchun yagona yordamchi: operator postlaridan tanlovlar, bannerlar va Telegram postlari, blog maqolalari va maslahatlar.",
+      "placeholder": "Operator postini, t.me havolasini qo‘ying yoki vazifani yozing…",
+      "emptyText": "Javob bera olmadim — boshqacha yozib ko‘ring.",
+      "thinking": {
+        "read": "So‘rovni o‘qiyapman…",
+        "pick": "Qanday yordam berishni tanlayapman…",
+        "work": "Javob tayyorlayapman…"
       }
     }
   },
