@@ -93,5 +93,25 @@
         &:hover { background: var(--tm-surface-2); }
 
         &.is-selected { color: var(--tm-brand-secondary); font-weight: 600; }
+
+        &:disabled {
+            color: var(--tm-ink-3);
+            cursor: not-allowed;
+
+            &:hover { background: none; }
+        }
+    }
+
+    .tm-select__option-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .tm-select__option-hint {
+        max-width: 240px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        white-space: normal;
     }
 }

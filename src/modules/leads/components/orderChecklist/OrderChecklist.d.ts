@@ -13,6 +13,7 @@ export type ChecklistTarget = 'services' | 'finance' | 'details'
 
 export interface IOrderChecklistEmits {
   confirm: []
+  request: []
   contract: [file: File]
   go: [tab: ChecklistTarget]
 }

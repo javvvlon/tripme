@@ -4,6 +4,8 @@
 export interface ISelectMenuOption {
   value: string
   label: string
+  disabled?: boolean
+  hint?: string
 }
 
 export interface ISelectMenuProps {

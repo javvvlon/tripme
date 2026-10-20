@@ -71,6 +71,7 @@
                 :busy="saving || contractBusy"
                 class="tm-cms-order__checklist"
                 @confirm="confirmOrder"
+                @request="change('requested')"
                 @contract="attachContract"
                 @go="goTo"
             />

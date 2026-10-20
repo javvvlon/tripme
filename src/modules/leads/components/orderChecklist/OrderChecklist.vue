@@ -9,6 +9,16 @@
             <span v-if="confirmed" class="tm-checklist__done">{{ t('cms.orders.checklist.confirmed') }}</span>
 
             <Button
+                v-else-if="status === 'draft'"
+                type="button" size="sm"
+                :variant="requestReady ? 'primary' : 'ghost'"
+                :disabled="busy || !requestReady"
+                @click="emit('request')"
+            >
+                {{ t('cms.orders.checklist.request') }}
+            </Button>
+
+            <Button
                 v-else-if="status === 'requested'"
                 type="button" size="sm"
                 :variant="confirmation.ready ? 'primary' : 'ghost'"
@@ -20,21 +30,22 @@
         </header>
 
         <div class="tm-checklist__bar" aria-hidden="true">
-            <span v-for="row in rows" :key="row.key" :class="`is-${row.ok ? 'ok' : severity}`" />
+            <span v-for="row in rows" :key="row.key" :class="`is-${tone(row)}`" />
         </div>
 
         <ul class="tm-checklist__list">
-            <li v-for="row in rows" :key="row.key" class="tm-checklist__row" :class="`is-${row.ok ? 'ok' : severity}`">
+            <li v-for="row in rows" :key="row.key" class="tm-checklist__row" :class="`is-${tone(row)}`">
                 <span class="tm-checklist__label">
                     <span class="tm-checklist__mark" aria-hidden="true">
                         <Icon v-if="row.ok" name="check" :size="12" :stroke="2.6" />
-                        <Icon v-else-if="severity === 'error'" name="close" :size="12" :stroke="2.6" />
+                        <Icon v-else-if="tone(row) === 'error'" name="close" :size="12" :stroke="2.6" />
                         <span v-else class="tm-checklist__bang">!</span>
                     </span>
                     {{ row.label }}
                 </span>
 
                 <span class="tm-checklist__detail">{{ row.detail }}</span>
+                <span v-if="blocksRequest(row)" class="tm-checklist__gate">{{ t('cms.orders.checklist.beforeRequest') }}</span>
 
                 <template v-if="!row.ok && !confirmed || row.key === 'contract' && !row.ok">
                     <button v-if="row.key === 'contract'" type="button" class="tm-checklist__action" :disabled="busy" @click="file?.click()">
@@ -48,6 +59,10 @@
         </ul>
 
         <input ref="file" type="file" class="tm-checklist__file" accept="application/pdf,image/png,image/jpeg,image/webp" @change="pick">
+
+        <p v-if="status === 'draft' && !requestReady" class="tm-checklist__hint is-gate">
+            {{ fullPayment ? t('cms.orders.checklist.requestGateFull') : t('cms.orders.checklist.requestGate') }}
+        </p>
 
         <p v-if="status === 'requested' && !confirmation.ready" class="tm-checklist__hint">
             {{ confirmation.mode === 'enforce' ? t('cms.orders.checklist.enforceMode') : t('cms.orders.checklist.warnMode') }}
@@ -142,6 +157,18 @@ const rows = computed<IRow[]>(() => {
 })
 
 const doneCount = computed(() => rows.value.filter(row => row.ok).length)
+
+const requestReady = computed(() => props.confirmation.request?.ready ?? true)
+
+const blocksRequest = (row: IRow): boolean =>
+    props.status === 'draft' && !row.ok && Boolean(props.confirmation.request?.missing.includes(row.key as ConfirmationCheck))
+
+const tone = (row: IRow): 'ok' | 'warning' | 'error' => {
+    if (row.ok) return 'ok'
+    if (blocksRequest(row)) return 'error'
+
+    return severity.value
+}
 
 function pick(event: Event) {
     const input = event.target as HTMLInputElement

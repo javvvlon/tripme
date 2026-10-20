@@ -443,13 +443,14 @@
         "amountPositive": "Summa noldan katta boʻlishi kerak.",
         "rateMissing": "Soʻmga kursni kiriting.",
         "supplierRefRequired": "Yetkazib beruvchidagi bron raqamini kiriting.",
-        "depositPercent": "Depozit — 0 dan 100 gacha butun foiz.",
+        "depositPercent": "Depozit 30 dan 100 gacha butun foiz bo‘lishi kerak.",
         "receiptLocked": "Toʻlov chekini oʻchirib boʻlmaydi — toʻlovni storno qiling.",
         "serviceCancelled": "Bekor qilingan xizmatni tasdiqlab boʻlmaydi.",
         "serviceIssued": "Rasmiylashtirilgan xizmatni o'zgartirib bo'lmaydi",
         "packageLocked": "Turpaket buyurtma ma'lumotlari orqali o'zgaradi",
         "orderClosed": "Yopilgan buyurtmaga xizmat qo'shib bo'lmaydi",
-        "serviceDates": "Tugash sanasi boshlanishidan oldin"
+        "serviceDates": "Tugash sanasi boshlanishidan oldin",
+        "requestUnsecured": "Hozircha turoperatorga so‘rov yuborib bo‘lmaydi: imzolangan shartnoma va kamida 30% oldindan to‘lov (chek bilan) kerak."
       }
     },
     "upload": {
@@ -1231,7 +1232,13 @@
         "goServices": "Xizmatni tasdiqlash",
         "goFinance": "Toʻlovni qabul qilish",
         "goDetails": "Pasportni kiritish",
-        "payment": "To‘lov qabul qilindi"
+        "payment": "To‘lov qabul qilindi",
+        "request": "Turoperatorga so‘rov yuborish",
+        "beforeRequest": "yuborishdan oldin",
+        "requestGate": "So‘rov turoperatorga faqat imzolangan shartnoma va kamida 30% oldindan to‘lov (chek bilan) qabul qilingach yuboriladi. Shu tarzda ta’minlanmagan bronlar yuborilmaydi.",
+        "requestGateFull": "So‘rov yetkazib beruvchiga faqat to‘liq to‘lov (chek bilan) qabul qilingach yuboriladi.",
+        "requestBlocked": "Avval shartnoma va kamida 30% oldindan to‘lov",
+        "requestBlockedFull": "Avval to‘liq to‘lov"
       },
       "tabs": {
         "services": "Xizmatlar",

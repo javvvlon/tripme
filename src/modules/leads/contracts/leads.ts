@@ -194,6 +194,7 @@ export interface IOrderConfirmation {
   missing: ConfirmationCheck[]
   ready: boolean
   mode: 'warn' | 'enforce'
+  request?: { ready: boolean, missing: ConfirmationCheck[] }
 }
 
 export const ORDER_ITEM_KINDS = ['package', 'flight', 'hotel', 'transfer', 'insurance', 'excursion', 'visa', 'esim'] as const

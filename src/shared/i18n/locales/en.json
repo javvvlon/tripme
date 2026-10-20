@@ -443,13 +443,14 @@
         "amountPositive": "The amount must be above zero.",
         "rateMissing": "Enter the exchange rate to sum.",
         "supplierRefRequired": "Enter the supplier booking number.",
-        "depositPercent": "The deposit is a whole percent from 0 to 100.",
+        "depositPercent": "The deposit must be a whole percent from 30 to 100.",
         "receiptLocked": "A payment receipt cannot be deleted — reverse the payment instead.",
         "serviceCancelled": "A cancelled service cannot be confirmed.",
         "serviceIssued": "An issued service cannot be changed",
         "packageLocked": "The tour package changes through the order details",
         "orderClosed": "A closed order cannot take new services",
-        "serviceDates": "The end date is before the start"
+        "serviceDates": "The end date is before the start",
+        "requestUnsecured": "The request cannot be sent to the operator yet: it needs a signed contract and at least a 30% deposit with a receipt."
       }
     },
     "upload": {
@@ -1231,7 +1232,13 @@
         "goServices": "Confirm a service",
         "goFinance": "Record a payment",
         "goDetails": "Enter passport",
-        "payment": "Payment received"
+        "payment": "Payment received",
+        "request": "Send the request to the operator",
+        "beforeRequest": "before sending",
+        "requestGate": "The request goes to the tour operator only after the contract is signed and at least a 30% deposit is received with a receipt, so we never send an unsecured booking.",
+        "requestGateFull": "The request goes to the supplier only after full payment is received with a receipt.",
+        "requestBlocked": "Contract and a 30% deposit first",
+        "requestBlockedFull": "Full payment first"
       },
       "tabs": {
         "services": "Services",

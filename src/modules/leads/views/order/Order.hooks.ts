@@ -106,10 +106,22 @@ export const useOrder = () => {
 
     if (!current) return []
 
-    return [current, ...ORDER_TRANSITIONS[current]].map(value => ({
-      value,
-      label: t(`cms.orders.status.${value}`),
-    }))
+    const confirmation = order.value?.confirmation
+    const unsecured = current === 'draft' && confirmation?.request?.ready === false
+    const blockedHint = confirmation?.checks && !confirmation.checks.includes('passport')
+      ? t('cms.orders.checklist.requestBlockedFull')
+      : t('cms.orders.checklist.requestBlocked')
+
+    return [current, ...ORDER_TRANSITIONS[current]].map((value) => {
+      const blocked = unsecured && value === 'requested'
+
+      return {
+        value,
+        label: t(`cms.orders.status.${value}`),
+        disabled: blocked,
+        hint: blocked ? blockedHint : undefined,
+      }
+    })
   })
 
   async function save(body: Parameters<typeof patchOrder>[1]) {

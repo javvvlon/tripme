@@ -13,6 +13,8 @@ export type PaymentMethod = typeof PAYMENT_METHODS[number]
 
 export const PAYMENT_CURRENCIES = ['UZS', 'USD', 'EUR'] as const
 
+export const MIN_DEPOSIT_PERCENT = 30
+
 export type PaymentCurrency = typeof PAYMENT_CURRENCIES[number]
 
 export type PaymentStatus = 'unpaid' | 'partial' | 'paid' | 'overpaid'

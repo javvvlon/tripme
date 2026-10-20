@@ -33,9 +33,14 @@
                         class="tm-select__option"
                         :class="{ 'is-selected': option.value === model }"
                         :aria-selected="option.value === model"
+                        :aria-disabled="option.disabled || undefined"
+                        :disabled="option.disabled"
                         @click.stop="pick(option.value)"
                     >
-                        {{ option.label }}
+                        <span class="tm-select__option-text">
+                            {{ option.label }}
+                            <small v-if="option.hint" class="tm-select__option-hint">{{ option.hint }}</small>
+                        </span>
                         <Icon v-if="option.value === model" name="check" :size="14" />
                     </button>
                 </li>

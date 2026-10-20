@@ -130,6 +130,15 @@
 
     &__row.is-error &__detail { color: var(--tm-status-danger-dark); }
 
+    &__gate {
+        padding: 1px 8px;
+        border-radius: radius('pill');
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
+        font-size: size(11);
+        font-weight: 700;
+    }
+
     &__action {
         padding: 0;
         border: 0;
@@ -149,6 +158,8 @@
         margin: 0;
         color: var(--tm-ink-3);
         font-size: size(12);
+
+        &.is-gate { color: var(--tm-ink-2); }
     }
 }
 

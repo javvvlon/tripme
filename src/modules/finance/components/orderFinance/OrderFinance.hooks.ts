@@ -1,5 +1,5 @@
 import { useFinanceRepository } from '~/modules/finance/repositories'
-import { CUSTOMER_DIRECTIONS, PAYMENT_CURRENCIES, PAYMENT_DIRECTIONS, PAYMENT_METHODS } from '~/modules/finance/contracts/finance'
+import { CUSTOMER_DIRECTIONS, MIN_DEPOSIT_PERCENT, PAYMENT_CURRENCIES, PAYMENT_DIRECTIONS, PAYMENT_METHODS } from '~/modules/finance/contracts/finance'
 import { today } from '~/shared/helpers/dates'
 import type { IFinanceRaw, IPaymentDraft, IPaymentRaw } from '~/modules/finance/contracts/finance'
 import type { IOrderFinanceProps } from './OrderFinance.d'
@@ -166,7 +166,11 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
   async function saveDeposit() {
     const value = Number(depositDraft.value)
 
-    if (!Number.isInteger(value) || value < 0 || value > 100) return
+    if (!Number.isInteger(value) || value < MIN_DEPOSIT_PERCENT || value > 100) {
+      failed(null, t('cms.errors.guards.depositPercent'))
+
+      return
+    }
 
     busy.value = true
 
