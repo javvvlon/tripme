@@ -15,4 +15,6 @@ export const LIGHT_ONLY_LAYOUTS = ['cms']
 
 export const LIGHT_ONLY_PATH = '^/[a-z]{2}/app(?:/(?!content/frame)|$)'
 
-export const THEME_BOOT = `(function(){var t='${DEFAULT_THEME}';try{var s=localStorage.getItem('${THEME_KEY}');if(s==='dark'||s==='light')t=s}catch(e){}if(new RegExp('${LIGHT_ONLY_PATH}').test(location.pathname))t='light';document.documentElement.setAttribute('data-theme',t)})()`
+export const CMS_CLASS = 'is-cms'
+
+export const THEME_BOOT = `(function(){var t='${DEFAULT_THEME}',d=document.documentElement,c=new RegExp('${LIGHT_ONLY_PATH}').test(location.pathname);try{var s=localStorage.getItem('${THEME_KEY}');if(s==='dark'||s==='light')t=s}catch(e){}if(c)t='light';d.setAttribute('data-theme',t);d.classList.toggle('${CMS_CLASS}',c)})()`

@@ -1,5 +1,5 @@
 import type { RouteLocationNormalized } from 'vue-router'
-import { DEFAULT_THEME, LIGHT_ONLY_LAYOUTS, THEME_COLOR, THEME_KEY, THEMES } from '~/shared/config/theme'
+import { CMS_CLASS, DEFAULT_THEME, LIGHT_ONLY_LAYOUTS, THEME_COLOR, THEME_KEY, THEMES } from '~/shared/config/theme'
 import type { Theme } from '~/shared/config/theme'
 
 /**
@@ -25,7 +25,10 @@ export const useTheme = () => {
   }
 
   const apply = (route: RouteLocationNormalized): void => {
-    paint(LIGHT_ONLY_LAYOUTS.includes(String(route.meta.layout)) ? 'light' : preference.value)
+    const cms = LIGHT_ONLY_LAYOUTS.includes(String(route.meta.layout))
+
+    document.documentElement.classList.toggle(CMS_CLASS, cms)
+    paint(cms ? 'light' : preference.value)
   }
 
   const set = (theme: Theme): void => {

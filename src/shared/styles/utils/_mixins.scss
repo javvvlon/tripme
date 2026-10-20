@@ -10,7 +10,11 @@
 }
 
 @function radius($key) {
-    @return map.get($radius, $key);
+    @if not map.has-key($radius, $key) {
+        @error 'Unknown radius `#{$key}`. Use one of: #{map.keys($radius)}.';
+    }
+
+    @return var(--tm-radius-#{$key});
 }
 
 @function size($key) {
@@ -22,7 +26,11 @@
 }
 
 @function shadow($key) {
-    @return map.get($shadow, $key);
+    @if not map.has-key($shadow, $key) {
+        @error 'Unknown shadow `#{$key}`. Use one of: #{map.keys($shadow)}.';
+    }
+
+    @return var(--tm-shadow-#{$key});
 }
 
 @mixin container($size: 'default') {
