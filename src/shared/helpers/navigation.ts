@@ -11,6 +11,7 @@ export interface INavNode {
   query?: Record<string, string>
   admin?: boolean
   roles?: readonly string[]
+  ai?: boolean
 }
 
 export function findNavTrail(

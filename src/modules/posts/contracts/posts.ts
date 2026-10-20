@@ -52,3 +52,10 @@ export interface IPostDraft {
   isPublished: boolean
   translations: Record<ContentLocale, IPostTranslationDraft>
 }
+
+export interface IBlogAssistantAnswer {
+  kind: 'article' | 'reply'
+  reply: string
+  suggestions: string[]
+  post: { id: string, slug: string, title: string, revised: boolean, images: number, missing_images: number } | null
+}

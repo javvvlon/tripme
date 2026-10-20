@@ -1,11 +1,14 @@
 import { useMarketingRepository } from '~/modules/marketing/repositories'
-import { AD_FORMATS, AD_LANGUAGES, AD_STYLES, CONTEXT_BACKDROPS, DEFAULT_DESIGN, MAX_BUTTONS } from '~/modules/marketing/contracts/marketing'
+import { AD_FORMATS, AD_INCLUDES, AD_LANGUAGES, AD_MOODS, AD_SIZES, AD_STYLES, CONTEXT_BACKDROPS, DEFAULT_DESIGN, MAX_BUTTONS } from '~/modules/marketing/contracts/marketing'
 import type {
-  AdBackdrop, AdButtons, AdFormat, AdLanguage, AdStyle, IAdContact, IAdCopy, IAdDesign, IAdTemplate, IAdTour, IMarketingSettings, ISavedTemplate, ISelection,
+  AdBackdrop, AdButtons, AdFormat, AdInclude, AdLanguage, AdMood, AdStyle, IAdContact, IAdCopy, IAdDesign, IAdTemplate, IAdTour, IMarketingSettings, ISavedTemplate, ISelection,
 } from '~/modules/marketing/contracts/marketing'
 import { adText, amountOf, telegramPost } from '~/modules/marketing/helpers/ad'
-import { download, fontsReady, loadImage, toBlob, toDataUrl } from '~/modules/marketing/helpers/banner/render'
+import { download, fontsReady, loadImage, saveBlob, toBlob, toDataUrl } from '~/modules/marketing/helpers/banner/render'
 import type { IBannerLabels, IBannerSpec } from '~/modules/marketing/helpers/banner/render'
+import { DURATION } from '~/modules/marketing/helpers/video/motion'
+import type { IMotionSpec } from '~/modules/marketing/helpers/video/motion'
+import type { IVideoFile } from '~/modules/marketing/helpers/video/export'
 import { tourFromTrip } from '~/modules/leads/helpers/quote'
 import { readFailure } from '~/shared/services/ui/failure'
 import { Modal } from '~/shared/services/ui/modals'
@@ -18,9 +21,11 @@ const SITE = 'tripme.uz'
 
 const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp']
 
-export type StudioPanel = 'image' | 'post' | 'page' | 'tours'
+const MAX_VIDEO_BYTES = 48 * 1024 * 1024
 
-type Busy = '' | 'recheck' | 'write' | 'paint' | 'background' | 'order' | 'archive' | 'publish' | 'download' | 'templates'
+export type StudioPanel = 'image' | 'post' | 'video' | 'page' | 'tours'
+
+type Busy = '' | 'recheck' | 'write' | 'paint' | 'background' | 'order' | 'archive' | 'publish' | 'download' | 'templates' | 'video'
 
 const sameTemplate = (a: IAdTemplate | null | undefined, b: IAdTemplate | null | undefined): boolean =>
   Boolean(a && b) && JSON.stringify({ ...a, name: '' }) === JSON.stringify({ ...b, name: '' })
@@ -81,6 +86,8 @@ export const useSelection = () => {
   const draft = reactive<Record<AdLanguage, IAdCopy>>({ ru: blankCopy(), uz: blankCopy() })
   const hashtags = reactive<Record<AdLanguage, string>>({ ru: '', uz: '' })
   const telegramImage = ref<string | null>(null)
+  const videoProgress = ref(0)
+  const videoReady = ref(true)
 
   const translate = (key: string, params: Record<string, unknown> = {}, plural?: number) =>
     plural === undefined
@@ -335,6 +342,15 @@ export const useSelection = () => {
 
   const spec = computed(() => specFor(format.value))
 
+  const motionSpec = computed<IMotionSpec | null>(() => text.value && fonts.value
+    ? {
+        format: format.value,
+        text: text.value,
+        image: image.value,
+        template: selection.value?.style === 'custom' ? selection.value.template : null,
+      }
+    : null)
+
   const place = computed(() => text.value?.place ?? '')
 
   const sceneKind = computed(() => text.value?.scene ?? 'coast')
@@ -490,13 +506,189 @@ export const useSelection = () => {
     }
 
     await run('publish', () => repository.publish(selection.value!.id, {
-      image: blob,
+      media: blob,
+      kind: 'photo',
       caption: caption.value,
       language: language.value,
       link: link.value,
       cta: draft[language.value].cta,
     }), t('cms.marketing.published'))
   }
+
+  let rendered: { spec: IMotionSpec, mood: AdMood, file: IVideoFile } | null = null
+
+  async function renderClip(): Promise<IVideoFile | null> {
+    const target = motionSpec.value
+
+    if (!target) return null
+    if (rendered && rendered.spec === target && rendered.mood === design.mood) return rendered.file
+
+    busy.value = 'video'
+    videoProgress.value = 0
+
+    try {
+      const { renderVideo, VideoUnsupportedError } = await import('~/modules/marketing/helpers/video/export')
+
+      try {
+        const file = await renderVideo(target, design.mood, (share) => { videoProgress.value = share })
+
+        rendered = { spec: target, mood: design.mood, file }
+
+        return file
+      }
+      catch (error) {
+        if (error instanceof VideoUnsupportedError) {
+          videoReady.value = false
+          fail(t('cms.marketing.video.unsupported'))
+        }
+        else if (error instanceof DOMException && error.name === 'SecurityError') {
+          fail(t('cms.marketing.exportBlocked'))
+        }
+        else {
+          failed(error)
+        }
+
+        return null
+      }
+    }
+    finally {
+      busy.value = ''
+    }
+  }
+
+  async function downloadVideo() {
+    const file = await renderClip()
+
+    if (file) saveBlob(file.blob, `tripme-${selection.value?.code ?? 'ad'}-${format.value}-${language.value}.mp4`)
+  }
+
+  async function publishVideo() {
+    if (!selection.value) return
+
+    const file = await renderClip()
+
+    if (!file) return
+
+    if (file.blob.size > MAX_VIDEO_BYTES) {
+      fail(t('cms.marketing.video.tooLarge'))
+      return
+    }
+
+    await run('publish', () => repository.publish(selection.value!.id, {
+      media: file.blob,
+      kind: 'video',
+      caption: caption.value,
+      language: language.value,
+      link: link.value,
+      cta: draft[language.value].cta,
+      width: file.width,
+      height: file.height,
+      duration: file.duration,
+    }), t('cms.marketing.video.published'))
+  }
+
+  const setMood = (mood: AdMood) => tune({ mood })
+
+  const LINE_ADULTS = 2
+
+  const editing = ref<string | null>(null)
+  const lineError = ref('')
+  const lineForm = reactive({ name: '', tier: false, stars: '', meal: '', district: '', date: '', nights: '', price: '', currency: 'USD' })
+
+  const editable = (tour: IAdTour) => tour.source === 'own' || tour.source === 'post'
+
+  function editLine(tour: IAdTour) {
+    const people = Math.max(1, tour.adults + tour.children)
+
+    editing.value = tour.offer_id
+    lineError.value = ''
+    Object.assign(lineForm, {
+      name: tour.tier ? '' : tour.hotel_name,
+      tier: Boolean(tour.tier),
+      stars: tour.hotel_stars ? String(tour.hotel_stars) : '',
+      meal: String(tour.meal_plan ?? ''),
+      district: String(tour.district ?? ''),
+      date: tour.check_in,
+      nights: String(tour.nights || ''),
+      price: String(Math.round(tour.price_amount / people)),
+      currency: tour.price_currency,
+    })
+  }
+
+  function addLine() {
+    const first = selection.value?.tours[0]
+
+    editing.value = 'new'
+    lineError.value = ''
+    Object.assign(lineForm, { name: '', tier: false, stars: '', meal: '', district: String(first?.district ?? ''), date: first?.check_in ?? '', nights: String(first?.nights || 7), price: '', currency: first?.price_currency ?? 'USD' })
+  }
+
+  async function saveLine() {
+    if (!selection.value || !editing.value) return
+
+    const stars = Number(lineForm.stars)
+    const nights = Number(lineForm.nights)
+    const price = Number(String(lineForm.price).replace(/\s/g, ''))
+
+    if ((lineForm.tier ? !(stars >= 1 && stars <= 5) : !lineForm.name.trim()) || !/^\d{4}-\d{2}-\d{2}$/.test(lineForm.date) || !(nights > 0) || !(price > 0)) {
+      lineError.value = t('cms.marketing.own.invalid')
+      return
+    }
+
+    const first = selection.value.tours[0]
+    const line: Partial<IAdTour> = {
+      hotel_name: lineForm.tier ? `${stars}*` : lineForm.name.trim(),
+      tier: lineForm.tier,
+      hotel_stars: stars >= 1 && stars <= 5 ? stars : undefined,
+      meal_plan: lineForm.meal || undefined,
+      district: lineForm.district.trim() || undefined,
+      check_in: lineForm.date,
+      nights,
+      adults: LINE_ADULTS,
+      children: 0,
+      price_amount: price * LINE_ADULTS,
+      price_currency: lineForm.currency,
+      route_from: first?.route_from,
+      route_to: first?.route_to,
+      route_to_label: first?.route_to_label,
+      countries: first?.countries,
+    }
+    const tours: Array<Partial<IAdTour>> = editing.value === 'new'
+      ? [...selection.value.tours, { ...line, offer_id: '' }]
+      : selection.value.tours.map(tour => (tour.offer_id === editing.value ? { ...tour, ...line } : tour))
+
+    if (await run('order', () => repository.patch(selection.value!.id, { tours }))) editing.value = null
+  }
+
+  function toggleInclude(key: AdInclude) {
+    if (!selection.value) return
+
+    const current = selection.value.includes ?? []
+    const includes = current.includes(key) ? current.filter(item => item !== key) : AD_INCLUDES.filter(item => item === key || current.includes(item))
+
+    set({ ...selection.value, includes })
+    void repository.patch(selection.value.id, { includes }).then(set).catch(failed)
+  }
+
+  const moodItems = computed(() => AD_MOODS.map(value => ({
+    value,
+    title: t(`cms.marketing.video.moods.${value}.title`),
+    sub: t(`cms.marketing.video.moods.${value}.sub`),
+  })))
+
+  const videoFacts = computed(() => {
+    const { width, height } = AD_SIZES[format.value]
+
+    return t('cms.marketing.video.facts', { seconds: DURATION, size: `${width}×${height}` })
+  })
+
+  watch(panel, async (next) => {
+    if (next !== 'video' || !import.meta.client) return
+
+    const { canRenderVideo } = await import('~/modules/marketing/helpers/video/export')
+
+    videoReady.value = await canRenderVideo(format.value)
+  })
 
   async function copy(value: string) {
     try {
@@ -513,13 +705,15 @@ export const useSelection = () => {
     settingsOpen.value = true
   }
 
-  const hotelOf = (tour: IAdTour) => tourFromTrip(tour, tour.offer_id).displayName()
+  const hotelOf = (tour: IAdTour) => (tour.tier ? t('marketing.banner.tier', { stars: Number(tour.hotel_stars) || '' }) : tourFromTrip(tour, tour.offer_id).displayName())
 
-  const priceOf = (tour: IAdTour, amount = tour.price_amount) => amountOf(amount, tour.price_currency, language.value, translate)
+  const priceOf = (tour: IAdTour, amount = tour.price_amount) =>
+    amountOf(design.price === 'person' ? amount / Math.max(1, tour.adults + tour.children) : amount, tour.price_currency, language.value, translate)
 
   const panelItems = computed(() => [
     { value: 'image', label: t('cms.marketing.panels.image') },
     { value: 'post', label: t('cms.marketing.panels.post') },
+    { value: 'video', label: t('cms.marketing.panels.video') },
     { value: 'page', label: t('cms.marketing.panels.page') },
     { value: 'tours', label: t('cms.marketing.panels.tours'), count: selection.value?.tours.length },
   ])
@@ -577,7 +771,9 @@ export const useSelection = () => {
 
   return {
     selection, settings, status, panel, format, language, busy, generation, imageBlocked, title, design, draft, hashtags,
-    spec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, contacts, link, telegramImage, variants, settingsOpen, settingsTab,
+    spec, motionSpec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, contacts, link, telegramImage, variants, settingsOpen, settingsTab,
+    videoProgress, videoReady, videoFacts, moodItems, setMood, downloadVideo, publishVideo,
+    editing, lineForm, lineError, editable, editLine, addLine, saveLine, toggleInclude, includeKeys: AD_INCLUDES,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops: CONTEXT_BACKDROPS, place, sceneKind, libraryPhotos, withManagers,
     edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,

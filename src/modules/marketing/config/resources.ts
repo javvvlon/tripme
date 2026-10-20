@@ -25,5 +25,9 @@ export const resource: IResource = {
     archiveTemplate: { url: 'cms/marketing/templates/:id/archive', method: 'POST' },
     settings: { url: 'cms/marketing/settings', method: 'GET' },
     saveSettings: { url: 'cms/marketing/settings', method: 'PUT' },
+    assistant: { url: 'cms/marketing/selections/assistant', method: 'POST' },
+    bot: { url: 'cms/marketing/bot', method: 'GET' },
+    botLink: { url: 'cms/marketing/bot/link', method: 'POST' },
+    botUnlink: { url: 'cms/marketing/bot/unlink', method: 'POST' },
   },
 }

@@ -552,6 +552,12 @@ export async function download(spec: IBannerSpec, filename: string): Promise<boo
 
   if (!blob) return false
 
+  saveBlob(blob, filename)
+
+  return true
+}
+
+export function saveBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
 
@@ -561,6 +567,4 @@ export async function download(spec: IBannerSpec, filename: string): Promise<boo
   link.click()
   link.remove()
   setTimeout(() => URL.revokeObjectURL(url), 2000)
-
-  return true
 }

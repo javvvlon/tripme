@@ -397,7 +397,8 @@
       "work": "Mening ishim",
       "team": "Jamoa",
       "media": "Mediateka",
-      "selections": "To‘plamlar"
+      "selections": "To‘plamlar",
+      "ai": "AI yordamchi"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -798,6 +799,46 @@
         "all": "Barcha maqolalar",
         "published": "Chop etilganlar",
         "draft": "Qoralamalar"
+      },
+      "assistant": {
+        "title": "Sayt AI yordamchisi",
+        "sub": "Blog uchun maqolani tuzilmamiz bo‘yicha rus, o‘zbek va ingliz tillarida yozaman, qoralamani yaxshilayman yoki mavzular taklif qilaman.",
+        "placeholder": "Maqola nima haqida? Masalan: Toshkentlik oilalar uchun qishki Gruziya",
+        "created": "Qoralama yaratildi, e’lon qilinmagan",
+        "revised": "Qoralama yangilandi",
+        "open": "Muharrirda ochish",
+        "can": {
+          "article": {
+            "title": "Blog uchun maqola",
+            "text": "Mavzuni yozing — blog tuzilmasi bo‘yicha uch tilda qoralama yozaman",
+            "prompt": "Maqola yozing: "
+          },
+          "ideas": {
+            "title": "Mavzu g‘oyalari",
+            "text": "Blogda hali yo‘q mavzularni taklif qilaman",
+            "prompt": "Yaqin bir oy uchun blogga 5 ta mavzu taklif qiling"
+          },
+          "review": {
+            "title": "Maqola tahlili",
+            "text": "Matnni qo‘ying — nimani kuchaytirish kerakligini aytaman",
+            "prompt": "Maqolani tahlil qilib, nimani yaxshilash mumkinligini ayting:\n\n"
+          },
+          "revise": {
+            "title": "Qoralamani yaxshilash",
+            "text": "Qoralamadan keyin qisqartirish, bo‘lim qo‘shish yoki ohangni o‘zgartirishni so‘rang",
+            "prompt": "Maqolani qisqartiring va bo‘lim qo‘shing: "
+          }
+        },
+        "thinking": {
+          "read": "So‘rovni o‘qiyapman",
+          "plan": "Blog tuzilmasini tekshiryapman",
+          "write": "Uch tilda yozyapman"
+        },
+        "createdText": "Maqola qoralamasi tayyor. Faktlarni tekshiring, muqova qo‘shing va muharrirda e’lon qiling.",
+        "revisedText": "Qoralamani so‘rovingiz bo‘yicha yangiladim. O‘zgarishlarni muharrirda tekshiring.",
+        "emptyText": "Javob berib bo‘lmadi. So‘rovni boshqacha yozib ko‘ring.",
+        "missingImages": "Mediatekada mos rasm topilmadi: {n}. Ularni muharrirda qo‘shing.",
+        "withImages": "matndagi rasmlar: {n}"
       }
     },
     "leads": {
@@ -1796,6 +1837,7 @@
       "panels": {
         "image": "Rasm",
         "post": "Post",
+        "video": "Video",
         "page": "To‘plam",
         "tours": "Turlar"
       },
@@ -1827,7 +1869,12 @@
         "meal": "Ovqatlanish",
         "party": "Sayyohlar tarkibi",
         "cta": "Tugma",
-        "footer": "Post oxirida agentlik imzosi"
+        "footer": "Post oxirida agentlik imzosi",
+        "postStyle": "Post ko‘rinishi",
+        "postStyles": {
+          "plain": "Qat’iy",
+          "emoji": "Emojili"
+        }
       },
       "buttons": {
         "both": "Hammasi",
@@ -1904,6 +1951,114 @@
         "keep": "Mening uslublarimga saqlash",
         "saved": "Shablon saqlandi",
         "ready": "Shablonlar tayyor"
+      },
+      "video": {
+        "play": "Ko‘rish",
+        "pause": "Pauza",
+        "position": "Joylashuv",
+        "soundOn": "Ovozni yoqish",
+        "soundOff": "Ovozni o‘chirish",
+        "mood": "Musiqa",
+        "moods": {
+          "warm": {
+            "title": "Iliq",
+            "sub": "Yumshoq ritm va akkordlar"
+          },
+          "drive": {
+            "title": "Drayv",
+            "sub": "Qaynoq turlar uchun tez bit"
+          },
+          "calm": {
+            "title": "Sokin",
+            "sub": "Barabanlarsiz, premium uchun"
+          }
+        },
+        "facts": "{seconds} soniya · MP4 · {size}",
+        "download": "MP4 yuklab olish",
+        "publish": "Videoni joylash",
+        "published": "Video joylandi",
+        "rendering": "Video yig‘ilmoqda",
+        "renderNote": "Kadrlar va musiqa brauzerda yig‘iladi",
+        "unsupported": "Bu brauzer video yig‘a olmaydi. Studiyani Chrome yoki Edge’da oching.",
+        "tooLarge": "Video 48 MB dan katta — kichikroq formatni tanlang"
+      },
+      "intake": {
+        "noTours": "Birorta mehmonxonani qo‘shib bo‘lmadi",
+        "reasons": {
+          "no_price": "narx yo‘q",
+          "no_date": "uchish sanasi yo‘q",
+          "no_nights": "tunlar soni ko‘rsatilmagan",
+          "limit": "tanlovda allaqachon 6 ta tur bor"
+        },
+        "botHint": "Postlarni Telegramdagi {bot} botiga yuborish mumkin",
+        "botOn": "Ulash",
+        "botOff": "Uzish",
+        "botOpen": "Telegramni ochish",
+        "botLinked": "Telegram ulangan: postlarni {bot} botiga yuboring",
+        "source": "Operator postidan: {operator}",
+        "someOperator": "turoperator",
+        "postTag": "postdan",
+        "postTip": "Narx operator postidan olingan, bu tur qidiruvda topilmadi"
+      },
+      "assistant": {
+        "title": "Marketing AI yordamchisi",
+        "sub": "Turoperator postini, unga havolani yoki skrinshotni yuboring — reklama uchun tanlov yig‘aman. Yoki maslahat so‘rang.",
+        "placeholder": "Turoperator postini, t.me havolasini qo‘ying yoki savol bering",
+        "ready": "«{title}» tanlovi tayyor.",
+        "found": "Qidiruvda bugungi narxlar bilan topildi: {n}",
+        "kept": "Post narxi bilan: {n}",
+        "left": "Kirmaganlar:",
+        "card": "Turlar: {n} · {code}",
+        "open": "Studiyada ochish",
+        "noCountry": "Post qaysi davlat haqida ekanini tushunmadim. Davlatni yozing — masalan, «Bu Turkiya» — yoki skrinshot yuboring.",
+        "tryShot": "Bu Turkiya",
+        "can": {
+          "link": {
+            "title": "Post yoki havola",
+            "text": "Turoperator postini yoki t.me havolasini qo‘ying — mehmonxonalarni qidiruvdan topib, tanlov yig‘aman"
+          },
+          "shot": {
+            "title": "Skrinshot",
+            "text": "Taklif skrinshotini qo‘shing — o‘qib chiqaman"
+          },
+          "advice": {
+            "title": "Reklama bo‘yicha maslahat",
+            "text": "Qaynoq turlarni qanday taqdim etish yoki kanalga nima yozishni so‘rang",
+            "prompt": "Qaynoq turlarni Telegram kanalimizda qanday yaxshiroq taqdim etsa bo‘ladi?"
+          },
+          "own": {
+            "title": "O‘z taklifingiz",
+            "text": "Turni o‘z narxlaringiz bilan yozing — turoperatorlarda tekshirmasdan tanlov yig‘aman",
+            "prompt": "Bizning taklif: "
+          }
+        },
+        "thinking": {
+          "read": "Xabarni o‘qiyapman",
+          "search": "Turoperatorlardan turlarni qidiryapman",
+          "build": "Javobni tayyorlayapman"
+        },
+        "emptyText": "Javob berib bo‘lmadi. Savolni boshqacha yozib ko‘ring.",
+        "ownReady": "«{title}» bizning taklifimizni yig‘dim. Turoperatorlarda tekshirmadim — narx va sanalar sizniki, ularni studiyadagi «Turlar» bo‘limida tuzatish mumkin."
+      },
+      "own": {
+        "tag": "bizniki",
+        "tip": "Bizning taklif: narxni biz belgilaymiz, turoperatorlarda tekshirilmaydi",
+        "edit": "Qatorni o‘zgartirish",
+        "add": "Qator qo‘shish",
+        "tier": "Mehmonxona nomi o‘rniga toifa",
+        "name": "Mehmonxona yoki nom",
+        "stars": "Yulduzlar",
+        "meal": "Ovqatlanish",
+        "anyMeal": "Ko‘rsatilmagan",
+        "district": "Kurort yoki shahar",
+        "date": "Uchish sanasi",
+        "nights": "Tunlar",
+        "price": "Bir kishi narxi",
+        "currency": "Valyuta",
+        "save": "Saqlash",
+        "cancel": "Bekor qilish",
+        "invalid": "Nom yoki yulduzlar, sana, tunlar va narx kerak",
+        "includes": "Narxga nima kiradi"
       }
     }
   },
@@ -2539,7 +2694,8 @@
       "price": "Narx",
       "from": "tur narxi",
       "perTour": "tur uchun",
-      "perPerson": "kishi boshiga"
+      "perPerson": "kishi boshiga",
+      "tier": "{stars}* mehmonxona"
     },
     "page": {
       "title": "Turlar to‘plami",
@@ -2556,7 +2712,9 @@
       "departure": "Toshkentdan parvoz • {when}, {stay}",
       "departureAny": "Parvoz {when}, {stay}",
       "departureHot": "Toshkentdan parvoz {soon} • {when}, {stay}",
-      "departureHotAny": "Parvoz {soon} • {when}, {stay}"
+      "departureHotAny": "Parvoz {soon} • {when}, {stay}",
+      "priceTotal": "Narxi: {uzs} ({money}) dan, tur uchun",
+      "priceTotalForeign": "Narxi: {money} dan, tur uchun"
     },
     "hot": {
       "badge": "Qaynoq tur",
@@ -2566,6 +2724,29 @@
       "soonToday": "bugun",
       "soonTomorrow": "ertaga",
       "soonIn": "bugun | {n} kundan keyin | {n} kundan keyin | {n} kundan keyin"
+    },
+    "includes": {
+      "label": "Tarkibi",
+      "flight": "aviachipta",
+      "hotel": "mehmonxona",
+      "breakfast": "nonushta",
+      "meals": "ovqatlanish",
+      "transfer": "transfer",
+      "insurance": "sug‘urta",
+      "visa": "viza",
+      "excursions": "ekskursiyalar",
+      "guide": "gid"
+    }
+  },
+  "ai": {
+    "input": {
+      "removeImage": "Rasmni olib tashlash",
+      "attach": "Skrinshot qo‘shish",
+      "send": "Yuborish",
+      "hint": "Enter — yuborish, Shift+Enter — yangi qator"
+    },
+    "chat": {
+      "new": "Yangi chat"
     }
   }
 }

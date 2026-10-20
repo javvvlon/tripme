@@ -26,6 +26,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'auth' },
   },
   {
+    name: 'cms-site-assistant',
+    path: '/app/content/ai',
+    file: 'modules/posts/views/assistant/BlogAssistant.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', wide: true },
+  },
+  {
     name: 'cms-post-edit',
     path: '/app/posts/:id',
     file: 'modules/posts/views/postEditor/PostEditor.vue',

@@ -397,7 +397,8 @@
       "work": "My work",
       "team": "Team",
       "media": "Media",
-      "selections": "Selections"
+      "selections": "Selections",
+      "ai": "AI assistant"
     },
     "roles": {
       "CLIENT": "Client",
@@ -798,6 +799,46 @@
         "all": "All posts",
         "published": "Published",
         "draft": "Drafts"
+      },
+      "assistant": {
+        "title": "Site AI assistant",
+        "sub": "I write blog articles in our structure in Russian, Uzbek and English, improve drafts and suggest topics.",
+        "placeholder": "What is the article about? For example: Georgia in winter for families from Tashkent",
+        "created": "Draft created, not published",
+        "revised": "Draft updated",
+        "open": "Open in the editor",
+        "can": {
+          "article": {
+            "title": "Blog article",
+            "text": "Describe the topic and I will write a draft in three languages in the blog structure",
+            "prompt": "Write an article: "
+          },
+          "ideas": {
+            "title": "Topic ideas",
+            "text": "I will suggest topics the blog does not have yet",
+            "prompt": "Suggest 5 blog topics for the coming month"
+          },
+          "review": {
+            "title": "Article review",
+            "text": "Paste a text and I will say what to strengthen and what is missing",
+            "prompt": "Review this article and say what to improve:\n\n"
+          },
+          "revise": {
+            "title": "Improve the draft",
+            "text": "After a draft, ask to shorten it, add a section or change the tone",
+            "prompt": "Shorten the article and add a section about "
+          }
+        },
+        "thinking": {
+          "read": "Reading the request",
+          "plan": "Checking the blog structure",
+          "write": "Writing in three languages"
+        },
+        "createdText": "The article draft is ready. Check the facts, add a cover and publish it in the editor.",
+        "revisedText": "I updated the draft as you asked. Open it in the editor to check the changes.",
+        "emptyText": "I could not answer that. Try rephrasing the request.",
+        "missingImages": "No matching photos in the media library: {n}. Add them in the editor.",
+        "withImages": "photos in text: {n}"
       }
     },
     "leads": {
@@ -1796,6 +1837,7 @@
       "panels": {
         "image": "Image",
         "post": "Post",
+        "video": "Video",
         "page": "Selection",
         "tours": "Tours"
       },
@@ -1827,7 +1869,12 @@
         "meal": "Meal",
         "party": "Party",
         "cta": "Button",
-        "footer": "Agency signature at the end of the post"
+        "footer": "Agency signature at the end of the post",
+        "postStyle": "Post style",
+        "postStyles": {
+          "plain": "Plain",
+          "emoji": "With emoji"
+        }
       },
       "buttons": {
         "both": "All",
@@ -1904,6 +1951,114 @@
         "keep": "Save to My styles",
         "saved": "Template saved to My styles",
         "ready": "Templates are ready"
+      },
+      "video": {
+        "play": "Play",
+        "pause": "Pause",
+        "position": "Position",
+        "soundOn": "Sound on",
+        "soundOff": "Sound off",
+        "mood": "Music",
+        "moods": {
+          "warm": {
+            "title": "Warm",
+            "sub": "Soft beat and chords"
+          },
+          "drive": {
+            "title": "Drive",
+            "sub": "Fast beat for hot deals"
+          },
+          "calm": {
+            "title": "Calm",
+            "sub": "No drums, for premium"
+          }
+        },
+        "facts": "{seconds} s · MP4 · {size}",
+        "download": "Download MP4",
+        "publish": "Publish video",
+        "published": "Video published",
+        "rendering": "Building the video",
+        "renderNote": "Frames and music are put together in the browser",
+        "unsupported": "This browser cannot build videos. Open the studio in Chrome or Edge.",
+        "tooLarge": "The video is over 48 MB — pick a smaller format"
+      },
+      "intake": {
+        "noTours": "None of the hotels could be added",
+        "reasons": {
+          "no_price": "no price",
+          "no_date": "no departure date",
+          "no_nights": "no number of nights",
+          "limit": "the selection already has 6 tours"
+        },
+        "botHint": "You can forward posts to {bot} in Telegram",
+        "botOn": "Connect",
+        "botOff": "Disconnect",
+        "botOpen": "Open Telegram",
+        "botLinked": "Telegram connected: forward posts to {bot}",
+        "source": "From an operator post: {operator}",
+        "someOperator": "tour operator",
+        "postTag": "from post",
+        "postTip": "Price from the operator’s post; this tour was not found in search"
+      },
+      "assistant": {
+        "title": "Marketing AI assistant",
+        "sub": "Send a tour operator’s post, its link or a screenshot and I will build an ad selection. Or ask for advice.",
+        "placeholder": "Paste an operator’s post, a t.me link or ask a question",
+        "ready": "Selection «{title}» is ready.",
+        "found": "Found in search at today’s prices: {n}",
+        "kept": "At the post’s price: {n}",
+        "left": "Left out:",
+        "card": "Tours: {n} · {code}",
+        "open": "Open in the studio",
+        "noCountry": "I could not tell which country the post is about. Name the country (for example, “This is Turkey”) or send a screenshot.",
+        "tryShot": "This is Turkey",
+        "can": {
+          "link": {
+            "title": "Post or link",
+            "text": "Paste an operator’s post or a t.me link and I will find these hotels in search and build a selection"
+          },
+          "shot": {
+            "title": "Screenshot",
+            "text": "Add a screenshot of the offer and I will read it"
+          },
+          "advice": {
+            "title": "Ad advice",
+            "text": "Ask how to present hot deals or what to post in the channel",
+            "prompt": "How should we present hot deals in our Telegram channel?"
+          },
+          "own": {
+            "title": "Our own offer",
+            "text": "Describe a trip with your prices and I will build a selection without checking operators",
+            "prompt": "Our own offer: "
+          }
+        },
+        "thinking": {
+          "read": "Reading your message",
+          "search": "Finding tours at operators",
+          "build": "Preparing the answer"
+        },
+        "emptyText": "I could not answer that. Try rephrasing the question.",
+        "ownReady": "I built our own offer «{title}». Nothing was checked with operators — the prices and dates are yours and can be edited in the studio under «Tours»."
+      },
+      "own": {
+        "tag": "ours",
+        "tip": "Our own offer: we set the price, it is not checked with operators",
+        "edit": "Edit line",
+        "add": "Add a line",
+        "tier": "Category instead of a hotel name",
+        "name": "Hotel or name",
+        "stars": "Stars",
+        "meal": "Meals",
+        "anyMeal": "Not set",
+        "district": "Resort or city",
+        "date": "Departure date",
+        "nights": "Nights",
+        "price": "Price per person",
+        "currency": "Currency",
+        "save": "Save",
+        "cancel": "Cancel",
+        "invalid": "A name or stars, a date, nights and a price are needed",
+        "includes": "What is included"
       }
     }
   },
@@ -2539,7 +2694,8 @@
       "price": "Price",
       "from": "per tour from",
       "perTour": "per tour",
-      "perPerson": "per person"
+      "perPerson": "per person",
+      "tier": "{stars}* hotel"
     },
     "page": {
       "title": "Tour selection",
@@ -2556,7 +2712,9 @@
       "departure": "Departing Tashkent • {when}, {stay}",
       "departureAny": "Departing {when}, {stay}",
       "departureHot": "Departing Tashkent {soon} • {when}, {stay}",
-      "departureHotAny": "Departing {soon} • {when}, {stay}"
+      "departureHotAny": "Departing {soon} • {when}, {stay}",
+      "priceTotal": "Price: from {uzs} ({money}) per tour",
+      "priceTotalForeign": "Price: from {money} per tour"
     },
     "hot": {
       "badge": "Hot deal",
@@ -2566,6 +2724,29 @@
       "soonToday": "today",
       "soonTomorrow": "tomorrow",
       "soonIn": "today | in {n} day | in {n} days | in {n} days"
+    },
+    "includes": {
+      "label": "Included",
+      "flight": "flight",
+      "hotel": "hotel",
+      "breakfast": "breakfast",
+      "meals": "meals",
+      "transfer": "transfer",
+      "insurance": "insurance",
+      "visa": "visa",
+      "excursions": "excursions",
+      "guide": "guide"
+    }
+  },
+  "ai": {
+    "input": {
+      "removeImage": "Remove the image",
+      "attach": "Add a screenshot",
+      "send": "Send",
+      "hint": "Enter to send, Shift+Enter for a new line"
+    },
+    "chat": {
+      "new": "New chat"
     }
   }
 }

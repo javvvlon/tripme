@@ -19,6 +19,14 @@ export const routes: IModuleRoute[] = [
     meta: { middleware: 'auth' },
   },
   {
+    name: 'cms-marketing-assistant',
+    path: '/app/marketing/ai',
+    file: 'modules/marketing/views/assistant/Assistant.vue',
+    layout: 'cms',
+    ssr: false,
+    meta: { middleware: 'auth', wide: true },
+  },
+  {
     name: 'cms-marketing-selection',
     path: '/app/marketing/:id',
     file: 'modules/marketing/views/selection/Selection.vue',

@@ -42,6 +42,38 @@
         cursor: default;
     }
 
+    &.is-ai {
+        .tm-navbar-item__icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, #C5A880, #FF6B00 60%, #F3D9A8);
+            background-size: 200% 200%;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(255, 107, 0, .28);
+            animation: tm-ai-shimmer 6s ease-in-out infinite;
+
+            svg { width: 14px; height: 14px; }
+        }
+
+        .tm-navbar-item__label {
+            background: linear-gradient(100deg, #8F7247, #C5A880 30%, #FF6B00 65%, #C5A880);
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            animation: tm-ai-shimmer 6s ease-in-out infinite;
+        }
+
+        &.is-active {
+            border-color: color-mix(in srgb, #FF6B00 30%, transparent);
+            background: linear-gradient(100deg, color-mix(in srgb, #F3D9A8 22%, var(--tm-surface-1)), var(--tm-surface-1));
+
+            .tm-navbar-item__icon { color: #fff; }
+        }
+    }
+
     &__icon {
         position: relative;
         display: inline-grid;
@@ -88,4 +120,14 @@
             color: var(--tm-brand-primary-dark);
         }
     }
+}
+
+@keyframes tm-ai-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-navbar-item.is-ai .tm-navbar-item__icon,
+    .tm-navbar-item.is-ai .tm-navbar-item__label { animation: none; }
 }

@@ -105,7 +105,17 @@ export interface IAdDesign {
   hotel: string
   footer: boolean
   buttons: AdButtons
+  mood: AdMood
+  post_style: PostStyle
 }
+
+export const AD_MOODS = ['warm', 'drive', 'calm'] as const
+
+export type AdMood = typeof AD_MOODS[number]
+
+export const POST_STYLES = ['plain', 'emoji'] as const
+
+export type PostStyle = typeof POST_STYLES[number]
 
 export const AD_BUTTONS = ['both', 'managers', 'link', 'none'] as const
 
@@ -121,10 +131,12 @@ export const DEFAULT_DESIGN: IAdDesign = {
   party: true,
   cta: true,
   caps: true,
-  price: 'total',
+  price: 'person',
   hotel: '',
   footer: true,
   buttons: 'both',
+  mood: 'warm',
+  post_style: 'plain',
 }
 
 export interface IAdContact {
@@ -139,7 +151,10 @@ export interface IAdPublication {
   message_id: number
   language: AdLanguage
   by: string | null
+  kind?: AdMedia
 }
+
+export type AdMedia = 'photo' | 'video'
 
 export interface IMarketingSettings {
   visual: string
@@ -164,6 +179,82 @@ export interface IAdTour extends ILeadTrip {
   price_amount: number
   check_state?: CheckState
   check_was?: number | null
+  source?: 'search' | 'post' | 'own'
+  post_basis?: 'person' | 'total' | 'unknown'
+  tier?: boolean
+  legs?: IAdLeg[]
+  countries?: string[]
+}
+
+export interface IAdLeg {
+  place: string
+  nights: number
+  hotel: string
+}
+
+export const AD_INCLUDES = ['flight', 'hotel', 'breakfast', 'meals', 'transfer', 'insurance', 'visa', 'excursions', 'guide'] as const
+
+export type AdInclude = typeof AD_INCLUDES[number]
+
+export type SkipReason = 'no_price' | 'no_date' | 'no_nights' | 'limit'
+
+export interface IPostHotel {
+  name: string
+  stars: number | null
+  district: string
+  meal: string
+  price: number | null
+  currency: string
+}
+
+export interface IPostFacts {
+  country: string
+  from: string
+  dates: string[]
+  nights: number | null
+  basis: 'person' | 'total' | ''
+  operator: string
+  airline: string
+  hotels: IPostHotel[]
+}
+
+export interface IIntakeReport {
+  country: string
+  operator: string
+  found: number
+  kept: number
+  skipped: Array<{ hotel: string, reason: SkipReason }>
+  own?: boolean
+}
+
+export interface IAdIntake {
+  via: 'studio' | 'telegram'
+  text: string
+  origin: string
+  facts: IPostFacts
+  report: IIntakeReport
+  at: string
+  by: string | null
+}
+
+export interface IIntakeAnswer {
+  selection: ISelection | null
+  report: IIntakeReport
+}
+
+export type IAssistantAnswer =
+  | ({ kind: 'selection' } & IIntakeAnswer)
+  | { kind: 'reply', reply: string, suggestions: string[] }
+
+export interface IBotStatus {
+  available: boolean
+  username: string
+  linked: { username: string, linked_at: string } | null
+}
+
+export interface IBotLink {
+  url: string
+  expires_at: string
 }
 
 export interface IAdBackground {
@@ -188,6 +279,8 @@ export interface ISelection {
   published: IAdPublication[]
   template: IAdTemplate | null
   template_drafts: IAdTemplate[]
+  intake: IAdIntake | null
+  includes: AdInclude[]
   checked_at: string | null
   created_at: string
   updated_at: string
@@ -232,12 +325,18 @@ export interface ISelectionPatch {
   design?: Partial<IAdDesign>
   contacts?: string[]
   template?: IAdTemplate | null
+  tours?: Array<Partial<IAdTour>>
+  includes?: AdInclude[]
 }
 
 export interface IPublishDraft {
-  image: Blob
+  media: Blob
+  kind: AdMedia
   caption: string
   language: AdLanguage
   link: string
   cta: string
+  width?: number
+  height?: number
+  duration?: number
 }

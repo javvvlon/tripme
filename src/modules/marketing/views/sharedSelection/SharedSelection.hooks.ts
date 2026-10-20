@@ -30,7 +30,11 @@ export const useSharedSelection = () => {
 
   const tours = computed(() => [...(selection.value?.tours ?? [])]
     .sort((a, b) => a.price_amount - b.price_amount)
-    .map(trip => ({ trip, tour: tourFromTrip(trip, trip.offer_id), route: routeOf(trip) })))
+    .map((trip) => {
+      const named = trip.tier ? { ...trip, hotel_name: t('marketing.banner.tier', { stars: Number(trip.hotel_stars) || '' }) } : trip
+
+      return { trip, tour: tourFromTrip(named, trip.offer_id), route: routeOf(trip) }
+    }))
 
   const headline = computed(() => copy.value?.headline || selection.value?.title || t('marketing.page.title'))
 

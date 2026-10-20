@@ -42,7 +42,7 @@
 
             <div class="tm-ad-studio__body">
                 <section class="tm-ad-studio__stage" :aria-label="t('cms.marketing.preview')">
-                    <div v-if="panel === 'image' || panel === 'tours'" class="tm-ad-studio__formats">
+                    <div v-if="panel === 'image' || panel === 'tours' || panel === 'video'" class="tm-ad-studio__formats">
                         <button
                             v-for="item in formatItems" :key="item.value"
                             type="button"
@@ -57,7 +57,21 @@
                     </div>
 
                     <div class="tm-ad-studio__artboard" :class="`is-${panel}`">
-                        <AiGlow v-if="panel !== 'post' && panel !== 'page'" :active="busy === 'write' || busy === 'paint' || busy === 'templates'" class="tm-ad-studio__frame" :class="`is-${format}`">
+                        <div v-if="panel === 'video'" class="tm-ad-studio__frame" :class="`is-${format}`">
+                            <VideoStage ref="stage" :spec="motionSpec" :mood="design.mood" />
+                            <Transition name="tm-ad-render">
+                                <div v-if="busy === 'video'" class="tm-ad-studio__render" role="status">
+                                    <div class="tm-ad-studio__render-card">
+                                        <Icon name="film" :size="22" />
+                                        <strong>{{ t('cms.marketing.video.rendering') }}</strong>
+                                        <span class="tm-ad-studio__render-track"><span :style="{ width: `${Math.round(videoProgress * 100)}%` }" /></span>
+                                        <span class="tm-ad-studio__render-note">{{ Math.round(videoProgress * 100) }}% · {{ t('cms.marketing.video.renderNote') }}</span>
+                                    </div>
+                                </div>
+                            </Transition>
+                        </div>
+
+                        <AiGlow v-else-if="panel !== 'post' && panel !== 'page'" :active="busy === 'write' || busy === 'paint' || busy === 'templates'" class="tm-ad-studio__frame" :class="`is-${format}`">
                             <BannerCanvas :spec="spec" />
                             <AiProgress
                                 :active="busy === 'write'"
@@ -118,6 +132,19 @@
                                 {{ t('cms.marketing.publish') }}
                             </Button>
                             <Button variant="secondary" icon="copy" :disabled="!post" @click="copy(post)">{{ t('cms.marketing.copyPost') }}</Button>
+                        </template>
+                        <template v-else-if="panel === 'video'">
+                            <Button icon="upload" :loading="busy === 'video'" :disabled="!videoReady || Boolean(busy)" @click="renderThen(downloadVideo)">{{ t('cms.marketing.video.download') }}</Button>
+                            <Button
+                                variant="secondary"
+                                icon="telegram"
+                                :loading="busy === 'publish'"
+                                :disabled="!videoReady || !settings?.telegram.connected || Boolean(busy)"
+                                :title="settings?.telegram.connected ? undefined : t('cms.marketing.botOff')"
+                                @click="renderThen(publishVideo)"
+                            >
+                                {{ t('cms.marketing.video.publish') }}
+                            </Button>
                         </template>
                         <template v-else-if="panel === 'page'">
                             <Button :href="link" target="_blank" rel="noopener" icon="arrow-up-right">{{ t('cms.marketing.open') }}</Button>
@@ -404,6 +431,17 @@
                             </div>
                         </section>
 
+                        <section class="tm-ad-studio__block">
+                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.tune.postStyle') }}</h3>
+                            <div class="tm-ad-studio__steps is-wide">
+                                <button
+                                    v-for="style in postStyles" :key="style" type="button"
+                                    :class="{ 'is-on': design.post_style === style }"
+                                    @click="tune({ post_style: style })"
+                                >{{ t(`cms.marketing.tune.postStyles.${style}`) }}</button>
+                            </div>
+                        </section>
+
                         <label class="tm-ad-studio__switch">
                             <input type="checkbox" :checked="design.footer" @change="tune({ footer: ($event.target as HTMLInputElement).checked })">
                             <span class="tm-ad-studio__switch-track" aria-hidden="true" />
@@ -416,10 +454,41 @@
 
                         <ul v-if="selection.published.length" class="tm-ad-studio__history">
                             <li v-for="item in selection.published" :key="`${item.channel}-${item.message_id}`">
-                                <Icon name="check" :size="13" :stroke="2.6" />
+                                <Icon :name="item.kind === 'video' ? 'film' : 'check'" :size="13" :stroke="item.kind === 'video' ? 2 : 2.6" />
                                 {{ moment(item.at) }} · {{ item.channel }} · {{ item.language.toUpperCase() }}
                             </li>
                         </ul>
+                    </div>
+
+                    <div v-show="panel === 'video'" class="tm-ad-studio__panel">
+                        <section class="tm-ad-studio__block">
+                            <div class="tm-ad-studio__label-row">
+                                <h3 class="tm-ad-studio__label">{{ t('cms.marketing.video.mood') }}</h3>
+                                <span class="tm-ad-studio__hint">{{ videoFacts }}</span>
+                            </div>
+                            <div class="tm-ad-studio__moods">
+                                <button
+                                    v-for="item in moodItems" :key="item.value"
+                                    type="button"
+                                    class="tm-ad-studio__mood"
+                                    :class="[`is-${item.value}`, { 'is-on': design.mood === item.value }]"
+                                    :aria-pressed="design.mood === item.value"
+                                    @click="setMood(item.value)"
+                                >
+                                    <span class="tm-ad-studio__mood-wave" aria-hidden="true"><i v-for="n in 5" :key="n" /></span>
+                                    <strong>{{ item.title }}</strong>
+                                    <span>{{ item.sub }}</span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <p v-if="!videoReady" class="tm-ad-studio__status">
+                            <Icon name="film" :size="15" />{{ t('cms.marketing.video.unsupported') }}
+                        </p>
+
+                        <p v-else-if="!settings?.telegram.connected" class="tm-ad-studio__status">
+                            <Icon name="telegram" :size="15" />{{ t('cms.marketing.botOff') }}
+                        </p>
                     </div>
 
                     <div v-show="panel === 'page'" class="tm-ad-studio__panel">
@@ -435,7 +504,15 @@
                     </div>
 
                     <div v-show="panel === 'tours'" class="tm-ad-studio__panel">
-                        <div class="tm-ad-studio__label-row">
+                        <details v-if="selection.intake" class="tm-ad-studio__source">
+                            <summary>
+                                <Icon :name="selection.intake.via === 'telegram' ? 'telegram' : 'doc'" :size="14" />
+                                <span>{{ t('cms.marketing.intake.source', { operator: selection.intake.report.operator || selection.intake.origin || t('cms.marketing.intake.someOperator') }) }}</span>
+                            </summary>
+                            <pre>{{ selection.intake.text }}</pre>
+                        </details>
+
+                        <div v-if="selection.tours.some(tour => tour.source !== 'own')" class="tm-ad-studio__label-row">
                             <span class="tm-ad-studio__hint">{{ selection.checked_at ? t('cms.marketing.checkedAt', { date: moment(selection.checked_at) }) : '' }}</span>
                             <Button size="sm" variant="secondary" icon="undo" :loading="busy === 'recheck'" :disabled="Boolean(busy)" @click="recheck">
                                 {{ busy === 'recheck' ? t('cms.marketing.rechecking') : t('cms.marketing.recheck') }}
@@ -445,7 +522,11 @@
                         <ol class="tm-ad-studio__tours">
                             <li v-for="(tour, index) in selection.tours" :key="tour.offer_id" class="tm-ad-studio__tour" :class="tour.check_state ? `is-${tour.check_state}` : undefined">
                                 <div class="tm-ad-studio__tour-main">
-                                    <strong class="tm-ad-studio__tour-name">{{ hotelOf(tour) }}</strong>
+                                    <strong class="tm-ad-studio__tour-name">
+                                        {{ hotelOf(tour) }}
+                                        <span v-if="tour.source === 'post'" class="tm-ad-studio__tag" :title="t('cms.marketing.intake.postTip')">{{ t('cms.marketing.intake.postTag') }}</span>
+                                        <span v-else-if="tour.source === 'own'" class="tm-ad-studio__tag is-own" :title="t('cms.marketing.own.tip')">{{ t('cms.marketing.own.tag') }}</span>
+                                    </strong>
                                     <span class="tm-ad-studio__tour-meta">
                                         {{ day(tour.check_in) }} · {{ t('search.nights', tour.nights) }}<template v-if="tour.supplier_name"> · {{ tour.supplier_name }}</template>
                                     </span>
@@ -457,10 +538,39 @@
                                 <div class="tm-ad-studio__tour-actions">
                                     <IconButton icon="chevron-up" :label="t('cms.marketing.up')" :disabled="index === 0 || Boolean(busy)" @click="move(tour, -1)" />
                                     <IconButton icon="chevron" :label="t('cms.marketing.down')" :disabled="index === selection.tours.length - 1 || Boolean(busy)" @click="move(tour, 1)" />
+                                    <IconButton v-if="editable(tour)" icon="pencil" :label="t('cms.marketing.own.edit')" :disabled="Boolean(busy)" @click="editLine(tour)" />
                                     <IconButton icon="close" :label="t('cms.marketing.remove')" :disabled="Boolean(busy)" @click="remove(tour)" />
                                 </div>
+                                <ul v-if="tour.legs?.length" class="tm-ad-studio__legs">
+                                    <li v-for="leg in tour.legs" :key="leg.place">{{ leg.place }}<template v-if="leg.nights"> · {{ t('search.nights', leg.nights) }}</template><template v-if="leg.hotel"> · {{ leg.hotel }}</template></li>
+                                </ul>
+                                <form v-if="editing === tour.offer_id" class="tm-ad-studio__line-form" @submit.prevent="saveLine">
+                                    <LineFields :form="lineForm" :error="lineError" :busy="busy === 'order'" @cancel="editing = null" />
+                                </form>
                             </li>
                         </ol>
+
+                        <form v-if="editing === 'new'" class="tm-ad-studio__line-form is-new" @submit.prevent="saveLine">
+                            <LineFields :form="lineForm" :error="lineError" :busy="busy === 'order'" @cancel="editing = null" />
+                        </form>
+                        <Button v-else-if="selection.tours.length < 6" size="sm" variant="secondary" icon="plus" class="tm-ad-studio__add-line" :disabled="Boolean(busy)" @click="addLine">{{ t('cms.marketing.own.add') }}</Button>
+
+                        <section class="tm-ad-studio__block">
+                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.own.includes') }}</h3>
+                            <div class="tm-ad-studio__managers">
+                                <button
+                                    v-for="key in includeKeys" :key="key"
+                                    type="button"
+                                    class="tm-ad-studio__chip"
+                                    :class="{ 'is-on': selection.includes?.includes(key) }"
+                                    :aria-pressed="selection.includes?.includes(key)"
+                                    @click="toggleInclude(key)"
+                                >
+                                    <Icon v-if="selection.includes?.includes(key)" name="check" :size="13" />
+                                    {{ t(`marketing.includes.${key}`) }}
+                                </button>
+                            </div>
+                        </section>
                     </div>
 
                 </aside>
@@ -480,8 +590,11 @@ import AiGlow from '~/modules/marketing/components/aiGlow/AiGlow.vue'
 import AiProgress from '~/modules/marketing/components/aiProgress/AiProgress.vue'
 import VariantCards from '~/modules/marketing/components/variantCards/VariantCards.vue'
 import TelegramPreview from '~/modules/marketing/components/telegramPreview/TelegramPreview.vue'
+import VideoStage from '~/modules/marketing/components/videoStage/VideoStage.vue'
+import LineFields from '~/modules/marketing/components/lineFields/LineFields.vue'
 import MarketingSettings from '~/modules/marketing/components/marketingSettings/MarketingSettings.vue'
 import { swatch } from '~/modules/marketing/helpers/banner/draw'
+import { POST_STYLES } from '~/modules/marketing/contracts/marketing'
 import type { ContextBackdrop } from '~/modules/marketing/contracts/marketing'
 import { useSelection } from './Selection.hooks'
 
@@ -489,7 +602,9 @@ const { t, locale } = useI18n()
 
 const {
     selection, settings, status, panel, format, language, busy, generation, imageBlocked, title, design, draft, hashtags,
-    spec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, link, telegramImage, variants, settingsOpen, settingsTab,
+    spec, motionSpec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, link, telegramImage, variants, settingsOpen, settingsTab,
+    videoProgress, videoReady, videoFacts, moodItems, setMood, downloadVideo, publishVideo,
+    editing, lineForm, lineError, editable, editLine, addLine, saveLine, toggleInclude, includeKeys,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops, place, sceneKind, libraryPhotos, withManagers,
     edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,
@@ -498,6 +613,15 @@ const {
 } = useSelection()
 
 const switches = ['caps', 'stars', 'meal', 'party', 'cta'] as const
+
+const postStyles = POST_STYLES
+
+const stage = ref<InstanceType<typeof VideoStage> | null>(null)
+
+const renderThen = (action: () => Promise<void>) => {
+    stage.value?.pause()
+    void action()
+}
 
 const drawn = new WeakSet<HTMLCanvasElement>()
 

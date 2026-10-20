@@ -2,9 +2,10 @@ import { mealText } from '~/shared/helpers/meal'
 import { tourFromTrip } from '~/modules/leads/helpers/quote'
 import { daysUntil, isHotDeparture, tashkentToday } from '~/shared/helpers/hot'
 import { sceneOf } from './banner/scenes'
+import { flagsOf } from './flags'
 import type { SceneKind } from './banner/scenes'
 import type { Translate } from '~/modules/leads/helpers/quote'
-import { DEFAULT_DESIGN } from '../contracts/marketing'
+import { AD_INCLUDES, DEFAULT_DESIGN } from '../contracts/marketing'
 import type { AdLanguage, IAdContact, IAdCopy, IAdDesign, IAdTour, ISelection } from '../contracts/marketing'
 
 /**
@@ -20,7 +21,10 @@ export interface IAdLine {
   nights: string
   price: string
   amount: string
+  value: number
+  unit: string
   offer: string
+  legs: Array<{ place: string, nights: string, hotel: string }>
 }
 
 export type ToUzs = (money: { amount: number, currency: string }) => number | null
@@ -49,6 +53,8 @@ export interface IAdText {
   link: string
   site: string
   hot: boolean
+  flags: string
+  includes: string
 }
 
 const UZ_MONTHS = {
@@ -64,6 +70,11 @@ export const live = (tours: IAdTour[]): IAdTour[] => tours.filter(tour => tour.c
 
 const groupOf = (amount: number): string =>
   new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(Math.round(amount)).replace(/\s/g, '\u00a0')
+
+export const unitOf = (currency: string, t: Translate): string =>
+  currency === 'UZS' ? t('marketing.sum') : CURRENCY_SIGNS[currency] ?? currency
+
+export const groupedAmount = (amount: number, unit: string): string => `${groupOf(amount)}\u00a0${unit}`
 
 export function amountOf(amount: number, currency: string, language: AdLanguage, t: Translate): string {
   const number = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(Math.round(amount)).replace(/\s/g, '\u00a0')
@@ -130,23 +141,28 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
     const plan = String(tour.meal_plan ?? tour.meal_code ?? '').toUpperCase()
     const each = tour.price_amount / people
     const uzsTotal = Number(tour.price_uzs) > 0 && tour.price_currency !== 'UZS' ? Number(tour.price_uzs) : toUzs?.({ amount: tour.price_amount, currency: tour.price_currency }) ?? null
-    const uzsEach = uzsTotal ? Math.round(uzsTotal / people / 10_000) * 10_000 : null
+    const perPerson = design.price === 'person'
+    const shownUzs = uzsTotal ? Math.round((perPerson ? uzsTotal / people : uzsTotal) / 10_000) * 10_000 : null
+    const shownForeign = perPerson ? each : tour.price_amount
     const sign = CURRENCY_SIGNS[tour.price_currency]
-    const foreign = sign ? `${sign}${groupOf(each)}` : `${groupOf(each)}\u00a0${tour.price_currency}`
+    const foreign = sign ? `${sign}${groupOf(shownForeign)}` : `${groupOf(shownForeign)}\u00a0${tour.price_currency}`
 
     return {
-      hotel: model.displayName(),
-      stars: model.stars() ?? 0,
+      hotel: tour.tier ? t('marketing.banner.tier', { stars: Number(tour.hotel_stars) || '' }) : model.displayName(),
+      stars: tour.tier ? 0 : model.stars() ?? 0,
+      legs: (tour.legs ?? []).map(leg => ({ place: leg.place, hotel: leg.hotel, nights: leg.nights ? t('marketing.nights', { n: leg.nights }, leg.nights) : '' })),
       mealShort: MEAL_SHORT[plan] ?? String(tour.meal_name ?? ''),
       district: String(tour.district ?? ''),
-      offer: uzsEach
-        ? t('marketing.post.price', { uzs: `${groupOf(uzsEach)}\u00a0${t('marketing.sum')}`, money: foreign })
-        : t('marketing.post.priceForeign', { money: foreign }),
+      offer: shownUzs
+        ? t(perPerson ? 'marketing.post.price' : 'marketing.post.priceTotal', { uzs: `${groupOf(shownUzs)}\u00a0${t('marketing.sum')}`, money: foreign })
+        : t(perPerson ? 'marketing.post.priceForeign' : 'marketing.post.priceTotalForeign', { money: foreign }),
       meal: mealText(t, plan, tour.meal_name as string | null),
       date: dayOf(tour.check_in, language),
       nights: t('marketing.nights', { n: tour.nights }, tour.nights),
       price: design.price === 'person' ? t('marketing.perPerson', { price: amount }) : t('marketing.from', { price: amount }),
       amount,
+      value: Math.round(design.price === 'person' ? tour.price_amount / people : tour.price_amount),
+      unit: unitOf(tour.price_currency, t),
     }
   })
 
@@ -164,6 +180,8 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
     : t('marketing.nights', { n: nights[0] ?? 0 }, nights[0] ?? 0)
 
   const place = String(pool.find(tour => tour.route_to_label)?.route_to_label ?? '') || selection.title
+
+  const known = AD_INCLUDES.filter(key => (selection.includes ?? []).includes(key))
 
   const left = firstDay ? daysUntil(firstDay, tashkentToday()) : -1
   const hot = isHot(tours)
@@ -204,6 +222,8 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
     link,
     site,
     hot,
+    flags: flagsOf(pool.flatMap(tour => [String(tour.route_to ?? ''), ...(tour.countries ?? [])])),
+    includes: known.length ? `${t('marketing.includes.label')}: ${known.map(key => t(`marketing.includes.${key}`)).join(' — ')}` : '',
   }
 }
 
@@ -214,27 +234,39 @@ export interface IPostOptions {
   footer: string
 }
 
+const INCLUDED_LINE = /^\s*(в стоимость|включено|tur narxiga|narxga kiradi|tarkibi|included)/i
+
+const footerOf = (footer: string, ownIncludes: boolean): string =>
+  ownIncludes ? footer.split('\n').filter(line => !INCLUDED_LINE.test(line)).join('\n') : footer
+
 export function telegramPost(text: IAdText, options: IPostOptions = { link: true, contacts: [], managersLabel: '', footer: '' }): string {
+  const emoji = text.design.post_style === 'emoji'
   const headline = text.copy.headline.toLocaleUpperCase(text.language)
   const label = text.hotBadge || text.copy.kicker
-  const head = label ? `${headline}: ${label.toLocaleUpperCase(text.language)}` : headline
+  const title = label ? `${headline}: ${label.toLocaleUpperCase(text.language)}` : headline
+  const head = emoji && text.flags ? `${text.flags} ${title}` : title
   const hotels = text.lines.slice(0, text.design.rows).map((line, index) => {
     const name = [line.hotel, text.design.stars && line.stars ? `${line.stars}*` : ''].filter(Boolean).join(' ')
     const place = line.district ? ` (${line.district})` : ''
     const meal = text.design.meal && line.mealShort ? ` — ${line.mealShort}` : ''
 
-    return `${index + 1}. ${name}${place}${meal}\n${line.offer}`
+    const legs = line.legs.map(leg => emoji
+      ? `📍 ${[leg.place, leg.nights].filter(Boolean).join(' — ')}${leg.hotel ? ` · ${leg.hotel}` : ''}`
+      : `— ${[leg.place, leg.nights].filter(Boolean).join(', ')}${leg.hotel ? `: ${leg.hotel}` : ''}`)
+
+    return [`${emoji ? '👉' : `${index + 1}.`} ${name}${place}${meal}`, ...legs, line.offer].join('\n')
   })
   const tags = text.copy.hashtags.map(tag => `#${tag}`).join(' ')
   const managers = options.contacts.map(contact => `${contact.name} — t.me/${contact.telegram}`)
 
   const blocks = [
-    [head, text.departure].join('\n'),
+    [head, emoji ? `✈️ ${text.departure}` : text.departure].join('\n'),
     text.copy.intro,
     hotels.join('\n\n'),
-    text.design.footer ? options.footer : '',
-    managers.length ? [options.managersLabel, ...managers].join('\n') : '',
-    options.link ? `${text.copy.cta}: ${text.link}` : '',
+    text.includes ? `${emoji ? '🏨 ' : ''}${text.includes}` : '',
+    text.design.footer ? footerOf(options.footer, Boolean(text.includes)) : '',
+    managers.length ? [emoji ? `☎️ ${options.managersLabel}` : options.managersLabel, ...managers].join('\n') : '',
+    options.link ? `${emoji ? '🔗 ' : ''}${text.copy.cta}: ${text.link}` : '',
     tags,
   ]
 

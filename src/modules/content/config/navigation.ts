@@ -27,6 +27,7 @@ export const CMS_NAVIGATION: INavNode[] = [
     key: 'site',
     labelKey: 'cms.nav.groups.site',
     children: [
+      { key: 'content.ai', labelKey: 'cms.nav.ai', icon: 'sparkle', to: '/app/content/ai', ai: true },
       { key: 'content.sections', labelKey: 'cms.nav.sections', icon: 'home', to: '/app/content/sections' },
       { key: 'content.blog', labelKey: 'cms.nav.blogPage', icon: 'doc', to: '/app/content/blog' },
       { key: 'content.posts', labelKey: 'cms.nav.posts', icon: 'pencil', to: '/app/posts' },
@@ -47,6 +48,7 @@ export const CMS_NAVIGATION: INavNode[] = [
     labelKey: 'cms.nav.groups.marketing',
     roles: MARKETING_ROLES,
     children: [
+      { key: 'marketing.ai', labelKey: 'cms.nav.ai', icon: 'sparkle', to: '/app/marketing/ai', ai: true },
       { key: 'marketing.selections', labelKey: 'cms.nav.selections', icon: 'megaphone', to: '/app/marketing' },
     ],
   },

@@ -1,0 +1,176 @@
+@use '../../styles/utils' as *;
+
+@property --tm-ai-turn {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.tm-ai-input {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 1.5px;
+    border-radius: 22px;
+    isolation: isolate;
+
+    &__ring {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        border-radius: inherit;
+        background: conic-gradient(from var(--tm-ai-turn), #C5A880, #FF6B00, #F3D9A8, #8F7247, #C5A880);
+        opacity: .55;
+        transition: opacity .3s ease, filter .3s ease;
+        animation: tm-ai-turn 8s linear infinite;
+
+        &::after {
+            position: absolute;
+            inset: 6px;
+            z-index: -1;
+            border-radius: inherit;
+            background: inherit;
+            filter: blur(18px);
+            opacity: 0;
+            transition: opacity .3s ease;
+            content: '';
+        }
+    }
+
+    &:focus-within &__ring,
+    &.is-over &__ring { opacity: 1; }
+
+    &.is-busy &__ring {
+        opacity: 1;
+        animation-duration: 1.6s;
+
+        &::after { opacity: .55; }
+    }
+
+    &__box {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 12px 12px 10px 16px;
+        border-radius: 20.5px;
+        background: var(--tm-surface-1);
+    }
+
+    &__field {
+        width: 100%;
+        min-height: 28px;
+        padding: 4px 0;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: var(--tm-ink-1);
+        font: inherit;
+        font-size: size(15);
+        line-height: 1.5;
+        resize: none;
+
+        &::placeholder { color: var(--tm-ink-4); }
+    }
+
+    &__thumb {
+        position: relative;
+        align-self: flex-start;
+
+        img {
+            display: block;
+            width: 88px;
+            height: 64px;
+            object-fit: cover;
+            border: 1px solid var(--tm-border-1);
+            border-radius: 10px;
+        }
+    }
+
+    &__thumb-close {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--tm-ink-1);
+        color: var(--tm-surface-1);
+        cursor: pointer;
+    }
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    &__tool {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--tm-ink-3);
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            background: var(--tm-surface-2);
+            color: var(--tm-ink-1);
+        }
+    }
+
+    &__hint {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--tm-ink-4);
+        font-size: size(12);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__send {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 0;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #C5A880, #FF6B00);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(255, 107, 0, .3);
+        cursor: pointer;
+        transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease;
+
+        &:hover:not(:disabled) { transform: scale(1.06); }
+
+        &:disabled {
+            opacity: .4;
+            box-shadow: none;
+            cursor: default;
+        }
+    }
+
+    &__spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, .45);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: tm-ai-spin-input .8s linear infinite;
+    }
+}
+
+@keyframes tm-ai-turn { to { --tm-ai-turn: 360deg; } }
+
+@keyframes tm-ai-spin-input { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-ai-input__ring,
+    .tm-ai-input__spinner { animation: none; }
+}

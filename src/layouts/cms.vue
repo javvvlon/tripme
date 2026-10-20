@@ -27,6 +27,7 @@
 
                 <template v-for="node in group.children ?? []" :key="node.key">
                     <NavbarItem
+                        :class="{ 'is-ai': node.ai }"
                         :label="t(node.labelKey)"
                         :icon="node.icon ?? (collapsed ? group.icon : undefined)"
                         :to="node.to"
