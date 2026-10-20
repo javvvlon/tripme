@@ -10,6 +10,7 @@ export interface IVariantCardsProps {
   ai: boolean
   generation: number
   mode?: 'banner' | 'post'
+  picking?: number | null
 }
 
 export interface IVariantCardsEmits {

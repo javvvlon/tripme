@@ -1845,10 +1845,6 @@
         "page": "Selection",
         "tours": "Tours"
       },
-      "aiCard": {
-        "title": "AI copy",
-        "sub": "Four versions in the TripMe voice"
-      },
       "backdrops": {
         "night": "No photo",
         "ai": "AI background",
@@ -2050,7 +2046,8 @@
         "cancel": "Cancel",
         "invalid": "A name or stars, a date, nights and a price are needed",
         "includes": "What is included"
-      }
+      },
+      "applying": "Applying this version…"
     },
     "ai": {
       "title": "TripMe AI",

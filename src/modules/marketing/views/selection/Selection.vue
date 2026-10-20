@@ -28,8 +28,8 @@
                 </div>
 
                 <div class="tm-ad-studio__head-actions">
-                    <Tabs v-model="language" :items="languageItems" variant="segment" :aria-label="t('cms.marketing.language')" />
-                    <Button :href="link" target="_blank" rel="noopener" size="sm" variant="secondary" icon="arrow-up-right">{{ t('cms.marketing.open') }}</Button>
+                    <Tabs v-model="language" :items="languageItems" variant="segment" :aria-label="t('cms.marketing.language')" class="tm-ad-studio__seg is-sliding" :style="segment(languageIndex, languageItems.length)" />
+                    <Button :href="link" target="_blank" rel="noopener" size="sm" variant="tinted" icon="arrow-up-right">{{ t('cms.marketing.open') }}</Button>
                     <MoreMenu v-if="moreItems.length" :label="t('cms.more')" :items="moreItems" @select="onMore" />
                 </div>
             </header>
@@ -42,7 +42,7 @@
 
             <div class="tm-ad-studio__body">
                 <section class="tm-ad-studio__stage" :aria-label="t('cms.marketing.preview')">
-                    <div v-if="panel === 'image' || panel === 'tours' || panel === 'video'" class="tm-ad-studio__formats">
+                    <div v-if="panel === 'image' || panel === 'tours' || panel === 'video'" class="tm-ad-studio__formats is-sliding" role="group" :aria-label="t('cms.marketing.preview')" :style="segment(formatIndex, formatItems.length)">
                         <button
                             v-for="item in formatItems" :key="item.value"
                             type="button"
@@ -131,12 +131,12 @@
                             >
                                 {{ t('cms.marketing.publish') }}
                             </Button>
-                            <Button variant="secondary" icon="copy" :disabled="!post" @click="copy(post)">{{ t('cms.marketing.copyPost') }}</Button>
+                            <Button variant="tinted" icon="copy" :disabled="!post" @click="copy(post)">{{ t('cms.marketing.copyPost') }}</Button>
                         </template>
                         <template v-else-if="panel === 'video'">
                             <Button icon="upload" :loading="busy === 'video'" :disabled="!videoReady || Boolean(busy)" @click="renderThen(downloadVideo)">{{ t('cms.marketing.video.download') }}</Button>
                             <Button
-                                variant="secondary"
+                                variant="tinted"
                                 icon="telegram"
                                 :loading="busy === 'publish'"
                                 :disabled="!videoReady || !settings?.telegram.connected || Boolean(busy)"
@@ -148,11 +148,11 @@
                         </template>
                         <template v-else-if="panel === 'page'">
                             <Button :href="link" target="_blank" rel="noopener" icon="arrow-up-right">{{ t('cms.marketing.open') }}</Button>
-                            <Button variant="secondary" icon="copy" @click="copy(link)">{{ t('cms.marketing.copy') }}</Button>
+                            <Button variant="tinted" icon="copy" @click="copy(link)">{{ t('cms.marketing.copy') }}</Button>
                         </template>
                         <template v-else>
                             <Button icon="upload" :disabled="Boolean(busy)" @click="downloadOne()">{{ t('cms.marketing.downloadFormat', { format: t(`cms.marketing.formatShort.${format}`) }) }}</Button>
-                            <Button variant="secondary" :loading="busy === 'download'" :disabled="Boolean(busy)" @click="downloadAll">{{ t('cms.marketing.downloadAll') }}</Button>
+                            <Button variant="tinted" icon="layers" :loading="busy === 'download'" :disabled="Boolean(busy)" @click="downloadAll">{{ t('cms.marketing.downloadAll') }}</Button>
                         </template>
                     </div>
                 </section>
@@ -161,26 +161,13 @@
                     <Tabs v-model="panel" :items="panelItems" variant="segment" :aria-label="t('cms.marketing.title')" class="tm-ad-studio__panels is-sliding" :style="segment(panelIndex, panelItems.length)" />
 
                     <div v-show="panel === 'image'" class="tm-ad-studio__panel">
-                        <div class="tm-ad-studio__card">
-                            <button type="button" class="tm-ad-studio__row is-nav" @click="openSettings('voice')">
-                                <span class="tm-ad-studio__app-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24"><path d="M12 2c.6 4.6 2.4 7.4 7 8-4.6.6-6.4 3.4-7 8-.6-4.6-2.4-7.4-7-8 4.6-.6 6.4-3.4 7-8Z" /></svg>
-                                </span>
-                                <span class="tm-ad-studio__row-text">
-                                    <strong>{{ t('cms.marketing.aiCard.title') }}</strong>
-                                    <small>{{ t('cms.marketing.aiCard.sub') }}</small>
-                                </span>
-                                <span class="tm-ad-studio__row-value">{{ t('cms.marketing.settings.voice') }}</span>
-                                <Icon name="chevron" :size="14" :stroke="2.4" class="tm-ad-studio__row-chevron" />
-                            </button>
-                        </div>
-
                         <VariantCards
                             :variants="variants"
                             :current="draft[language]"
                             :busy="busy === 'write'"
                             :ai="selection.ai"
                             :generation="generation"
+                            :picking="picking"
                             @pick="pick"
                             @generate="write"
                         />
@@ -428,6 +415,7 @@
                             :busy="busy === 'write'"
                             :ai="selection.ai"
                             :generation="generation"
+                            :picking="picking"
                             @pick="pick"
                             @generate="write"
                         />
@@ -540,7 +528,7 @@
 
                         <div v-if="selection.tours.some(tour => tour.source !== 'own')" class="tm-ad-studio__label-row">
                             <span class="tm-ad-studio__hint">{{ selection.checked_at ? t('cms.marketing.checkedAt', { date: moment(selection.checked_at) }) : '' }}</span>
-                            <Button size="sm" variant="secondary" icon="undo" :loading="busy === 'recheck'" :disabled="Boolean(busy)" @click="recheck">
+                            <Button size="sm" variant="tinted" icon="undo" :loading="busy === 'recheck'" :disabled="Boolean(busy)" @click="recheck">
                                 {{ busy === 'recheck' ? t('cms.marketing.rechecking') : t('cms.marketing.recheck') }}
                             </Button>
                         </div>
@@ -579,7 +567,7 @@
                         <form v-if="editing === 'new'" class="tm-ad-studio__line-form is-new" @submit.prevent="saveLine">
                             <LineFields :form="lineForm" :error="lineError" :busy="busy === 'order'" @cancel="editing = null" />
                         </form>
-                        <Button v-else-if="selection.tours.length < 6" size="sm" variant="secondary" icon="plus" class="tm-ad-studio__add-line" :disabled="Boolean(busy)" @click="addLine">{{ t('cms.marketing.own.add') }}</Button>
+                        <Button v-else-if="selection.tours.length < 6" size="sm" variant="tinted" icon="plus" class="tm-ad-studio__add-line" :disabled="Boolean(busy)" @click="addLine">{{ t('cms.marketing.own.add') }}</Button>
 
                         <section class="tm-ad-studio__block">
                             <h3 class="tm-ad-studio__label">{{ t('cms.marketing.own.includes') }}</h3>
@@ -632,7 +620,7 @@ const {
     editing, lineForm, lineError, editable, editLine, addLine, saveLine, toggleInclude, includeKeys,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops, place, sceneKind, libraryPhotos, withManagers,
-    edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,
+    edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, picking, paint, useBackground, pickBackground,
     applyTemplate, designTemplates, keepTemplate, dropTemplate, isApplied, isSaved,
     restore, onMore, toggleContact, setButtons, downloadOne, downloadAll, publish, copy, openSettings, setSettings, hotelOf, priceOf,
 } = useSelection()
@@ -642,6 +630,10 @@ const switches = ['caps', 'stars', 'meal', 'party', 'cta'] as const
 const tuneOpen = ref(false)
 
 const panelIndex = computed(() => Math.max(0, panelItems.value.findIndex(item => item.value === panel.value)))
+
+const formatIndex = computed(() => Math.max(0, formatItems.value.findIndex(item => item.value === format.value)))
+
+const languageIndex = computed(() => Math.max(0, languageItems.findIndex(item => item.value === language.value)))
 
 const segment = (index: number, count: number) => ({ '--index': index, '--count': count })
 

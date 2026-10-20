@@ -246,12 +246,21 @@ export const useSelection = () => {
     }
   }
 
+  const picking = ref<number | null>(null)
+
   async function pick(index: number) {
-    if (!selection.value) return
+    if (!selection.value || picking.value !== null) return
 
-    const done = await run('order', () => repository.patch(selection.value!.id, { pick: index }))
+    picking.value = index
 
-    if (done) syncDrafts(selection.value)
+    try {
+      const done = await run('order', () => repository.patch(selection.value!.id, { pick: index }))
+
+      if (done) syncDrafts(selection.value)
+    }
+    finally {
+      picking.value = null
+    }
   }
 
   async function paint() {
@@ -776,7 +785,7 @@ export const useSelection = () => {
     editing, lineForm, lineError, editable, editLine, addLine, saveLine, toggleInclude, includeKeys: AD_INCLUDES,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops: CONTEXT_BACKDROPS, place, sceneKind, libraryPhotos, withManagers,
-    edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,
+    edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, picking, paint, useBackground, pickBackground,
     applyTemplate, designTemplates, keepTemplate, dropTemplate, isApplied, isSaved,
     restore, onMore, toggleContact, setButtons, downloadOne, downloadAll, publish, copy, openSettings, setSettings, hotelOf, priceOf,
   }

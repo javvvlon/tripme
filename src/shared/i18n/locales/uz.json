@@ -1845,10 +1845,6 @@
         "page": "To‘plam",
         "tours": "Turlar"
       },
-      "aiCard": {
-        "title": "AI matnlari",
-        "sub": "TripMe ovozida to‘rtta variant"
-      },
       "backdrops": {
         "night": "Fotosiz",
         "ai": "AI fon",
@@ -2050,7 +2046,8 @@
         "cancel": "Bekor qilish",
         "invalid": "Nom yoki yulduzlar, sana, tunlar va narx kerak",
         "includes": "Narxga nima kiradi"
-      }
+      },
+      "applying": "Versiya qo‘llanmoqda…"
     },
     "ai": {
       "title": "TripMe AI",
