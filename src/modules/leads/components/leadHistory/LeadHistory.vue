@@ -18,6 +18,7 @@
                     <small v-if="event.kind === 'trip_started' && previousOf(event)" class="tm-lead-history__previous">{{ previousOf(event) }}</small>
                 </span>
                 <span v-if="event.actor_name" class="tm-lead-history__who">{{ event.actor_name }}</span>
+                <span v-else-if="event.kind === 'status' && !event.actor_id" class="tm-lead-history__who is-auto">{{ t('cms.ownership.history.auto') }}</span>
             </li>
         </ol>
     </section>

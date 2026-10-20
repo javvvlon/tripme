@@ -1499,7 +1499,8 @@
         "taken": "{name} взял(а) лид в работу",
         "assigned": "Лид передан: {from} → {to}",
         "orderAssigned": "Заказ {order} передан: {to}",
-        "status": "Статус: {from} → {to}"
+        "status": "Статус: {from} → {to}",
+        "auto": "Автоматически"
       }
     },
     "finance": {

@@ -314,6 +314,8 @@
         margin-left: auto;
         color: var(--tm-ink-3);
         font-size: size(13);
+
+        &.is-auto { font-style: italic; }
     }
 
     &__owner {

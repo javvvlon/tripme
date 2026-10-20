@@ -47,6 +47,8 @@
         color: var(--tm-ink-3);
         font-size: size(13);
         white-space: nowrap;
+
+        &.is-auto { font-style: italic; }
     }
 
     &__item.is-trip {

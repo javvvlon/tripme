@@ -303,6 +303,7 @@
                             {{ t(`cms.orders.status.${event.to}`) }}
                         </span>
                         <span v-if="event.actor_name" class="tm-cms-order__event-who">{{ event.actor_name }}</span>
+                        <span v-else-if="!event.actor_id && event.from" class="tm-cms-order__event-who is-auto">{{ t('cms.ownership.history.auto') }}</span>
                     </li>
                 </ol>
             </section>

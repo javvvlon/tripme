@@ -1499,7 +1499,8 @@
         "taken": "{name} took the lead",
         "assigned": "Lead handed over: {from} → {to}",
         "orderAssigned": "Order {order} handed over: {to}",
-        "status": "Status: {from} → {to}"
+        "status": "Status: {from} → {to}",
+        "auto": "Automatically"
       }
     },
     "finance": {

@@ -1499,7 +1499,8 @@
         "taken": "{name} lidni ishga oldi",
         "assigned": "Lid o‘tkazildi: {from} → {to}",
         "orderAssigned": "{order} buyurtmasi o‘tkazildi: {to}",
-        "status": "Holat: {from} → {to}"
+        "status": "Holat: {from} → {to}",
+        "auto": "Avtomatik"
       }
     },
     "finance": {
