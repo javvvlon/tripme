@@ -138,7 +138,7 @@
       "title": "To‘lov va xavfsizlik",
       "note": "To‘lov bankning himoyalangan sahifasida, 3D Secure qo‘llab-quvvatlanadi. Biz qabul qilamiz:"
     },
-    "agentStatus": "«TRIPME» MChJ — turagent. Turistik xizmatlarni shartnomada ko‘rsatilgan hamkor turoperatorlar ko‘rsatadi. Saytdagi narxlar ma’lumot uchun; to‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+    "agentStatus": "«TRIPME» MChJ — turagent. Turistik xizmatlarni shartnomada ko‘rsatilgan hamkor turoperatorlar ko‘rsatadi. Saytdagi narxlar ma’lumot uchun; to‘lov to‘lov kunidagi turoperator kursi bo‘yicha so‘mda amalga oshiriladi.",
     "tagline": "Turlarni solishtiring. Tanlov aniq."
   },
   "country": {
@@ -275,7 +275,7 @@
     "retry": "Qidiruvni takrorlash",
     "sourcePrice": "operatorda {price}",
     "headlineBare": "Turlar {destination}, {dates}",
-    "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+    "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi turoperator kursi bo‘yicha so‘mda amalga oshiriladi.",
     "currencyRate": "Bugun 1 $ = {rate} so‘m.",
     "assign": {
       "cta": "Lid uchun tanlash",
@@ -1018,6 +1018,17 @@
         "from": "{price} dan",
         "loading": "Tariflar yuklanmoqda…",
         "noPlans": "Bu mamlakat uchun hozircha tarif yo‘q"
+      },
+      "rejectReasons": {
+        "expensive": "Qimmat",
+        "bought_elsewhere": "Boshqalardan sotib oldi",
+        "changed_mind": "Sayohatdan voz kechdi",
+        "unreachable": "Bog‘lanib bo‘lmadi"
+      },
+      "reject": {
+        "title": "Rad etish sababi",
+        "confirm": "Rad etilgan deb belgilash",
+        "pick": "Sababni tanlang"
       }
     },
     "orders": {
@@ -2459,7 +2470,7 @@
       "approxUzs": "≈ {amount} so‘m",
       "hotel": "Mehmonxona haqida: {url}",
       "includes": "Kiritilgan: {includes}.",
-      "payment": "To‘lov to‘lov kunidagi O‘zR MB kursi bo‘yicha so‘mda amalga oshiriladi.",
+      "payment": "To‘lov to‘lov kunidagi turoperator kursi bo‘yicha so‘mda amalga oshiriladi.",
       "validity": "Narxlar {date} holatiga dolzarb va bron tasdiqlangunga qadar o‘zgarishi mumkin.",
       "manager": "Menejeringiz: {name}, TripMe"
     },

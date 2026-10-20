@@ -22,6 +22,12 @@ export type SortDirection = 'asc' | 'desc'
 
 export type LeadStatus = typeof LEAD_STATUSES[number]
 
+export const REJECT_REASONS = ['expensive', 'bought_elsewhere', 'changed_mind', 'unreachable'] as const
+
+export type RejectReason = typeof REJECT_REASONS[number]
+
+export const isRejectReason = (value: unknown): value is RejectReason => REJECT_REASONS.includes(value as RejectReason)
+
 export const LEAD_TRANSITIONS: Record<LeadStatus, LeadStatus[]> = {
   new: ['in_progress', 'quote_sent', 'rejected'],
   in_progress: ['quote_sent', 'won', 'rejected'],

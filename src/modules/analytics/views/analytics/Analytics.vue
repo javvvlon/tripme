@@ -154,6 +154,7 @@
 </template>
 
 <script setup lang="ts">
+import { isRejectReason } from '~/modules/leads/contracts/leads'
 import { STATUS_COLUMNS } from './Analytics.config'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import BarList from '~/modules/analytics/components/barList/BarList.vue'
@@ -278,7 +279,7 @@ const mix = computed(() => {
 
 const rejections = computed<IBarRow[]>(() => (data.value?.rejections ?? []).map(row => ({
     key: row.reason || 'none',
-    label: row.reason || t('cms.analytics.rejections.noReason'),
+    label: isRejectReason(row.reason) ? t(`cms.leads.rejectReasons.${row.reason}`) : row.reason || t('cms.analytics.rejections.noReason'),
     value: row.count,
     display: String(row.count),
 })))

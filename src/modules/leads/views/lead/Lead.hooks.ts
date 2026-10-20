@@ -3,9 +3,9 @@ import { DEFAULT_BRANCH } from '~/modules/leads/config/orders'
 import { DEFAULT_CURRENCY } from '~/shared/helpers/money'
 import { today } from '~/shared/helpers/dates'
 import { useLeadsRepository } from '~/modules/leads/repositories'
-import { LEAD_STATUSES } from '~/modules/leads/contracts/leads'
+import { isRejectReason, LEAD_STATUSES, REJECT_REASONS } from '~/modules/leads/contracts/leads'
 import { tripFromLead } from '~/modules/leads/helpers/trip'
-import type { ILeadRaw, ILeadRelated, ILeadTrip, IOrderRaw, LeadStatus } from '~/modules/leads/contracts/leads'
+import type { ILeadRaw, ILeadRelated, ILeadTrip, IOrderRaw, LeadStatus, RejectReason } from '~/modules/leads/contracts/leads'
 import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
 
 const DEFAULT_ADULTS = 2
@@ -166,7 +166,27 @@ export const useLead = () => {
     }
   }
 
-  const change = (next: LeadStatus) => save({ status: next })
+  const rejecting = ref(false)
+  const rejectPick = ref<RejectReason | ''>('')
+
+  function change(next: LeadStatus) {
+    if (next !== 'rejected') return save({ status: next })
+
+    rejectPick.value = isRejectReason(draft.rejectReason) ? draft.rejectReason : ''
+    rejecting.value = true
+  }
+
+  async function confirmReject() {
+    if (!rejectPick.value) return
+
+    await save({ status: 'rejected', reject_reason: rejectPick.value })
+
+    if (!error.value) rejecting.value = false
+  }
+
+  const reasonOptions = computed(() => REJECT_REASONS.map(value => ({ value, label: t(`cms.leads.rejectReasons.${value}`) })))
+
+  const legacyReason = computed(() => (draft.rejectReason && !isRejectReason(draft.rejectReason) ? draft.rejectReason : ''))
 
   const submit = () => save({
     destination: draft.destination,
@@ -175,7 +195,7 @@ export const useLead = () => {
     children_ages: draft.party.kidAges,
     budget_amount: asAmount(draft.budgetAmount),
     budget_currency: draft.budgetCurrency,
-    reject_reason: draft.rejectReason,
+    ...(isRejectReason(draft.rejectReason) ? { reject_reason: draft.rejectReason } : {}),
     comment: draft.comment,
   })
 
@@ -243,6 +263,7 @@ export const useLead = () => {
   return {
     lead, draft, orders, status, error, saving, saved, historyVersion,
     statusOptions, change, submit, addOrder, archive, restore, refresh, owned,
+    rejecting, rejectPick, confirmReject, reasonOptions, legacyReason,
     pickingEsim, hasTour, assignEsim, clearTour,
     tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
   }

@@ -242,8 +242,7 @@
                     </div>
 
                     <div v-if="lead.status === 'rejected'" class="tm-cms-lead__field">
-                        <label :for="reasonId" class="tm-cms-lead__label">{{ t('cms.leads.fields.rejectReason') }}</label>
-                        <textarea :id="reasonId" v-model="draft.rejectReason" class="tm-cms-lead__textarea" rows="2" />
+                        <SelectMenu v-model="draft.rejectReason" :options="reasonOptions" :label="t('cms.leads.fields.rejectReason')" :placeholder="legacyReason || t('cms.leads.reject.pick')" />
                     </div>
                 </section>
 
@@ -313,6 +312,25 @@
                     @marked="quoteMarked"
                 />
             </ClientOnly>
+
+            <Modal
+                v-model="rejecting"
+                :title="t('cms.leads.reject.title')"
+                :confirm-label="t('cms.leads.reject.confirm')"
+                :busy="saving"
+                :disabled="!rejectPick"
+                :error="rejecting ? error : ''"
+                size="sm"
+                tone="danger"
+                @confirm="confirmReject"
+            >
+                <div class="tm-cms-lead__reasons" role="radiogroup" :aria-label="t('cms.leads.reject.title')">
+                    <label v-for="option in reasonOptions" :key="option.value" class="tm-cms-lead__reason" :class="{ 'is-on': rejectPick === option.value }">
+                        <input v-model="rejectPick" type="radio" name="reject-reason" :value="option.value">
+                        {{ option.label }}
+                    </label>
+                </div>
+            </Modal>
         </template>
     </div>
 </template>
@@ -351,12 +369,12 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const commentId = useId()
-const reasonId = useId()
 
 const {
     lead, draft, orders, status, error, saving, saved,
     historyVersion, owned,
     statusOptions, change, submit, addOrder, archive, restore,
+    rejecting, rejectPick, confirmReject, reasonOptions, legacyReason,
     pickingEsim, hasTour, assignEsim, clearTour,
     tripDone, finished, lastOrder, related, requesting, startRequest, creatingOrder,
 } = useLead()

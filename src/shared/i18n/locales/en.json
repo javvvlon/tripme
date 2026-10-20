@@ -138,7 +138,7 @@
       "title": "Payment and security",
       "note": "Payment happens on the bank’s secure page, with 3D Secure support. We accept:"
     },
-    "agentStatus": "TRIPME LLC is a travel agent. Travel services are provided by the partner tour operators named in the contract. Prices on the site are for reference; payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+    "agentStatus": "TRIPME LLC is a travel agent. Travel services are provided by the partner tour operators named in the contract. Prices on the site are for reference; payment is made in sum at the tour operator’s rate on the day of payment.",
     "tagline": "Compare. Choose. Travel."
   },
   "country": {
@@ -275,7 +275,7 @@
     "retry": "Search again",
     "sourcePrice": "{price} at the operator",
     "headlineBare": "Tours {destination}, {dates}",
-    "currencyNote": "Dollar prices are for reference. Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+    "currencyNote": "Dollar prices are for reference. Payment is made in sum at the tour operator’s rate on the day of payment.",
     "currencyRate": "Today 1 $ = {rate} UZS.",
     "assign": {
       "cta": "Pick for lead",
@@ -1018,6 +1018,17 @@
         "from": "from {price}",
         "loading": "Loading plans…",
         "noPlans": "No plans for this country yet"
+      },
+      "rejectReasons": {
+        "expensive": "Too expensive",
+        "bought_elsewhere": "Bought elsewhere",
+        "changed_mind": "Changed their mind",
+        "unreachable": "Could not reach"
+      },
+      "reject": {
+        "title": "Reason for refusal",
+        "confirm": "Mark as refused",
+        "pick": "Choose a reason"
       }
     },
     "orders": {
@@ -2459,7 +2470,7 @@
       "approxUzs": "≈ {amount} UZS",
       "hotel": "About the hotel: {url}",
       "includes": "Included: {includes}.",
-      "payment": "Payment is made in sum at the Central Bank of Uzbekistan rate on the day of payment.",
+      "payment": "Payment is made in sum at the tour operator’s rate on the day of payment.",
       "validity": "Prices are valid as of {date} and may change until the booking is confirmed.",
       "manager": "Your manager: {name}, TripMe"
     },
