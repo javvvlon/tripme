@@ -62,7 +62,7 @@ export const useOrderFinance = (props: IOrderFinanceProps, changed: (finance: IF
   watch(() => [props.orderId, props.version], load, { immediate: true })
 
   watch(() => draft.currency, (currency) => {
-    const rate = currency === 'UZS' ? null : rates.value?.rates?.[currency]
+    const rate = currency === 'UZS' ? null : finance.value?.rates?.[currency] ?? rates.value?.rates?.[currency]
 
     draft.fxRate = rate ? String(Math.round(rate * 100) / 100) : ''
   })

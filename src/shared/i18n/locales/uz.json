@@ -1516,7 +1516,7 @@
       "total": "Mijoz uchun narx",
       "received": "Mijozdan olindi",
       "balance": "Toʻlanishi qolgan",
-      "rateAt": "MB kursi bo‘yicha, {date}",
+      "rateAt": "turoperator kursi bo‘yicha, {date}",
       "overpaid": "Ortiqcha toʻlov",
       "suppliers": "Yetkazib beruvchilarga toʻlandi",
       "revenue": "Tushum (kirim − chiqim)",
@@ -1546,7 +1546,7 @@
         "amount": "Summa",
         "currency": "Valyuta",
         "rate": "Soʻmga kurs",
-        "rateHint": "Bugungi MB kursi — boshqa kurs qoʻllangan boʻlsa, tuzating",
+        "rateHint": "Bugungi turoperator kursi — boshqa kurs qo‘llangan bo‘lsa, o‘zgartiring",
         "paidAt": "Toʻlov sanasi",
         "receipt": "Chek yoki kvitansiya",
         "receiptRequired": "Mijoz pullari uchun chek majburiy",
@@ -1575,7 +1575,8 @@
         "paid": "Toʻliq toʻlangan",
         "overpaid": "Ortiqcha toʻlangan"
       },
-      "legacyPaid": "Buyurtma toʻlovlar jurnaligacha toʻlangan va toʻliq toʻlangan hisoblanadi."
+      "legacyPaid": "Buyurtma toʻlovlar jurnaligacha toʻlangan va toʻliq toʻlangan hisoblanadi.",
+      "rateAtCbu": "MB kursi + 2% bo‘yicha, {date}"
     },
     "esim": {
       "title": "eSIM",
@@ -2303,12 +2304,13 @@
       "total": "Jami",
       "paid": "To'langan",
       "due": "To'lash kerak",
-      "dueAt": "MB kursi bo‘yicha, {date}",
+      "dueAt": "turoperator kursi bo‘yicha, {date}",
       "upload": "Hujjat yuklash",
       "uploading": "Yuklanmoqda…",
       "uploaded": "Hujjat yuklandi — menejer uni ko'radi",
       "removeFile": "Faylni o'chirish",
-      "removeFileTitle": "Fayl o'chirilsinmi?"
+      "removeFileTitle": "Fayl o'chirilsinmi?",
+      "dueAtCbu": "MB kursi + 2% bo‘yicha, {date}"
     },
     "profile": {
       "title": "Profil",

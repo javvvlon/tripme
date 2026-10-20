@@ -89,7 +89,7 @@
                     <div class="is-due">
                         <dt>
                             {{ t('account.order.due') }}
-                            <small v-if="order.balance_uzs && order.rates_date" class="tm-my-order__rate">{{ t('account.order.dueAt', { date: order.rates_date.split('-').reverse().join('.') }) }}</small>
+                            <small v-if="order.balance_uzs && order.rates_date" class="tm-my-order__rate">{{ t(order.rates_basis === 'cbu' ? 'account.order.dueAtCbu' : 'account.order.dueAt', { date: order.rates_date.split('-').reverse().join('.') }) }}</small>
                         </dt>
                         <dd>{{ sum(order.balance_uzs) }}</dd>
                     </div>

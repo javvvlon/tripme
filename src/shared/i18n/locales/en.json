@@ -1516,7 +1516,7 @@
       "total": "Price for the client",
       "received": "Received from the client",
       "balance": "Left to pay",
-      "rateAt": "at the Central Bank rate of {date}",
+      "rateAt": "at the tour operator's rate of {date}",
       "overpaid": "Overpaid",
       "suppliers": "Paid to suppliers",
       "revenue": "Revenue (in − out)",
@@ -1546,7 +1546,7 @@
         "amount": "Amount",
         "currency": "Currency",
         "rate": "Rate to sum",
-        "rateHint": "Today’s central bank rate — correct it if another rate was used",
+        "rateHint": "Today's tour operator rate — change it if you used another one",
         "paidAt": "Payment date",
         "receipt": "Receipt",
         "receiptRequired": "A receipt is required for client money",
@@ -1575,7 +1575,8 @@
         "paid": "Fully paid",
         "overpaid": "Overpaid"
       },
-      "legacyPaid": "This order was paid before the payment log and counts as fully paid."
+      "legacyPaid": "This order was paid before the payment log and counts as fully paid.",
+      "rateAtCbu": "at the Central Bank rate + 2% of {date}"
     },
     "esim": {
       "title": "eSIM",
@@ -2303,12 +2304,13 @@
       "total": "Total",
       "paid": "Paid",
       "due": "Due",
-      "dueAt": "at the Central Bank rate of {date}",
+      "dueAt": "at the tour operator's rate of {date}",
       "upload": "Upload a document",
       "uploading": "Uploading…",
       "uploaded": "Uploaded — your manager will see it",
       "removeFile": "Delete file",
-      "removeFileTitle": "Delete this file?"
+      "removeFileTitle": "Delete this file?",
+      "dueAtCbu": "at the Central Bank rate + 2% of {date}"
     },
     "profile": {
       "title": "Profile",
