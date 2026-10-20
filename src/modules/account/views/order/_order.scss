@@ -96,7 +96,7 @@
         overflow-wrap: anywhere;
         margin: 0;
         font-size: size(24);
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: -.02em;
         color: var(--tm-ink-1);
     }
@@ -375,7 +375,7 @@
 
         dd { margin: 0; color: var(--tm-ink-1); font-size: size(15); font-weight: 600; font-variant-numeric: tabular-nums; }
 
-        .is-due dd { font-size: size(19); font-weight: 800; }
+        .is-due dd { font-size: size(19); font-weight: 700; }
     }
 }
 

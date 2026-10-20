@@ -113,7 +113,7 @@
 
         &.is-awaiting_payment { color: var(--tm-ink-4); }
         &.is-paid { border-color: var(--tm-status-warning); color: var(--tm-ink-1); }
-        &.is-issued { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-issued { border-color: var(--tm-status-success-line); color: var(--tm-status-success-ink); }
         &.is-issue_failed { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); }
         &.is-cancelled { color: var(--tm-ink-4); text-decoration: line-through; }
     }

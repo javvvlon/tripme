@@ -493,8 +493,6 @@ export async function fontsReady(sample: string): Promise<void> {
   if (typeof document === 'undefined' || !document.fonts) return
 
   await Promise.all([
-    document.fonts.load(font(900, 64), sample),
-    document.fonts.load(font(800, 64), sample),
     document.fonts.load(font(700, 64), sample),
     document.fonts.load(font(600, 64, BODY), sample),
     document.fonts.load(font(700, 64, BODY), sample),

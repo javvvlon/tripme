@@ -431,17 +431,6 @@
                             </div>
                         </section>
 
-                        <section class="tm-ad-studio__block">
-                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.tune.postStyle') }}</h3>
-                            <div class="tm-ad-studio__steps is-wide">
-                                <button
-                                    v-for="style in postStyles" :key="style" type="button"
-                                    :class="{ 'is-on': design.post_style === style }"
-                                    @click="tune({ post_style: style })"
-                                >{{ t(`cms.marketing.tune.postStyles.${style}`) }}</button>
-                            </div>
-                        </section>
-
                         <label class="tm-ad-studio__switch">
                             <input type="checkbox" :checked="design.footer" @change="tune({ footer: ($event.target as HTMLInputElement).checked })">
                             <span class="tm-ad-studio__switch-track" aria-hidden="true" />
@@ -594,7 +583,6 @@ import VideoStage from '~/modules/marketing/components/videoStage/VideoStage.vue
 import LineFields from '~/modules/marketing/components/lineFields/LineFields.vue'
 import MarketingSettings from '~/modules/marketing/components/marketingSettings/MarketingSettings.vue'
 import { swatch } from '~/modules/marketing/helpers/banner/draw'
-import { POST_STYLES } from '~/modules/marketing/contracts/marketing'
 import type { ContextBackdrop } from '~/modules/marketing/contracts/marketing'
 import { useSelection } from './Selection.hooks'
 
@@ -614,7 +602,6 @@ const {
 
 const switches = ['caps', 'stars', 'meal', 'party', 'cta'] as const
 
-const postStyles = POST_STYLES
 
 const stage = ref<InstanceType<typeof VideoStage> | null>(null)
 

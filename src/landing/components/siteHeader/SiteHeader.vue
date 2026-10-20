@@ -1,9 +1,13 @@
 <template>
     <header class="tm-site-header" :class="`tm-site-header--${variant}`">
         <div class="container-wide tm-site-header__row">
-            <NuxtLink :to="localePath('/')" class="tm-site-header__logo" :aria-label="t('nav.home')">
-                <Logo :width="160" />
-            </NuxtLink>
+            <div class="tm-site-header__brand">
+                <NuxtLink :to="localePath('/')" class="tm-site-header__logo" :aria-label="t('nav.home')">
+                    <Logo :width="158" />
+                </NuxtLink>
+
+                <StatusBadge v-if="beta" kind="beta" interactive @open="feedback = true" />
+            </div>
 
             <nav
                 class="tm-site-header__nav" :class="{ 'is-open': open }"
@@ -62,6 +66,8 @@
         <div v-if="withSearch" class="container-wide tm-site-header__search">
             <SearchWidget variant="bar" />
         </div>
+
+        <BetaFeedback v-if="beta" v-model="feedback" />
     </header>
 </template>
 
@@ -71,6 +77,7 @@ import type { ISiteHeaderProps } from './SiteHeader.d'
 import { NuxtLink } from '#components'
 import { HEADER_NAV } from './SiteHeader.config'
 import { HERO_SEARCH_IN_VIEW } from '~/landing/components/hero/Hero.hooks'
+import BetaFeedback from '~/landing/components/betaFeedback/BetaFeedback.vue'
 
 withDefaults(defineProps<ISiteHeaderProps>(), { variant: 'over' })
 
@@ -98,6 +105,9 @@ const initials = computed(() => {
     .join('')
     .slice(0, 2)
 })
+
+const beta = computed(() => useRuntimeConfig().public.testMode && route.meta.payment !== true)
+const feedback = ref(false)
 
 const open = ref(false)
 watch(() => route.fullPath, () => { open.value = false })

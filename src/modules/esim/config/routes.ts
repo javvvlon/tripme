@@ -21,14 +21,14 @@ export const routes: IModuleRoute[] = [
     path: '/esim/order/:token',
     file: 'modules/esim/views/esimOrder/EsimOrder.vue',
     ssr: false,
-    meta: { header: 'solid' },
+    meta: { header: 'solid', payment: true },
   },
   {
     name: 'esim-pay',
     path: '/esim/pay/:token',
     file: 'modules/esim/views/esimPay/EsimPay.vue',
     ssr: false,
-    meta: { header: 'solid' },
+    meta: { header: 'solid', payment: true },
   },
   {
     name: 'cms-esim',

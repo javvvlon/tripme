@@ -21,7 +21,7 @@
     &.is-paid {
         border-color: transparent;
         background: var(--tm-status-success-soft);
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
     }
 
     &.is-overpaid {

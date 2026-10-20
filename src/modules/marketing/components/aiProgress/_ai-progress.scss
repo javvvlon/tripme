@@ -62,7 +62,7 @@
 
     &__title {
         font-size: size(15);
-        font-weight: 800;
+        font-weight: 700;
     }
 
     &__note {
@@ -90,7 +90,7 @@
         transition: color .3s ease;
 
         &.is-now { color: var(--tm-ink-1); font-weight: 700; }
-        &.is-done { color: var(--tm-status-success); }
+        &.is-done { color: var(--tm-status-success-ink); }
     }
 
     &__mark {
@@ -110,7 +110,7 @@
         }
 
         .is-done & {
-            border-color: var(--tm-status-success);
+            border-color: var(--tm-status-success-ink);
             background: var(--tm-status-success);
             color: #FFFFFF;
         }

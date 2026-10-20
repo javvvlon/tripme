@@ -143,11 +143,13 @@
     }
 
     &__ref {
+        @include mono;
         color: var(--tm-brand-secondary);
         font-weight: 700;
     }
 
     &__price {
+        @include mono;
         color: var(--tm-ink-1);
         font-size: size(14);
         font-weight: 700;
@@ -197,7 +199,7 @@
         &.is-confirmed,
         &.is-paid,
         &.is-issued,
-        &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success-ink); }
         &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
         &.is-completed { background: var(--tm-surface-2); color: var(--tm-ink-3); }
     }

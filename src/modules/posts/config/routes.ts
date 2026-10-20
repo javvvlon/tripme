@@ -8,14 +8,14 @@ export const routes: IModuleRoute[] = [
     name: 'blog-index',
     path: '/blog',
     file: 'modules/posts/views/blog/Blog.vue',
-    meta: { header: 'solid', testNotice: true },
+    meta: { header: 'solid' },
     swr: 300,
   },
   {
     name: 'blog-post',
     path: '/blog/:slug',
     file: 'modules/posts/views/post/Post.vue',
-    meta: { header: 'solid', testNotice: true },
+    meta: { header: 'solid' },
   },
   {
     name: 'cms-posts',

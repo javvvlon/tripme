@@ -88,9 +88,11 @@ export default defineNuxtConfig({
     '@fontsource/nunito/400.css',
     '@fontsource/nunito/600.css',
     '@fontsource/nunito/700.css',
+    '@fontsource/montserrat/600.css',
     '@fontsource/montserrat/700.css',
-    '@fontsource/montserrat/800.css',
-    '@fontsource/montserrat/900.css',
+    '@fontsource/jetbrains-mono/400.css',
+    '@fontsource/jetbrains-mono/500.css',
+    '@fontsource/jetbrains-mono/700.css',
     '~/shared/styles/main.scss',
   ],
 

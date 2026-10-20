@@ -1,0 +1,56 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-beta-feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__names {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        min-width: 0;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    &__label {
+        color: var(--tm-ink-2);
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('sm');
+        background: var(--tm-surface-field);
+        color: var(--tm-ink-1);
+        font-family: inherit;
+        font-size: size(15);
+        line-height: 1.6;
+        resize: vertical;
+
+        &:focus {
+            outline: none;
+            border-color: var(--tm-brand-primary);
+        }
+    }
+
+    &__error {
+        margin: 0;
+        color: var(--tm-status-danger);
+        font-size: size(13);
+        font-weight: 600;
+    }
+}
+
+@media #{$until-md} {
+    .tm-beta-feedback__names { grid-template-columns: minmax(0, 1fr); }
+}

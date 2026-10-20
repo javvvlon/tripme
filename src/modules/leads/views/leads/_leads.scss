@@ -156,11 +156,13 @@
     }
 
     &__ref {
+        @include mono;
         color: var(--tm-brand-secondary);
         font-weight: 700;
     }
 
     &__price {
+        @include mono;
         color: var(--tm-ink-1);
         font-size: size(14);
         font-weight: 700;

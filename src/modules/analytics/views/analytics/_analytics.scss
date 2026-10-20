@@ -91,7 +91,7 @@
 
         span { font-weight: 400; color: var(--tm-ink-4); }
 
-        &.is-good { color: var(--tm-status-success); }
+        &.is-good { color: var(--tm-status-success-ink); }
         &.is-bad { color: var(--tm-status-danger-dark); }
         &.is-flat { color: var(--tm-ink-3); }
     }
@@ -141,7 +141,7 @@
         padding: 14px;
         border-radius: radius('sm');
         background: var(--tm-status-success-soft);
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(14);
         font-weight: 600;
     }

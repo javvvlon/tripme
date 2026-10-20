@@ -5,7 +5,12 @@ import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const useContactForm = () => {
+export interface IContactFormOptions {
+  topic?: 'beta'
+  messageRequired?: boolean
+}
+
+export const useContactForm = (options: IContactFormOptions = {}) => {
   const { t } = useI18n()
   const http = useHttp()
   const { user } = useAuthSession()
@@ -27,7 +32,7 @@ export const useContactForm = () => {
   const validation = useValidation(() => form, {
     firstName: [required()],
     phone: [required(), custom(value => isCompletePhone(String(value ?? '')), 'validation.phone')],
-    message: [maxLength(MESSAGE_MAX)],
+    message: options.messageRequired ? [required(), maxLength(MESSAGE_MAX)] : [maxLength(MESSAGE_MAX)],
     consent: [custom(value => value === true, 'validation.consent')],
   })
 
@@ -46,6 +51,7 @@ export const useContactForm = () => {
         phone: toE164(form.phone),
         message: form.message,
         consent: form.consent,
+        ...(options.topic ? { topic: options.topic } : {}),
       })
 
       sent.value = true

@@ -82,7 +82,7 @@
         color: var(--tm-ink-2);
         white-space: nowrap;
 
-        .is-cheapest & { color: var(--tm-status-success); }
+        .is-cheapest & { color: var(--tm-status-success-ink); }
         .is-on & { color: var(--tm-brand-primary-dark); }
     }
 

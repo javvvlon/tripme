@@ -2,7 +2,6 @@ import { mealText } from '~/shared/helpers/meal'
 import { tourFromTrip } from '~/modules/leads/helpers/quote'
 import { daysUntil, isHotDeparture, tashkentToday } from '~/shared/helpers/hot'
 import { sceneOf } from './banner/scenes'
-import { flagsOf } from './flags'
 import type { SceneKind } from './banner/scenes'
 import type { Translate } from '~/modules/leads/helpers/quote'
 import { AD_INCLUDES, DEFAULT_DESIGN } from '../contracts/marketing'
@@ -53,7 +52,6 @@ export interface IAdText {
   link: string
   site: string
   hot: boolean
-  flags: string
   includes: string
 }
 
@@ -222,7 +220,6 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
     link,
     site,
     hot,
-    flags: flagsOf(pool.flatMap(tour => [String(tour.route_to ?? ''), ...(tour.countries ?? [])])),
     includes: known.length ? `${t('marketing.includes.label')}: ${known.map(key => t(`marketing.includes.${key}`)).join(' — ')}` : '',
   }
 }
@@ -236,39 +233,39 @@ export interface IPostOptions {
 
 const INCLUDED_LINE = /^\s*(в стоимость|включено|tur narxiga|narxga kiradi|tarkibi|included)/i
 
+const EMOJI = /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{200D}\u{20E3}]/gu
+
+export const withoutEmoji = (value: string): string =>
+  value.replace(EMOJI, '').replace(/[ \t]{2,}/g, ' ').replace(/^[ \t]+/gm, '')
+
 const footerOf = (footer: string, ownIncludes: boolean): string =>
   ownIncludes ? footer.split('\n').filter(line => !INCLUDED_LINE.test(line)).join('\n') : footer
 
 export function telegramPost(text: IAdText, options: IPostOptions = { link: true, contacts: [], managersLabel: '', footer: '' }): string {
-  const emoji = text.design.post_style === 'emoji'
   const headline = text.copy.headline.toLocaleUpperCase(text.language)
   const label = text.hotBadge || text.copy.kicker
-  const title = label ? `${headline}: ${label.toLocaleUpperCase(text.language)}` : headline
-  const head = emoji && text.flags ? `${text.flags} ${title}` : title
+  const head = label ? `${headline}: ${label.toLocaleUpperCase(text.language)}` : headline
   const hotels = text.lines.slice(0, text.design.rows).map((line, index) => {
     const name = [line.hotel, text.design.stars && line.stars ? `${line.stars}*` : ''].filter(Boolean).join(' ')
     const place = line.district ? ` (${line.district})` : ''
     const meal = text.design.meal && line.mealShort ? ` — ${line.mealShort}` : ''
+    const legs = line.legs.map(leg => `— ${[leg.place, leg.nights].filter(Boolean).join(', ')}${leg.hotel ? `: ${leg.hotel}` : ''}`)
 
-    const legs = line.legs.map(leg => emoji
-      ? `📍 ${[leg.place, leg.nights].filter(Boolean).join(' — ')}${leg.hotel ? ` · ${leg.hotel}` : ''}`
-      : `— ${[leg.place, leg.nights].filter(Boolean).join(', ')}${leg.hotel ? `: ${leg.hotel}` : ''}`)
-
-    return [`${emoji ? '👉' : `${index + 1}.`} ${name}${place}${meal}`, ...legs, line.offer].join('\n')
+    return [`${index + 1}. ${name}${place}${meal}`, ...legs, line.offer].join('\n')
   })
   const tags = text.copy.hashtags.map(tag => `#${tag}`).join(' ')
   const managers = options.contacts.map(contact => `${contact.name} — t.me/${contact.telegram}`)
 
   const blocks = [
-    [head, emoji ? `✈️ ${text.departure}` : text.departure].join('\n'),
+    [head, text.departure].join('\n'),
     text.copy.intro,
     hotels.join('\n\n'),
-    text.includes ? `${emoji ? '🏨 ' : ''}${text.includes}` : '',
+    text.includes,
     text.design.footer ? footerOf(options.footer, Boolean(text.includes)) : '',
-    managers.length ? [emoji ? `☎️ ${options.managersLabel}` : options.managersLabel, ...managers].join('\n') : '',
-    options.link ? `${emoji ? '🔗 ' : ''}${text.copy.cta}: ${text.link}` : '',
+    managers.length ? [options.managersLabel, ...managers].join('\n') : '',
+    options.link ? `${text.copy.cta}: ${text.link}` : '',
     tags,
   ]
 
-  return blocks.map(block => block.trim()).filter(Boolean).join('\n\n')
+  return blocks.map(block => withoutEmoji(block).trim()).filter(Boolean).join('\n\n')
 }

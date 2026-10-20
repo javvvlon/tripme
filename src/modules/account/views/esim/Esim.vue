@@ -113,7 +113,7 @@ useSeoMeta({ title: () => t('account.esim.title'), robots: 'noindex, nofollow' }
         font-size: size(12);
         font-weight: 700;
 
-        &.is-issued { background: var(--tm-status-success-soft); color: var(--tm-status-success); }
+        &.is-issued { background: var(--tm-status-success-soft); color: var(--tm-status-success-ink); }
     }
 }
 </style>

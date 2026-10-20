@@ -87,7 +87,7 @@ async function confirm() {
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-weight: 600;
     }
 

@@ -1,0 +1,43 @@
+@use '../../styles/utils' as *;
+
+.tm-status-badge {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    padding: 3px 8px;
+    border: 1px solid transparent;
+    border-radius: radius('pill');
+    font-family: var(--tm-font-display-primary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &--beta {
+        background: var(--tm-badge-beta-bg);
+        border-color: var(--tm-badge-beta-line);
+        color: var(--tm-badge-beta-ink);
+    }
+
+    &--new {
+        background: transparent;
+        border-color: var(--tm-badge-new-line);
+        color: var(--tm-badge-new-ink);
+    }
+
+    &--premium {
+        background: var(--tm-badge-premium-bg);
+        color: var(--tm-badge-premium-ink);
+    }
+}
+
+button.tm-status-badge {
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+
+    &:hover { border-color: var(--tm-badge-new-line); color: var(--tm-badge-beta-hover); }
+
+    &:focus-visible { @include focus-ring; }
+}

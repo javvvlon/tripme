@@ -26,8 +26,10 @@ export const BODY = 'Nunito'
 
 export type Ctx = CanvasRenderingContext2D
 
+export const HEAD_MAX_WEIGHT = 700
+
 export const font = (weight: number, size: number, family = HEAD): string =>
-  `${weight} ${Math.round(size)}px ${family}, system-ui, sans-serif`
+  `${family === HEAD ? Math.min(weight, HEAD_MAX_WEIGHT) : weight} ${Math.round(size)}px ${family}, system-ui, sans-serif`
 
 export function track(ctx: Ctx, pixels: number): void {
   if ('letterSpacing' in ctx) (ctx as Ctx & { letterSpacing: string }).letterSpacing = `${pixels}px`

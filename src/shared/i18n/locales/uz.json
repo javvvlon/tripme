@@ -925,7 +925,8 @@
         "instagram": "Instagram",
         "walk_in": "Ofisda",
         "manual": "Qoʻlda qoʻshilgan",
-        "contact": "Aloqa formasi"
+        "contact": "Aloqa formasi",
+        "beta": "Beta fikri"
       },
       "addOrder": "Buyurtma yaratish",
       "noOrders": "Bu lid boʻyicha hali buyurtma yoʻq.",
@@ -1889,12 +1890,7 @@
         "meal": "Ovqatlanish",
         "party": "Sayyohlar tarkibi",
         "cta": "Tugma",
-        "footer": "Post oxirida agentlik imzosi",
-        "postStyle": "Post ko‘rinishi",
-        "postStyles": {
-          "plain": "Qat’iy",
-          "emoji": "Emojili"
-        }
+        "footer": "Post oxirida agentlik imzosi"
       },
       "buttons": {
         "both": "Hammasi",
@@ -2670,9 +2666,6 @@
       "waiting": "Javob kutilmoqda"
     }
   },
-  "testNotice": {
-    "text": "Sayt test rejimida ishlamoqda"
-  },
   "carousel": {
     "label": "Karusel",
     "slide": "{total} tadan {n}-slayd",
@@ -2769,5 +2762,19 @@
     "chat": {
       "new": "Yangi chat"
     }
+  },
+  "statusBadge": {
+    "beta": "BETA",
+    "new": "Yangi",
+    "premium": "Premium",
+    "feedback": "Beta versiya: xatolik haqida xabar berish"
+  },
+  "betaFeedback": {
+    "title": "TripMe beta-sinov rejimida",
+    "text": "Siz TripMe modulidan beta-sinov rejimida foydalanmoqdasiz. Agar biror noaniqlikni sezsangiz — bizga xabar bering va keyingi sayohatingiz uchun shaxsiy bonus oling.",
+    "message": "Nima noto‘g‘ri ishladi",
+    "placeholder": "Nimani va qaysi sahifada sezganingizni yozing",
+    "submit": "Yuborish",
+    "sent": "Rahmat! Menejer Siz bilan bog‘lanib, bonus haqida aytib beradi."
   }
 }

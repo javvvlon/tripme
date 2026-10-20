@@ -196,7 +196,7 @@
         &:disabled { cursor: wait; }
 
         &.is-yes.is-on {
-            border-color: var(--tm-status-success);
+            border-color: var(--tm-status-success-ink);
             background: var(--tm-status-success);
             color: var(--tm-common-white);
         }
@@ -221,7 +221,7 @@
 
         .is-accepted & {
             border-color: var(--tm-status-success-line);
-            color: var(--tm-status-success);
+            color: var(--tm-status-success-ink);
         }
 
         .is-declined & { color: var(--tm-ink-4); }

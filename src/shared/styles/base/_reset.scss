@@ -20,8 +20,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 input, select, textarea { font: inherit; color: inherit; }
 ul, ol { list-style: none; }
 
-h1, h2, h3 { font-family: var(--tm-font-display-primary); letter-spacing: -.02em; line-height: 1.1; font-weight: 800; }
-h1 { font-size: clamp(#{size(28)}, 4.6vw, #{size(50)}); font-weight: 900; }
+h1, h2, h3 { font-family: var(--tm-font-display-primary); letter-spacing: -.02em; line-height: 1.1; font-weight: 700; }
+h1 { font-size: clamp(#{size(28)}, 4.6vw, #{size(50)}); font-weight: 700; }
 h2 { font-size: clamp(#{size(21)}, 2.6vw, #{size(28)}); }
 h3 { font-size: size(19); letter-spacing: -.01em; }
 

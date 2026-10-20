@@ -925,7 +925,8 @@
         "instagram": "Instagram",
         "walk_in": "Walk-in",
         "manual": "Added manually",
-        "contact": "Contact form"
+        "contact": "Contact form",
+        "beta": "Beta feedback"
       },
       "addOrder": "Create an order",
       "noOrders": "No orders for this lead yet.",
@@ -1889,12 +1890,7 @@
         "meal": "Meal",
         "party": "Party",
         "cta": "Button",
-        "footer": "Agency signature at the end of the post",
-        "postStyle": "Post style",
-        "postStyles": {
-          "plain": "Plain",
-          "emoji": "With emoji"
-        }
+        "footer": "Agency signature at the end of the post"
       },
       "buttons": {
         "both": "All",
@@ -2670,9 +2666,6 @@
       "waiting": "Waiting for an answer"
     }
   },
-  "testNotice": {
-    "text": "The site is running in test mode"
-  },
   "carousel": {
     "label": "Carousel",
     "slide": "Slide {n} of {total}",
@@ -2769,5 +2762,19 @@
     "chat": {
       "new": "New chat"
     }
+  },
+  "statusBadge": {
+    "beta": "BETA",
+    "new": "New",
+    "premium": "Premium",
+    "feedback": "Beta version: report an inaccuracy"
+  },
+  "betaFeedback": {
+    "title": "TripMe is in beta",
+    "text": "You are using a TripMe module in beta. If you notice an inaccuracy, let us know and get a personal bonus for your next trip.",
+    "message": "What went wrong",
+    "placeholder": "Describe what you noticed and on which page",
+    "submit": "Send",
+    "sent": "Thank you! A manager will contact you about your bonus."
   }
 }

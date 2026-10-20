@@ -63,7 +63,7 @@
 
         strong {
             font-size: size(32);
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1;
             letter-spacing: -.03em;
             font-variant-numeric: tabular-nums;
@@ -177,7 +177,7 @@
 
         &--meal {
             background: var(--tm-status-success-soft);
-            color: var(--tm-status-success);
+            color: var(--tm-status-success-ink);
         }
 
         &--warn {
@@ -187,7 +187,7 @@
 
         &--instant {
             background: var(--tm-status-success-soft);
-            color: var(--tm-status-success);
+            color: var(--tm-status-success-ink);
         }
     }
 
@@ -266,7 +266,7 @@
 
     &__price {
         font-size: size(24);
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: -.02em;
         line-height: 1.1;
         font-variant-numeric: tabular-nums;

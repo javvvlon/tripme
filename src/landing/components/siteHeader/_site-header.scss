@@ -17,11 +17,18 @@
         height: 76px;
     }
 
+    &__brand {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        gap: 12px;
+    }
+
     &__logo {
         display: inline-flex;
         color: var(--tm-ink-1);
 
-        .tm-logo { width: 160px; }
+        .tm-logo { width: 158px; }
     }
 
     &__nav {
@@ -150,7 +157,7 @@
     @media #{$until-sm} {
         &__row { height: 64px; gap: 10px; }
 
-        &__logo .tm-logo { width: 116px; }
+        &__logo .tm-logo { width: 124px; }
 
         &__tools { gap: 8px; }
     }

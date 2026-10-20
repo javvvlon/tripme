@@ -98,7 +98,7 @@
 
         &.is-requested { background: color-mix(in srgb, var(--tm-status-warning) 24%, transparent); color: var(--tm-ink-1); }
         &.is-confirmed,
-        &.is-issued { background: var(--tm-status-success-soft); color: var(--tm-status-success); }
+        &.is-issued { background: var(--tm-status-success-soft); color: var(--tm-status-success-ink); }
         &.is-rejected,
         &.is-cancelled { background: var(--tm-status-danger-soft); color: var(--tm-status-danger); }
     }
@@ -118,7 +118,7 @@
 
     &__ref {
         margin: 0;
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(13);
         font-weight: 600;
     }
@@ -135,6 +135,7 @@
 
     &__uzs,
     &__rate {
+        @include mono;
         margin: 0;
         color: var(--tm-ink-3);
         font-size: size(12);
@@ -202,6 +203,7 @@
     }
 
     &__price {
+        @include mono;
         flex: none;
         margin: 0;
         color: var(--tm-ink-1);

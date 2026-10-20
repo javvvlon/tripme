@@ -43,7 +43,7 @@
         padding: 3px 12px;
         border-radius: radius('pill');
         background: var(--tm-status-success-soft);
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(13);
         font-weight: 700;
         white-space: nowrap;
@@ -103,13 +103,13 @@
 
     &__bang {
         font-size: size(11);
-        font-weight: 800;
+        font-weight: 700;
         line-height: 1;
     }
 
     &__row.is-ok &__mark {
         background: var(--tm-status-success-soft);
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
     }
 
     &__row.is-warning &__mark {

@@ -64,7 +64,7 @@
     }
 
     &--success {
-        border-left-color: var(--tm-status-success);
+        border-left-color: var(--tm-status-success-ink);
 
         .tm-toast__icon { background: var(--tm-status-success); }
     }

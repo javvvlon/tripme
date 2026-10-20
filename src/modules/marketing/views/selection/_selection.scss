@@ -72,7 +72,7 @@
     }
 
     &__leads {
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-weight: 700;
     }
 
@@ -201,7 +201,7 @@
 
         strong {
             font-size: size(24);
-            font-weight: 900;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
@@ -218,7 +218,7 @@
         border-radius: radius('pill');
         color: #C5A880;
         font-size: size(11);
-        font-weight: 800;
+        font-weight: 700;
         text-transform: uppercase;
     }
 
@@ -712,7 +712,7 @@
             gap: 6px;
         }
 
-        .tm-icon { color: var(--tm-status-success); }
+        .tm-icon { color: var(--tm-status-success-ink); }
     }
 
     &__link {
@@ -819,7 +819,7 @@
         font-size: size(11);
         font-weight: 700;
 
-        &.is-same { background: var(--tm-status-success-soft); color: var(--tm-status-success); }
+        &.is-same { background: var(--tm-status-success-soft); color: var(--tm-status-success-ink); }
         &.is-changed { background: var(--tm-surface-3); color: var(--tm-status-warning); }
         &.is-gone { background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); }
         &.is-unknown { background: var(--tm-surface-3); color: var(--tm-ink-3); }

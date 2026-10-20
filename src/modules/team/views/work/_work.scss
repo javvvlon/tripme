@@ -22,7 +22,7 @@
         align-items: center;
         gap: 6px;
         margin: 10px 0 0;
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(14);
         font-weight: 600;
     }
@@ -95,7 +95,7 @@
         grid-area: count;
         margin-top: 10px;
         font-size: size(32);
-        font-weight: 800;
+        font-weight: 700;
         font-variant-numeric: tabular-nums;
         line-height: 1;
     }

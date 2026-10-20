@@ -56,7 +56,7 @@
         font-variant-numeric: tabular-nums;
         color: var(--tm-ink-1);
 
-        &.is-on { color: var(--tm-status-success); }
+        &.is-on { color: var(--tm-status-success-ink); }
     }
 
     &__next,

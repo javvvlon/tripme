@@ -59,7 +59,7 @@
         font-size: size(13);
         color: var(--tm-ink-3);
 
-        .is-ok { color: var(--tm-status-success); font-weight: 600; }
+        .is-ok { color: var(--tm-status-success-ink); font-weight: 600; }
         .is-late { color: var(--tm-status-danger-dark); font-weight: 600; }
     }
 
@@ -71,7 +71,7 @@
 
     &__saved {
         margin: 16px 0 0;
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(14);
         font-weight: 600;
     }
@@ -331,7 +331,7 @@
         padding: 10px 14px;
         border-radius: radius('sm');
         background: var(--tm-status-success-soft);
-        color: var(--tm-status-success);
+        color: var(--tm-status-success-ink);
         font-size: size(13);
 
         > span { flex: 1; }
@@ -540,12 +540,12 @@
         &.is-confirmed,
         &.is-paid,
         &.is-issued,
-        &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-travelling { border-color: var(--tm-status-success-line); color: var(--tm-status-success-ink); }
         &.is-cancelled { border-color: var(--tm-status-danger-soft); background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); text-decoration: line-through; }
         &.is-archived { border-style: dashed; color: var(--tm-ink-3); }
         &.is-new,
         &.is-quote_sent { border-color: var(--tm-brand-primary); color: var(--tm-brand-primary); }
-        &.is-won { border-color: var(--tm-status-success-line); color: var(--tm-status-success); }
+        &.is-won { border-color: var(--tm-status-success-line); color: var(--tm-status-success-ink); }
         &.is-rejected { color: var(--tm-ink-4); }
     }
 }

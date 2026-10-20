@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use 'sass:map';
 @use 'colors' as *;
 @use 'typography' as *;
@@ -30,11 +31,17 @@
     padding: 0 map.get($container-pad, $size);
 }
 
-@mixin display($weight: 900) {
+@mixin display($weight: 700) {
     font-family: var(--tm-font-display-primary);
-    font-weight: $weight;
+    font-weight: math.min($weight, 700);
     letter-spacing: -.02em;
     text-transform: uppercase;
+}
+
+@mixin mono {
+    font-family: var(--tm-font-body-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
 }
 
 @mixin badge-type {
