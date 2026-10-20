@@ -1780,7 +1780,8 @@
         "headline": "Sarlavha",
         "intro": "Post matni",
         "cta": "Tugma",
-        "hashtags": "Heshteglar"
+        "hashtags": "Heshteglar",
+        "optional": "Ixtiyoriy"
       },
       "generate": "4 ta variant yozish",
       "generating": "Yozilmoqda…",

@@ -1,12 +1,9 @@
 <template>
     <div class="tm-variants" :class="`is-${mode ?? 'banner'}`">
         <header class="tm-variants__head">
-            <div>
-                <h3 class="tm-variants__title">{{ mode === 'post' ? t('cms.marketing.postVersions') : t('cms.marketing.versions') }}</h3>
-                <p class="tm-variants__sub">{{ anyAi ? t('cms.marketing.versionsAi') : t('cms.marketing.versionsTemplate') }}</p>
-            </div>
+            <h3 class="tm-variants__title">{{ mode === 'post' ? t('cms.marketing.postVersions') : t('cms.marketing.versions') }}</h3>
             <Button
-                size="sm" icon="layers"
+                size="sm" variant="tinted" icon="sparkle"
                 :loading="busy" :disabled="busy || !ai"
                 :title="ai ? undefined : t('cms.marketing.aiOff')"
                 @click="emit('generate')"
@@ -38,26 +35,29 @@
                 >
                     <span class="tm-variants__meta">
                         <span class="tm-variants__angle">{{ variant.angle ? t(`cms.marketing.angles.${variant.angle}`) : t('cms.marketing.template') }}</span>
-                        <span v-if="isPicked(variant)" class="tm-variants__check"><Icon name="check" :size="12" :stroke="3" /></span>
+                        <span class="tm-variants__check" :class="{ 'is-on': isPicked(variant) }" aria-hidden="true"><Icon name="check" :size="12" :stroke="3" /></span>
                     </span>
                     <template v-if="mode === 'post'">
-                        <span class="tm-variants__intro is-long">{{ variant.intro }}</span>
+                        <span class="tm-variants__intro is-long">{{ withoutEmoji(variant.intro) }}</span>
                         <span class="tm-variants__tags">{{ variant.hashtags.map(tag => `#${tag}`).join(' ') }}</span>
                     </template>
                     <template v-else>
                         <span class="tm-variants__kicker">{{ variant.kicker }}</span>
                         <strong class="tm-variants__headline">{{ variant.headline }}</strong>
-                        <span class="tm-variants__intro">{{ variant.intro }}</span>
+                        <span class="tm-variants__intro">{{ withoutEmoji(variant.intro) }}</span>
                         <span class="tm-variants__cta">{{ variant.cta }}</span>
                     </template>
                 </button>
             </TransitionGroup>
         </AiGlow>
+
+        <p class="tm-variants__sub">{{ anyAi ? t('cms.marketing.versionsAi') : t('cms.marketing.versionsTemplate') }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
 import AiGlow from '../aiGlow/AiGlow.vue'
+import { withoutEmoji } from '../../helpers/ad'
 import type { IAdCopy } from '../../contracts/marketing'
 import type { IVariantCardsEmits, IVariantCardsProps } from './VariantCards.d'
 

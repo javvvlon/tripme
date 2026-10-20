@@ -1780,7 +1780,8 @@
         "headline": "Headline",
         "intro": "Post text",
         "cta": "Button",
-        "hashtags": "Hashtags"
+        "hashtags": "Hashtags",
+        "optional": "Optional"
       },
       "generate": "Write 4 versions",
       "generating": "Writing…",

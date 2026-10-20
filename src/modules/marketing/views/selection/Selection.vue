@@ -158,18 +158,21 @@
                 </section>
 
                 <aside class="tm-ad-studio__inspector">
-                    <Tabs v-model="panel" :items="panelItems" variant="segment" :aria-label="t('cms.marketing.title')" class="tm-ad-studio__panels" />
+                    <Tabs v-model="panel" :items="panelItems" variant="segment" :aria-label="t('cms.marketing.title')" class="tm-ad-studio__panels is-sliding" :style="segment(panelIndex, panelItems.length)" />
 
                     <div v-show="panel === 'image'" class="tm-ad-studio__panel">
-                        <div class="tm-ad-studio__ai-card">
-                            <span class="tm-ad-studio__ai-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><path d="M12 2c.6 4.6 2.4 7.4 7 8-4.6.6-6.4 3.4-7 8-.6-4.6-2.4-7.4-7-8 4.6-.6 6.4-3.4 7-8Z" /></svg>
-                            </span>
-                            <div>
-                                <strong>{{ t('cms.marketing.aiCard.title') }}</strong>
-                                <span>{{ t('cms.marketing.aiCard.sub') }}</span>
-                            </div>
-                            <button type="button" class="tm-ad-studio__ai-link" @click="openSettings('voice')">{{ t('cms.marketing.settings.voice') }}</button>
+                        <div class="tm-ad-studio__card">
+                            <button type="button" class="tm-ad-studio__row is-nav" @click="openSettings('voice')">
+                                <span class="tm-ad-studio__app-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2c.6 4.6 2.4 7.4 7 8-4.6.6-6.4 3.4-7 8-.6-4.6-2.4-7.4-7-8 4.6-.6 6.4-3.4 7-8Z" /></svg>
+                                </span>
+                                <span class="tm-ad-studio__row-text">
+                                    <strong>{{ t('cms.marketing.aiCard.title') }}</strong>
+                                    <small>{{ t('cms.marketing.aiCard.sub') }}</small>
+                                </span>
+                                <span class="tm-ad-studio__row-value">{{ t('cms.marketing.settings.voice') }}</span>
+                                <Icon name="chevron" :size="14" :stroke="2.4" class="tm-ad-studio__row-chevron" />
+                            </button>
                         </div>
 
                         <VariantCards
@@ -182,11 +185,11 @@
                             @generate="write"
                         />
 
-                        <section class="tm-ad-studio__block">
-                            <div class="tm-ad-studio__label-row">
-                                <h3 class="tm-ad-studio__label">{{ t('cms.marketing.sections.templates') }}</h3>
+                        <section class="tm-ad-studio__group">
+                            <header class="tm-ad-studio__group-head">
+                                <h3>{{ t('cms.marketing.sections.templates') }}</h3>
                                 <Button
-                                    size="sm" icon="layers"
+                                    size="sm" variant="tinted" icon="sparkle"
                                     :loading="busy === 'templates'"
                                     :disabled="!selection.ai || Boolean(busy)"
                                     :title="selection.ai ? undefined : t('cms.marketing.aiOff')"
@@ -194,40 +197,40 @@
                                 >
                                     {{ busy === 'templates' ? t('cms.marketing.templates.designing') : t('cms.marketing.templates.generate') }}
                                 </Button>
-                            </div>
+                            </header>
 
-                            <div class="tm-ad-studio__styles">
+                            <div class="tm-ad-studio__gallery">
                                 <button
                                     v-for="thumb in thumbs" :key="thumb.style"
                                     type="button"
-                                    class="tm-ad-studio__style"
+                                    class="tm-ad-studio__thumb"
                                     :class="{ 'is-on': selection.style === thumb.style }"
                                     :aria-pressed="selection.style === thumb.style"
                                     @click="setStyle(thumb.style)"
                                 >
-                                    <span class="tm-ad-studio__style-art"><BannerCanvas :spec="thumb.spec" /></span>
-                                    <span>{{ t(`cms.marketing.styles.${thumb.style}`) }}</span>
+                                    <span class="tm-ad-studio__thumb-art"><BannerCanvas :spec="thumb.spec" /></span>
+                                    <span class="tm-ad-studio__thumb-name">{{ t(`cms.marketing.styles.${thumb.style}`) }}</span>
                                 </button>
                             </div>
 
                             <template v-if="drafts.length || busy === 'templates'">
-                                <span class="tm-ad-studio__sublabel">{{ t('cms.marketing.templates.fresh') }}</span>
+                                <h4 class="tm-ad-studio__subhead">{{ t('cms.marketing.templates.fresh') }}</h4>
                                 <AiGlow :active="busy === 'templates'" :label="t('cms.marketing.templates.designing')" class="tm-ad-studio__glow">
-                                    <div v-if="busy === 'templates'" class="tm-ad-studio__styles is-four">
-                                        <span v-for="n in 4" :key="n" class="tm-ad-studio__style is-ghost" :style="{ '--delay': `${n * 120}ms` }" />
+                                    <div v-if="busy === 'templates'" class="tm-ad-studio__gallery">
+                                        <span v-for="n in 4" :key="n" class="tm-ad-studio__thumb is-ghost" :style="{ '--delay': `${n * 120}ms` }"><span class="tm-ad-studio__thumb-art" /></span>
                                     </div>
-                                    <TransitionGroup v-else :key="templateGeneration" tag="div" class="tm-ad-studio__styles is-four" name="tm-variant" appear>
+                                    <TransitionGroup v-else :key="templateGeneration" tag="div" class="tm-ad-studio__gallery" name="tm-variant" appear>
                                         <div
                                             v-for="(draft, index) in drafts" :key="`${templateGeneration}-${index}`"
-                                            class="tm-ad-studio__style"
+                                            class="tm-ad-studio__thumb"
                                             :class="{ 'is-on': isApplied(draft.template) }"
                                             :style="{ '--delay': `${index * 90}ms` }"
                                         >
-                                            <button type="button" class="tm-ad-studio__style-art" :aria-label="draft.template.name" @click="applyTemplate(draft.template)">
+                                            <button type="button" class="tm-ad-studio__thumb-art" :aria-label="draft.template.name" @click="applyTemplate(draft.template)">
                                                 <BannerCanvas :spec="draft.spec" />
                                             </button>
-                                            <span class="tm-ad-studio__style-foot">
-                                                <span>{{ draft.template.name }}</span>
+                                            <span class="tm-ad-studio__thumb-foot">
+                                                <span class="tm-ad-studio__thumb-name">{{ draft.template.name }}</span>
                                                 <IconButton
                                                     :icon="isSaved(draft.template) ? 'check' : 'plus'"
                                                     :label="t('cms.marketing.templates.keep')"
@@ -241,18 +244,18 @@
                             </template>
 
                             <template v-if="savedStyles.length">
-                                <span class="tm-ad-studio__sublabel">{{ t('cms.marketing.templates.mine') }}</span>
-                                <div class="tm-ad-studio__styles is-four">
+                                <h4 class="tm-ad-studio__subhead">{{ t('cms.marketing.templates.mine') }}</h4>
+                                <div class="tm-ad-studio__gallery">
                                     <div
                                         v-for="item in savedStyles" :key="item.id"
-                                        class="tm-ad-studio__style"
+                                        class="tm-ad-studio__thumb"
                                         :class="{ 'is-on': isApplied(item.spec) }"
                                     >
-                                        <button type="button" class="tm-ad-studio__style-art" :aria-label="item.name" @click="applyTemplate(item.spec)">
+                                        <button type="button" class="tm-ad-studio__thumb-art" :aria-label="item.name" @click="applyTemplate(item.spec)">
                                             <BannerCanvas :spec="item.thumb" />
                                         </button>
-                                        <span class="tm-ad-studio__style-foot">
-                                            <span>{{ item.name }}</span>
+                                        <span class="tm-ad-studio__thumb-foot">
+                                            <span class="tm-ad-studio__thumb-name">{{ item.name }}</span>
                                             <IconButton icon="folder" :label="t('cms.marketing.archive')" @click="dropTemplate(item)" />
                                         </span>
                                     </div>
@@ -260,127 +263,161 @@
                             </template>
                         </section>
 
-                        <section class="tm-ad-studio__block">
-                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.sections.mode') }}</h3>
-                            <SelectMenu
-                                :model-value="design.hotel"
-                                :options="hotelOptions"
-                                class="tm-ad-studio__select"
-                                @update:model-value="tune({ hotel: String($event) })"
-                            />
-                        </section>
+                        <section class="tm-ad-studio__group">
+                            <header class="tm-ad-studio__group-head"><h3>{{ t('cms.marketing.background') }}</h3></header>
 
-                        <section class="tm-ad-studio__block">
-                            <div class="tm-ad-studio__label-row">
-                                <h3 class="tm-ad-studio__label">{{ t('cms.marketing.background') }}</h3>
-                                <span v-if="imageBlocked" class="tm-ad-studio__blocked">{{ imageBlocked }}</span>
-                            </div>
-
-                            <div class="tm-ad-studio__backdrops">
+                            <div class="tm-ad-studio__swatches">
                                 <button
                                     v-for="kind in contextBackdrops" :key="`${kind}-${sceneKind}-${place}`"
                                     type="button"
-                                    class="tm-ad-studio__backdrop"
+                                    class="tm-ad-studio__swatch"
                                     :class="{ 'is-on': design.backdrop === kind }"
                                     :aria-pressed="design.backdrop === kind"
                                     @click="setBackdrop(kind)"
                                 >
-                                    <canvas :ref="(el) => drawSwatch(el, kind)" />
-                                    <span>{{ kind === 'scene' ? t(`cms.marketing.scenes.${sceneKind}`) : t(`cms.marketing.backdrops.${kind}`) }}</span>
+                                    <span class="tm-ad-studio__swatch-art"><canvas :ref="(el) => drawSwatch(el, kind)" /></span>
+                                    <span class="tm-ad-studio__swatch-name">{{ kind === 'scene' ? t(`cms.marketing.scenes.${sceneKind}`) : t(`cms.marketing.backdrops.${kind}`) }}</span>
                                 </button>
 
                                 <button
                                     v-for="file in libraryPhotos" :key="file.url"
                                     type="button"
-                                    class="tm-ad-studio__backdrop is-photo"
+                                    class="tm-ad-studio__swatch"
                                     :class="{ 'is-on': design.backdrop === 'photo' && selection.background?.url === file.url }"
-                                    :style="{ backgroundImage: `url(${file.url})` }"
                                     :title="file.title"
                                     @click="useBackground(file.url)"
                                 >
-                                    <span>{{ t('cms.marketing.backdrops.library') }}</span>
+                                    <span class="tm-ad-studio__swatch-art" :style="{ backgroundImage: `url(${file.url})` }" />
+                                    <span class="tm-ad-studio__swatch-name">{{ t('cms.marketing.backdrops.library') }}</span>
                                 </button>
 
                                 <button
                                     v-for="item in selection.backgrounds" :key="item.url"
                                     type="button"
-                                    class="tm-ad-studio__backdrop is-photo"
+                                    class="tm-ad-studio__swatch"
                                     :class="{ 'is-on': design.backdrop === 'photo' && selection.background?.url === item.url }"
-                                    :style="{ backgroundImage: `url(${item.url})` }"
                                     @click="useBackground(item.url)"
                                 >
-                                    <span>{{ item.model ? t('cms.marketing.backdrops.ai') : t('cms.marketing.backdrops.photo') }}</span>
+                                    <span class="tm-ad-studio__swatch-art" :style="{ backgroundImage: `url(${item.url})` }" />
+                                    <span class="tm-ad-studio__swatch-name">{{ item.model ? t('cms.marketing.backdrops.ai') : t('cms.marketing.backdrops.photo') }}</span>
                                 </button>
 
-                                <AiGlow :active="busy === 'paint'" class="tm-ad-studio__backdrop-glow">
+                                <AiGlow :active="busy === 'paint'" class="tm-ad-studio__swatch-glow">
                                     <button
                                         type="button"
-                                        class="tm-ad-studio__backdrop is-action"
+                                        class="tm-ad-studio__swatch is-action"
                                         :disabled="!selection.ai || Boolean(busy)"
                                         @click="paint"
                                     >
-                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c.6 4.6 2.4 7.4 7 8-4.6.6-6.4 3.4-7 8-.6-4.6-2.4-7.4-7-8 4.6-.6 6.4-3.4 7-8Z" /></svg>
-                                        <span>{{ t('cms.marketing.backdrops.generate') }}</span>
+                                        <span class="tm-ad-studio__swatch-art">
+                                            <span class="tm-ad-studio__app-icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24"><path d="M12 2c.6 4.6 2.4 7.4 7 8-4.6.6-6.4 3.4-7 8-.6-4.6-2.4-7.4-7-8 4.6-.6 6.4-3.4 7-8Z" /></svg>
+                                            </span>
+                                        </span>
+                                        <span class="tm-ad-studio__swatch-name">{{ t('cms.marketing.backdrops.generate') }}</span>
                                     </button>
                                 </AiGlow>
 
-                                <button type="button" class="tm-ad-studio__backdrop is-action" :disabled="Boolean(busy)" @click="pickBackground">
-                                    <Icon name="folder" :size="20" />
-                                    <span>{{ t('cms.marketing.pick') }}</span>
+                                <button type="button" class="tm-ad-studio__swatch is-action" :disabled="Boolean(busy)" @click="pickBackground">
+                                    <span class="tm-ad-studio__swatch-art"><span class="tm-ad-studio__glyph"><Icon name="folder" :size="18" /></span></span>
+                                    <span class="tm-ad-studio__swatch-name">{{ t('cms.marketing.pick') }}</span>
                                 </button>
                             </div>
+
+                            <p v-if="imageBlocked" class="tm-ad-studio__group-foot is-warn">{{ imageBlocked }}</p>
                         </section>
 
-                        <section class="tm-ad-studio__block">
-                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.sections.texts') }}</h3>
-                            <div class="tm-ad-studio__fields">
-                                <div class="tm-ad-studio__pair">
-                                    <Input v-model="draft[language].kicker" :label="t('cms.marketing.fields.kicker')" dense @update:model-value="edited()" />
-                                    <Input v-model="draft[language].cta" :label="t('cms.marketing.fields.cta')" dense @update:model-value="edited()" />
+                        <div class="tm-ad-studio__card">
+                                <div class="tm-ad-studio__row is-picker">
+                                    <span>{{ t('cms.marketing.sections.mode') }}</span>
+                                    <SelectMenu
+                                        :model-value="design.hotel"
+                                        :options="hotelOptions"
+                                        align="right"
+                                        class="tm-ad-studio__picker"
+                                        @update:model-value="tune({ hotel: String($event) })"
+                                    />
                                 </div>
-                                <Input v-model="draft[language].headline" :label="t('cms.marketing.fields.headline')" dense @update:model-value="edited()" />
+                        </div>
+
+                        <section class="tm-ad-studio__group">
+                            <header class="tm-ad-studio__group-head"><h3>{{ t('cms.marketing.sections.texts') }}</h3></header>
+
+                            <div class="tm-ad-studio__card">
+                                <label class="tm-ad-studio__row is-field">
+                                    <span>{{ t('cms.marketing.fields.kicker') }}</span>
+                                    <input v-model="draft[language].kicker" type="text" :placeholder="t('cms.marketing.fields.optional')" @input="edited()">
+                                </label>
+                                <label class="tm-ad-studio__row is-field">
+                                    <span>{{ t('cms.marketing.fields.headline') }}</span>
+                                    <input v-model="draft[language].headline" type="text" @input="edited()">
+                                </label>
+                                <label class="tm-ad-studio__row is-field">
+                                    <span>{{ t('cms.marketing.fields.cta') }}</span>
+                                    <input v-model="draft[language].cta" type="text" @input="edited()">
+                                </label>
                             </div>
                         </section>
 
-                        <details class="tm-ad-studio__tune">
-                            <summary>{{ t('cms.marketing.sections.tune') }}</summary>
+                        <section class="tm-ad-studio__group">
+                            <div class="tm-ad-studio__card">
+                                <button
+                                    type="button" class="tm-ad-studio__row is-disclosure"
+                                    :class="{ 'is-open': tuneOpen }"
+                                    :aria-expanded="tuneOpen"
+                                    aria-controls="tm-ad-tune"
+                                    @click="tuneOpen = !tuneOpen"
+                                >
+                                    <span>{{ t('cms.marketing.sections.tune') }}</span>
+                                    <Icon name="chevron" :size="14" :stroke="2.4" class="tm-ad-studio__row-chevron" />
+                                </button>
 
-                            <div class="tm-ad-studio__tune-body">
-                                <label v-if="design.backdrop === 'photo'" class="tm-ad-studio__range">
-                                    <span>{{ t('cms.marketing.tune.dim') }} <em>{{ design.dim }}%</em></span>
-                                    <input type="range" min="0" max="90" step="5" :value="design.dim" @input="tune({ dim: Number(($event.target as HTMLInputElement).value) })">
-                                </label>
-                                <label v-if="design.backdrop === 'photo'" class="tm-ad-studio__range">
-                                    <span>{{ t('cms.marketing.tune.focus') }} <em>{{ design.focus }}%</em></span>
-                                    <input type="range" min="0" max="100" step="5" :value="design.focus" @input="tune({ focus: Number(($event.target as HTMLInputElement).value) })">
-                                </label>
+                                <div id="tm-ad-tune" class="tm-ad-studio__collapse" :class="{ 'is-open': tuneOpen }" :inert="!tuneOpen">
+                                    <div class="tm-ad-studio__collapse-inner">
+                                        <label v-if="design.backdrop === 'photo'" class="tm-ad-studio__row is-slider">
+                                            <span class="tm-ad-studio__row-line">
+                                                <span>{{ t('cms.marketing.tune.dim') }}</span>
+                                                <em>{{ design.dim }}%</em>
+                                            </span>
+                                            <input type="range" min="0" max="90" step="5" :value="design.dim" :style="{ '--fill': `${design.dim / 90 * 100}%` }" @input="tune({ dim: Number(($event.target as HTMLInputElement).value) })">
+                                        </label>
+                                        <label v-if="design.backdrop === 'photo'" class="tm-ad-studio__row is-slider">
+                                            <span class="tm-ad-studio__row-line">
+                                                <span>{{ t('cms.marketing.tune.focus') }}</span>
+                                                <em>{{ design.focus }}%</em>
+                                            </span>
+                                            <input type="range" min="0" max="100" step="5" :value="design.focus" :style="{ '--fill': `${design.focus}%` }" @input="tune({ focus: Number(($event.target as HTMLInputElement).value) })">
+                                        </label>
 
-                                <div class="tm-ad-studio__setting">
-                                    <span>{{ t('cms.marketing.tune.rows') }}</span>
-                                    <div class="tm-ad-studio__steps">
-                                        <button
-                                            v-for="n in 6" :key="n" type="button"
-                                            :class="{ 'is-on': design.rows === n }"
-                                            @click="tune({ rows: n })"
-                                        >{{ n }}</button>
+                                        <div class="tm-ad-studio__row is-control">
+                                            <span>{{ t('cms.marketing.tune.rows') }}</span>
+                                            <div class="tm-ad-studio__steps is-sliding" :style="segment(design.rows - 1, 6)">
+                                                <button
+                                                    v-for="n in 6" :key="n" type="button"
+                                                    :class="{ 'is-on': design.rows === n }"
+                                                    :aria-pressed="design.rows === n"
+                                                    @click="tune({ rows: n })"
+                                                >{{ n }}</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="tm-ad-studio__row is-control">
+                                            <span>{{ t('cms.marketing.tune.price') }}</span>
+                                            <div class="tm-ad-studio__steps is-sliding" :style="segment(design.price === 'total' ? 0 : 1, 2)">
+                                                <button type="button" :class="{ 'is-on': design.price === 'total' }" :aria-pressed="design.price === 'total'" @click="tune({ price: 'total' })">{{ t('cms.marketing.tune.total') }}</button>
+                                                <button type="button" :class="{ 'is-on': design.price === 'person' }" :aria-pressed="design.price === 'person'" @click="tune({ price: 'person' })">{{ t('cms.marketing.tune.person') }}</button>
+                                            </div>
+                                        </div>
+
+                                        <label v-for="key in switches" :key="key" class="tm-ad-studio__row is-toggle">
+                                            <span>{{ t(`cms.marketing.tune.${key}`) }}</span>
+                                            <input type="checkbox" role="switch" :checked="design[key]" @change="tune({ [key]: ($event.target as HTMLInputElement).checked })">
+                                            <span class="tm-ad-studio__switch-track" aria-hidden="true" />
+                                        </label>
                                     </div>
                                 </div>
-
-                                <div class="tm-ad-studio__setting">
-                                    <span>{{ t('cms.marketing.tune.price') }}</span>
-                                    <div class="tm-ad-studio__steps is-wide">
-                                        <button type="button" :class="{ 'is-on': design.price === 'total' }" @click="tune({ price: 'total' })">{{ t('cms.marketing.tune.total') }}</button>
-                                        <button type="button" :class="{ 'is-on': design.price === 'person' }" @click="tune({ price: 'person' })">{{ t('cms.marketing.tune.person') }}</button>
-                                    </div>
-                                </div>
-
-                                <label v-for="key in switches" :key="key" class="tm-ad-studio__switch">
-                                    <input type="checkbox" :checked="design[key]" @change="tune({ [key]: ($event.target as HTMLInputElement).checked })">
-                                    <span class="tm-ad-studio__switch-track" aria-hidden="true" />
-                                    {{ t(`cms.marketing.tune.${key}`) }}
-                                </label>
                             </div>
-                        </details>
+                        </section>
                     </div>
 
                     <div v-show="panel === 'post'" class="tm-ad-studio__panel">
@@ -602,6 +639,11 @@ const {
 
 const switches = ['caps', 'stars', 'meal', 'party', 'cta'] as const
 
+const tuneOpen = ref(false)
+
+const panelIndex = computed(() => Math.max(0, panelItems.value.findIndex(item => item.value === panel.value)))
+
+const segment = (index: number, count: number) => ({ '--index': index, '--count': count })
 
 const stage = ref<InstanceType<typeof VideoStage> | null>(null)
 
