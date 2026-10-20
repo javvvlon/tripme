@@ -11,6 +11,7 @@ import { PointsModule } from './points'
 import { AnalyticsModule } from './analytics'
 import { FinanceModule } from './finance'
 import { EsimModule } from './esim'
+import { MarketingModule } from './marketing'
 import { MessagesModule } from './messages'
 import { TeamModule } from './team'
 
@@ -30,6 +31,7 @@ export const modules: IModule[] = [
   AnalyticsModule,
   FinanceModule,
   EsimModule,
+  MarketingModule,
   MessagesModule,
   TeamModule,
 ]

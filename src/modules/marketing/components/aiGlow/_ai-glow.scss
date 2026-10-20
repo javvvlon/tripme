@@ -1,0 +1,140 @@
+@use '../../../../shared/styles/utils' as *;
+
+@property --tm-ai-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.tm-ai-glow {
+    position: relative;
+    border-radius: radius('md');
+    isolation: isolate;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity .35s ease;
+    }
+
+    &::before {
+        z-index: 2;
+        inset: -2px;
+        padding: 2px;
+        border-radius: inherit;
+        background: conic-gradient(from var(--tm-ai-angle), #C5A880, #FF6B00, #F3D9A8, #C5A880, #8F7247, #C5A880);
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    }
+
+    &::after {
+        z-index: 1;
+        inset: 0;
+        border-radius: inherit;
+        background:
+            radial-gradient(60% 50% at 20% 0%, rgba(197, 168, 128, .22), transparent 70%),
+            linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .28) 50%, transparent 65%);
+        background-size: 100% 100%, 220% 100%;
+        mix-blend-mode: screen;
+    }
+
+    &.is-active {
+        &::before {
+            opacity: 1;
+            animation: tm-ai-spin 2.6s linear infinite;
+        }
+
+        &::after {
+            opacity: 1;
+            animation: tm-ai-sheen 1.8s ease-in-out infinite;
+        }
+    }
+
+    &__badge {
+        position: absolute;
+        z-index: 3;
+        top: 12px;
+        left: 50%;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px 7px 10px;
+        border-radius: radius('pill');
+        background: rgba(10, 10, 10, .82);
+        color: #F5F3F0;
+        font-size: size(13);
+        font-weight: 700;
+        white-space: nowrap;
+        transform: translateX(-50%);
+        box-shadow: 0 8px 30px rgba(197, 168, 128, .35);
+        backdrop-filter: blur(8px);
+    }
+
+    &__sparks {
+        position: relative;
+        display: inline-flex;
+        width: 18px;
+        height: 18px;
+    }
+
+    &__spark {
+        position: absolute;
+        fill: #C5A880;
+        animation: tm-ai-twinkle 1.6s ease-in-out infinite;
+
+        &:nth-child(1) { inset: 2px 4px 4px 2px; }
+        &:nth-child(2) { width: 8px; height: 8px; top: -2px; right: -3px; fill: #FF6B00; animation-delay: .4s; }
+        &:nth-child(3) { width: 6px; height: 6px; bottom: -1px; left: -2px; animation-delay: .8s; }
+    }
+
+    &__dots {
+        display: inline-flex;
+        gap: 3px;
+        margin-left: 1px;
+
+        i {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: tm-ai-dot 1.2s ease-in-out infinite;
+
+            &:nth-child(2) { animation-delay: .15s; }
+            &:nth-child(3) { animation-delay: .3s; }
+        }
+    }
+}
+
+.tm-ai-glow-badge-enter-active,
+.tm-ai-glow-badge-leave-active { transition: opacity .25s ease, transform .25s ease; }
+
+.tm-ai-glow-badge-enter-from,
+.tm-ai-glow-badge-leave-to { opacity: 0; transform: translate(-50%, -6px); }
+
+@keyframes tm-ai-spin { to { --tm-ai-angle: 360deg; } }
+
+@keyframes tm-ai-sheen {
+    from { background-position: 0 0, 160% 0; }
+    to { background-position: 0 0, -60% 0; }
+}
+
+@keyframes tm-ai-twinkle {
+    0%, 100% { opacity: .35; transform: scale(.7) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1) rotate(45deg); }
+}
+
+@keyframes tm-ai-dot {
+    0%, 100% { opacity: .25; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-ai-glow.is-active::before,
+    .tm-ai-glow.is-active::after,
+    .tm-ai-glow__spark,
+    .tm-ai-glow__dots i { animation: none; }
+}

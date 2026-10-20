@@ -382,7 +382,8 @@
         "work": "Work",
         "site": "Site",
         "settings": "Settings",
-        "admin": "Administration"
+        "admin": "Administration",
+        "marketing": "Marketing"
       },
       "collapse": "Collapse menu",
       "expand": "Expand menu",
@@ -391,7 +392,8 @@
       "archive": "Archive",
       "work": "My work",
       "team": "Team",
-      "media": "Media"
+      "media": "Media",
+      "selections": "Selections"
     },
     "roles": {
       "CLIENT": "Client",
@@ -1677,6 +1679,209 @@
         "blog": "Blog"
       },
       "dimensions": "{w} × {h} px"
+    },
+    "marketing": {
+      "title": "Selections",
+      "lead": "Active: {all}",
+      "search": "Search selections",
+      "searchPlaceholder": "Title, hotel or code",
+      "empty": "No selections yet",
+      "noMatches": "Nothing found",
+      "pickTours": "Pick tours",
+      "archived": "Archive",
+      "columns": {
+        "title": "Selection",
+        "tours": "Tours",
+        "from": "From",
+        "dates": "Dates",
+        "leads": "Requests",
+        "author": "Author",
+        "created": "Created"
+      },
+      "toursCount": "{live} of {n}",
+      "back": "Back to selections",
+      "missing": "Selection not found",
+      "created": "Selection created",
+      "sections": {
+        "tours": "Tours",
+        "texts": "Text on the image",
+        "look": "Look",
+        "share": "Publishing",
+        "templates": "Templates",
+        "mode": "What to show",
+        "tune": "Fine-tuning",
+        "postText": "Post text",
+        "buttons": "Buttons under the post"
+      },
+      "recheck": "Re-check prices",
+      "rechecking": "Checking…",
+      "checkedAt": "Checked {date}",
+      "checks": {
+        "same": "Same price",
+        "changed": "Was {price}",
+        "gone": "Sold out",
+        "unknown": "Not checked"
+      },
+      "remove": "Remove",
+      "up": "Up",
+      "down": "Down",
+      "lastTour": "A selection needs at least one tour",
+      "fields": {
+        "title": "Title",
+        "kicker": "Kicker",
+        "headline": "Headline",
+        "intro": "Post text",
+        "cta": "Button",
+        "hashtags": "Hashtags"
+      },
+      "generate": "Write 4 versions",
+      "generating": "Writing…",
+      "aiOff": "Gemini is not connected",
+      "template": "Template",
+      "aiDone": "Copy is ready",
+      "styles": {
+        "classic": "Classic",
+        "board": "Board",
+        "ticket": "Ticket"
+      },
+      "formats": {
+        "story": "Story 9:16",
+        "post": "Post 4:5",
+        "square": "Square 1:1"
+      },
+      "background": "Background",
+      "paint": "Generate background",
+      "painting": "Painting…",
+      "repaint": "Another background",
+      "pick": "From the library",
+      "noBackground": "No background",
+      "download": "PNG",
+      "downloadAll": "Download all",
+      "exportBlocked": "This background cannot be exported — pick another one",
+      "post": "Telegram post",
+      "copy": "Copy",
+      "copied": "Copied",
+      "link": "Link",
+      "open": "Open",
+      "leads": "Requests: {n}",
+      "archive": "Archive",
+      "restore": "Restore",
+      "archivedSince": "Archived since {date}",
+      "language": "Ad language",
+      "errors": {
+        "billing": "Gemini images need a paid plan — turn on billing in Google Cloud",
+        "gemini": "Gemini is not answering — try again",
+        "storage": "File storage is not configured",
+        "noTours": "Pick at least one tour"
+      },
+      "regenerate": "4 more versions",
+      "versions": "Copy versions",
+      "versionsAi": "In the TripMe voice",
+      "versionsTemplate": "TripMe templates",
+      "writingVersions": "AI is writing versions",
+      "preview": "Preview",
+      "postedTimes": "Posted: {n}",
+      "pricesChecked": "Prices checked",
+      "angles": {
+        "compare": "Comparison",
+        "escape": "Escape",
+        "timing": "Timing",
+        "care": "Care"
+      },
+      "panels": {
+        "image": "Image",
+        "post": "Post",
+        "page": "Selection",
+        "tours": "Tours"
+      },
+      "aiCard": {
+        "title": "AI copy",
+        "sub": "Four versions in the TripMe voice"
+      },
+      "backdrops": {
+        "night": "No photo",
+        "ai": "AI background",
+        "photo": "Photo",
+        "generate": "AI background",
+        "scene": "Scene",
+        "type": "Name",
+        "library": "Library"
+      },
+      "mode": {
+        "list": "All hotels ({n})"
+      },
+      "tune": {
+        "dim": "Photo dimming",
+        "focus": "Vertical crop",
+        "rows": "Hotels on the image",
+        "price": "Price",
+        "total": "Per tour",
+        "person": "Per person",
+        "caps": "Uppercase",
+        "stars": "Stars",
+        "meal": "Meal",
+        "party": "Party",
+        "cta": "Button",
+        "footer": "Agency signature at the end of the post"
+      },
+      "buttons": {
+        "both": "All",
+        "managers": "Managers",
+        "link": "Link",
+        "none": "No buttons"
+      },
+      "botOff": "The Telegram bot is not connected",
+      "publish": "Publish",
+      "published": "Post published",
+      "copyPost": "Copy post",
+      "downloadFormat": "Download {format}",
+      "formatShort": {
+        "story": "story",
+        "post": "post",
+        "square": "square"
+      },
+      "steps": {
+        "write": {
+          "title": "AI is writing",
+          "note": "Usually a few seconds",
+          "read": "Reading tours and prices",
+          "voice": "Writing 4 versions in the TripMe voice",
+          "check": "Checking for invented facts"
+        },
+        "paint": {
+          "title": "AI is painting",
+          "note": "Usually 10–30 seconds",
+          "scene": "Choosing a scene: {place}",
+          "draw": "Painting without text or logos",
+          "place": "Fitting it to the layout"
+        }
+      },
+      "settings": {
+        "title": "Marketing settings",
+        "voice": "Brand voice",
+        "managers": "Manager buttons",
+        "voiceHint": "The AI reads this before every generation",
+        "managersHint": "Up to 4 buttons under the post lead to managers on Telegram",
+        "buttonName": "Button name",
+        "telegram": "Telegram",
+        "addManager": "Add a manager",
+        "reset": "Restore default",
+        "saved": "Settings saved",
+        "close": "Close",
+        "footer": "Agency signature for posts"
+      },
+      "postAi": "AI post text",
+      "postVersions": "Post text versions",
+      "scenes": {
+        "skyline": "Skyline",
+        "mosque": "Istanbul",
+        "coast": "Mountains and sea",
+        "pyramids": "Pyramids",
+        "pagoda": "Pagoda",
+        "tropic": "Tropics",
+        "atoll": "Water villas",
+        "mountains": "Mountains"
+      }
     }
   },
   "richEditor": {
@@ -2029,10 +2234,10 @@
   "quote": {
     "title": "Travel proposal",
     "lead": "Options in the proposal: {n}. Check the text before sending.",
-    "add": "Add to proposal",
-    "added": "In proposal",
-    "barTitle": "Proposal",
-    "barCount": "{n} of {max} options",
+    "add": "Select",
+    "added": "Selected",
+    "barTitle": "Selected",
+    "barCount": "{n} of {max}",
     "forLead": "for {ref}",
     "clear": "Clear",
     "build": "Build proposal",
@@ -2082,7 +2287,9 @@
     },
     "pdf": "Save PDF to the order",
     "sendToChat": "Send to client chat",
-    "sentToChat": "The offer is in the client's chat"
+    "sentToChat": "The offer is in the client's chat",
+    "toAds": "To ads",
+    "quoteLimit": "A proposal takes up to {max} options"
   },
   "pagination": {
     "label": "Pages",
@@ -2290,5 +2497,41 @@
     "stars": "{n} of 5",
     "prev": "Previous reviews",
     "next": "Next reviews"
+  },
+  "marketing": {
+    "nights": "0 nights | {n} night | {n} nights | {n} nights",
+    "nightsRange": "{from}–{to} nights",
+    "adults": "0 adults | {n} adult | {n} adults | {n} adults",
+    "kids": "0 children | {n} child | {n} children | {n} children",
+    "party": "for {adults}",
+    "partyKids": "for {adults} and {kids}",
+    "from": "from {price}",
+    "sum": "UZS",
+    "pricesAt": "Prices as of {date}",
+    "banner": {
+      "departures": "Departures",
+      "date": "Date",
+      "hotel": "Hotel",
+      "nights": "Nights",
+      "price": "Price",
+      "from": "per tour from",
+      "perTour": "per tour",
+      "perPerson": "per person"
+    },
+    "page": {
+      "title": "Tour selection",
+      "checked": "Prices checked {date}",
+      "empty": "These tours are gone",
+      "emptyCta": "Find other tours",
+      "note": "Price per tour {party}. A manager confirms availability before booking."
+    },
+    "perPerson": "{price} per person",
+    "post": {
+      "managers": "TripMe managers:",
+      "price": "Price: from {uzs} ({money}) per person",
+      "priceForeign": "Price: from {money} per person",
+      "departure": "Departing Tashkent • {when}, {stay}",
+      "departureAny": "Departing {when}, {stay}"
+    }
   }
 }

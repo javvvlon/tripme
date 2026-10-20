@@ -1,0 +1,145 @@
+@use '../../../../shared/styles/utils' as *;
+
+@property --tm-ring-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.tm-ai-progress {
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    border-radius: inherit;
+    background: rgba(10, 10, 10, .42);
+    backdrop-filter: blur(6px) saturate(1.1);
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        width: min(320px, 100%);
+        padding: 24px 22px 20px;
+        border-radius: radius('md');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        text-align: center;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+    }
+
+    &__ring {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        margin-bottom: 8px;
+        border-radius: 50%;
+        background: conic-gradient(from var(--tm-ring-angle), #C5A880, #FF6B00, #F3D9A8, #8F7247, #C5A880);
+        animation: tm-ring-spin 1.8s linear infinite;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            background: var(--tm-surface-1);
+        }
+    }
+
+    &__spark {
+        position: relative;
+        z-index: 1;
+        width: 22px;
+        height: 22px;
+        fill: #C5A880;
+        animation: tm-ring-twinkle 1.4s ease-in-out infinite;
+    }
+
+    &__title {
+        font-size: size(15);
+        font-weight: 800;
+    }
+
+    &__note {
+        color: var(--tm-ink-3);
+        font-size: size(12);
+    }
+
+    &__steps {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        gap: 8px;
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+    }
+
+    &__step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--tm-ink-4);
+        font-size: size(13);
+        transition: color .3s ease;
+
+        &.is-now { color: var(--tm-ink-1); font-weight: 700; }
+        &.is-done { color: var(--tm-status-success); }
+    }
+
+    &__mark {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid currentColor;
+        border-radius: 50%;
+        transition: background .3s ease, border-color .3s ease;
+
+        .is-now & {
+            border-color: #C5A880;
+            border-top-color: transparent;
+            animation: tm-ring-spin-plain .8s linear infinite;
+        }
+
+        .is-done & {
+            border-color: var(--tm-status-success);
+            background: var(--tm-status-success);
+            color: #FFFFFF;
+        }
+    }
+}
+
+.tm-ai-progress-enter-active,
+.tm-ai-progress-leave-active { transition: opacity .3s ease; }
+
+.tm-ai-progress-enter-active .tm-ai-progress__card,
+.tm-ai-progress-leave-active .tm-ai-progress__card { transition: transform .35s cubic-bezier(.2, .8, .2, 1), opacity .3s ease; }
+
+.tm-ai-progress-enter-from,
+.tm-ai-progress-leave-to { opacity: 0; }
+
+.tm-ai-progress-enter-from .tm-ai-progress__card,
+.tm-ai-progress-leave-to .tm-ai-progress__card { opacity: 0; transform: translateY(10px) scale(.96); }
+
+@keyframes tm-ring-spin { to { --tm-ring-angle: 360deg; } }
+
+@keyframes tm-ring-spin-plain { to { transform: rotate(360deg); } }
+
+@keyframes tm-ring-twinkle {
+    0%, 100% { transform: scale(.85) rotate(0deg); opacity: .7; }
+    50% { transform: scale(1.1) rotate(45deg); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-ai-progress__ring,
+    .tm-ai-progress__spark,
+    .tm-ai-progress__mark { animation: none !important; }
+}

@@ -4,13 +4,28 @@
             <div class="tm-quote-bar__inner container-wide">
                 <p class="tm-quote-bar__count">
                     <strong>{{ t('quote.barTitle') }}</strong>
-                    {{ t('quote.barCount', { n: count, max: QUOTE_MAX }) }}
+                    {{ t('quote.barCount', { n: count, max }) }}
                     <span v-if="leadRef" class="tm-quote-bar__lead">{{ t('quote.forLead', { ref: leadRef }) }}</span>
                 </p>
 
                 <div class="tm-quote-bar__actions">
                     <Button variant="ghost" size="sm" @click="clear">{{ t('quote.clear') }}</Button>
-                    <Button size="sm" icon-right="arrow-right" @click="opened = true">{{ t('quote.build') }}</Button>
+                    <Button
+                        v-if="canAdvertise"
+                        variant="secondary" size="sm" icon="megaphone"
+                        :loading="creating" :disabled="creating"
+                        @click="advertise"
+                    >
+                        {{ t('quote.toAds') }}
+                    </Button>
+                    <Button
+                        size="sm" icon-right="arrow-right"
+                        :disabled="!quotable"
+                        :title="quotable ? undefined : t('quote.quoteLimit', { max: QUOTE_MAX })"
+                        @click="opened = true"
+                    >
+                        {{ t('quote.build') }}
+                    </Button>
                 </div>
             </div>
         </div>
@@ -20,12 +35,38 @@
 <script setup lang="ts">
 import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { QUOTE_MAX } from '~/modules/leads/helpers/quote'
+import { useAdvertiser } from '~/modules/marketing/hooks/use-advertiser'
+import { useMarketingRepository } from '~/modules/marketing/repositories'
 
 defineProps<{ leadRef?: string }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
+const { failed, saved } = useToast()
 
-const { count, clear, opened } = useQuote()
+const { count, max, quotable, clear, opened, trips } = useQuote()
+const { canAdvertise } = useAdvertiser()
+const { create } = useMarketingRepository()
+
+const creating = ref(false)
+
+async function advertise() {
+  creating.value = true
+
+  try {
+    const selection = await create(trips())
+
+    clear()
+    saved(t('cms.marketing.created'))
+    await navigateTo(localePath(`/app/marketing/${selection.id}`))
+  }
+  catch (error) {
+    failed(error)
+  }
+  finally {
+    creating.value = false
+  }
+}
 </script>
 
 <style lang="scss">

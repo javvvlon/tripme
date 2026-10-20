@@ -1,0 +1,119 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-tg-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 360px;
+    padding: 16px;
+    border-radius: radius('md');
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .35), transparent 40%),
+        linear-gradient(160deg, #A9C2A2, #8FB08C 45%, #C9D4A8);
+
+    &__bubble {
+        overflow: hidden;
+        border-radius: 14px 14px 14px 4px;
+        background: #FFFFFF;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    }
+
+    &__channel {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    &__avatar {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #0A0A0A;
+
+        .tm-logo { height: 15px; }
+    }
+
+    &__name {
+        color: #2E7DBF;
+        font-size: size(13);
+        font-weight: 700;
+    }
+
+    &__photo {
+        aspect-ratio: 4 / 5;
+        background: #0A0A0A;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__photo-empty {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__text {
+        max-height: 260px;
+        margin: 0;
+        padding: 8px 10px 0;
+        overflow: auto;
+        color: #111111;
+        font-size: size(13);
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 4px;
+        padding: 2px 10px 6px;
+        color: #8C9AA5;
+        font-size: size(11);
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__row {
+        display: flex;
+        gap: 4px;
+    }
+
+    &__button {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        padding: 9px 14px;
+        border-radius: 8px;
+        background: rgba(42, 60, 40, .38);
+        color: #FFFFFF;
+        font-size: size(13);
+        font-weight: 600;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        backdrop-filter: blur(6px);
+    }
+
+    &__corner {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        opacity: .8;
+    }
+}

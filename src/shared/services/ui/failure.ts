@@ -7,6 +7,12 @@ export interface IApiFailure {
 }
 
 const KNOWN: Array<[RegExp, string]> = [
+  [/^Gemini needs billing/i, 'cms.marketing.errors.billing'],
+  [/^GEMINI_API_KEY is not set$/i, 'cms.marketing.aiOff'],
+  [/^Gemini (answered|did not answer|returned)/i, 'cms.marketing.errors.gemini'],
+  [/^File storage is not configured/i, 'cms.marketing.errors.storage'],
+  [/^Pick at least one tour$/i, 'cms.marketing.errors.noTours'],
+  [/^A selection needs at least one tour$/i, 'cms.marketing.lastTour'],
   [/^This lead has a (paid|confirmed) order and cannot be rejected$/i, 'cms.errors.guards.leadPaid'],
   [/^The order cannot be confirmed yet/i, 'cms.errors.guards.confirmationIncomplete'],
   [/^A receipt is required for client money$/i, 'cms.errors.guards.receiptRequired'],

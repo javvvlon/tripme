@@ -40,6 +40,21 @@ export function tourFromLead(lead: ILeadRaw): Tour {
   return tourFrom(lead, `lead:${lead.uuid}`)
 }
 
+export function tourFromTrip(trip: ILeadTrip, id: string): Tour {
+  return tourFrom({
+    uuid: id,
+    trip,
+    hotel_name: trip.hotel_name,
+    supplier_name: trip.supplier_name ?? '',
+    check_in: trip.check_in,
+    nights: trip.nights,
+    adults: trip.adults,
+    children: trip.children,
+    price_amount: trip.price_amount,
+    price_currency: trip.price_currency,
+  }, id)
+}
+
 function tourFrom(order: TourSource, id: string): Tour {
   const trip = (order.trip ?? {}) as Partial<ILeadTrip> & Record<string, unknown>
   const money = {

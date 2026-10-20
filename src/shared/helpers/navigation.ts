@@ -10,6 +10,7 @@ export interface INavNode {
   disabled?: boolean
   query?: Record<string, string>
   admin?: boolean
+  roles?: readonly string[]
 }
 
 export function findNavTrail(

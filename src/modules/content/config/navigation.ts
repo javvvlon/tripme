@@ -1,4 +1,5 @@
 import type { INavNode } from '../../../shared/helpers/navigation'
+import { MARKETING_ROLES } from '../../marketing/contracts/marketing'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -39,6 +40,14 @@ export const CMS_NAVIGATION: INavNode[] = [
     children: [
       { key: 'operators', labelKey: 'cms.nav.operators', icon: 'globe', to: '/app/operators' },
       { key: 'points', labelKey: 'cms.nav.points', icon: 'medal', to: '/app/points' },
+    ],
+  },
+  {
+    key: 'marketing',
+    labelKey: 'cms.nav.groups.marketing',
+    roles: MARKETING_ROLES,
+    children: [
+      { key: 'marketing.selections', labelKey: 'cms.nav.selections', icon: 'megaphone', to: '/app/marketing' },
     ],
   },
   {

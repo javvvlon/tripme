@@ -101,7 +101,7 @@
                         :icon="inQuote ? 'check' : 'plus'"
                         :disabled="!inQuote && quoteFull"
                         :aria-pressed="inQuote"
-                        @click="toggleQuote(tour)"
+                        @click="toggleQuote(tour, route)"
                     >
                         {{ inQuote ? t('quote.added') : t('quote.add') }}
                     </Button>
@@ -248,13 +248,16 @@ const dates = computed(() =>
 const summary = computed(() =>
   [props.tour.displayName(), dates.value, price.value].filter(Boolean).join(' · '))
 
-const trip = computed<ILeadTrip>(() =>
-  tripFromTour(props.tour, {
+const trip = computed<ILeadTrip>(() => {
+  const base = tripFromTour(props.tour, {
     from: props.route?.from ?? '',
     to: props.route?.to ?? '',
     toLabel: props.route?.toLabel ?? '',
     kidAges: props.route?.kidAges ?? [],
-  }))
+  })
+
+  return props.campaign ? { ...base, campaign: props.campaign } : base
+})
 
 const { asking, sending, sent, request } = useTourRequest(() => trip.value)
 

@@ -12,6 +12,7 @@ export interface ITourCardProps {
   assignTitle?: string
   assigning?: boolean
   twins?: Tour[]
+  campaign?: string
 }
 
 export interface ITourCardEmits {

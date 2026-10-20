@@ -18,6 +18,7 @@ export const tripFromTour = (tour: Tour, route?: ITripRoute): ILeadTrip => ({
   adults: tour.get('adults'),
   children: tour.get('children'),
   meal_code: tour.get('mealCode'),
+  meal_plan: tour.get('mealPlan') ?? null,
   meal_name: tour.get('mealName'),
   room_name: tour.get('roomName'),
   district: tour.get('district'),

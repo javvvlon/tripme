@@ -382,7 +382,8 @@
         "work": "Ish",
         "site": "Sayt",
         "settings": "Sozlamalar",
-        "admin": "Boshqaruv"
+        "admin": "Boshqaruv",
+        "marketing": "Marketing"
       },
       "collapse": "Menyuni yigʻish",
       "expand": "Menyuni yoyish",
@@ -391,7 +392,8 @@
       "archive": "Arxiv",
       "work": "Mening ishim",
       "team": "Jamoa",
-      "media": "Mediateka"
+      "media": "Mediateka",
+      "selections": "To‘plamlar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -1677,6 +1679,209 @@
         "blog": "Blog"
       },
       "dimensions": "{w} × {h} px"
+    },
+    "marketing": {
+      "title": "To‘plamlar",
+      "lead": "Faol: {all}",
+      "search": "To‘plamlarni qidirish",
+      "searchPlaceholder": "Nomi, mehmonxona yoki kod",
+      "empty": "Hozircha to‘plamlar yo‘q",
+      "noMatches": "Hech narsa topilmadi",
+      "pickTours": "Turlarni tanlash",
+      "archived": "Arxiv",
+      "columns": {
+        "title": "To‘plam",
+        "tours": "Turlar",
+        "from": "Narx",
+        "dates": "Sanalar",
+        "leads": "Arizalar",
+        "author": "Muallif",
+        "created": "Yaratilgan"
+      },
+      "toursCount": "{n} tadan {live} ta",
+      "back": "To‘plamlarga",
+      "missing": "To‘plam topilmadi",
+      "created": "To‘plam yaratildi",
+      "sections": {
+        "tours": "Turlar",
+        "texts": "Rasmdagi matn",
+        "look": "Bezak",
+        "share": "Nashr",
+        "templates": "Shablonlar",
+        "mode": "Nimani ko‘rsatish",
+        "tune": "Nozik sozlash",
+        "postText": "Post matni",
+        "buttons": "Post ostidagi tugmalar"
+      },
+      "recheck": "Narxlarni tekshirish",
+      "rechecking": "Tekshirilmoqda…",
+      "checkedAt": "{date} tekshirilgan",
+      "checks": {
+        "same": "Narx o‘zgarmagan",
+        "changed": "Avval {price}",
+        "gone": "Joy yo‘q",
+        "unknown": "Tekshirilmadi"
+      },
+      "remove": "Olib tashlash",
+      "up": "Yuqoriga",
+      "down": "Pastga",
+      "lastTour": "To‘plamda kamida bitta tur qolishi kerak",
+      "fields": {
+        "title": "Nomi",
+        "kicker": "Ustki sarlavha",
+        "headline": "Sarlavha",
+        "intro": "Post matni",
+        "cta": "Tugma",
+        "hashtags": "Heshteglar"
+      },
+      "generate": "4 ta variant yozish",
+      "generating": "Yozilmoqda…",
+      "aiOff": "Gemini ulanmagan",
+      "template": "Shablon",
+      "aiDone": "Matnlar tayyor",
+      "styles": {
+        "classic": "Klassika",
+        "board": "Tablo",
+        "ticket": "Chipta"
+      },
+      "formats": {
+        "story": "Stories 9:16",
+        "post": "Post 4:5",
+        "square": "Kvadrat 1:1"
+      },
+      "background": "Fon",
+      "paint": "Fon yaratish",
+      "painting": "Chizilmoqda…",
+      "repaint": "Boshqa fon",
+      "pick": "Mediatekadan",
+      "noBackground": "Fonsiz",
+      "download": "PNG",
+      "downloadAll": "Hammasini yuklash",
+      "exportBlocked": "Bu fonni yuklab bo‘lmaydi — boshqasini tanlang",
+      "post": "Telegram uchun post",
+      "copy": "Nusxalash",
+      "copied": "Nusxalandi",
+      "link": "Havola",
+      "open": "Ochish",
+      "leads": "Arizalar: {n}",
+      "archive": "Arxivga",
+      "restore": "Qaytarish",
+      "archivedSince": "To‘plam {date} dan arxivda",
+      "language": "Reklama tili",
+      "errors": {
+        "billing": "Gemini rasmlari uchun pullik tarif kerak — Google Cloud’da billingni yoqing",
+        "gemini": "Gemini hozir javob bermayapti — qayta urinib ko‘ring",
+        "storage": "Fayl ombori sozlanmagan",
+        "noTours": "Kamida bitta turni tanlang"
+      },
+      "regenerate": "Yana 4 ta variant",
+      "versions": "Matn variantlari",
+      "versionsAi": "TripMe ovozida",
+      "versionsTemplate": "TripMe shablonlari",
+      "writingVersions": "AI variantlarni yozmoqda",
+      "preview": "Ko‘rib chiqish",
+      "postedTimes": "Nashr qilingan: {n}",
+      "pricesChecked": "Narxlar tekshirilgan",
+      "angles": {
+        "compare": "Taqqoslash",
+        "escape": "Dam olish",
+        "timing": "Muddatlar",
+        "care": "G‘amxo‘rlik"
+      },
+      "panels": {
+        "image": "Rasm",
+        "post": "Post",
+        "page": "To‘plam",
+        "tours": "Turlar"
+      },
+      "aiCard": {
+        "title": "AI matnlari",
+        "sub": "TripMe ovozida to‘rtta variant"
+      },
+      "backdrops": {
+        "night": "Fotosiz",
+        "ai": "AI fon",
+        "photo": "Foto",
+        "generate": "AI fon",
+        "scene": "Sahna",
+        "type": "Nomi",
+        "library": "Mediateka"
+      },
+      "mode": {
+        "list": "Barcha mehmonxonalar ({n})"
+      },
+      "tune": {
+        "dim": "Fotoni qoraytirish",
+        "focus": "Kadr balandligi",
+        "rows": "Rasmdagi mehmonxonalar",
+        "price": "Narx",
+        "total": "Tur uchun",
+        "person": "Kishi boshiga",
+        "caps": "Bosh harflar",
+        "stars": "Yulduzlar",
+        "meal": "Ovqatlanish",
+        "party": "Sayyohlar tarkibi",
+        "cta": "Tugma",
+        "footer": "Post oxirida agentlik imzosi"
+      },
+      "buttons": {
+        "both": "Hammasi",
+        "managers": "Menejerlar",
+        "link": "Havola",
+        "none": "Tugmasiz"
+      },
+      "botOff": "Telegram bot ulanmagan",
+      "publish": "Nashr qilish",
+      "published": "Post nashr qilindi",
+      "copyPost": "Postni nusxalash",
+      "downloadFormat": "{format} yuklash",
+      "formatShort": {
+        "story": "stories",
+        "post": "post",
+        "square": "kvadrat"
+      },
+      "steps": {
+        "write": {
+          "title": "AI matn yozmoqda",
+          "note": "Odatda bir necha soniya",
+          "read": "Turlar va narxlarni o‘rganmoqda",
+          "voice": "TripMe ovozida 4 ta variant yozmoqda",
+          "check": "To‘qima faktlar yo‘qligini tekshirmoqda"
+        },
+        "paint": {
+          "title": "AI fon chizmoqda",
+          "note": "Odatda 10–30 soniya",
+          "scene": "Sahna tanlanmoqda: {place}",
+          "draw": "Matn va logotipsiz fon chizilmoqda",
+          "place": "Fon maketga tayyorlanmoqda"
+        }
+      },
+      "settings": {
+        "title": "Marketing sozlamalari",
+        "voice": "Brend ovozi",
+        "managers": "Menejer tugmalari",
+        "voiceHint": "AI har bir generatsiyadan oldin shu matnni o‘qiydi",
+        "managersHint": "Post ostidagi 4 tagacha tugma menejerlar Telegramiga olib boradi",
+        "buttonName": "Tugmadagi ism",
+        "telegram": "Telegram",
+        "addManager": "Menejer qo‘shish",
+        "reset": "Standartga qaytarish",
+        "saved": "Sozlamalar saqlandi",
+        "close": "Yopish",
+        "footer": "Postga agentlik imzosi"
+      },
+      "postAi": "AI post matni",
+      "postVersions": "Post matni variantlari",
+      "scenes": {
+        "skyline": "Osmono‘par binolar",
+        "mosque": "Istanbul",
+        "coast": "Tog‘ va dengiz",
+        "pyramids": "Ehromlar",
+        "pagoda": "Pagoda",
+        "tropic": "Tropiklar",
+        "atoll": "Suv ustidagi villalar",
+        "mountains": "Tog‘lar"
+      }
     }
   },
   "richEditor": {
@@ -2029,10 +2234,10 @@
   "quote": {
     "title": "Tijorat taklifi",
     "lead": "Taklifdagi variantlar: {n}. Yuborishdan oldin matnni tekshiring.",
-    "add": "TT ga",
-    "added": "TT da",
-    "barTitle": "TT",
-    "barCount": "{max} tadan {n} ta variant",
+    "add": "Tanlash",
+    "added": "Tanlandi",
+    "barTitle": "Tanlandi",
+    "barCount": "{max} tadan {n} ta",
     "forLead": "{ref} uchun",
     "clear": "Tozalash",
     "build": "TT tayyorlash",
@@ -2082,7 +2287,9 @@
     },
     "pdf": "PDF ni buyurtmaga saqlash",
     "sendToChat": "Mijoz chatiga",
-    "sentToChat": "Taklif mijoz chatiga yuborildi"
+    "sentToChat": "Taklif mijoz chatiga yuborildi",
+    "toAds": "Reklamaga",
+    "quoteLimit": "TT — {max} tagacha variant"
   },
   "pagination": {
     "label": "Sahifalar",
@@ -2290,5 +2497,41 @@
     "stars": "5 dan {n}",
     "prev": "Oldingi sharhlar",
     "next": "Keyingi sharhlar"
+  },
+  "marketing": {
+    "nights": "0 kecha | {n} kecha | {n} kecha | {n} kecha",
+    "nightsRange": "{from}–{to} kecha",
+    "adults": "0 katta | {n} katta | {n} katta | {n} katta",
+    "kids": "0 bola | {n} bola | {n} bola | {n} bola",
+    "party": "{adults} uchun",
+    "partyKids": "{adults} va {kids} uchun",
+    "from": "{price} dan",
+    "sum": "so‘m",
+    "pricesAt": "Narxlar {date} holatiga",
+    "banner": {
+      "departures": "Jo‘nash",
+      "date": "Sana",
+      "hotel": "Mehmonxona",
+      "nights": "Kecha",
+      "price": "Narx",
+      "from": "tur narxi",
+      "perTour": "tur uchun",
+      "perPerson": "kishi boshiga"
+    },
+    "page": {
+      "title": "Turlar to‘plami",
+      "checked": "Narxlar {date} tekshirilgan",
+      "empty": "Bu turlar allaqachon sotib olingan",
+      "emptyCta": "Boshqa turlarni topish",
+      "note": "Tur narxi {party}. Menejer bron qilishdan oldin joylarni tekshiradi."
+    },
+    "perPerson": "kishi boshiga {price}",
+    "post": {
+      "managers": "TripMe menejerlari:",
+      "price": "Narxi: {uzs} ({money}) dan / kishi",
+      "priceForeign": "Narxi: {money} dan / kishi",
+      "departure": "Toshkentdan parvoz • {when}, {stay}",
+      "departureAny": "Parvoz {when}, {stay}"
+    }
   }
 }
