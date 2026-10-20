@@ -19,6 +19,7 @@
 
         <div class="tm-tour-card__body">
             <div class="tm-tour-card__kicker">
+                <span v-if="hot" class="tm-tour-card__hot">{{ t('results.hot') }}</span>
                 <Rating v-if="tour.stars()" :value="tour.stars()" :max="tour.stars()" :size="12" />
                 <span v-if="tour.location()" class="tm-tour-card__place">
                     <Icon name="pin" :size="13" />{{ tour.location() }}
@@ -36,6 +37,12 @@
                 </li>
                 <li v-if="tour.get('roomName')" class="tm-tour-card__fact">
                     <Icon name="bed" :size="14" />{{ tour.get('roomName') }}
+                </li>
+                <li v-if="tour.get('instantConfirm')" class="tm-tour-card__fact tm-tour-card__fact--instant">
+                    <Icon name="check" :size="13" :stroke="2.4" />{{ t('results.instantConfirm') }}
+                </li>
+                <li v-if="agentView && tour.get('bestPrice')" class="tm-tour-card__fact">
+                    <Icon name="star" :size="13" />{{ t('results.bestPrice') }}
                 </li>
                 <li v-if="tour.get('refundable') === false" class="tm-tour-card__fact tm-tour-card__fact--warn">
                     {{ t('results.nonRefundable') }}
@@ -83,6 +90,7 @@
 
         <div class="tm-tour-card__aside">
             <div class="tm-tour-card__pricing">
+                <p v-if="oldPrice" class="tm-tour-card__old">{{ oldPrice }}</p>
                 <p class="tm-tour-card__price">{{ price }}</p>
                 <p v-if="priceUzs" class="tm-tour-card__uzs">{{ priceUzs }}</p>
                 <p class="tm-tour-card__price-note">
@@ -183,6 +191,14 @@ const hotelPage = computed(() => {
 })
 
 const price = computed(() => formatMoney(props.tour.get('comparablePrice'), locale.value))
+
+const hot = computed(() => props.tour.isHot())
+
+const oldPrice = computed(() => {
+  const old = props.tour.oldComparablePrice()
+
+  return old ? formatMoney(old, locale.value) : ''
+})
 
 const { has: quoted, toggle: toggleQuote, full: quoteFull } = useQuote()
 

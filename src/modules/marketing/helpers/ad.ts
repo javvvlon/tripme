@@ -1,5 +1,6 @@
 import { mealText } from '~/shared/helpers/meal'
 import { tourFromTrip } from '~/modules/leads/helpers/quote'
+import { daysUntil, isHotDeparture, tashkentToday } from '~/shared/helpers/hot'
 import { sceneOf } from './banner/scenes'
 import type { SceneKind } from './banner/scenes'
 import type { Translate } from '~/modules/leads/helpers/quote'
@@ -31,6 +32,8 @@ const MEAL_SHORT: Record<string, string> = {
 export interface IAdText {
   language: AdLanguage
   design: IAdDesign
+  hotBadge: string
+  departureHero: string
   scene: SceneKind
   place: string
   departure: string
@@ -54,8 +57,6 @@ const UZ_MONTHS = {
 }
 
 const CURRENCY_SIGNS: Record<string, string> = { USD: '$', EUR: '€', RUB: '₽' }
-
-const HOT_DAYS = 10
 
 const at = (iso: string): Date => new Date(`${iso.slice(0, 10)}T00:00:00`)
 
@@ -101,14 +102,9 @@ export function daysOf(isos: string[], language: AdLanguage): string {
     .replace(/\./g, '')
 }
 
-export function isHot(tours: IAdTour[], today = new Date().toISOString().slice(0, 10)): boolean {
-  const start = at(today).getTime()
-
-  return tours.length > 0 && tours.every((tour) => {
-    const days = (at(tour.check_in).getTime() - start) / 86_400_000
-
-    return days >= 0 && days <= HOT_DAYS
-  })
+export function isHot(tours: IAdTour[], today = tashkentToday()): boolean {
+  return tours.length > 0 && tours.every(tour =>
+    isHotDeparture(tour.check_in, tour.check_state === 'gone' || tour.availability === 'stopped', today))
 }
 
 const sorted = (tours: IAdTour[]): IAdTour[] => [...tours].sort((a, b) => a.price_amount - b.price_amount)
@@ -169,9 +165,20 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
 
   const place = String(pool.find(tour => tour.route_to_label)?.route_to_label ?? '') || selection.title
 
+  const left = firstDay ? daysUntil(firstDay, tashkentToday()) : -1
+  const hot = isHot(tours)
+  const departureHero = !hot ? '' : left === 0
+    ? t('marketing.hot.today')
+    : left === 1 ? t('marketing.hot.tomorrow') : t('marketing.hot.inDays', { n: left }, left)
+  const soon = !hot ? '' : left === 0
+    ? t('marketing.hot.soonToday')
+    : left === 1 ? t('marketing.hot.soonTomorrow') : t('marketing.hot.soonIn', { n: left }, left)
+
   return {
     language,
     design,
+    hotBadge: hot ? t('marketing.hot.badge') : '',
+    departureHero,
     scene: sceneOf([
       place,
       selection.title,
@@ -180,7 +187,9 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
       ...pool.map(tour => tour.hotel_name),
     ]),
     place,
-    departure: t(fromTashkent ? 'marketing.post.departure' : 'marketing.post.departureAny', { when, stay }),
+    departure: soon
+      ? t(fromTashkent ? 'marketing.post.departureHot' : 'marketing.post.departureHotAny', { soon, when, stay })
+      : t(fromTashkent ? 'marketing.post.departure' : 'marketing.post.departureAny', { when, stay }),
     priceNote: design.price === 'person' ? t('marketing.banner.perPerson') : t('marketing.banner.from'),
     copy,
     lines,
@@ -194,7 +203,7 @@ export function adText(selection: ISelection, language: AdLanguage, t: Translate
     pricesAt: t('marketing.pricesAt', { date: dayOf((selection.checked_at ?? selection.created_at).slice(0, 10), language) }),
     link,
     site,
-    hot: isHot(tours),
+    hot,
   }
 }
 
@@ -207,7 +216,8 @@ export interface IPostOptions {
 
 export function telegramPost(text: IAdText, options: IPostOptions = { link: true, contacts: [], managersLabel: '', footer: '' }): string {
   const headline = text.copy.headline.toLocaleUpperCase(text.language)
-  const head = text.copy.kicker ? `${headline}: ${text.copy.kicker.toLocaleUpperCase(text.language)}` : headline
+  const label = text.hotBadge || text.copy.kicker
+  const head = label ? `${headline}: ${label.toLocaleUpperCase(text.language)}` : headline
   const hotels = text.lines.slice(0, text.design.rows).map((line, index) => {
     const name = [line.hotel, text.design.stars && line.stars ? `${line.stars}*` : ''].filter(Boolean).join(' ')
     const place = line.district ? ` (${line.district})` : ''

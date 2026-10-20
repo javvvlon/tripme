@@ -1,7 +1,7 @@
 import type { AnyObject } from '~/shared/contracts/data'
 import type { IPageRaw } from '~/shared/contracts/pagination'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
-import type { AdLanguage, IAdContact, IMarketingSettings, IPublicSelection, IPublishDraft, ISelection, ISelectionPatch, ISelectionRow } from '../contracts/marketing'
+import type { AdLanguage, IAdContact, IAdTemplate, IMarketingSettings, IPublicSelection, IPublishDraft, ISavedTemplate, ISelection, ISelectionPatch, ISelectionRow } from '../contracts/marketing'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -57,8 +57,20 @@ export const useMarketingRepository = () => {
   const settings = async (): Promise<IMarketingSettings> =>
     (await http.call<IMarketingSettings>('Marketing', 'settings')).data
 
-  const saveSettings = async (changes: { voice?: string, contacts?: IAdContact[], footer?: Record<AdLanguage, string> }): Promise<IMarketingSettings> =>
+  const designTemplates = async (id: string): Promise<ISelection> =>
+    (await http.call<ISelection>('Marketing', 'designTemplates', { id }, {})).data
+
+  const templates = async (): Promise<ISavedTemplate[]> =>
+    (await http.call<ISavedTemplate[]>('Marketing', 'templates')).data
+
+  const saveTemplate = async (spec: IAdTemplate, name?: string): Promise<ISavedTemplate[]> =>
+    (await http.call<ISavedTemplate[]>('Marketing', 'saveTemplate', {}, { spec, name } as AnyObject)).data
+
+  const archiveTemplate = async (id: string): Promise<ISavedTemplate[]> =>
+    (await http.call<ISavedTemplate[]>('Marketing', 'archiveTemplate', { id }, {})).data
+
+  const saveSettings = async (changes: { voice?: string, contacts?: IAdContact[], footer?: Record<AdLanguage, string>, visual?: string }): Promise<IMarketingSettings> =>
     (await http.call<IMarketingSettings>('Marketing', 'saveSettings', {}, changes as AnyObject)).data
 
-  return { shared, list, create, one, patch, recheck, write, paint, background, archive, restore, publish, settings, saveSettings }
+  return { shared, list, create, one, patch, recheck, write, paint, background, archive, restore, publish, settings, saveSettings, designTemplates, templates, saveTemplate, archiveTemplate }
 }

@@ -1,7 +1,8 @@
 import { AD_SIZES } from '../../contracts/marketing'
-import type { AdFormat, AdStyle } from '../../contracts/marketing'
+import type { AdFormat, AdStyle, IAdTemplate } from '../../contracts/marketing'
+import { custom } from './custom'
 import type { IAdLine, IAdText } from '../ad'
-import { backdrop, BODY, BRAND, clip, fit, font, logo, mark, pill, rrect, rule, shade, stars, track } from './draw'
+import { backdrop, BODY, BRAND, clip, fit, fitLines, font, logo, mark, pill, rrect, rule, shade, stars, track } from './draw'
 import type { Ctx } from './draw'
 
 /**
@@ -23,9 +24,10 @@ export interface IBannerSpec {
   text: IAdText
   labels: IBannerLabels
   image: HTMLImageElement | null
+  template?: IAdTemplate | null
 }
 
-interface ILayout {
+export interface ILayout {
   pad: number
   logo: number
   headline: number
@@ -43,7 +45,7 @@ const LAYOUT: Record<AdFormat, ILayout> = {
   square: { pad: 64, logo: 46, headline: 116, rows: 3, row: 84, sub: 30, tile: 80, ticket: 400, extra: 0 },
 }
 
-interface IFrame {
+export interface IFrame {
   ctx: Ctx
   width: number
   height: number
@@ -51,7 +53,27 @@ interface IFrame {
   spec: IBannerSpec
 }
 
-const subOf = (text: IAdText): string => [text.dates, text.nights, text.design.meal ? text.meal : ''].filter(Boolean).join(' · ')
+const subOf = (text: IAdText): string =>
+  [text.departureHero || text.dates, text.nights, text.design.meal ? text.meal : ''].filter(Boolean).join(' · ')
+
+function hotPill(frame: IFrame): void {
+  const { ctx, width, layout, spec } = frame
+
+  if (!spec.text.hotBadge) return
+
+  const height = Math.round(layout.logo * 0.82)
+
+  ctx.font = font(800, height * 0.4)
+  track(ctx, height * 0.06)
+
+  const label = spec.text.hotBadge.toLocaleUpperCase(spec.text.language)
+  const pillWidth = ctx.measureText(label).width + height * 1.1
+
+  track(ctx, 0)
+  pill(ctx, label, width - layout.pad - pillWidth, layout.pad + (layout.logo - height) / 2, height, {
+    fill: BRAND.gold, ink: BRAND.bg, size: height * 0.4,
+  })
+}
 
 const headlineOf = (text: IAdText): string => (text.design.caps ? text.copy.headline.toLocaleUpperCase(text.language) : text.copy.headline)
 
@@ -154,11 +176,13 @@ function classic(frame: IFrame): void {
 
   paint(frame, [[0, 0.62], [0.2, 0.08], [0.36, 0.12], [0.58, 0.82], [1, 0.97]], [[0, 0], [0.5, 0.1], [1, 0.55]])
   logo(ctx, layout.pad, layout.pad, layout.logo)
+  hotPill(frame)
 
   const headline = headlineOf(text)
-  const headlineSize = layout.headline
+  const head = fitLines(ctx, headline, width - layout.pad * 2, layout.headline, layout.headline * 0.42, 900)
+  const headHeight = head.size * 0.92 * head.lines.length + (head.lines.length - 1) * head.size * 0.08
   const kickerHeight = text.copy.kicker ? layout.sub * 1.5 + 26 : 0
-  const fixed = layout.sub * 0.68 + 30 + layout.row * 0.84 + 40 + 36 + layout.sub + 22 + headlineSize + 26 + kickerHeight
+  const fixed = layout.sub * 0.68 + 30 + layout.row * 0.84 + 40 + 36 + layout.sub + 22 + headHeight + 26 + kickerHeight
   const room = height - layout.pad * 2 - layout.logo - 60 - fixed
   const rows = Math.max(1, Math.min(layout.rows, text.design.rows, text.lines.length, Math.floor(room / layout.row)))
 
@@ -179,11 +203,14 @@ function classic(frame: IFrame): void {
   ctx.fillText(clip(ctx, subOf(text), width - layout.pad * 2), layout.pad, y)
   y -= layout.sub + 22
 
-  const size = fit(ctx, headline, width - layout.pad * 2, headlineSize, headlineSize * 0.45, 900)
-
+  ctx.font = font(900, head.size)
   ctx.fillStyle = BRAND.ink
-  ctx.fillText(headline, layout.pad, y)
-  y -= size * 0.92 + 26
+
+  head.lines.slice().reverse().forEach((line, index) => {
+    ctx.fillText(line, layout.pad, y - index * head.size)
+  })
+
+  y -= headHeight + 26
 
   kicker(frame, text.copy.kicker, y)
 }
@@ -202,12 +229,13 @@ function tiles(frame: IFrame, word: string, top: number): number {
     else lines.push(part)
   }
 
-  const longest = Math.max(1, ...lines.map(line => line.length))
-  const tileWidth = Math.min(layout.tile, (available - gap * (longest - 1)) / longest)
+  const shown = lines.slice(0, 3)
+  const longest = Math.max(1, ...shown.map(line => line.length))
+  const tileWidth = Math.min(layout.tile * (shown.length > 2 ? 0.8 : 1), (available - gap * (longest - 1)) / longest)
   const tileHeight = tileWidth * 1.34
   let y = top
 
-  for (const line of lines.slice(0, 2)) {
+  for (const line of shown) {
     [...line].forEach((char, index) => {
       const x = layout.pad + index * (tileWidth + gap)
 
@@ -243,15 +271,18 @@ function board(frame: IFrame): void {
   paint(frame, [[0, 0.78], [0.5, 0.86], [1, 0.95]], [[0, 0.35], [1, 0.75]])
   logo(ctx, layout.pad, layout.pad, layout.logo)
 
-  ctx.font = font(800, layout.sub * 0.62)
-  track(ctx, layout.sub * 0.14)
-  ctx.fillStyle = BRAND.gold
-  ctx.textAlign = 'right'
-  ctx.textBaseline = 'middle'
-  ctx.fillText(labels.departures.toUpperCase(), width - layout.pad, layout.pad + layout.logo / 2)
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'alphabetic'
-  track(ctx, 0)
+  if (text.hotBadge) hotPill(frame)
+  else {
+    ctx.font = font(800, layout.sub * 0.62)
+    track(ctx, layout.sub * 0.14)
+    ctx.fillStyle = BRAND.gold
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(labels.departures.toUpperCase(), width - layout.pad, layout.pad + layout.logo / 2)
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'alphabetic'
+    track(ctx, 0)
+  }
 
   let y = tiles(frame, text.copy.headline, layout.pad + layout.logo + layout.tile * 0.7)
 
@@ -320,6 +351,7 @@ function ticket(frame: IFrame): void {
 
   paint(frame, [[0, 0.5], [0.16, 0.05], [0.4, 0.2], [0.62, 0.92], [1, 1]], [[0, 0], [0.55, 0.2], [1, 0.7]])
   logo(ctx, layout.pad, layout.pad, layout.logo)
+  hotPill(frame)
 
   let bottom = callToAction(frame, footer(frame))
   const extras = text.lines.slice(1, Math.min(1 + layout.extra, text.design.rows))
@@ -391,14 +423,19 @@ function ticket(frame: IFrame): void {
   }
 
   const headline = headlineOf(text)
-  const headSize = fit(ctx, headline, mainWidth, cardHeight * 0.26, cardHeight * 0.12, 900)
+  const single = fitLines(ctx, headline, mainWidth, cardHeight * 0.26, cardHeight * 0.1, 900)
+  const head = single.lines.length > 1 ? fitLines(ctx, headline, mainWidth, cardHeight * 0.16, cardHeight * 0.09, 900) : single
 
-  y += headSize * 1.08
+  ctx.font = font(900, head.size)
   ctx.fillStyle = BRAND.paperInk
-  ctx.fillText(headline, cardLeft + inner, y)
+
+  for (const line of head.lines) {
+    y += head.size * 1.02
+    ctx.fillText(line, cardLeft + inner, y)
+  }
 
   const facts = [
-    [text.dates, text.nights].filter(Boolean).join(' · '),
+    [text.departureHero || text.dates, text.nights].filter(Boolean).join(' · '),
     [text.design.meal ? text.meal : '', text.design.party ? text.party : ''].filter(Boolean).join(' · '),
   ].filter(Boolean)
 
@@ -434,7 +471,7 @@ function ticket(frame: IFrame): void {
   mark(ctx, cardLeft + cardWidth - inner * 0.7 - markHeight * 0.515, cardTop + cardHeight - inner * 0.7 - markHeight, markHeight)
 }
 
-const STYLES: Record<AdStyle, (frame: IFrame) => void> = { classic, board, ticket }
+const STYLES: Record<AdStyle, (frame: IFrame) => void> = { classic, board, ticket, custom }
 
 export function renderBanner(canvas: HTMLCanvasElement, spec: IBannerSpec): void {
   const { width, height } = AD_SIZES[spec.format]

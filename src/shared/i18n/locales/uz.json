@@ -291,7 +291,11 @@
       "variants": "{count} ta variant | {count} ta variant | {count} ta variant | {count} ta variant",
       "operators": "{count} ta operator | {count} ta operator | {count} ta operator | {count} ta operator"
     },
-    "twins": "Xuddi shu tur boshqa operatorlarda"
+    "twins": "Xuddi shu tur boshqa operatorlarda",
+    "hot": "Qaynoq",
+    "hotOnly": "Qaynoq · {n}",
+    "instantConfirm": "Darhol tasdiqlash",
+    "bestPrice": "Operatorning eng yaxshi narxi"
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
@@ -1742,7 +1746,8 @@
       "styles": {
         "classic": "Klassika",
         "board": "Tablo",
-        "ticket": "Chipta"
+        "ticket": "Chipta",
+        "custom": "AI shabloni"
       },
       "formats": {
         "story": "Stories 9:16",
@@ -1854,6 +1859,13 @@
           "scene": "Sahna tanlanmoqda: {place}",
           "draw": "Matn va logotipsiz fon chizilmoqda",
           "place": "Fon maketga tayyorlanmoqda"
+        },
+        "templates": {
+          "title": "AI shablon yaratmoqda",
+          "note": "Odatda bir-ikki soniya",
+          "read": "TripMe vizual uslubini o‘qimoqda",
+          "compose": "4 xil kompozitsiya yig‘moqda",
+          "check": "Brend shriftlari va ranglarini tekshirmoqda"
         }
       },
       "settings": {
@@ -1868,7 +1880,9 @@
         "reset": "Standartga qaytarish",
         "saved": "Sozlamalar saqlandi",
         "close": "Yopish",
-        "footer": "Postga agentlik imzosi"
+        "footer": "Postga agentlik imzosi",
+        "visual": "Vizual uslub",
+        "visualHint": "AI shablon yaratishda shu matnni o‘qiydi"
       },
       "postAi": "AI post matni",
       "postVersions": "Post matni variantlari",
@@ -1881,6 +1895,15 @@
         "tropic": "Tropiklar",
         "atoll": "Suv ustidagi villalar",
         "mountains": "Tog‘lar"
+      },
+      "templates": {
+        "generate": "Shablon yaratish",
+        "designing": "AI shablon yaratmoqda",
+        "fresh": "AI yangi shablonlari",
+        "mine": "Mening uslublarim",
+        "keep": "Mening uslublarimga saqlash",
+        "saved": "Shablon saqlandi",
+        "ready": "Shablonlar tayyor"
       }
     }
   },
@@ -2531,7 +2554,18 @@
       "price": "Narxi: {uzs} ({money}) dan / kishi",
       "priceForeign": "Narxi: {money} dan / kishi",
       "departure": "Toshkentdan parvoz • {when}, {stay}",
-      "departureAny": "Parvoz {when}, {stay}"
+      "departureAny": "Parvoz {when}, {stay}",
+      "departureHot": "Toshkentdan parvoz {soon} • {when}, {stay}",
+      "departureHotAny": "Parvoz {soon} • {when}, {stay}"
+    },
+    "hot": {
+      "badge": "Qaynoq tur",
+      "today": "Bugun parvoz",
+      "tomorrow": "Ertaga parvoz",
+      "inDays": "Bugun parvoz | {n} kundan keyin parvoz | {n} kundan keyin parvoz | {n} kundan keyin parvoz",
+      "soonToday": "bugun",
+      "soonTomorrow": "ertaga",
+      "soonIn": "bugun | {n} kundan keyin | {n} kundan keyin | {n} kundan keyin"
     }
   }
 }

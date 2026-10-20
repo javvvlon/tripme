@@ -57,7 +57,7 @@
                     </div>
 
                     <div class="tm-ad-studio__artboard" :class="`is-${panel}`">
-                        <AiGlow v-if="panel !== 'post' && panel !== 'page'" :active="busy === 'write' || busy === 'paint'" class="tm-ad-studio__frame" :class="`is-${format}`">
+                        <AiGlow v-if="panel !== 'post' && panel !== 'page'" :active="busy === 'write' || busy === 'paint' || busy === 'templates'" class="tm-ad-studio__frame" :class="`is-${format}`">
                             <BannerCanvas :spec="spec" />
                             <AiProgress
                                 :active="busy === 'write'"
@@ -65,6 +65,13 @@
                                 :note="t('cms.marketing.steps.write.note')"
                                 :steps="writeSteps"
                                 :pace="1100"
+                            />
+                            <AiProgress
+                                :active="busy === 'templates'"
+                                :title="t('cms.marketing.steps.templates.title')"
+                                :note="t('cms.marketing.steps.templates.note')"
+                                :steps="templateSteps"
+                                :pace="900"
                             />
                             <AiProgress
                                 :active="busy === 'paint'"
@@ -149,7 +156,19 @@
                         />
 
                         <section class="tm-ad-studio__block">
-                            <h3 class="tm-ad-studio__label">{{ t('cms.marketing.sections.templates') }}</h3>
+                            <div class="tm-ad-studio__label-row">
+                                <h3 class="tm-ad-studio__label">{{ t('cms.marketing.sections.templates') }}</h3>
+                                <Button
+                                    size="sm" icon="layers"
+                                    :loading="busy === 'templates'"
+                                    :disabled="!selection.ai || Boolean(busy)"
+                                    :title="selection.ai ? undefined : t('cms.marketing.aiOff')"
+                                    @click="designTemplates"
+                                >
+                                    {{ busy === 'templates' ? t('cms.marketing.templates.designing') : t('cms.marketing.templates.generate') }}
+                                </Button>
+                            </div>
+
                             <div class="tm-ad-studio__styles">
                                 <button
                                     v-for="thumb in thumbs" :key="thumb.style"
@@ -163,6 +182,55 @@
                                     <span>{{ t(`cms.marketing.styles.${thumb.style}`) }}</span>
                                 </button>
                             </div>
+
+                            <template v-if="drafts.length || busy === 'templates'">
+                                <span class="tm-ad-studio__sublabel">{{ t('cms.marketing.templates.fresh') }}</span>
+                                <AiGlow :active="busy === 'templates'" :label="t('cms.marketing.templates.designing')" class="tm-ad-studio__glow">
+                                    <div v-if="busy === 'templates'" class="tm-ad-studio__styles is-four">
+                                        <span v-for="n in 4" :key="n" class="tm-ad-studio__style is-ghost" :style="{ '--delay': `${n * 120}ms` }" />
+                                    </div>
+                                    <TransitionGroup v-else :key="templateGeneration" tag="div" class="tm-ad-studio__styles is-four" name="tm-variant" appear>
+                                        <div
+                                            v-for="(draft, index) in drafts" :key="`${templateGeneration}-${index}`"
+                                            class="tm-ad-studio__style"
+                                            :class="{ 'is-on': isApplied(draft.template) }"
+                                            :style="{ '--delay': `${index * 90}ms` }"
+                                        >
+                                            <button type="button" class="tm-ad-studio__style-art" :aria-label="draft.template.name" @click="applyTemplate(draft.template)">
+                                                <BannerCanvas :spec="draft.spec" />
+                                            </button>
+                                            <span class="tm-ad-studio__style-foot">
+                                                <span>{{ draft.template.name }}</span>
+                                                <IconButton
+                                                    :icon="isSaved(draft.template) ? 'check' : 'plus'"
+                                                    :label="t('cms.marketing.templates.keep')"
+                                                    :disabled="isSaved(draft.template)"
+                                                    @click="keepTemplate(draft.template)"
+                                                />
+                                            </span>
+                                        </div>
+                                    </TransitionGroup>
+                                </AiGlow>
+                            </template>
+
+                            <template v-if="savedStyles.length">
+                                <span class="tm-ad-studio__sublabel">{{ t('cms.marketing.templates.mine') }}</span>
+                                <div class="tm-ad-studio__styles is-four">
+                                    <div
+                                        v-for="item in savedStyles" :key="item.id"
+                                        class="tm-ad-studio__style"
+                                        :class="{ 'is-on': isApplied(item.spec) }"
+                                    >
+                                        <button type="button" class="tm-ad-studio__style-art" :aria-label="item.name" @click="applyTemplate(item.spec)">
+                                            <BannerCanvas :spec="item.thumb" />
+                                        </button>
+                                        <span class="tm-ad-studio__style-foot">
+                                            <span>{{ item.name }}</span>
+                                            <IconButton icon="folder" :label="t('cms.marketing.archive')" @click="dropTemplate(item)" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </template>
                         </section>
 
                         <section class="tm-ad-studio__block">
@@ -421,10 +489,11 @@ const { t, locale } = useI18n()
 
 const {
     selection, settings, status, panel, format, language, busy, generation, imageBlocked, title, design, draft, hashtags,
-    spec, thumbs, post, buttons, link, telegramImage, variants, settingsOpen, settingsTab,
+    spec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, link, telegramImage, variants, settingsOpen, settingsTab,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops, place, sceneKind, libraryPhotos, withManagers,
     edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,
+    applyTemplate, designTemplates, keepTemplate, dropTemplate, isApplied, isSaved,
     restore, onMore, toggleContact, setButtons, downloadOne, downloadAll, publish, copy, openSettings, setSettings, hotelOf, priceOf,
 } = useSelection()
 

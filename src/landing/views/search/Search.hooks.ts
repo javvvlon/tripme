@@ -355,8 +355,20 @@ export const useSearch = () => {
 
   const sorted = computed(() => [...offers.value].sort(SORTERS[sort.value]))
 
-  const filtered = computed(() =>
+  const hotOnly = ref(false)
+
+  const onDay = computed(() =>
     day.value ? sorted.value.filter(tour => tour.get('checkIn') === day.value) : sorted.value)
+
+  const hotCount = computed(() => new Set(onDay.value.filter(tour => tour.isHot()).map(tour => tour.groupKey())).size)
+
+  const hotUseful = computed(() => hotCount.value > 0 && hotCount.value < new Set(onDay.value.map(tour => tour.groupKey())).size)
+
+  const filtered = computed(() => (hotOnly.value ? onDay.value.filter(tour => tour.isHot()) : onDay.value))
+
+  watch(hotCount, (count) => { if (!count) hotOnly.value = false })
+
+  watch(hotOnly, () => { shown.value = RESULTS_PAGE_SIZE })
 
   const visible = computed(() => (isStaff.value ? filtered.value : cheapestPackages(filtered.value)))
 
@@ -418,7 +430,7 @@ export const useSearch = () => {
   const total = computed(() => visible.value.length)
 
   return {
-    criteria, filters, sort, day,
+    criteria, filters, sort, day, hotOnly, hotCount, hotUseful,
     tours, hotels, twins, facets, total, statuses, progress, settling, busy,
     streaming, finished, failed, waitingForFirst,
     isSearchable, remaining,

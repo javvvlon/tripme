@@ -1,5 +1,6 @@
 import { Model } from '~/shared/helpers/model'
 import type { Money } from '~/search_engine/contracts/search'
+import { isHotDeparture } from '~/shared/helpers/hot'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -51,6 +52,10 @@ export interface ITourRaw {
   refundable: boolean | null
   programme: string | null
   fare: string | null
+  hot?: boolean
+  oldPrice?: number | null
+  instantConfirm?: boolean
+  bestPrice?: boolean
 }
 
 export interface ITour extends Omit<ITourRaw, 'price'> {
@@ -101,6 +106,23 @@ export class Tour extends Model<ITour> {
 
   public isStopped(): boolean {
     return this.get('availability') === Availability.Stopped
+  }
+
+  public isHot(today?: string): boolean {
+    const known = this.get('hot')
+
+    return typeof known === 'boolean' && today === undefined ? known : isHotDeparture(this.get('checkIn'), this.isStopped(), today)
+  }
+
+  public oldComparablePrice(): Money | null {
+    const old = Number(this.get('oldPrice'))
+    const source = this.get('price').amount
+
+    if (!Number.isFinite(old) || old <= source || source <= 0) return null
+
+    const comparable = this.get('comparablePrice')
+
+    return { amount: Math.round(comparable.amount * (old / source)), currency: comparable.currency }
   }
 
   public stars(): number {

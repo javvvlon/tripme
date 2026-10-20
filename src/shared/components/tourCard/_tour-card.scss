@@ -119,6 +119,15 @@
         color: var(--tm-ink-3);
     }
 
+    &__hot {
+        @include badge-type;
+
+        padding: 4px 10px;
+        border-radius: radius('pill');
+        background: var(--tm-brand-gold);
+        color: var(--tm-brand-on-gold);
+    }
+
     &__place {
         display: inline-flex;
         align-items: center;
@@ -174,6 +183,11 @@
         &--warn {
             background: var(--tm-status-danger-soft);
             color: var(--tm-status-danger-dark);
+        }
+
+        &--instant {
+            background: var(--tm-status-success-soft);
+            color: var(--tm-status-success);
         }
     }
 
@@ -240,6 +254,14 @@
         padding: 16px 20px;
         border-left: 1px solid var(--tm-border-2);
         text-align: right;
+    }
+
+    &__old {
+        margin: 0;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-variant-numeric: tabular-nums;
+        text-decoration: line-through;
     }
 
     &__price {

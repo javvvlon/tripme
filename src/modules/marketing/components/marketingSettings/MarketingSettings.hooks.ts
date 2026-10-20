@@ -10,7 +10,7 @@ const MAX_CONTACTS = 12
 const EDITORS = ['MANAGER', 'ADMIN']
 
 export const useMarketingSettings = (
-  props: { settings: IMarketingSettings | null, tab?: 'voice' | 'managers' },
+  props: { settings: IMarketingSettings | null, tab?: 'voice' | 'visual' | 'managers' },
   open: Ref<boolean>,
   onSaved: (next: IMarketingSettings) => void,
 ) => {
@@ -19,8 +19,9 @@ export const useMarketingSettings = (
   const { failed, saved } = useToast()
   const { saveSettings } = useMarketingRepository()
 
-  const tab = ref<'voice' | 'managers'>(props.tab ?? 'voice')
+  const tab = ref<'voice' | 'visual' | 'managers'>(props.tab ?? 'voice')
   const voice = ref('')
+  const visual = ref('')
   const footer = reactive<Record<AdLanguage, string>>({ ru: '', uz: '' })
   const contacts = ref<IAdContact[]>([])
   const busy = ref(false)
@@ -29,6 +30,7 @@ export const useMarketingSettings = (
 
   const tabs = computed(() => [
     { value: 'voice', label: t('cms.marketing.settings.voice') },
+    { value: 'visual', label: t('cms.marketing.settings.visual') },
     { value: 'managers', label: t('cms.marketing.settings.managers'), count: contacts.value.length },
   ])
 
@@ -37,6 +39,7 @@ export const useMarketingSettings = (
 
     tab.value = props.tab ?? 'voice'
     voice.value = props.settings.voice
+    visual.value = props.settings.visual
     Object.assign(footer, props.settings.footer)
     contacts.value = props.settings.contacts.map(contact => ({ ...contact, telegram: contact.telegram ? `@${contact.telegram}` : '' }))
   }, { immediate: true })
@@ -44,6 +47,10 @@ export const useMarketingSettings = (
   const isDefault = computed(() => voice.value.trim() === (props.settings?.default_voice ?? '').trim())
 
   const resetVoice = () => { voice.value = props.settings?.default_voice ?? '' }
+
+  const isDefaultVisual = computed(() => visual.value.trim() === (props.settings?.default_visual ?? '').trim())
+
+  const resetVisual = () => { visual.value = props.settings?.default_visual ?? '' }
 
   const addContact = () => {
     if (contacts.value.length >= MAX_CONTACTS) return
@@ -66,6 +73,7 @@ export const useMarketingSettings = (
     try {
       const next = await saveSettings({
         voice: voice.value,
+        visual: visual.value,
         footer: { ...footer },
         contacts: contacts.value.filter(contact => contact.name.trim() || contact.telegram.trim()),
       })
@@ -82,5 +90,5 @@ export const useMarketingSettings = (
     }
   }
 
-  return { tab, tabs, voice, footer, contacts, busy, canEdit, isDefault, resetVoice, addContact, removeContact, save, max: MAX_CONTACTS }
+  return { tab, tabs, voice, visual, isDefaultVisual, resetVisual, footer, contacts, busy, canEdit, isDefault, resetVoice, addContact, removeContact, save, max: MAX_CONTACTS }
 }

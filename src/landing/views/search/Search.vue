@@ -54,6 +54,18 @@
 
                 <ActiveFilters v-if="isSearchable" v-model="filters" :facets="facets" />
 
+                <button
+                    v-if="isSearchable && (hotUseful || hotOnly)"
+                    type="button"
+                    class="tm-search-view__hot"
+                    :class="{ 'is-on': hotOnly }"
+                    :aria-pressed="hotOnly"
+                    @click="hotOnly = !hotOnly"
+                >
+                    <Icon :name="hotOnly ? 'check' : 'clock'" :size="14" :stroke="2.2" />
+                    {{ t('results.hotOnly', { n: hotCount }) }}
+                </button>
+
                 <p v-if="isSearchable" class="tm-search-view__currency">
                     {{ currencyNote }}
                 </p>
@@ -225,7 +237,7 @@ const { label } = useCatalogLabel()
 const { isStaff } = useAuthSession()
 
 const {
-  criteria, filters, sort, day,
+  criteria, filters, sort, day, hotOnly, hotCount, hotUseful,
   tours, hotels, twins, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
   remaining, hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
 } = useSearch()
@@ -425,6 +437,30 @@ useSeoMeta({
     }
 
     &.has-quote { padding-bottom: 120px; }
+
+    &__hot {
+        @include badge-type;
+
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 6px;
+        margin: 4px 0 8px;
+        padding: 8px 14px;
+        border: 1px solid var(--tm-brand-gold);
+        border-radius: radius('pill');
+        background: transparent;
+        color: var(--tm-brand-gold);
+        cursor: pointer;
+        transition: background .2s ease, color .2s ease;
+
+        &:hover { background: color-mix(in srgb, var(--tm-brand-gold) 12%, transparent); }
+
+        &.is-on {
+            background: var(--tm-brand-gold);
+            color: var(--tm-brand-on-gold);
+        }
+    }
 
     &__currency {
         margin: -6px 0 14px;

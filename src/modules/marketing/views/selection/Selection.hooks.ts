@@ -1,7 +1,7 @@
 import { useMarketingRepository } from '~/modules/marketing/repositories'
 import { AD_FORMATS, AD_LANGUAGES, AD_STYLES, CONTEXT_BACKDROPS, DEFAULT_DESIGN, MAX_BUTTONS } from '~/modules/marketing/contracts/marketing'
 import type {
-  AdBackdrop, AdButtons, AdFormat, AdLanguage, AdStyle, IAdContact, IAdCopy, IAdDesign, IAdTour, IMarketingSettings, ISelection,
+  AdBackdrop, AdButtons, AdFormat, AdLanguage, AdStyle, IAdContact, IAdCopy, IAdDesign, IAdTemplate, IAdTour, IMarketingSettings, ISavedTemplate, ISelection,
 } from '~/modules/marketing/contracts/marketing'
 import { adText, amountOf, telegramPost } from '~/modules/marketing/helpers/ad'
 import { download, fontsReady, loadImage, toBlob, toDataUrl } from '~/modules/marketing/helpers/banner/render'
@@ -20,7 +20,10 @@ const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp']
 
 export type StudioPanel = 'image' | 'post' | 'page' | 'tours'
 
-type Busy = '' | 'recheck' | 'write' | 'paint' | 'background' | 'order' | 'archive' | 'publish' | 'download'
+type Busy = '' | 'recheck' | 'write' | 'paint' | 'background' | 'order' | 'archive' | 'publish' | 'download' | 'templates'
+
+const sameTemplate = (a: IAdTemplate | null | undefined, b: IAdTemplate | null | undefined): boolean =>
+  Boolean(a && b) && JSON.stringify({ ...a, name: '' }) === JSON.stringify({ ...b, name: '' })
 
 const blankCopy = (): IAdCopy => ({ kicker: '', headline: '', intro: '', cta: '', hashtags: [], ai: false })
 
@@ -46,6 +49,8 @@ export const useSelection = () => {
 
   const { data: settingsData } = useAsyncData('cms:marketing:settings', () => repository.settings().catch(() => null), { default: () => null })
 
+  const { data: savedData } = useAsyncData('cms:marketing:templates', () => repository.templates().catch(() => [] as ISavedTemplate[]), { default: () => [] as ISavedTemplate[] })
+
   const selection = computed<ISelection | null>(() => data.value)
   const settings = computed<IMarketingSettings | null>(() => settingsData.value)
 
@@ -67,9 +72,10 @@ export const useSelection = () => {
   const image = shallowRef<HTMLImageElement | null>(null)
   const busy = ref<Busy>('')
   const generation = ref(0)
+  const templateGeneration = ref(0)
   const imageBlocked = ref('')
   const settingsOpen = ref(false)
-  const settingsTab = ref<'voice' | 'managers'>('voice')
+  const settingsTab = ref<'voice' | 'visual' | 'managers'>('voice')
   const title = ref('')
   const design = reactive<IAdDesign>({ ...DEFAULT_DESIGN })
   const draft = reactive<Record<AdLanguage, IAdCopy>>({ ru: blankCopy(), uz: blankCopy() })
@@ -312,15 +318,18 @@ export const useSelection = () => {
     perTour: translate('marketing.banner.perTour'),
   }))
 
-  const specFor = (target: AdFormat, style?: AdStyle): IBannerSpec | null => {
+  const specFor = (target: AdFormat, style?: AdStyle, template?: IAdTemplate | null): IBannerSpec | null => {
     if (!text.value || !fonts.value) return null
+
+    const chosen = style ?? (selection.value?.style ?? 'classic') as AdStyle
 
     return {
       format: target,
-      style: style ?? (selection.value?.style ?? 'classic') as AdStyle,
+      style: chosen,
       text: text.value,
       labels: labels.value,
       image: image.value,
+      template: chosen === 'custom' ? template ?? selection.value?.template ?? null : null,
     }
   }
 
@@ -343,6 +352,54 @@ export const useSelection = () => {
   const libraryPhotos = computed(() => matches.value.filter(file => !(selection.value?.backgrounds ?? []).some(item => item.url === file.url)))
 
   const thumbs = computed(() => AD_STYLES.map(style => ({ style, spec: specFor('post', style) })))
+
+  const drafts = computed(() => (selection.value?.template_drafts ?? []).map(template => ({ template, spec: specFor('post', 'custom', template) })))
+
+  const savedStyles = computed(() => savedData.value.map(item => ({ ...item, thumb: specFor('post', 'custom', item.spec) })))
+
+  const isApplied = (template: IAdTemplate) => selection.value?.style === 'custom' && sameTemplate(selection.value.template, template)
+
+  const isSaved = (template: IAdTemplate) => savedData.value.some(item => sameTemplate(item.spec, template))
+
+  function applyTemplate(template: IAdTemplate) {
+    if (!selection.value) return
+
+    set({ ...selection.value, style: 'custom', template })
+    void repository.patch(selection.value.id, { template }).then(set).catch(failed)
+  }
+
+  async function designTemplates() {
+    if (!selection.value) return
+
+    const done = await run('templates', () => repository.designTemplates(selection.value!.id), t('cms.marketing.templates.ready'))
+
+    if (done) templateGeneration.value++
+  }
+
+  async function keepTemplate(template: IAdTemplate) {
+    try {
+      savedData.value = await repository.saveTemplate(template)
+      saved(t('cms.marketing.templates.saved'))
+    }
+    catch (error) {
+      failed(error)
+    }
+  }
+
+  async function dropTemplate(item: ISavedTemplate) {
+    try {
+      savedData.value = await repository.archiveTemplate(item.id)
+    }
+    catch (error) {
+      failed(error)
+    }
+  }
+
+  const templateSteps = computed(() => [
+    t('cms.marketing.steps.templates.read'),
+    t('cms.marketing.steps.templates.compose'),
+    t('cms.marketing.steps.templates.check'),
+  ])
 
   const contacts = computed<IAdContact[]>(() => {
     const known = settings.value?.contacts ?? []
@@ -451,7 +508,7 @@ export const useSelection = () => {
     }
   }
 
-  const openSettings = (tab: 'voice' | 'managers') => {
+  const openSettings = (tab: 'voice' | 'visual' | 'managers') => {
     settingsTab.value = tab
     settingsOpen.value = true
   }
@@ -482,13 +539,14 @@ export const useSelection = () => {
     ? []
     : [
         { key: 'voice', label: t('cms.marketing.settings.voice'), icon: 'pencil' },
+        { key: 'visual', label: t('cms.marketing.settings.visual'), icon: 'image' },
         { key: 'managers', label: t('cms.marketing.settings.managers'), icon: 'users' },
         { key: 'archive', label: t('cms.marketing.archive'), icon: 'folder' },
       ])
 
   const onMore = (key: string) => {
     if (key === 'archive') void archive()
-    if (key === 'voice' || key === 'managers') openSettings(key)
+    if (key === 'voice' || key === 'visual' || key === 'managers') openSettings(key)
   }
 
   const variants = computed(() => selection.value?.variants?.[language.value] ?? [])
@@ -519,10 +577,11 @@ export const useSelection = () => {
 
   return {
     selection, settings, status, panel, format, language, busy, generation, imageBlocked, title, design, draft, hashtags,
-    spec, thumbs, post, buttons, contacts, link, telegramImage, variants, settingsOpen, settingsTab,
+    spec, thumbs, drafts, savedStyles, templateGeneration, templateSteps, post, buttons, contacts, link, telegramImage, variants, settingsOpen, settingsTab,
     panelItems, formatItems, languageItems, buttonItems, hotelOptions, moreItems, writeSteps, paintSteps, backTo,
     contextBackdrops: CONTEXT_BACKDROPS, place, sceneKind, libraryPhotos, withManagers,
     edited, tune, saveTitle, setStyle, setBackdrop, move, remove, recheck, write, pick, paint, useBackground, pickBackground,
+    applyTemplate, designTemplates, keepTemplate, dropTemplate, isApplied, isSaved,
     restore, onMore, toggleContact, setButtons, downloadOne, downloadAll, publish, copy, openSettings, setSettings, hotelOf, priceOf,
   }
 }

@@ -46,6 +46,30 @@ export function fit(ctx: Ctx, text: string, maxWidth: number, size: number, min:
   return current
 }
 
+export function fitLines(ctx: Ctx, text: string, maxWidth: number, size: number, min: number, weight: number, maxLines = 2): { size: number, lines: string[] } {
+  const single = fit(ctx, text, maxWidth, size, Math.max(min, size * 0.62), weight)
+
+  if (ctx.measureText(text).width <= maxWidth || maxLines < 2 || !text.includes(' ')) {
+    return { size: fit(ctx, text, maxWidth, single, min, weight), lines: [text] }
+  }
+
+  let current = size
+
+  while (current >= min) {
+    ctx.font = font(weight, current)
+
+    const lines = wrap(ctx, text, maxWidth, maxLines)
+
+    if (lines.join(' ') === text && lines.every(line => ctx.measureText(line).width <= maxWidth)) return { size: current, lines }
+
+    current -= 2
+  }
+
+  ctx.font = font(weight, min)
+
+  return { size: min, lines: wrap(ctx, text, maxWidth, maxLines) }
+}
+
 export function clip(ctx: Ctx, text: string, maxWidth: number): string {
   if (ctx.measureText(text).width <= maxWidth) return text
 

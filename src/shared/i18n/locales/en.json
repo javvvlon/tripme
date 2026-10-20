@@ -291,7 +291,11 @@
       "variants": "{count} options | {count} option | {count} options | {count} options",
       "operators": "{count} operators | {count} operator | {count} operators | {count} operators"
     },
-    "twins": "Same package at other operators"
+    "twins": "Same package at other operators",
+    "hot": "Hot",
+    "hotOnly": "Hot deals · {n}",
+    "instantConfirm": "Instant confirmation",
+    "bestPrice": "Operator's best price"
   },
   "auth": {
     "mode": "Sign in or sign up",
@@ -1742,7 +1746,8 @@
       "styles": {
         "classic": "Classic",
         "board": "Board",
-        "ticket": "Ticket"
+        "ticket": "Ticket",
+        "custom": "AI template"
       },
       "formats": {
         "story": "Story 9:16",
@@ -1854,6 +1859,13 @@
           "scene": "Choosing a scene: {place}",
           "draw": "Painting without text or logos",
           "place": "Fitting it to the layout"
+        },
+        "templates": {
+          "title": "AI is designing",
+          "note": "Usually a couple of seconds",
+          "read": "Reading the TripMe visual style",
+          "compose": "Composing 4 different layouts",
+          "check": "Checking brand fonts and colours"
         }
       },
       "settings": {
@@ -1868,7 +1880,9 @@
         "reset": "Restore default",
         "saved": "Settings saved",
         "close": "Close",
-        "footer": "Agency signature for posts"
+        "footer": "Agency signature for posts",
+        "visual": "Visual style",
+        "visualHint": "The AI reads this when it designs templates"
       },
       "postAi": "AI post text",
       "postVersions": "Post text versions",
@@ -1881,6 +1895,15 @@
         "tropic": "Tropics",
         "atoll": "Water villas",
         "mountains": "Mountains"
+      },
+      "templates": {
+        "generate": "Generate templates",
+        "designing": "AI is designing templates",
+        "fresh": "New from AI",
+        "mine": "My styles",
+        "keep": "Save to My styles",
+        "saved": "Template saved to My styles",
+        "ready": "Templates are ready"
       }
     }
   },
@@ -2531,7 +2554,18 @@
       "price": "Price: from {uzs} ({money}) per person",
       "priceForeign": "Price: from {money} per person",
       "departure": "Departing Tashkent • {when}, {stay}",
-      "departureAny": "Departing {when}, {stay}"
+      "departureAny": "Departing {when}, {stay}",
+      "departureHot": "Departing Tashkent {soon} • {when}, {stay}",
+      "departureHotAny": "Departing {soon} • {when}, {stay}"
+    },
+    "hot": {
+      "badge": "Hot deal",
+      "today": "Departs today",
+      "tomorrow": "Departs tomorrow",
+      "inDays": "Departs today | Departs in {n} day | Departs in {n} days | Departs in {n} days",
+      "soonToday": "today",
+      "soonTomorrow": "tomorrow",
+      "soonIn": "today | in {n} day | in {n} days | in {n} days"
     }
   }
 }

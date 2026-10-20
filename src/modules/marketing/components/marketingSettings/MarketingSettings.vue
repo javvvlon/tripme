@@ -25,6 +25,20 @@
                 <span class="tm-ad-settings__count">{{ voice.length }} / 4000</span>
             </div>
 
+            <div v-else-if="tab === 'visual'" class="tm-ad-settings__pane">
+                <div class="tm-ad-settings__voice-head">
+                    <span class="tm-ad-settings__hint">{{ t('cms.marketing.settings.visualHint') }}</span>
+                    <Button v-if="canEdit && !isDefaultVisual" size="sm" variant="ghost" icon="undo" @click="resetVisual">{{ t('cms.marketing.settings.reset') }}</Button>
+                </div>
+                <textarea
+                    v-model="visual"
+                    class="tm-ad-settings__voice"
+                    rows="12" maxlength="4000"
+                    :readonly="!canEdit"
+                    :aria-label="t('cms.marketing.settings.visual')"
+                />
+            </div>
+
             <div v-else class="tm-ad-settings__pane">
                 <span class="tm-ad-settings__hint">{{ t('cms.marketing.settings.managersHint') }}</span>
 
@@ -52,7 +66,7 @@ import Tabs from '~/shared/components/tabs/Tabs.vue'
 import { useMarketingSettings } from './MarketingSettings.hooks'
 import type { IMarketingSettings } from '../../contracts/marketing'
 
-const props = defineProps<{ settings: IMarketingSettings | null, tab?: 'voice' | 'managers' }>()
+const props = defineProps<{ settings: IMarketingSettings | null, tab?: 'voice' | 'visual' | 'managers' }>()
 
 const emit = defineEmits<{ saved: [settings: IMarketingSettings] }>()
 
@@ -61,7 +75,7 @@ const open = defineModel<boolean>({ default: false })
 const { t } = useI18n()
 
 const {
-    tab, tabs, voice, footer, contacts, busy, canEdit, isDefault, resetVoice, addContact, removeContact, save, max,
+    tab, tabs, voice, visual, isDefaultVisual, resetVisual, footer, contacts, busy, canEdit, isDefault, resetVoice, addContact, removeContact, save, max,
 } = useMarketingSettings(props, open, next => emit('saved', next))
 </script>
 

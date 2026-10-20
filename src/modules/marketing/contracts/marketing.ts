@@ -5,7 +5,49 @@ import type { ILeadTrip } from '~/modules/leads/contracts/leads'
  */
 export const AD_STYLES = ['classic', 'board', 'ticket'] as const
 
-export type AdStyle = typeof AD_STYLES[number]
+export type AdStyle = typeof AD_STYLES[number] | 'custom'
+
+export const TEMPLATE_OPTIONS = {
+  layout: ['stack', 'poster', 'split', 'card'],
+  align: ['left', 'center'],
+  headline: ['s', 'm', 'l', 'xl'],
+  case: ['upper', 'title'],
+  kicker: ['pill', 'text', 'none'],
+  list: ['rows', 'cards', 'minimal'],
+  price: ['inline', 'hero'],
+  accent: ['none', 'line', 'frame', 'corner'],
+  overlay: ['bottom', 'full', 'top'],
+  spacing: ['tight', 'normal', 'airy'],
+  cta: ['pill', 'text', 'none'],
+} as const
+
+type TemplateOptions = typeof TEMPLATE_OPTIONS
+
+export type IAdTemplate = { name: string, dim: number } & { [K in keyof TemplateOptions]: TemplateOptions[K][number] }
+
+export const DEFAULT_TEMPLATE: IAdTemplate = {
+  name: 'TripMe',
+  layout: 'stack',
+  align: 'left',
+  headline: 'l',
+  case: 'upper',
+  kicker: 'pill',
+  list: 'rows',
+  price: 'inline',
+  accent: 'none',
+  overlay: 'bottom',
+  dim: 55,
+  spacing: 'normal',
+  cta: 'pill',
+}
+
+export interface ISavedTemplate {
+  id: string
+  name: string
+  spec: IAdTemplate
+  author: string
+  created_at: string
+}
 
 export const AD_LANGUAGES = ['ru', 'uz'] as const
 
@@ -100,6 +142,9 @@ export interface IAdPublication {
 }
 
 export interface IMarketingSettings {
+  visual: string
+  default_visual: string
+  custom_visual: boolean
   footer: Record<AdLanguage, string>
   default_footer: Record<AdLanguage, string>
   voice: string
@@ -141,6 +186,8 @@ export interface ISelection {
   backgrounds: IAdBackground[]
   contacts: string[]
   published: IAdPublication[]
+  template: IAdTemplate | null
+  template_drafts: IAdTemplate[]
   checked_at: string | null
   created_at: string
   updated_at: string
@@ -184,6 +231,7 @@ export interface ISelectionPatch {
   pick?: number
   design?: Partial<IAdDesign>
   contacts?: string[]
+  template?: IAdTemplate | null
 }
 
 export interface IPublishDraft {
