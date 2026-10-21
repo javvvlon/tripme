@@ -1,0 +1,291 @@
+@use '../shared/styles/utils' as *;
+
+.tm-jira {
+    --tm-jira-line: rgba(11, 25, 44, .12);
+    --tm-jira-hover: rgba(11, 25, 44, .06);
+    --tm-jira-subtle: #44546F;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #FFFFFF;
+    color: var(--tm-ink-1);
+
+    &__top {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 56px;
+        padding: env(safe-area-inset-top, 0px) 20px 0;
+        border-bottom: 1px solid var(--tm-jira-line);
+        background: #FFFFFF;
+    }
+
+    &__brand {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        gap: 8px;
+        margin-right: 12px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        color: var(--tm-ink-1);
+        text-decoration: none;
+
+        &:hover { background: var(--tm-jira-hover); }
+
+        .tm-logo { flex: none; }
+    }
+
+    &__brand-name {
+        font-family: var(--tm-font-display-primary);
+        font-size: size(16);
+        font-weight: 700;
+        letter-spacing: -.01em;
+        white-space: nowrap;
+
+        span {
+            color: var(--tm-jira-subtle);
+            font-weight: 600;
+        }
+    }
+
+    &__nav {
+        display: flex;
+        align-self: stretch;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    &__link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: var(--tm-jira-subtle);
+        font-size: size(14);
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: 4px;
+            bottom: 0;
+            left: 4px;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+            background: transparent;
+        }
+
+        &:hover .tm-jira__link-inner { background: var(--tm-jira-hover); }
+
+        &.is-active {
+            color: #0B192C;
+
+            &::after { background: #0B192C; }
+        }
+
+        &:focus-visible {
+            outline: none;
+
+            .tm-jira__link-inner { box-shadow: 0 0 0 2px #0B192C; }
+        }
+    }
+
+    &__link-inner {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: background .15s ease;
+    }
+
+    &__count {
+        min-width: 20px;
+        padding: 0 6px;
+        border-radius: 10px;
+        background: #E4E7EC;
+        color: var(--tm-ink-1);
+        font-size: size(11);
+        font-weight: 700;
+        line-height: 18px;
+        text-align: center;
+    }
+
+    &__create {
+        flex: none;
+        margin-left: 10px;
+    }
+
+    &__user {
+        position: relative;
+        margin-left: auto;
+    }
+
+    &__user-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 240px;
+        padding: 4px 8px 4px 4px;
+        border: 0;
+        border-radius: 20px;
+        background: transparent;
+        color: var(--tm-ink-1);
+        font: inherit;
+        cursor: pointer;
+
+        &:hover,
+        &[aria-expanded='true'] { background: var(--tm-jira-hover); }
+
+        &:focus-visible {
+            outline: 2px solid #0B192C;
+            outline-offset: 1px;
+        }
+    }
+
+    &__user-name {
+        overflow: hidden;
+        font-size: size(14);
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__user-caret { flex: none; color: var(--tm-jira-subtle); }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        z-index: 60;
+        width: 280px;
+        padding: 6px;
+        border-radius: 10px;
+        background: #FFFFFF;
+        box-shadow: 0 8px 12px rgba(11, 25, 44, .15), 0 0 1px rgba(11, 25, 44, .31);
+    }
+
+    &__menu-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 10px 12px;
+        border-bottom: 1px solid var(--tm-jira-line);
+        margin-bottom: 6px;
+    }
+
+    &__menu-who {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+
+        strong {
+            font-size: size(14);
+            font-weight: 700;
+        }
+
+        span {
+            overflow: hidden;
+            color: var(--tm-jira-subtle);
+            font-size: size(12);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &__menu-role {
+        align-self: flex-start;
+        margin-top: 4px;
+        padding: 0 6px;
+        border-radius: 4px;
+        background: #E4E7EC;
+        font-size: size(11) !important;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 18px;
+        text-transform: uppercase;
+    }
+
+    &__menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 8px 10px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--tm-ink-1);
+        font: inherit;
+        font-size: size(14);
+        text-align: left;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+            outline: none;
+            background: var(--tm-jira-hover);
+        }
+    }
+
+    &__main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+        padding: 20px 32px 48px;
+    }
+}
+
+@media #{$until-lg} {
+    .tm-jira {
+        &__top {
+            flex-wrap: wrap;
+            height: auto;
+            padding-inline: 12px;
+            row-gap: 0;
+        }
+
+        &__brand {
+            height: 52px;
+            margin-right: 0;
+        }
+
+        &__user {
+            order: 2;
+            margin-left: 4px;
+        }
+
+        &__create {
+            order: 1;
+            margin-left: auto;
+        }
+
+        &__user-name,
+        &__user-caret { display: none; }
+
+        &__user-button { padding: 2px; }
+
+        &__nav {
+            order: 3;
+            width: calc(100% + 24px);
+            height: 44px;
+            margin-inline: -12px;
+            padding-inline: 8px;
+            overflow-x: auto;
+            border-top: 1px solid var(--tm-jira-line);
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar { display: none; }
+        }
+
+        &__main { padding: 16px 16px 40px; }
+    }
+}

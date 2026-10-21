@@ -515,7 +515,7 @@ html.is-cms .tm-travellers--field {
 
 html.is-cms .tm-more-menu > .tm-icon-button svg { stroke-width: 3.2; }
 
-html.is-cms .tm-select__control:is(.is-new, .is-in_progress, .is-quote_sent, .is-won, .is-rejected, .is-draft, .is-requested, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed, .is-cancelled) {
+html.is-cms .tm-select__control:is(.is-new, .is-in_progress, .is-quote_sent, .is-won, .is-rejected, .is-draft, .is-requested, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed, .is-cancelled, .is-task-backlog, .is-task-todo, .is-task-in_progress, .is-task-review, .is-task-done) {
     border-color: transparent;
     border-radius: 999px;
     background: var(--tm-hig-fill);
@@ -531,12 +531,17 @@ html.is-cms .tm-select__control:is(.is-new, .is-in_progress, .is-quote_sent, .is
         color: var(--tm-surface-1);
     }
 
-    &:is(.is-in_progress, .is-quote_sent, .is-requested) {
+    &:is(.is-in_progress, .is-quote_sent, .is-requested, .is-task-in_progress) {
         background: var(--tm-cms-accent-soft);
         color: var(--tm-cms-accent);
     }
 
-    &:is(.is-won, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed) {
+    &.is-task-review {
+        background: color-mix(in srgb, var(--tm-status-warning) 22%, var(--tm-surface-1));
+        color: var(--tm-ink-1);
+    }
+
+    &:is(.is-won, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed, .is-task-done) {
         background: var(--tm-status-success-soft);
         color: var(--tm-status-success-ink);
     }

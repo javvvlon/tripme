@@ -4,4 +4,5 @@
 export interface ISideDrawerProps {
   title: string
   subtitle?: string
+  size?: 'md' | 'lg'
 }

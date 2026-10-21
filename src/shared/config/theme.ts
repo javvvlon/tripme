@@ -11,7 +11,7 @@ export const THEME_KEY = 'tm_theme'
 
 export const THEME_COLOR: Record<Theme, string> = { dark: '#0A0A0A', light: '#F8F9FA' }
 
-export const LIGHT_ONLY_LAYOUTS = ['cms']
+export const LIGHT_ONLY_LAYOUTS = ['cms', 'tasks']
 
 export const LIGHT_ONLY_PATH = '^/[a-z]{2}/app(?:/(?!content/frame)|$)'
 

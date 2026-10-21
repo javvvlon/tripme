@@ -1,0 +1,425 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-issue {
+    --tm-issue-line: rgba(11, 25, 44, .12);
+    --tm-issue-subtle: #44546F;
+    --tm-issue-hover: #F1F2F4;
+
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    &__crumbs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        color: var(--tm-issue-subtle);
+        font-size: size(14);
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover { text-decoration: underline; }
+        }
+    }
+
+    &__crumb-key {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+    }
+
+    &__type {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        background: #0B192C;
+        color: #FFFFFF;
+    }
+
+    &__missing {
+        margin: 40px 0;
+        color: var(--tm-issue-subtle);
+    }
+
+    &__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        align-items: start;
+        gap: 40px;
+        max-width: 1280px;
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        min-width: 0;
+    }
+
+    &__title {
+        width: 100%;
+        margin: 0 0 0 -8px;
+        padding: 4px 8px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--tm-ink-1);
+        font-family: var(--tm-font-display-primary);
+        font-size: size(24);
+        font-weight: 700;
+        letter-spacing: -.01em;
+        transition: background .15s ease, box-shadow .15s ease;
+
+        &:hover:not(:disabled) { background: var(--tm-issue-hover); }
+
+        &:focus {
+            background: #FFFFFF;
+            box-shadow: inset 0 0 0 2px #0B192C;
+            outline: none;
+        }
+
+        &:disabled { color: var(--tm-ink-1); }
+    }
+
+    &__archived {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: #FFF7D6;
+        color: #533F04;
+        font-size: size(14);
+        font-weight: 600;
+
+        .tm-button { margin-left: auto; }
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__heading {
+        margin: 0;
+        font-size: size(16);
+        font-weight: 700;
+    }
+
+    &__description {
+        margin-inline: -10px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        cursor: text;
+        transition: background .15s ease;
+
+        &:hover:not(.is-locked) { background: var(--tm-issue-hover); }
+
+        &:focus-visible {
+            outline: 2px solid #0B192C;
+            outline-offset: 0;
+        }
+
+        &.is-locked { cursor: default; }
+
+        .tm-rich-text {
+            max-width: none;
+            font-size: size(15);
+        }
+    }
+
+    &__placeholder {
+        margin: 0;
+        color: #626F86;
+        font-size: size(15);
+    }
+
+    &__editing,
+    &__composer-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    &__editor {
+        background: #FFFFFF;
+
+        .tm-rte__bar { background: #F7F8F9; }
+
+        .tm-rte__content .ProseMirror {
+            min-height: 200px;
+            padding: 14px 16px 20px;
+            font-size: size(15);
+        }
+
+        &.is-comment .tm-rte__content .ProseMirror { min-height: 96px; }
+    }
+
+    &__edit-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    &__tabs {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+    }
+
+    &__tabs-label {
+        margin-right: 6px;
+        color: var(--tm-issue-subtle);
+        font-size: size(13);
+    }
+
+    &__tab {
+        height: 30px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--tm-issue-hover);
+        color: var(--tm-ink-1);
+        font: inherit;
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { background: #E4E7EC; }
+
+        &.is-active {
+            background: #0B192C;
+            color: #FFFFFF;
+        }
+    }
+
+    &__composer {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-top: 4px;
+
+        > .tm-task-avatar { margin-top: 4px; }
+    }
+
+    &__composer-body { flex: 1; }
+
+    &__composer-stub {
+        flex: 1;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid rgba(11, 25, 44, .2);
+        border-radius: 6px;
+        background: #FFFFFF;
+        color: #626F86;
+        font: inherit;
+        font-size: size(14);
+        text-align: left;
+        cursor: text;
+
+        &:hover { background: #F7F8F9; }
+    }
+
+    &__feed {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin: 6px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__event {
+        display: flex;
+        gap: 12px;
+    }
+
+    &__event-main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    &__event-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 8px;
+        margin: 4px 0 0;
+        font-size: size(14);
+
+        strong { font-weight: 700; }
+
+        time {
+            color: var(--tm-issue-subtle);
+            font-size: size(13);
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    &__comment {
+        max-width: none;
+        font-size: size(14);
+        overflow-wrap: anywhere;
+    }
+
+    &__change {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        color: var(--tm-issue-subtle);
+        font-size: size(14);
+    }
+
+    &__quiet {
+        color: #626F86;
+        font-size: size(14);
+    }
+
+    &__side {
+        position: sticky;
+        top: 76px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__status { min-width: 160px; }
+
+    &__details {
+        border: 1px solid var(--tm-issue-line);
+        border-radius: 8px;
+    }
+
+    &__details-title {
+        margin: 0;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--tm-issue-line);
+        font-size: size(14);
+        font-weight: 700;
+    }
+
+    &__facts {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0;
+        padding: 12px 16px 16px;
+    }
+
+    &__fact {
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+        min-height: 40px;
+
+        dt {
+            color: var(--tm-issue-subtle);
+            font-size: size(14);
+            font-weight: 600;
+        }
+
+        dd {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            min-width: 0;
+            margin: 0;
+            font-size: size(14);
+
+            > .tm-combobox,
+            > .tm-input { width: 100%; }
+        }
+
+        .tm-input__label,
+        .tm-input__head,
+        .tm-combobox__label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+    }
+
+    &__person {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    &__assign-me {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: #0B3A75;
+        font: inherit;
+        font-size: size(13);
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover { text-decoration: underline; }
+    }
+
+    dd.tm-issue__priority {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+
+        .tm-select { flex: 1; }
+    }
+
+    &__due.is-late input {
+        color: #AE2E24;
+        font-weight: 600;
+    }
+
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 0;
+        color: #626F86;
+        font-size: size(12);
+    }
+}
+
+@media #{$until-lg} {
+    .tm-issue {
+        &__layout {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 24px;
+        }
+
+        &__side {
+            position: static;
+            order: -1;
+        }
+
+        &__title { font-size: size(21); }
+    }
+}

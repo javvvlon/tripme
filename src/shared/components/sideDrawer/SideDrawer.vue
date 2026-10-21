@@ -2,7 +2,7 @@
     <Teleport to="body">
         <Transition name="tm-side-drawer">
             <div v-if="open" class="tm-side-drawer" role="presentation" @mousedown.self="open = false">
-                <aside class="tm-side-drawer__panel" role="dialog" aria-modal="true" :aria-labelledby="`${id}-title`">
+                <aside class="tm-side-drawer__panel" :class="`is-${size ?? 'md'}`" role="dialog" aria-modal="true" :aria-labelledby="`${id}-title`">
                     <header class="tm-side-drawer__head">
                         <div class="tm-side-drawer__heading">
                             <h2 :id="`${id}-title`" class="tm-side-drawer__title">{{ title }}</h2>
@@ -16,6 +16,10 @@
                     <div class="tm-side-drawer__body">
                         <slot />
                     </div>
+
+                    <footer v-if="$slots.footer" class="tm-side-drawer__foot">
+                        <slot name="footer" />
+                    </footer>
                 </aside>
             </div>
         </Transition>

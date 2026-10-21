@@ -398,7 +398,8 @@
       "team": "Jamoa",
       "media": "Mediateka",
       "selections": "To‘plamlar",
-      "tripmeAi": "TripMe AI"
+      "tripmeAi": "TripMe AI",
+      "tasks": "Vazifalar"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -1650,7 +1651,8 @@
         "unanswered_leads": "lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda",
         "unread_messages": "o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar",
         "requested_orders": "buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda",
-        "draft_orders": "buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi"
+        "draft_orders": "buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi",
+        "my_tasks": "ishdagi vazifalarim | ishdagi vazifam | ishdagi vazifalarim | ishdagi vazifalarim"
       }
     },
     "profile": {
@@ -2078,6 +2080,117 @@
         "pick": "Qanday yordam berishni tanlayapman…",
         "work": "Javob tayyorlayapman…"
       }
+    },
+    "tasks": {
+      "views": {
+        "board": "Doska",
+        "list": "Ro'yxat",
+        "mine": "Mening vazifalarim",
+        "archive": "Arxiv"
+      },
+      "search": "Vazifalarni qidirish",
+      "searchPlaceholder": "Nomi yoki TM-… raqami",
+      "create": "Yaratish",
+      "status": {
+        "backlog": "Bekklog",
+        "todo": "Navbatda",
+        "in_progress": "Jarayonda",
+        "review": "Tekshiruvda",
+        "done": "Tayyor"
+      },
+      "priority": {
+        "urgent": "Shoshilinch",
+        "high": "Yuqori",
+        "medium": "O‘rta",
+        "low": "Past"
+      },
+      "fields": {
+        "title": "Nima qilish kerak",
+        "titlePlaceholder": "Masalan: operatorda bronni tasdiqlash",
+        "description": "Tavsif",
+        "descriptionPlaceholder": "Tafsilotlar, havolalar, kelishuvlar. Sarlavha, ro'yxat va havolalar ishlaydi",
+        "status": "Holat",
+        "priority": "Muhimlik",
+        "assignee": "Ijrochi",
+        "due": "Muddat",
+        "labels": "Belgilar",
+        "labelsHint": "Vergul bilan: vizalar, sayt",
+        "author": "Muallif",
+        "created": "Yaratilgan",
+        "updated": "Yangilangan"
+      },
+      "filters": {
+        "unassigned": "Ijrochisiz",
+        "people": "Ijrochilar",
+        "late": "Muddati o'tganlar",
+        "clear": "Filtrlarni tozalash"
+      },
+      "columns": {
+        "key": "Raqam",
+        "task": "Vazifa",
+        "status": "Holat",
+        "priority": "Muhimlik",
+        "assignee": "Ijrochi",
+        "due": "Muddat",
+        "updated": "Yangilangan"
+      },
+      "empty": "Hozircha vazifalar yo‘q — birinchisini yarating",
+      "noMatches": "Hech narsa topilmadi",
+      "unassigned": "Tayinlanmagan",
+      "noDue": "muddatsiz",
+      "missing": "Vazifa topilmadi yoki mavjud emas",
+      "activity": "Faollik",
+      "commentPlaceholder": "Izoh… ⌘ + Enter — saqlash",
+      "archive": "Arxivga",
+      "restore": "Tiklash",
+      "archived": "Vazifa arxivda",
+      "system": "TripMe",
+      "events": {
+        "created": "Vazifa «{status}» ustunida yaratildi",
+        "status": "Holat: {from} → {to}",
+        "assigned": "Ijrochi: {from} → {to}",
+        "priority": "Muhimlik: {from} → {to}",
+        "due": "Muddat: {from} → {to}",
+        "title": "Yangi nom: {to}",
+        "archived": "Vazifa arxivda",
+        "restored": "Vazifa tiklandi"
+      },
+      "app": "Vazifalar",
+      "heading": {
+        "board": "Jamoa doskasi",
+        "list": "Barcha vazifalar",
+        "mine": "Mening vazifalarim",
+        "archive": "Arxiv"
+      },
+      "createdKey": "{key} vazifasi yaratildi",
+      "composer": {
+        "title": "Yangi vazifa",
+        "subtitle": "Asosiysi — nomi, qolganini keyin to'ldirish mumkin",
+        "you": "Siz",
+        "another": "Yana yaratish",
+        "shortcut": "Yangi vazifa — C tugmasi"
+      },
+      "addHere": "Vazifa yaratish",
+      "stats": {
+        "open": "sizda ishda",
+        "overdue": "muddati o'tgan",
+        "due_today": "bugunga",
+        "review": "tekshiruvda"
+      },
+      "emptyArchive": "Arxiv bo'sh",
+      "emptyMine": "Hozircha sizda vazifa yo'q",
+      "editDescription": "Tavsifni o'zgartirish",
+      "addDescription": "Tavsif qo'shing…",
+      "tabs": {
+        "show": "Ko'rsatish:",
+        "comments": "Izohlar",
+        "history": "Tarix",
+        "all": "Hammasi"
+      },
+      "addComment": "Izoh qo'shish…",
+      "noComments": "Hozircha bo'sh",
+      "details": "Ma'lumotlar",
+      "assignMe": "Menga biriktirish"
     }
   },
   "richEditor": {
