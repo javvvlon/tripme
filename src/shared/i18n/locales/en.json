@@ -2613,6 +2613,38 @@
           "text": "Turn on data for the eSIM — the internet starts working."
         }
       }
+    },
+    "affiliate": {
+      "title": "Buy with {partner}",
+      "code": "Promo code",
+      "copy": "Copy",
+      "copied": "Copied",
+      "note": "−{discount}% off your first {partner} purchase",
+      "cta": "Buy with {discount}% off",
+      "approx": "≈ {price}",
+      "legal": "eSIMs are sold and activated by our partner {partner}: payment, setup and support happen in their app.",
+      "steps": {
+        "1": {
+          "title": "Copy the promo code",
+          "text": "{code} gives −{discount}% on your first purchase."
+        },
+        "2": {
+          "title": "Open {partner}",
+          "text": "The button opens their site, or the App Store / Google Play on a phone."
+        },
+        "3": {
+          "title": "Pick the same plan",
+          "text": "Find the country, choose the plan and enter the code at checkout. The QR code arrives right away."
+        }
+      }
+    },
+    "tripOffer": {
+      "title": "eSIM for the trip",
+      "text": "{country}: mobile data from the first minute — from {price}.",
+      "promo": "−{discount}% off the first purchase with code {code}",
+      "cta": "Choose an eSIM",
+      "copy": "Copy for the client",
+      "message": "eSIM for your trip ({country}): {url} — promo code {code} gives −{discount}% on the first purchase."
     }
   },
   "messages": {

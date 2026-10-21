@@ -40,14 +40,53 @@
                     <li v-for="step in 3" :key="step">
                         <span class="tm-esim-country__step-no">{{ step }}</span>
                         <span>
-                            <strong>{{ t(`${stepsKey}.${step}.title`) }}</strong>
-                            {{ t(`${stepsKey}.${step}.text`) }}
+                            <strong>{{ t(`${stepsKey}.${step}.title`, stepParams) }}</strong>
+                            {{ t(`${stepsKey}.${step}.text`, stepParams) }}
                         </span>
                     </li>
                 </ol>
             </section>
 
-            <aside v-if="catalog" class="tm-esim-checkout">
+            <aside v-if="affiliate" class="tm-esim-checkout is-affiliate">
+                <h2 class="tm-esim-checkout__title">{{ t('esim.affiliate.title', { partner: affiliate.partner }) }}</h2>
+
+                <div v-if="plan" class="tm-esim-checkout__plan">
+                    <span>{{ name }} · {{ plan.volume }} · {{ plan.period }}</span>
+                </div>
+
+                <div v-if="plan" class="tm-esim-checkout__total">
+                    <span>{{ t('esim.total') }}</span>
+                    <strong>{{ plan.price }}</strong>
+                </div>
+
+                <p v-if="plan" class="tm-esim-checkout__approx">{{ plan.approx }}</p>
+
+                <div class="tm-esim-promo">
+                    <span class="tm-esim-promo__text">
+                        <span class="tm-esim-promo__label">{{ t('esim.affiliate.code') }}</span>
+                        <strong class="tm-esim-promo__code">{{ affiliate.code }}</strong>
+                    </span>
+
+                    <button type="button" class="tm-esim-promo__copy" @click="copyCode">
+                        <Icon :name="copied ? 'check' : 'copy'" :size="15" />
+                        {{ copied ? t('esim.affiliate.copied') : t('esim.affiliate.copy') }}
+                    </button>
+                </div>
+
+                <p class="tm-esim-promo__note">{{ t('esim.affiliate.note', { discount: affiliate.discount_percent, partner: affiliate.partner }) }}</p>
+
+                <Button
+                    :href="affiliate.url" target="_blank" rel="noopener sponsored"
+                    size="lg" icon="arrow-up-right" class="tm-esim-checkout__pay"
+                    @click="copyCode"
+                >
+                    {{ t('esim.affiliate.cta', { discount: affiliate.discount_percent }) }}
+                </Button>
+
+                <p class="tm-esim-checkout__legal">{{ t('esim.affiliate.legal', { partner: affiliate.partner }) }}</p>
+            </aside>
+
+            <aside v-else-if="catalog" class="tm-esim-checkout">
                 <h2 class="tm-esim-checkout__title">{{ t('esim.request.title') }}</h2>
 
                 <div v-if="plan" class="tm-esim-checkout__plan">
@@ -137,11 +176,19 @@ const localePath = useLocalePath()
 
 const {
     name, flag, networks, cards, plan, selected, status, error,
-    catalog, trip, summary, asking, requesting, requested, request,
+    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
 } = useEsimCountry()
 
-const stepsKey = computed(() => (catalog.value ? 'esim.request.steps' : 'esim.steps'))
+const stepsKey = computed(() => {
+    if (affiliate.value) return 'esim.affiliate.steps'
+
+    return catalog.value ? 'esim.request.steps' : 'esim.steps'
+})
+
+const stepParams = computed(() => (affiliate.value
+    ? { code: affiliate.value.code, discount: affiliate.value.discount_percent, partner: affiliate.value.partner }
+    : {}))
 
 useSeoMeta({
     title: () => t('esim.seo.countryTitle', { country: name.value }),

@@ -369,6 +369,7 @@ import { offerLinks } from '~/modules/leads/helpers/offer'
 import ServiceMenu from '~/modules/leads/components/serviceMenu/ServiceMenu.vue'
 import EsimPicker from '~/modules/esim/components/esimPicker/EsimPicker.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
+import { useEsimMode } from '~/modules/esim/hooks/use-esim-mode'
 import type { ServiceChoice } from '~/modules/leads/components/serviceMenu/ServiceMenu.d'
 import { formatDateRange, formatMoney } from '~/shared/utils/format'
 import CustomerPoints from '~/modules/points/components/customerPoints/CustomerPoints.vue'
@@ -409,7 +410,9 @@ const isEsim = computed(() => lead.value?.trip.product === 'esim')
 
 const { data: esimCountries } = useEsimCountries()
 
-const esimAvailable = computed(() => esimCountries.value.length > 0)
+const { affiliate: esimAffiliate } = useEsimMode()
+
+const esimAvailable = computed(() => esimCountries.value.length > 0 && !esimAffiliate.value)
 
 const chooseService = (choice: ServiceChoice) => {
     if (choice === 'esim') pickingEsim.value = true

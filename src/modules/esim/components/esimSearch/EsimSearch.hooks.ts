@@ -1,5 +1,6 @@
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
-import { countryName, flagOf, sumOf } from '~/modules/esim/helpers/esim'
+import { useEsimMode } from '~/modules/esim/hooks/use-esim-mode'
+import { countryName, flagOf, sumOf, usdOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
 
 /**
@@ -9,6 +10,7 @@ export const useEsimSearch = () => {
   const { t, locale } = useI18n()
   const localePath = useLocalePath()
   const { data, status } = useEsimCountries()
+  const { affiliate } = useEsimMode()
 
   const country = ref('')
 
@@ -16,7 +18,7 @@ export const useEsimSearch = () => {
     .map(entry => ({
       value: entry.code,
       label: `${flagOf(entry.code)}  ${countryName(entry.code, locale.value)}`,
-      hint: t('esim.from', { price: sumOf(entry.from_uzs, locale.value, t('esim.sum')) }),
+      hint: t('esim.from', { price: affiliate.value ? usdOf(entry.from_usd, locale.value) : sumOf(entry.from_uzs, locale.value, t('esim.sum')) }),
       group: POPULAR_ESIM_COUNTRIES.includes(entry.code) ? t('esim.popular') : t('esim.allCountries'),
       popular: POPULAR_ESIM_COUNTRIES.indexOf(entry.code),
     }))

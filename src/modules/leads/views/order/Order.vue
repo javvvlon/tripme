@@ -96,6 +96,8 @@
                     @issue="issueService"
                 />
 
+                <EsimOffer v-if="TRIP_STATUSES.includes(order.status)" :country="order.country" staff />
+
                 <section v-if="links.search || links.booking || links.hotel" class="tm-cms-order__group">
                     <header class="tm-cms-order__group-head">
                         <h2>{{ t('cms.leads.sections.offer') }}</h2>
@@ -344,6 +346,7 @@ import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { PASSPORT_MARGIN_MONTHS } from '~/modules/leads/contracts/leads'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import OrderItems from '~/modules/leads/components/orderItems/OrderItems.vue'
+import EsimOffer from '~/modules/esim/components/esimOffer/EsimOffer.vue'
 import ChatButton from '~/modules/messages/components/chatButton/ChatButton.vue'
 import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
 import OrderChecklist from '~/modules/leads/components/orderChecklist/OrderChecklist.vue'
@@ -386,6 +389,8 @@ const { ask } = useConfirm()
 
 const route = useRoute()
 const router = useRouter()
+
+const TRIP_STATUSES: string[] = ['confirmed', 'paid', 'issued', 'travelling']
 
 const TABS = ['services', 'finance', 'details', 'documents', 'history'] as const
 type OrderTab = typeof TABS[number]

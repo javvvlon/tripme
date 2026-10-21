@@ -2613,6 +2613,38 @@
           "text": "eSIM uchun mobil internetni yoqing — internet ishlaydi."
         }
       }
+    },
+    "affiliate": {
+      "title": "{partner} orqali sotib olish",
+      "code": "Promokod",
+      "copy": "Nusxalash",
+      "copied": "Nusxalandi",
+      "note": "{partner} da birinchi xarid uchun −{discount}%",
+      "cta": "{discount}% chegirma bilan sotib olish",
+      "approx": "≈ {price}",
+      "legal": "eSIM’ni hamkorimiz {partner} sotadi va faollashtiradi: to‘lov, o‘rnatish va yordam — uning ilovasida.",
+      "steps": {
+        "1": {
+          "title": "Promokodni nusxalang",
+          "text": "{code} kodi birinchi xarid uchun −{discount}% beradi."
+        },
+        "2": {
+          "title": "{partner} ni oching",
+          "text": "Tugma saytga, telefondan esa App Store yoki Google Play’ga olib boradi."
+        },
+        "3": {
+          "title": "Xuddi shu tarifni tanlang",
+          "text": "Davlatni toping, tarifni tanlang va to‘lovda kodni kiriting. QR-kod darhol keladi."
+        }
+      }
+    },
+    "tripOffer": {
+      "title": "Sayohat uchun eSIM",
+      "text": "{country}: birinchi daqiqadan internet — {price} dan.",
+      "promo": "{code} kodi bilan birinchi xaridga −{discount}%",
+      "cta": "eSIM tanlash",
+      "copy": "Mijoz uchun nusxalash",
+      "message": "Sayohat uchun eSIM ({country}): {url} — {code} promokodi birinchi xaridga −{discount}% beradi."
     }
   },
   "messages": {

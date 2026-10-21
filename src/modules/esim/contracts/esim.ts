@@ -15,6 +15,7 @@ export interface IEsimCountry {
   code: string
   plans: number
   from_uzs: number
+  from_usd: number
 }
 
 export interface IEsimPlan {
@@ -24,13 +25,22 @@ export interface IEsimPlan {
   days: number
   networks: string[]
   price_uzs: number
+  price_usd: number
 }
 
-export type EsimMode = 'catalog' | 'checkout'
+export type EsimMode = 'catalog' | 'checkout' | 'affiliate'
+
+export interface IEsimAffiliate {
+  partner: string
+  url: string
+  code: string
+  discount_percent: number
+}
 
 export interface IEsimMode {
   mode: EsimMode
   provider: string | null
+  affiliate?: IEsimAffiliate
 }
 
 export interface IEsimMethod {

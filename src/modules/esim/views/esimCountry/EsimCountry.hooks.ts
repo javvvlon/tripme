@@ -1,5 +1,5 @@
 import { useEsimRepository } from '~/modules/esim/repositories'
-import { countryName, flagOf, sumOf } from '~/modules/esim/helpers/esim'
+import { countryName, flagOf, sumOf, usdOf } from '~/modules/esim/helpers/esim'
 import { ESIM_PAYMENT_METHODS } from '~/modules/esim/contracts/esim'
 import { isCompletePhone, toE164 } from '~/shared/helpers/phone'
 import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
@@ -30,6 +30,23 @@ export const useEsimCountry = () => {
 
   const catalog = computed(() => setup.value.mode === 'catalog')
 
+  const affiliate = computed(() => (setup.value.mode === 'affiliate' ? setup.value.affiliate ?? null : null))
+
+  const copied = ref(false)
+
+  async function copyCode() {
+    if (!affiliate.value) return
+
+    try {
+      await navigator.clipboard.writeText(affiliate.value.code)
+      copied.value = true
+      setTimeout(() => { copied.value = false }, 2400)
+    }
+    catch {
+      copied.value = false
+    }
+  }
+
   const { data: available } = useAsyncData('esim:methods', () => methods(), { default: () => [], lazy: true, server: false })
 
   const selected = ref('')
@@ -53,12 +70,17 @@ export const useEsimCountry = () => {
 
   const volume = (plan: IEsimPlan) => (plan.data_gb === null ? t('esim.unlimited') : t('esim.gb', { n: plan.data_gb }))
 
+  const usd = (value: number) => usdOf(value, locale.value)
+
   const cards = computed(() => data.value.map(plan => ({
     ...plan,
     volume: volume(plan),
     period: t('esim.days', { n: plan.days }, plan.days),
-    price: sum(plan.price_uzs),
-    perDay: t('esim.perDay', { price: sum(Math.round(plan.price_uzs / plan.days / 100) * 100) }),
+    price: affiliate.value ? usd(plan.price_usd) : sum(plan.price_uzs),
+    perDay: t('esim.perDay', {
+      price: affiliate.value ? usd(Math.round(plan.price_usd / plan.days * 100) / 100) : sum(Math.round(plan.price_uzs / plan.days / 100) * 100),
+    }),
+    approx: t('esim.affiliate.approx', { price: sum(plan.price_uzs) }),
   })))
 
   const plan = computed(() => cards.value.find(entry => entry.id === selected.value) ?? null)
@@ -111,7 +133,7 @@ export const useEsimCountry = () => {
 
   return {
     code, name, flag, networks, cards, plan, selected, status, error,
-    catalog, trip, summary, asking, requesting, requested, request,
+    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
   }
 }

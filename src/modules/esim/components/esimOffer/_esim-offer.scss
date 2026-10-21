@@ -1,0 +1,68 @@
+@use '../../../../shared/styles/utils' as *;
+
+.tm-esim-offer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('md');
+    background: var(--tm-surface-1);
+
+    &__icon {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--tm-brand-gold-soft);
+        color: var(--tm-brand-gold-ink);
+    }
+
+    &__text {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+    }
+
+    &__title {
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 700;
+    }
+
+    &__lead {
+        color: var(--tm-ink-2);
+        font-size: size(14);
+    }
+
+    &__promo {
+        color: var(--tm-brand-gold-ink);
+        font-size: size(13);
+        font-weight: 600;
+    }
+
+    &__actions {
+        display: flex;
+        flex: none;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &.is-staff {
+        border: 0;
+        border-radius: 14px;
+        box-shadow: var(--tm-shadow-sm);
+    }
+}
+
+@media #{$until-md} {
+    .tm-esim-offer {
+        flex-wrap: wrap;
+
+        &__actions { width: 100%; }
+    }
+}

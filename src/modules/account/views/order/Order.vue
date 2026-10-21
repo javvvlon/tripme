@@ -64,6 +64,8 @@
                 </section>
             </div>
 
+            <EsimOffer v-if="['confirmed', 'paid', 'issued', 'travelling'].includes(order.status)" :country="order.country" class="tm-my-order__esim" />
+
             <section v-if="order.services?.length" class="tm-my-order__card">
                 <div class="tm-my-order__card-head">
                     <h2 class="tm-my-order__card-title">{{ t('account.order.services') }}</h2>
@@ -161,6 +163,7 @@ import Icon from '~/shared/components/icon/Icon.vue'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
 import OrderStatusPill from '~/modules/account/components/orderStatusPill/OrderStatusPill.vue'
 import PaymentBadge from '~/modules/finance/components/paymentBadge/PaymentBadge.vue'
+import EsimOffer from '~/modules/esim/components/esimOffer/EsimOffer.vue'
 import { useOrderWords } from '~/modules/account/hooks/use-order-words'
 import { useCustomerOrder } from './Order.hooks'
 
