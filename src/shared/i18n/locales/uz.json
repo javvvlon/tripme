@@ -398,8 +398,7 @@
       "team": "Jamoa",
       "media": "Mediateka",
       "selections": "To‘plamlar",
-      "tripmeAi": "TripMe AI",
-      "tasks": "Vazifalar"
+      "tripmeAi": "TripMe AI"
     },
     "roles": {
       "CLIENT": "Mijoz",
@@ -1651,8 +1650,7 @@
         "unanswered_leads": "lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda | lidim javob kutmoqda",
         "unread_messages": "o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar | o‘qilmagan xabar",
         "requested_orders": "buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda | buyurtma operatorni kutmoqda",
-        "draft_orders": "buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi",
-        "my_tasks": "ishdagi vazifalarim | ishdagi vazifam | ishdagi vazifalarim | ishdagi vazifalarim"
+        "draft_orders": "buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi | buyurtma qoralamasi"
       }
     },
     "profile": {

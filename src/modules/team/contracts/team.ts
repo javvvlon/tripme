@@ -33,7 +33,6 @@ export interface IMyWork {
   draft_orders: number
   requested_orders: number
   unread_messages: number
-  my_tasks: number
 }
 
 export type WorkKey = keyof IMyWork

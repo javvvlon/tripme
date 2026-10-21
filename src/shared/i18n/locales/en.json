@@ -398,8 +398,7 @@
       "team": "Team",
       "media": "Media",
       "selections": "Selections",
-      "tripmeAi": "TripMe AI",
-      "tasks": "Tasks"
+      "tripmeAi": "TripMe AI"
     },
     "roles": {
       "CLIENT": "Client",
@@ -1651,8 +1650,7 @@
         "unanswered_leads": "of my leads await a reply | of my leads awaits a reply | of my leads await a reply | of my leads await a reply",
         "unread_messages": "unread messages | unread message | unread messages | unread messages",
         "requested_orders": "orders await the operator | order awaits the operator | orders await the operator | orders await the operator",
-        "draft_orders": "draft orders | draft order | draft orders | draft orders",
-        "my_tasks": "my tasks in progress | my task in progress | my tasks in progress | my tasks in progress"
+        "draft_orders": "draft orders | draft order | draft orders | draft orders"
       }
     },
     "profile": {

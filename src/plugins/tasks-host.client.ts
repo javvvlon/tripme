@@ -1,14 +1,23 @@
-import { isTasksHost, tasksHostPath } from '~/shared/config/tasks-host'
+import { isTasksHost, isTasksPath, tasksHostOf, tasksHostPath } from '~/shared/config/tasks-host'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export default defineNuxtPlugin(() => {
-  if (!isTasksHost(window.location.host)) return
+  const onTasks = isTasksHost(window.location.host)
+  const tasksHost = tasksHostOf(window.location.host)
+
+  if (!onTasks && !tasksHost) return
 
   addRouteMiddleware('tasks-host', (to) => {
-    const target = tasksHostPath(to.path)
+    if (onTasks) {
+      const target = tasksHostPath(to.path)
 
-    if (target) return navigateTo(target, { replace: true })
+      return target ? navigateTo(target, { replace: true }) : undefined
+    }
+
+    if (isTasksPath(to.path)) {
+      return navigateTo(`${window.location.protocol}//${tasksHost}${to.fullPath}`, { external: true, replace: true })
+    }
   }, { global: true })
 })

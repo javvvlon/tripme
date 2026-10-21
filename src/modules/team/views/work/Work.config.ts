@@ -13,7 +13,6 @@ export interface IWorkTile {
 
 export const WORK_TILES: IWorkTile[] = [
   { key: 'free_leads', icon: 'users', to: '/app/leads', query: { manager: 'none' }, urgent: true },
-  { key: 'my_tasks', icon: 'columns', to: '/app/tasks', query: { view: 'mine' } },
   { key: 'unanswered_leads', icon: 'clock', to: '/app/leads', query: { manager: 'me' }, urgent: true },
   { key: 'unread_messages', icon: 'mail', to: '/app/messages', urgent: true },
   { key: 'requested_orders', icon: 'plane', to: '/app/orders', query: { manager: 'me', status: 'requested' } },
