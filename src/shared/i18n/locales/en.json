@@ -2621,7 +2621,7 @@
       "copied": "Copied",
       "note": "−{discount}% off your first {partner} purchase",
       "cta": "Buy with {discount}% off",
-      "approx": "≈ {price}",
+      "approx": "Paid in {partner}: {price}",
       "legal": "eSIMs are sold and activated by our partner {partner}: payment, setup and support happen in their app.",
       "steps": {
         "1": {

@@ -41,21 +41,19 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import EsimSearch from '~/modules/esim/components/esimSearch/EsimSearch.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
-import { useEsimMode } from '~/modules/esim/hooks/use-esim-mode'
-import { countryName, flagOf, sumOf, usdOf } from '~/modules/esim/helpers/esim'
+import { countryName, flagOf, sumOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { data, status } = useEsimCountries()
-const { affiliate } = useEsimMode()
 
 const items = computed(() => data.value
     .map(entry => ({
         code: entry.code,
         flag: flagOf(entry.code),
         name: countryName(entry.code, locale.value),
-        from: t('esim.from', { price: affiliate.value ? usdOf(entry.from_usd, locale.value) : sumOf(entry.from_uzs, locale.value, t('esim.sum')) }),
+        from: t('esim.from', { price: sumOf(entry.from_uzs, locale.value, t('esim.sum')) }),
         to: `/esim/${entry.code.toLowerCase()}`,
     }))
     .sort((a, b) => a.name.localeCompare(b.name, locale.value)))

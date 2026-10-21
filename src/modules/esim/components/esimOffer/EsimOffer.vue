@@ -29,7 +29,7 @@
 import Button from '~/shared/components/button/Button.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { useEsimMode } from '~/modules/esim/hooks/use-esim-mode'
-import { countryName, esimCountryOf, usdOf } from '~/modules/esim/helpers/esim'
+import { countryName, esimCountryOf, sumOf } from '~/modules/esim/helpers/esim'
 import type { IEsimOfferProps } from './EsimOffer.d'
 
 const props = defineProps<IEsimOfferProps>()
@@ -53,7 +53,7 @@ const offer = computed(() => {
         code: affiliate.value.code,
         discount: affiliate.value.discount_percent,
         name: countryName(code, locale.value),
-        price: usdOf(entry.from_usd, locale.value),
+        price: sumOf(entry.from_uzs, locale.value, t('esim.sum')),
         link: localePath(`/esim/${code.toLowerCase()}`),
         qr: t('esim.affiliate.qr', { partner: affiliate.value.partner }),
         qrAlt: t('esim.affiliate.qrAlt', { partner: affiliate.value.partner }),

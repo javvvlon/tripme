@@ -2621,7 +2621,7 @@
       "copied": "Nusxalandi",
       "note": "{partner} da birinchi xarid uchun −{discount}%",
       "cta": "{discount}% chegirma bilan sotib olish",
-      "approx": "≈ {price}",
+      "approx": "{partner}da to‘lov — {price}",
       "legal": "eSIM’ni hamkorimiz {partner} sotadi va faollashtiradi: to‘lov, o‘rnatish va yordam — uning ilovasida.",
       "steps": {
         "1": {

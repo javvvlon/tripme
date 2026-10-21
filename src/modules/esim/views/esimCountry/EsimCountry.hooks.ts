@@ -76,11 +76,9 @@ export const useEsimCountry = () => {
     ...plan,
     volume: volume(plan),
     period: t('esim.days', { n: plan.days }, plan.days),
-    price: affiliate.value ? usd(plan.price_usd) : sum(plan.price_uzs),
-    perDay: t('esim.perDay', {
-      price: affiliate.value ? usd(Math.round(plan.price_usd / plan.days * 100) / 100) : sum(Math.round(plan.price_uzs / plan.days / 100) * 100),
-    }),
-    approx: t('esim.affiliate.approx', { price: sum(plan.price_uzs) }),
+    price: sum(plan.price_uzs),
+    perDay: t('esim.perDay', { price: sum(Math.round(plan.price_uzs / plan.days / 100) * 100) }),
+    approx: affiliate.value ? t('esim.affiliate.approx', { price: usd(plan.price_usd), partner: affiliate.value.partner }) : '',
   })))
 
   const plan = computed(() => cards.value.find(entry => entry.id === selected.value) ?? null)
