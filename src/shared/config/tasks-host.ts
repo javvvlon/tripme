@@ -1,12 +1,17 @@
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export const TASKS_PATH = '/ru/app/tasks'
+const LOCALE = /^\/(ru|uz|en)(?=\/|$)/
 
-export function tasksHostTarget(host: string | null | undefined): string | null {
-  const name = (host ?? '').toLowerCase().split(':')[0] ?? ''
+const ALLOWED = /^\/(ru|uz|en)\/(app\/tasks|auth)(\/|$)/
 
-  if (!name.startsWith('tasks.')) return null
+const ASSET = /^\/(_|api\/)|\.[a-z0-9]+$/i
 
-  return `https://www.${name.slice('tasks.'.length)}`
+export const isTasksHost = (host: string | null | undefined): boolean =>
+  ((host ?? '').toLowerCase().split(':')[0] ?? '').startsWith('tasks.')
+
+export function tasksHostPath(path: string): string | null {
+  if (ASSET.test(path) || ALLOWED.test(path)) return null
+
+  return `/${path.match(LOCALE)?.[1] ?? 'ru'}/app/tasks`
 }

@@ -1,10 +1,12 @@
-import { TASKS_PATH, tasksHostTarget } from '../../src/shared/config/tasks-host'
+import { isTasksHost, tasksHostPath } from '../../src/shared/config/tasks-host'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export default defineEventHandler((event) => {
-  const target = tasksHostTarget(getRequestHost(event, { xForwardedHost: true }))
+  if (event.method !== 'GET' || !isTasksHost(getRequestHost(event, { xForwardedHost: true }))) return
 
-  if (target) return sendRedirect(event, `${target}${TASKS_PATH}`, 302)
+  const target = tasksHostPath(event.path.split('?')[0] ?? '/')
+
+  if (target) return sendRedirect(event, target, 302)
 })
