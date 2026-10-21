@@ -220,8 +220,6 @@
             padding-block: 16px;
         }
 
-        &.is-done { background: color-mix(in srgb, var(--tm-status-success) 7%, var(--tm-surface-1)); }
-
         &.is-quiet {
             justify-content: center;
             color: var(--tm-ink-3);
@@ -244,19 +242,6 @@
                 overflow-wrap: anywhere;
             }
         }
-
-        &.is-code {
-            min-height: 44px;
-            font-size: size(13);
-
-            dt {
-                @include mono;
-
-                color: var(--tm-ink-3);
-            }
-
-            dd { color: var(--tm-ink-1); }
-        }
     }
 
     &__glyph {
@@ -273,11 +258,6 @@
             width: 44px;
             height: 44px;
             border-radius: 12px;
-        }
-
-        &.is-success {
-            background: var(--tm-status-success-soft);
-            color: var(--tm-status-success-ink);
         }
     }
 
@@ -414,6 +394,82 @@
 
     &__inset { padding: 16px; }
 
+    &__outcome {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 14px 14px 16px;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
+
+        &.is-won { background: color-mix(in srgb, var(--tm-status-success) 8%, var(--tm-surface-1)); }
+
+        &.is-lost { box-shadow: var(--tm-shadow-sm), inset 3px 0 0 var(--tm-status-danger); }
+    }
+
+    &__outcome-glyph {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+
+        .is-won & {
+            background: var(--tm-status-success);
+            color: var(--tm-common-white);
+        }
+
+        .is-lost & {
+            background: var(--tm-status-danger-soft);
+            color: var(--tm-status-danger-dark);
+        }
+    }
+
+    &__outcome-text {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+
+        strong {
+            color: var(--tm-ink-1);
+            font-size: size(15);
+            font-weight: 700;
+        }
+
+        span {
+            color: var(--tm-ink-3);
+            font-size: size(13);
+        }
+    }
+
+    &__raw {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px 24px;
+        margin: 0;
+
+        > div { min-width: 0; }
+
+        dt {
+            @include mono;
+
+            margin-bottom: 3px;
+            color: var(--tm-ink-4);
+            font-size: size(12);
+        }
+
+        dd {
+            margin: 0;
+            color: var(--tm-ink-1);
+            font-size: size(13);
+            overflow-wrap: anywhere;
+        }
+    }
+
     &__inset-foot {
         display: flex;
         justify-content: flex-end;
@@ -469,7 +525,7 @@
     &__textarea {
         width: 100%;
         padding: 10px 12px;
-        border: 1px solid transparent;
+        border: 1px solid var(--tm-hig-field-line, var(--tm-border-1));
         border-radius: 10px;
         background: var(--tm-surface-field);
         color: var(--tm-ink-1);
@@ -553,7 +609,10 @@
 
         &__head-actions { padding-top: 0; }
 
-        &__fields { grid-template-columns: minmax(0, 1fr); }
+        &__fields,
+        &__raw { grid-template-columns: minmax(0, 1fr); }
+
+        &__outcome { flex-wrap: wrap; }
 
         &__group-head { flex-wrap: wrap; }
 

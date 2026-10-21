@@ -52,6 +52,19 @@
             <Tabs v-model="tab" :items="tabItems" variant="segment" :aria-label="lead.ref" class="tm-cms-lead__tabs" />
 
             <div v-show="tab === 'tour'" class="tm-cms-lead__pane">
+                <section v-if="finished && !pickingEsim" class="tm-cms-lead__outcome" :class="`is-${outcome.tone}`" role="status">
+                    <span class="tm-cms-lead__outcome-glyph"><Icon :name="outcome.tone === 'won' ? 'check' : 'close'" :size="18" /></span>
+
+                    <span class="tm-cms-lead__outcome-text">
+                        <strong>{{ outcome.title }}</strong>
+                        <span v-if="outcome.note">{{ outcome.note }}</span>
+                    </span>
+
+                    <Button type="button" size="sm" :variant="outcome.tone === 'won' ? 'tinted' : 'secondary'" icon="plus" :loading="requesting" @click="startRequest">
+                        {{ t('cms.leads.next.action') }}
+                    </Button>
+                </section>
+
                 <section class="tm-cms-lead__group">
                     <header class="tm-cms-lead__group-head">
                         <h2>{{ t('cms.leads.sections.offer') }}</h2>
@@ -74,14 +87,6 @@
                     </header>
 
                     <div class="tm-cms-lead__list">
-                        <div v-if="finished && !pickingEsim" class="tm-cms-lead__item is-done" role="status">
-                            <span class="tm-cms-lead__glyph is-success"><Icon name="check" :size="16" /></span>
-                            <span class="tm-cms-lead__item-main">{{ lastOrder && tripDone ? t('cms.leads.next.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.next.doneRejected') }}</span>
-                            <Button type="button" size="sm" variant="tinted" icon="plus" :loading="requesting" @click="startRequest">
-                                {{ t('cms.leads.next.action') }}
-                            </Button>
-                        </div>
-
                         <div v-if="pickingEsim" class="tm-cms-lead__inset">
                             <EsimPicker :initial-country="isEsim ? String(lead.trip.esim_country ?? '') : ''" @pick="assignEsim" />
 
@@ -149,12 +154,14 @@
                         <h2>{{ t('cms.leads.sections.raw') }}</h2>
                     </header>
 
-                    <dl class="tm-cms-lead__list">
-                        <div v-for="entry in extras" :key="entry.key" class="tm-cms-lead__item is-pair is-code">
-                            <dt>{{ entry.key }}</dt>
-                            <dd>{{ entry.value }}</dd>
-                        </div>
-                    </dl>
+                    <div class="tm-cms-lead__panel">
+                        <dl class="tm-cms-lead__raw">
+                            <div v-for="entry in extras" :key="entry.key">
+                                <dt>{{ entry.key }}</dt>
+                                <dd>{{ entry.value }}</dd>
+                            </div>
+                        </dl>
+                    </div>
                 </section>
             </div>
 
@@ -374,7 +381,7 @@ import { useManagers } from '~/modules/leads/hooks/use-managers'
 import LeadHistory from '~/modules/leads/components/leadHistory/LeadHistory.vue'
 import QuoteModal from '~/modules/leads/components/quoteModal/QuoteModal.vue'
 import { tourFromLead } from '~/modules/leads/helpers/quote'
-import { LEAD_TRANSITIONS } from '~/modules/leads/contracts/leads'
+import { isRejectReason, LEAD_TRANSITIONS } from '~/modules/leads/contracts/leads'
 import type { ILeadRaw, LeadStatus } from '~/modules/leads/contracts/leads'
 import type { Money } from '~/search_engine/contracts/search'
 
@@ -424,6 +431,26 @@ const quoteMarked = (found: ILeadRaw) => {
     lead.value = found
     historyVersion.value++
 }
+
+const outcome = computed(() => {
+    const order = lastOrder.value
+
+    if (tripDone.value && order) {
+        return {
+            tone: order.status === 'completed' ? 'won' : 'lost',
+            title: t('cms.leads.next.doneWithOrder', { order: order.ref, status: t(`cms.orders.status.${order.status}`) }),
+            note: '',
+        }
+    }
+
+    const reason = draft.rejectReason
+
+    return {
+        tone: 'lost',
+        title: t('cms.leads.next.doneRejected'),
+        note: reason ? `${t('cms.leads.reject.title')}: ${isRejectReason(reason) ? t(`cms.leads.rejectReasons.${reason}`) : reason}` : '',
+    }
+})
 
 const route = useRoute()
 const router = useRouter()

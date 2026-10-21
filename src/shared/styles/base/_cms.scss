@@ -15,7 +15,11 @@ html.is-cms {
     --tm-surface-1: #FFFFFF;
     --tm-surface-2: #F2F3F6;
     --tm-surface-3: #E8EAEF;
-    --tm-surface-field: rgba(11, 25, 44, .055);
+    --tm-surface-field: #FFFFFF;
+    --tm-hig-field-line: rgba(11, 25, 44, .16);
+    --tm-hig-field-line-hover: rgba(11, 25, 44, .3);
+    --tm-hig-focus-line: rgba(11, 25, 44, .6);
+    --tm-hig-focus-ring: 0 0 0 3px rgba(11, 25, 44, .1);
     --tm-border-1: rgba(11, 25, 44, .09);
     --tm-border-2: rgba(11, 25, 44, .06);
 
@@ -213,16 +217,27 @@ html.is-cms {
     .tm-price__control,
     .tm-combobox__control,
     .tm-multi-select__control {
-        border-color: transparent;
+        border-color: var(--tm-hig-field-line);
         border-radius: 10px;
         background: var(--tm-surface-field);
         box-shadow: none;
-        transition: background .2s ease, box-shadow .2s ease;
+        transition: border-color .2s ease, box-shadow .2s ease;
     }
 
     .tm-input__field:hover:not(:disabled, :focus),
     .tm-select__control:hover:not(:disabled),
-    .tm-search-field__control:hover { background: var(--tm-hig-fill-strong); }
+    .tm-search-field__control:hover,
+    .tm-cms-media__search:hover,
+    .tm-phone__control:hover,
+    .tm-price__control:hover,
+    .tm-combobox__control:hover,
+    .tm-multi-select__control:hover { border-color: var(--tm-hig-field-line-hover); }
+
+    .tm-input__field:disabled,
+    .tm-select__control:disabled {
+        border-color: transparent;
+        background: var(--tm-hig-fill);
+    }
 
     .tm-input__field:focus,
     .tm-search-field__control:focus-within,
@@ -231,13 +246,16 @@ html.is-cms {
     .tm-price__control:focus-within,
     .tm-combobox__control:focus-within,
     .tm-multi-select__control:focus-within {
-        border-color: transparent;
+        border-color: var(--tm-hig-focus-line);
         background: var(--tm-surface-1);
-        box-shadow: 0 0 0 1px rgba(11, 25, 44, .35), 0 0 0 4px rgba(11, 25, 44, .1);
+        box-shadow: var(--tm-hig-focus-ring);
     }
 
     .tm-input__field--invalid,
-    .tm-input__field--invalid:focus { box-shadow: 0 0 0 1px var(--tm-status-danger), 0 0 0 4px var(--tm-status-danger-soft); }
+    .tm-input__field--invalid:focus {
+        border-color: var(--tm-status-danger);
+        box-shadow: 0 0 0 3px var(--tm-status-danger-soft);
+    }
 
     .tm-select--sm .tm-select__control { border-radius: 8px; }
 
@@ -418,16 +436,18 @@ html.is-cms .tm-cms-operators__list {
 }
 
 html.is-cms :is(.tm-cms__content, .tm-modal, .tm-side-drawer) textarea:not([class*='tm-ai-input']) {
-    border-color: transparent;
+    border: 1px solid var(--tm-hig-field-line);
     border-radius: 10px;
     background: var(--tm-surface-field);
     box-shadow: none;
-    transition: background .2s ease, box-shadow .2s ease;
+    transition: border-color .2s ease, box-shadow .2s ease;
+
+    &:hover { border-color: var(--tm-hig-field-line-hover); }
 
     &:focus {
-        border-color: transparent;
+        border-color: var(--tm-hig-focus-line);
         background: var(--tm-surface-1);
-        box-shadow: 0 0 0 1px rgba(11, 25, 44, .35), 0 0 0 4px rgba(11, 25, 44, .1);
+        box-shadow: var(--tm-hig-focus-ring);
         outline: none;
     }
 }
@@ -500,23 +520,99 @@ html.is-cms .tm-icon-button {
 
 html.is-cms .tm-travellers--field {
     .tm-travellers__value {
-        border-color: transparent;
+        border-color: var(--tm-hig-field-line);
         border-radius: 10px;
         background: var(--tm-surface-field);
-        transition: background .2s ease, box-shadow .2s ease;
+        transition: border-color .2s ease, box-shadow .2s ease;
     }
 
-    .tm-travellers__control:hover .tm-travellers__value {
-        border-color: transparent;
-        background: var(--tm-hig-fill-strong);
-    }
+    .tm-travellers__control:hover .tm-travellers__value { border-color: var(--tm-hig-field-line-hover); }
 
     .tm-travellers__control:focus-visible .tm-travellers__value,
     .tm-travellers__control[aria-expanded='true'] .tm-travellers__value {
-        border-color: transparent;
-        background: var(--tm-surface-1);
-        box-shadow: 0 0 0 1px rgba(11, 25, 44, .35), 0 0 0 4px rgba(11, 25, 44, .1);
+        border-color: var(--tm-hig-focus-line);
+        box-shadow: var(--tm-hig-focus-ring);
     }
 }
 
 html.is-cms .tm-more-menu > .tm-icon-button svg { stroke-width: 3.2; }
+
+html.is-cms .tm-select__control:is(.is-new, .is-in_progress, .is-quote_sent, .is-won, .is-rejected, .is-draft, .is-requested, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed, .is-cancelled) {
+    border-color: transparent;
+    border-radius: 999px;
+    background: var(--tm-hig-fill);
+    color: var(--tm-ink-1);
+
+    &:hover:not(:disabled) {
+        border-color: transparent;
+        filter: brightness(.97);
+    }
+
+    &.is-new {
+        background: var(--tm-cms-accent);
+        color: var(--tm-surface-1);
+    }
+
+    &:is(.is-in_progress, .is-quote_sent, .is-requested) {
+        background: var(--tm-cms-accent-soft);
+        color: var(--tm-cms-accent);
+    }
+
+    &:is(.is-won, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed) {
+        background: var(--tm-status-success-soft);
+        color: var(--tm-status-success-ink);
+    }
+
+    &:is(.is-rejected, .is-cancelled) {
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
+    }
+
+    .tm-select__caret { opacity: .55; }
+}
+
+html.is-cms .tm-pagination {
+    bottom: 14px;
+    isolation: isolate;
+    margin: auto 0 0;
+    padding: 26px 10px 10px 18px;
+    border: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 16px 0 0;
+        z-index: -1;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .78);
+        box-shadow: 0 0 0 .5px rgba(11, 25, 44, .12), 0 10px 30px rgba(11, 25, 44, .12);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
+    }
+
+    .tm-pagination__step,
+    .tm-pagination__page {
+        border: 0;
+        border-radius: 50%;
+
+        &:hover:not(:disabled, .is-current) {
+            border: 0;
+            background: var(--tm-hig-fill);
+        }
+    }
+
+    .tm-pagination__page.is-current { box-shadow: 0 2px 6px rgba(11, 25, 44, .2); }
+
+    .tm-select__control { height: 34px; }
+}
+
+html.is-cms .tm-payment-badge {
+    border-color: transparent;
+    font-size: size(12);
+    font-weight: 600;
+
+    &.is-unpaid { background: var(--tm-hig-fill); }
+}
