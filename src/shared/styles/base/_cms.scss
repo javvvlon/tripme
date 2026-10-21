@@ -481,3 +481,42 @@ html.is-cms .tm-work__tile {
         background: var(--tm-surface-1);
     }
 }
+
+html.is-cms .tm-icon-button {
+    width: 36px;
+    height: 36px;
+    border-color: transparent;
+    border-radius: 50%;
+    background: var(--tm-hig-fill);
+    color: var(--tm-ink-1);
+    transition: background .2s ease, transform .3s var(--tm-hig-spring);
+
+    &:hover { border-color: transparent; background: var(--tm-hig-fill-strong); }
+
+    &:active:not(:disabled) { transform: scale(.94); }
+
+    &.is-pressed { background: var(--tm-hig-fill-strong); }
+}
+
+html.is-cms .tm-travellers--field {
+    .tm-travellers__value {
+        border-color: transparent;
+        border-radius: 10px;
+        background: var(--tm-surface-field);
+        transition: background .2s ease, box-shadow .2s ease;
+    }
+
+    .tm-travellers__control:hover .tm-travellers__value {
+        border-color: transparent;
+        background: var(--tm-hig-fill-strong);
+    }
+
+    .tm-travellers__control:focus-visible .tm-travellers__value,
+    .tm-travellers__control[aria-expanded='true'] .tm-travellers__value {
+        border-color: transparent;
+        background: var(--tm-surface-1);
+        box-shadow: 0 0 0 1px rgba(11, 25, 44, .35), 0 0 0 4px rgba(11, 25, 44, .1);
+    }
+}
+
+html.is-cms .tm-more-menu > .tm-icon-button svg { stroke-width: 3.2; }

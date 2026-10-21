@@ -1,37 +1,35 @@
 <template>
     <section class="tm-lead-owner">
-        <div class="tm-lead-owner__who">
+        <div class="tm-lead-owner__card">
             <span class="tm-lead-owner__avatar" :class="{ 'is-queue': !lead.manager_id }">
-                <Icon :name="lead.manager_id ? 'user' : 'inbox'" :size="18" />
+                <Icon :name="lead.manager_id ? 'user' : 'inbox'" :size="17" />
             </span>
 
-            <div class="tm-lead-owner__text">
-                <span class="tm-lead-owner__label">{{ t('cms.ownership.column') }}</span>
-                <strong v-if="!lead.manager_id">{{ t('cms.ownership.queueTitle') }}</strong>
-                <strong v-else-if="lead.manager_id === me">{{ t('cms.ownership.yours') }}</strong>
-                <strong v-else>{{ lead.manager_name || '—' }}</strong>
-                <span class="tm-lead-owner__hint">{{ hint }}</span>
+            <span class="tm-lead-owner__label">{{ t('cms.ownership.column') }}</span>
+
+            <div class="tm-lead-owner__actions">
+                <Combobox
+                    v-if="elevated"
+                    :model-value="lead.manager_id ?? ''"
+                    variant="field"
+                    :label="t('cms.ownership.assign')"
+                    :options="assignOptions"
+                    :placeholder="t('cms.ownership.assignPlaceholder')"
+                    :disabled="busy"
+                    menu-align="end"
+                    class="tm-lead-owner__assign"
+                    @update:model-value="assign"
+                />
+
+                <strong v-else class="tm-lead-owner__name">{{ ownerName }}</strong>
+
+                <Button v-if="!lead.manager_id" size="sm" icon="check" :disabled="busy" @click="takeIt">
+                    {{ t('cms.ownership.take') }}
+                </Button>
             </div>
         </div>
 
-        <div class="tm-lead-owner__actions">
-            <Button v-if="!lead.manager_id" size="md" icon="check" :disabled="busy" @click="takeIt">
-                {{ t('cms.ownership.take') }}
-            </Button>
-
-            <Combobox
-                v-if="elevated"
-                :model-value="lead.manager_id ?? ''"
-                variant="field"
-                :label="t('cms.ownership.assign')"
-                :options="assignOptions"
-                :placeholder="t('cms.ownership.assignPlaceholder')"
-                :disabled="busy"
-                menu-align="end"
-                class="tm-lead-owner__assign"
-                @update:model-value="assign"
-            />
-        </div>
+        <p class="tm-lead-owner__hint">{{ hint }}</p>
     </section>
 </template>
 
@@ -50,6 +48,13 @@ const { take, patch } = useLeadsRepository()
 const { elevated, me, assignOptions } = useManagers()
 
 const busy = ref(false)
+
+const ownerName = computed(() => {
+  if (!props.lead.manager_id) return t('cms.ownership.queueTitle')
+  if (props.lead.manager_id === me.value) return t('cms.ownership.yours')
+
+  return props.lead.manager_name || '—'
+})
 
 const hint = computed(() => {
   if (!props.lead.manager_id) return t('cms.ownership.queueHint')

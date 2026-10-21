@@ -1,7 +1,7 @@
 <template>
     <div class="tm-cms-lead">
-        <NuxtLink :to="localePath('/app/leads')" class="tm-cms-lead__back">
-            <Icon name="chevron-left" :size="16" />{{ t('cms.leads.backToList') }}
+        <NuxtLink :to="localePath('/app/leads')" class="tm-cms-lead__back" :aria-label="t('cms.leads.backToList')">
+            <Icon name="chevron-left" :size="18" />{{ t('cms.leads.title') }}
         </NuxtLink>
 
         <EditorSkeleton v-if="status === 'pending'" variant="form" />
@@ -10,13 +10,16 @@
 
         <template v-else>
             <header class="tm-cms-lead__head">
-                <div>
+                <div class="tm-cms-lead__heading">
                     <h1 class="tm-cms-lead__number">{{ lead.ref }}</h1>
                     <p class="tm-cms-lead__sub">
-                        {{ t(`cms.leads.channels.${lead.channel}`) }} · {{ fullDate(lead.created_at) }}
-                        <template v-if="lead.user_id"> · {{ t('cms.leads.registered') }}</template>
+                        <strong v-if="clientName">{{ clientName }}</strong>
+                        <span>{{ t(`cms.leads.channels.${lead.channel}`) }}</span>
+                        <span>{{ fullDate(lead.created_at) }}</span>
+                        <span v-if="lead.user_id">{{ t('cms.leads.registered') }}</span>
                     </p>
                     <p v-if="lead.consent_at" class="tm-cms-lead__compliance">
+                        <Icon name="shield" :size="14" />
                         <span>{{ t('cms.leads.consentGiven', { date: fullDate(lead.consent_at) }) }}</span>
                     </p>
                 </div>
@@ -31,7 +34,7 @@
                         @update:model-value="change($event as LeadStatus)"
                     />
 
-                    <ChatButton v-if="lead.user_id" :client-id="lead.user_id" :client-name="[lead.first_name, lead.last_name].filter(Boolean).join(' ')" />
+                    <ChatButton v-if="lead.user_id" :client-id="lead.user_id" :client-name="clientName" />
                     <MoreMenu v-if="!lead.archived_at" :label="t('cms.more')" :items="moreItems" @select="onMore" />
                 </div>
             </header>
@@ -44,261 +47,270 @@
 
             <p v-if="saved" class="tm-cms-lead__saved" role="status">{{ t('cms.saved') }}</p>
 
-            <LeadOwner v-if="lead.manager_id !== me" :lead="lead" class="tm-cms-lead__card" @changed="owned" />
+            <LeadOwner v-if="lead.manager_id !== me" :lead="lead" @changed="owned" />
 
             <Tabs v-model="tab" :items="tabItems" variant="segment" :aria-label="lead.ref" class="tm-cms-lead__tabs" />
 
             <div v-show="tab === 'tour'" class="tm-cms-lead__pane">
-            <section class="tm-cms-lead__card">
-                <header class="tm-cms-lead__offer-head">
-                    <h2 class="tm-cms-lead__card-title">
-                        {{ t('cms.leads.sections.offer') }}
-                    </h2>
+                <section class="tm-cms-lead__group">
+                    <header class="tm-cms-lead__group-head">
+                        <h2>{{ t('cms.leads.sections.offer') }}</h2>
 
-                    <div v-if="hasTour && !pickingEsim && !finished" class="tm-cms-lead__offer-actions">
-                        <ServiceMenu
-                            :label="t('cms.leads.offer.replace')" variant="ghost"
-                            :esim="esimAvailable" :disabled="saving"
-                            @select="chooseService"
-                        />
+                        <div v-if="hasTour && !pickingEsim && !finished" class="tm-cms-lead__group-actions">
+                            <ServiceMenu
+                                :label="t('cms.leads.offer.replace')" variant="ghost"
+                                :esim="esimAvailable" :disabled="saving"
+                                @select="chooseService"
+                            />
 
-                        <Button
-                            type="button" size="sm" variant="danger-quiet" icon="trash"
-                            :disabled="saving"
-                            @click="clearTour"
-                        >
-                            {{ t('cms.leads.offer.clear') }}
-                        </Button>
-                    </div>
-                </header>
-
-                <div v-if="finished && !pickingEsim" class="tm-cms-lead__trip-done" role="status">
-                    <Icon name="check" :size="16" />
-                    <span>{{ lastOrder && tripDone ? t('cms.leads.next.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.next.doneRejected') }}</span>
-                    <Button type="button" size="sm" variant="secondary" icon="plus" :loading="requesting" @click="startRequest">
-                        {{ t('cms.leads.next.action') }}
-                    </Button>
-                </div>
-
-                <template v-if="pickingEsim">
-                    <EsimPicker :initial-country="isEsim ? String(lead.trip.esim_country ?? '') : ''" @pick="assignEsim" />
-
-                    <div class="tm-cms-lead__offer-links is-end">
-                        <Button type="button" size="sm" variant="ghost" :disabled="saving" @click="pickingEsim = false">
-                            {{ t('common.cancel') }}
-                        </Button>
-                    </div>
-                </template>
-
-                <template v-else-if="hasTour">
-                    <div class="tm-cms-lead__tour">
-                        <div class="tm-cms-lead__tour-main">
-                            <p class="tm-cms-lead__tour-name">
-                                {{ lead.hotel_name }}
-                                <span v-if="stars" class="tm-cms-lead__tour-stars" :aria-label="`${stars}★`">{{ '★'.repeat(stars) }}</span>
-                            </p>
-                            <p v-if="tourMeta" class="tm-cms-lead__tour-meta">{{ tourMeta }}</p>
-                            <p class="tm-cms-lead__tour-meta">
-                                <template v-if="lead.check_in">{{ formatDateRange(lead.check_in, lead.nights, locale) }} · </template>{{ party }}
-                            </p>
+                            <Button
+                                type="button" size="sm" variant="danger-quiet" icon="trash"
+                                :disabled="saving"
+                                @click="clearTour"
+                            >
+                                {{ t('cms.leads.offer.clear') }}
+                            </Button>
                         </div>
-
-                        <p v-if="tourPrice" class="tm-cms-lead__tour-price">{{ tourPrice }}</p>
-                    </div>
-
-                    <div class="tm-cms-lead__offer-links">
-                        <Button v-if="canQuote" type="button" size="sm" icon="doc" @click="quoteOpen = true">
-                            {{ t('cms.leads.offer.quote') }}
-                        </Button>
-
-                        <Button v-if="!isEsim" size="sm" variant="secondary" icon="search" :to="pickToursLink">
-                            {{ t('cms.leads.offer.repeatSearch') }}
-                        </Button>
-
-                        <Button
-                            v-if="links.booking"
-                            size="sm" variant="ghost" icon="arrow-right"
-                            :href="links.booking" target="_blank" rel="noopener"
-                        >
-                            {{ t('cms.leads.openAtOperator') }}
-                        </Button>
-
-                        <Button
-                            v-if="links.hotel"
-                            size="sm" variant="ghost" icon="bed"
-                            :href="links.hotel" target="_blank" rel="noopener"
-                        >
-                            {{ t('cms.leads.openHotelPage') }}
-                        </Button>
-                    </div>
-                </template>
-
-                <div v-else-if="!finished" class="tm-cms-lead__offer-empty">
-                    <p class="tm-cms-lead__offer-title">{{ t('cms.leads.offer.empty') }}</p>
-                    <blockquote v-if="lead.comment" class="tm-cms-lead__offer-quote">{{ lead.comment }}</blockquote>
-                    <div class="tm-cms-lead__offer-links">
-                        <ServiceMenu :label="t('cms.leads.offer.add')" :esim="esimAvailable" @select="chooseService" />
-                    </div>
-                </div>
-            </section>
-
-            <section v-if="extras.length" class="tm-cms-lead__card">
-                <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.raw') }}</h2>
-
-                <dl class="tm-cms-lead__raw">
-                    <div v-for="entry in extras" :key="entry.key">
-                        <dt>{{ entry.key }}</dt>
-                        <dd>{{ entry.value }}</dd>
-                    </div>
-                </dl>
-            </section>
-            </div>
-
-            <div v-show="tab === 'request'" class="tm-cms-lead__pane">
-            <CustomerPoints v-if="lead.user_id" :user-id="lead.user_id" class="tm-cms-lead__points" />
-
-            <form class="tm-cms-lead__form" novalidate @submit.prevent="submit">
-                <section class="tm-cms-lead__card">
-                    <header class="tm-cms-lead__client-head">
-                        <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.client') }}</h2>
-                        <span v-if="lead.account" class="tm-cms-lead__account">
-                            <Icon name="user" :size="14" />{{ t('cms.leads.account') }}
-                        </span>
                     </header>
 
-                    <dl class="tm-cms-lead__facts is-columns">
-                        <div>
-                            <dt>{{ t('cms.leads.columns.client') }}</dt>
-                            <dd>{{ [lead.first_name, lead.last_name].filter(Boolean).join(' ') || '—' }}</dd>
+                    <div class="tm-cms-lead__list">
+                        <div v-if="finished && !pickingEsim" class="tm-cms-lead__item is-done" role="status">
+                            <span class="tm-cms-lead__glyph is-success"><Icon name="check" :size="16" /></span>
+                            <span class="tm-cms-lead__item-main">{{ lastOrder && tripDone ? t('cms.leads.next.doneWithOrder', { order: lastOrder.ref, status: t(`cms.orders.status.${lastOrder.status}`) }) : t('cms.leads.next.doneRejected') }}</span>
+                            <Button type="button" size="sm" variant="tinted" icon="plus" :loading="requesting" @click="startRequest">
+                                {{ t('cms.leads.next.action') }}
+                            </Button>
                         </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.phone') }}</dt>
-                            <dd><a :href="`tel:${lead.phone}`">{{ lead.phone }}</a></dd>
+
+                        <div v-if="pickingEsim" class="tm-cms-lead__inset">
+                            <EsimPicker :initial-country="isEsim ? String(lead.trip.esim_country ?? '') : ''" @pick="assignEsim" />
+
+                            <div class="tm-cms-lead__inset-foot">
+                                <Button type="button" size="sm" variant="ghost" :disabled="saving" @click="pickingEsim = false">
+                                    {{ t('common.cancel') }}
+                                </Button>
+                            </div>
                         </div>
-                        <div v-if="lead.account?.email">
-                            <dt>{{ t('cms.leads.columns.email') }}</dt>
-                            <dd><a :href="`mailto:${lead.account.email}`">{{ lead.account.email }}</a></dd>
+
+                        <template v-else-if="hasTour">
+                            <div class="tm-cms-lead__item is-tour">
+                                <span class="tm-cms-lead__glyph is-large"><Icon :name="isEsim ? 'sim' : 'briefcase'" :size="20" /></span>
+
+                                <span class="tm-cms-lead__item-main">
+                                    <span class="tm-cms-lead__tour-name">
+                                        {{ lead.hotel_name }}
+                                        <span v-if="stars" class="tm-cms-lead__tour-stars" :aria-label="`${stars}★`">{{ '★'.repeat(stars) }}</span>
+                                    </span>
+                                    <span v-if="tourMeta" class="tm-cms-lead__item-sub">{{ tourMeta }}</span>
+                                    <span class="tm-cms-lead__item-sub">
+                                        <template v-if="lead.check_in">{{ formatDateRange(lead.check_in, lead.nights, locale) }} · </template>{{ party }}
+                                    </span>
+                                </span>
+
+                                <span v-if="tourPrice" class="tm-cms-lead__tour-price">{{ tourPrice }}</span>
+                            </div>
+
+                            <NuxtLink v-if="!isEsim" :to="pickToursLink" class="tm-cms-lead__item is-nav">
+                                <span class="tm-cms-lead__glyph"><Icon name="search" :size="15" /></span>
+                                <span class="tm-cms-lead__item-main">{{ t('cms.leads.offer.repeatSearch') }}</span>
+                                <Icon name="chevron-right" :size="16" class="tm-cms-lead__chevron" />
+                            </NuxtLink>
+
+                            <a v-if="links.booking" :href="links.booking" target="_blank" rel="noopener" class="tm-cms-lead__item is-nav">
+                                <span class="tm-cms-lead__glyph"><Icon name="briefcase" :size="15" /></span>
+                                <span class="tm-cms-lead__item-main">{{ t('cms.leads.openAtOperator') }}</span>
+                                <Icon name="arrow-up-right" :size="15" class="tm-cms-lead__chevron" />
+                            </a>
+
+                            <a v-if="links.hotel" :href="links.hotel" target="_blank" rel="noopener" class="tm-cms-lead__item is-nav">
+                                <span class="tm-cms-lead__glyph"><Icon name="bed" :size="15" /></span>
+                                <span class="tm-cms-lead__item-main">{{ t('cms.leads.openHotelPage') }}</span>
+                                <Icon name="arrow-up-right" :size="15" class="tm-cms-lead__chevron" />
+                            </a>
+                        </template>
+
+                        <div v-else-if="!finished" class="tm-cms-lead__blank">
+                            <span class="tm-cms-lead__glyph is-large"><Icon name="briefcase" :size="22" /></span>
+                            <p class="tm-cms-lead__blank-title">{{ t('cms.leads.offer.empty') }}</p>
+                            <blockquote v-if="lead.comment" class="tm-cms-lead__quote">{{ lead.comment }}</blockquote>
+                            <ServiceMenu :label="t('cms.leads.offer.add')" :esim="esimAvailable" @select="chooseService" />
                         </div>
-                        <div>
-                            <dt>{{ t('cms.leads.columns.locale') }}</dt>
-                            <dd>{{ lead.locale.toUpperCase() }}</dd>
+                    </div>
+
+                    <div v-if="hasTour && !pickingEsim && canQuote" class="tm-cms-lead__group-cta">
+                        <Button type="button" icon="doc" @click="quoteOpen = true">
+                            {{ t('cms.leads.offer.quote') }}
+                        </Button>
+                    </div>
+                </section>
+
+                <section v-if="extras.length" class="tm-cms-lead__group">
+                    <header class="tm-cms-lead__group-head">
+                        <h2>{{ t('cms.leads.sections.raw') }}</h2>
+                    </header>
+
+                    <dl class="tm-cms-lead__list">
+                        <div v-for="entry in extras" :key="entry.key" class="tm-cms-lead__item is-pair is-code">
+                            <dt>{{ entry.key }}</dt>
+                            <dd>{{ entry.value }}</dd>
                         </div>
                     </dl>
                 </section>
+            </div>
 
-                <section v-if="related.length" class="tm-cms-lead__card">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.related.title') }}</h2>
+            <div v-show="tab === 'request'" class="tm-cms-lead__pane">
+                <CustomerPoints v-if="lead.user_id" :user-id="lead.user_id" class="tm-cms-lead__points" />
 
-                    <ul class="tm-cms-lead__related">
-                        <li v-for="item in related" :key="item.uuid">
-                            <component
-                                :is="item.visible ? NuxtLink : 'div'"
-                                :to="item.visible ? localePath(`/app/leads/${item.uuid}`) : undefined"
-                                class="tm-cms-lead__related-item"
-                                :class="{ 'is-locked': !item.visible }"
-                            >
-                                <span class="tm-cms-lead__order-no">{{ item.ref }}</span>
-                                <span class="tm-cms-lead__order-main">
-                                    <span class="tm-cms-lead__order-hotel">{{ item.hotel_name || item.destination || t('cms.leads.related.noTour') }}</span>
-                                    <span class="tm-cms-lead__order-meta">
-                                        {{ shortDate(item.created_at) }}
-                                        <template v-if="item.manager_name"> · {{ item.manager_name }}</template>
-                                        <template v-for="order in item.orders" :key="order.ref"> · {{ order.ref }} {{ t(`cms.orders.status.${order.status}`).toLowerCase() }}</template>
+                <form class="tm-cms-lead__pane" novalidate @submit.prevent="submit">
+                    <section class="tm-cms-lead__group">
+                        <header class="tm-cms-lead__group-head">
+                            <h2>{{ t('cms.leads.sections.client') }}</h2>
+                            <span v-if="lead.account" class="tm-cms-lead__account">
+                                <Icon name="user" :size="13" />{{ t('cms.leads.account') }}
+                            </span>
+                        </header>
+
+                        <dl class="tm-cms-lead__list">
+                            <div class="tm-cms-lead__item is-pair">
+                                <dt>{{ t('cms.leads.columns.client') }}</dt>
+                                <dd>{{ clientName || '—' }}</dd>
+                            </div>
+                            <div class="tm-cms-lead__item is-pair">
+                                <dt>{{ t('cms.leads.columns.phone') }}</dt>
+                                <dd><a :href="`tel:${lead.phone}`" class="tm-cms-lead__tint">{{ lead.phone }}</a></dd>
+                            </div>
+                            <div v-if="lead.account?.email" class="tm-cms-lead__item is-pair">
+                                <dt>{{ t('cms.leads.columns.email') }}</dt>
+                                <dd><a :href="`mailto:${lead.account.email}`" class="tm-cms-lead__tint">{{ lead.account.email }}</a></dd>
+                            </div>
+                            <div class="tm-cms-lead__item is-pair">
+                                <dt>{{ t('cms.leads.columns.locale') }}</dt>
+                                <dd>{{ lead.locale.toUpperCase() }}</dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <section v-if="related.length" class="tm-cms-lead__group">
+                        <header class="tm-cms-lead__group-head">
+                            <h2>{{ t('cms.leads.related.title') }}</h2>
+                        </header>
+
+                        <ul class="tm-cms-lead__list">
+                            <li v-for="item in related" :key="item.uuid">
+                                <component
+                                    :is="item.visible ? NuxtLink : 'div'"
+                                    :to="item.visible ? localePath(`/app/leads/${item.uuid}`) : undefined"
+                                    class="tm-cms-lead__item"
+                                    :class="item.visible ? 'is-nav' : 'is-locked'"
+                                >
+                                    <span class="tm-cms-lead__ref">{{ item.ref }}</span>
+                                    <span class="tm-cms-lead__item-main">
+                                        <span class="tm-cms-lead__item-title">{{ item.hotel_name || item.destination || t('cms.leads.related.noTour') }}</span>
+                                        <span class="tm-cms-lead__item-sub">
+                                            {{ shortDate(item.created_at) }}
+                                            <template v-if="item.manager_name"> · {{ item.manager_name }}</template>
+                                            <template v-for="order in item.orders" :key="order.ref"> · {{ order.ref }} {{ t(`cms.orders.status.${order.status}`).toLowerCase() }}</template>
+                                        </span>
                                     </span>
-                                </span>
-                                <span v-if="item.archived_at" class="tm-cms-lead__order-status is-archived">{{ t('cms.archive.badge') }}</span>
-                                <span class="tm-cms-lead__order-status" :class="`is-${item.status}`">{{ t(`cms.leads.status.${item.status}`) }}</span>
-                            </component>
-                        </li>
-                    </ul>
-                </section>
+                                    <span v-if="item.archived_at" class="tm-cms-lead__status is-archived">{{ t('cms.archive.badge') }}</span>
+                                    <span class="tm-cms-lead__status" :class="`is-${item.status}`">{{ t(`cms.leads.status.${item.status}`) }}</span>
+                                    <Icon v-if="item.visible" name="chevron-right" :size="16" class="tm-cms-lead__chevron" />
+                                </component>
+                            </li>
+                        </ul>
+                    </section>
 
-                <section class="tm-cms-lead__card">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.request') }}</h2>
+                    <section class="tm-cms-lead__group">
+                        <header class="tm-cms-lead__group-head">
+                            <h2>{{ t('cms.leads.sections.request') }}</h2>
+                        </header>
 
-                    <div class="tm-cms-lead__row">
-                        <Input v-model="draft.destination" :label="t('cms.leads.fields.destination')" />
-                        <Input
-                            v-model="draft.plannedDates"
-                            :label="t('cms.leads.fields.plannedDates')"
-                            :hint="t('cms.leads.fields.plannedDatesHint')"
-                        />
-                        <TravellersPicker v-model="draft.party" :label="t('cms.leads.fields.party')" variant="field" :max-adults="12" :max-kids="8" />
-                    </div>
+                        <div class="tm-cms-lead__panel">
+                            <div class="tm-cms-lead__fields">
+                                <Input v-model="draft.destination" :label="t('cms.leads.fields.destination')" />
+                                <Input
+                                    v-model="draft.plannedDates"
+                                    :label="t('cms.leads.fields.plannedDates')"
+                                    :hint="t('cms.leads.fields.plannedDatesHint')"
+                                />
+                                <TravellersPicker v-model="draft.party" :label="t('cms.leads.fields.party')" variant="field" :max-adults="12" :max-kids="8" />
+                            </div>
 
-                    <div class="tm-cms-lead__row">
-                        <PriceInput
-                            v-model="draft.budgetAmount"
-                            :label="t('cms.leads.fields.budget')"
-                            :currency="draft.budgetCurrency"
-                        />
-                        <CurrencySelect v-model="draft.budgetCurrency" :label="t('cms.leads.fields.budgetCurrency')" clearable />
-                        <div />
-                    </div>
+                            <div class="tm-cms-lead__fields">
+                                <PriceInput
+                                    v-model="draft.budgetAmount"
+                                    :label="t('cms.leads.fields.budget')"
+                                    :currency="draft.budgetCurrency"
+                                />
+                                <CurrencySelect v-model="draft.budgetCurrency" :label="t('cms.leads.fields.budgetCurrency')" clearable />
+                                <div />
+                            </div>
 
-                    <div class="tm-cms-lead__field">
-                        <label :for="commentId" class="tm-cms-lead__label">{{ t('cms.leads.columns.comment') }}</label>
-                        <textarea :id="commentId" v-model="draft.comment" class="tm-cms-lead__textarea" rows="3" />
-                    </div>
+                            <div class="tm-cms-lead__field">
+                                <label :for="commentId" class="tm-cms-lead__label">{{ t('cms.leads.columns.comment') }}</label>
+                                <textarea :id="commentId" v-model="draft.comment" class="tm-cms-lead__textarea" rows="3" />
+                            </div>
 
-                    <div v-if="lead.status === 'rejected'" class="tm-cms-lead__field">
-                        <SelectMenu v-model="draft.rejectReason" :options="reasonOptions" :label="t('cms.leads.fields.rejectReason')" :placeholder="legacyReason || t('cms.leads.reject.pick')" />
-                    </div>
-                </section>
+                            <div v-if="lead.status === 'rejected'" class="tm-cms-lead__field">
+                                <SelectMenu v-model="draft.rejectReason" :options="reasonOptions" :label="t('cms.leads.fields.rejectReason')" :placeholder="legacyReason || t('cms.leads.reject.pick')" />
+                            </div>
+                        </div>
+                    </section>
 
-                <footer class="tm-cms-lead__foot">
-                    <Button type="submit" size="lg" :disabled="saving">
-                        {{ saving ? t('cms.saving') : t('cms.save') }}
-                    </Button>
-                </footer>
-            </form>
-
+                    <footer class="tm-cms-lead__foot">
+                        <Button type="submit" :disabled="saving">
+                            {{ saving ? t('cms.saving') : t('cms.save') }}
+                        </Button>
+                    </footer>
+                </form>
             </div>
 
             <div v-show="tab === 'orders'" class="tm-cms-lead__pane">
-            <section class="tm-cms-lead__card tm-cms-lead__orders">
-                <header class="tm-cms-lead__orders-head">
-                    <h2 class="tm-cms-lead__card-title">{{ t('cms.leads.sections.orders') }}</h2>
+                <section class="tm-cms-lead__group">
+                    <header class="tm-cms-lead__group-head">
+                        <h2>{{ t('cms.leads.sections.orders') }}</h2>
 
-                    <Button
-                        type="button" size="sm" variant="ghost" icon="plus"
-                        :disabled="!hasTour"
-                        :loading="creatingOrder"
-                        :title="hasTour ? undefined : t('cms.leads.orderNeedsTour')"
-                        @click="addOrder"
-                    >
-                        {{ t('cms.leads.addOrder') }}
-                    </Button>
-                </header>
+                        <Button
+                            type="button" size="sm" variant="ghost" icon="plus"
+                            :disabled="!hasTour"
+                            :loading="creatingOrder"
+                            :title="hasTour ? undefined : t('cms.leads.orderNeedsTour')"
+                            @click="addOrder"
+                        >
+                            {{ t('cms.leads.addOrder') }}
+                        </Button>
+                    </header>
 
-                <p v-if="!orders.length" class="tm-cms-lead__no-orders">{{ t('cms.leads.noOrders') }}</p>
+                    <div v-if="!orders.length" class="tm-cms-lead__list">
+                        <p class="tm-cms-lead__item is-quiet">{{ t('cms.leads.noOrders') }}</p>
+                    </div>
 
-                <ul v-else class="tm-cms-lead__order-list">
-                    <li v-for="order in orders" :key="order.uuid">
-                        <NuxtLink :to="localePath(`/app/orders/${order.uuid}`)" class="tm-cms-lead__order">
-                            <span class="tm-cms-lead__order-no">{{ order.ref }}</span>
+                    <ul v-else class="tm-cms-lead__list">
+                        <li v-for="order in orders" :key="order.uuid">
+                            <NuxtLink :to="localePath(`/app/orders/${order.uuid}`)" class="tm-cms-lead__item is-nav">
+                                <span class="tm-cms-lead__ref">{{ order.ref }}</span>
 
-                            <span class="tm-cms-lead__order-main">
-                                <span class="tm-cms-lead__order-hotel">{{ order.hotel_name || '—' }}</span>
-                                <span class="tm-cms-lead__order-meta">
-                                    {{ order.check_in ? `${shortDate(order.check_in)} · ${order.nights}` : '—' }}
-                                    <template v-if="order.supplier_name"> · {{ order.supplier_name }}</template>
+                                <span class="tm-cms-lead__item-main">
+                                    <span class="tm-cms-lead__item-title">{{ order.hotel_name || '—' }}</span>
+                                    <span class="tm-cms-lead__item-sub">
+                                        {{ order.check_in ? `${shortDate(order.check_in)} · ${order.nights}` : '—' }}
+                                        <template v-if="order.supplier_name"> · {{ order.supplier_name }}</template>
+                                    </span>
                                 </span>
-                            </span>
 
-                            <span v-if="order.archived_at" class="tm-cms-lead__order-status is-archived">{{ t('cms.archive.badge') }}</span>
-                            <span class="tm-cms-lead__order-status" :class="`is-${order.status}`">
-                                {{ t(`cms.orders.status.${order.status}`) }}
-                            </span>
-                        </NuxtLink>
-                    </li>
-                </ul>
-            </section>
-
+                                <span v-if="order.archived_at" class="tm-cms-lead__status is-archived">{{ t('cms.archive.badge') }}</span>
+                                <span class="tm-cms-lead__status" :class="`is-${order.status}`">
+                                    {{ t(`cms.orders.status.${order.status}`) }}
+                                </span>
+                                <Icon name="chevron-right" :size="16" class="tm-cms-lead__chevron" />
+                            </NuxtLink>
+                        </li>
+                    </ul>
+                </section>
             </div>
 
             <div v-show="tab === 'history'" class="tm-cms-lead__pane">
-                <LeadHistory :lead-id="lead.uuid" :version="historyVersion" class="tm-cms-lead__card tm-cms-lead__history" />
+                <LeadHistory :lead-id="lead.uuid" :version="historyVersion" />
             </div>
 
             <ClientOnly>
@@ -327,7 +339,8 @@
                 <div class="tm-cms-lead__reasons" role="radiogroup" :aria-label="t('cms.leads.reject.title')">
                     <label v-for="option in reasonOptions" :key="option.value" class="tm-cms-lead__reason" :class="{ 'is-on': rejectPick === option.value }">
                         <input v-model="rejectPick" type="radio" name="reject-reason" :value="option.value">
-                        {{ option.label }}
+                        <span>{{ option.label }}</span>
+                        <Icon v-if="rejectPick === option.value" name="check" :size="16" class="tm-cms-lead__reason-check" />
                     </label>
                 </div>
             </Modal>
@@ -382,6 +395,8 @@ const {
 const { label } = useCatalogLabel()
 
 const quoteOpen = ref(false)
+
+const clientName = computed(() => [lead.value?.first_name, lead.value?.last_name].filter(Boolean).join(' '))
 
 const isEsim = computed(() => lead.value?.trip.product === 'esim')
 

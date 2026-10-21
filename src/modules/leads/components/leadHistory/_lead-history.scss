@@ -1,18 +1,33 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-lead-history {
+    --tm-history-hairline: color-mix(in srgb, var(--tm-ink-1) 11%, transparent);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
     &__title {
-        margin: 0 0 16px;
+        display: flex;
+        align-items: center;
+        min-height: 32px;
+        margin: 0;
+        padding: 0 16px;
         color: var(--tm-ink-3);
-        font-size: size(12);
-        font-weight: 700;
+        font-size: size(13);
+        font-weight: 600;
+        letter-spacing: .03em;
         text-transform: uppercase;
-        letter-spacing: .04em;
     }
 
     &__empty {
         margin: 0;
+        padding: 16px;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         color: var(--tm-ink-3);
+        text-align: center;
     }
 
     &__list {
@@ -20,19 +35,35 @@
         flex-direction: column;
         margin: 0;
         padding: 0;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         list-style: none;
     }
 
     &__item {
+        position: relative;
         display: grid;
-        grid-template-columns: 132px minmax(0, 1fr) auto;
+        grid-template-columns: 140px minmax(0, 1fr) auto;
         align-items: baseline;
-        gap: 12px;
-        padding: 9px 0;
-        border-bottom: 1px solid var(--tm-border-2);
+        gap: 14px;
+        padding: 13px 16px;
         font-size: size(14);
 
-        &:last-child { border-bottom: 0; }
+        & + &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 16px;
+            height: 1px;
+            background: var(--tm-history-hairline);
+            transform: scaleY(.5);
+        }
+
+        &:first-child { border-radius: 14px 14px 0 0; }
+
+        &:last-child { border-radius: 0 0 14px 14px; }
     }
 
     &__at {
@@ -52,16 +83,13 @@
     }
 
     &__item.is-trip {
-        margin: 6px 0;
-        padding: 10px 12px;
-        border-radius: radius('sm');
-        background: var(--tm-brand-secondary-soft);
+        background: var(--tm-cms-accent-soft, var(--tm-surface-2));
 
-        .tm-lead-history__what { color: var(--tm-brand-secondary); font-weight: 700; }
+        .tm-lead-history__what { font-weight: 700; }
     }
 
     &__link {
-        color: var(--tm-brand-secondary);
+        color: var(--tm-cms-accent, var(--tm-ink-1));
         font-weight: 700;
         text-decoration: none;
 

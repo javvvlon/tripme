@@ -2,73 +2,88 @@
 
 .tm-lead-owner {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px 24px;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 26px;
 
-    &__who {
+    &__card {
         display: flex;
         align-items: center;
-        gap: 14px;
-        min-width: 0;
+        gap: 12px;
+        min-height: 60px;
+        padding: 9px 10px 9px 16px;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
     }
 
     &__avatar {
         display: grid;
         flex: none;
         place-items: center;
-        width: 44px;
-        height: 44px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
-        background: var(--tm-cms-accent-soft);
-        color: var(--tm-cms-accent);
+        background: var(--tm-cms-accent-soft, var(--tm-surface-2));
+        color: var(--tm-cms-accent, var(--tm-ink-1));
 
         &.is-queue {
-            background: var(--tm-brand-primary-soft);
-            color: var(--tm-brand-primary-dark);
-        }
-    }
-
-    &__text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-
-        strong {
+            background: color-mix(in srgb, var(--tm-status-warning) 18%, var(--tm-surface-1));
             color: var(--tm-ink-1);
-            font-size: size(16);
-            font-weight: 700;
         }
     }
 
     &__label {
-        color: var(--tm-ink-3);
-        font-size: size(12);
-        font-weight: 700;
-        letter-spacing: .04em;
-        text-transform: uppercase;
-    }
-
-    &__hint {
-        color: var(--tm-ink-3);
-        font-size: size(13);
+        flex: 1;
+        min-width: 0;
+        color: var(--tm-ink-1);
+        font-size: size(15);
+        font-weight: 600;
     }
 
     &__actions {
         display: flex;
         flex-wrap: wrap;
-        align-items: flex-end;
-        gap: 12px;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        min-width: 0;
     }
 
-    &__assign { min-width: 240px; }
+    &__name {
+        padding-right: 6px;
+        color: var(--tm-ink-3);
+        font-size: size(15);
+        font-weight: 500;
+    }
+
+    &__assign {
+        width: 260px;
+
+        .tm-combobox__label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+    }
+
+    &__hint {
+        margin: 0;
+        padding: 0 16px;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        line-height: 1.45;
+    }
 }
 
 @media #{$until-md} {
     .tm-lead-owner {
+        &__card { flex-wrap: wrap; }
+
         &__actions,
-        &__assign { width: 100%; min-width: 0; }
+        &__assign { width: 100%; }
     }
 }
