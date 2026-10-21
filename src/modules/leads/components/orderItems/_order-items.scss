@@ -1,68 +1,82 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-order-items {
-    padding: 20px;
-    border: 1px solid var(--tm-border-1);
-    border-radius: radius('md');
-    background: var(--tm-surface-1);
+    --tm-items-hairline: color-mix(in srgb, var(--tm-ink-1) 11%, transparent);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 
     &__head {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 14px;
+        gap: 8px 12px;
+        min-height: 32px;
+        padding: 0 2px 0 16px;
     }
 
     &__title {
         margin: 0;
         color: var(--tm-ink-3);
-        font-size: size(12);
-        font-weight: 700;
-        letter-spacing: .04em;
+        font-size: size(13);
+        font-weight: 600;
+        letter-spacing: .03em;
         text-transform: uppercase;
     }
 
     &__empty {
         margin: 0;
+        padding: 16px;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         color: var(--tm-ink-3);
         font-size: size(14);
+        text-align: center;
     }
 
     &__list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         margin: 0;
         padding: 0;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         list-style: none;
     }
 
     &__item {
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
         gap: 14px;
-        padding: 14px 16px;
-        border: 1px solid var(--tm-border-1);
-        border-radius: radius('sm');
-        background: var(--tm-surface-2);
+        padding: 16px;
+
+        & + &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 74px;
+            height: 1px;
+            background: var(--tm-items-hairline);
+            transform: scaleY(.5);
+        }
     }
 
     &__kind {
         display: inline-grid;
         flex: none;
         place-items: center;
-        width: 40px;
-        height: 40px;
-        border-radius: radius('sm');
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
         background: var(--tm-cms-accent-soft);
         color: var(--tm-cms-accent);
-
-        &.is-package {
-            background: color-mix(in srgb, var(--tm-brand-primary) 14%, transparent);
-            color: var(--tm-brand-primary);
-        }
     }
 
     &__main {
@@ -82,31 +96,29 @@
 
     &__kind-name {
         color: var(--tm-ink-3);
-        font-size: size(11);
-        font-weight: 700;
-        letter-spacing: .06em;
-        text-transform: uppercase;
+        font-size: size(12);
+        font-weight: 600;
     }
 
     &__status {
-        padding: 2px 10px;
+        padding: 2px 9px;
         border-radius: radius('pill');
-        background: var(--tm-surface-1);
+        background: color-mix(in srgb, var(--tm-ink-1) 6%, transparent);
         color: var(--tm-ink-2);
         font-size: size(12);
-        font-weight: 700;
+        font-weight: 600;
 
         &.is-requested { background: color-mix(in srgb, var(--tm-status-warning) 24%, transparent); color: var(--tm-ink-1); }
         &.is-confirmed,
         &.is-issued { background: var(--tm-status-success-soft); color: var(--tm-status-success-ink); }
         &.is-rejected,
-        &.is-cancelled { background: var(--tm-status-danger-soft); color: var(--tm-status-danger); }
+        &.is-cancelled { background: var(--tm-status-danger-soft); color: var(--tm-status-danger-dark); }
     }
 
     &__name {
         margin: 0;
         color: var(--tm-ink-1);
-        font-size: size(15);
+        font-size: size(16);
         font-weight: 700;
     }
 
@@ -157,10 +169,16 @@
         &:hover { text-decoration: underline; }
     }
 
-    &__confirm { align-self: flex-start; margin-top: 6px; }
+    &__confirm {
+        align-self: flex-start;
+        max-width: 100%;
+        margin-top: 8px;
+        white-space: normal;
+        text-align: left;
+    }
 
     &__item.is-inactive {
-        background: var(--tm-surface-1);
+        opacity: .7;
 
         .tm-order-items__name,
         .tm-order-items__price {
@@ -172,22 +190,27 @@
     &__actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
-        margin-top: 6px;
+        gap: 6px;
+        margin-top: 8px;
     }
 
     &__action {
-        padding: 0;
+        padding: 6px 12px;
         border: 0;
-        background: none;
-        color: var(--tm-cms-accent);
+        border-radius: radius('pill');
+        background: color-mix(in srgb, var(--tm-ink-1) 6%, transparent);
+        color: var(--tm-ink-1);
         font-size: size(13);
-        font-weight: 700;
+        font-weight: 600;
         cursor: pointer;
+        transition: background .2s ease;
 
-        &:hover { text-decoration: underline; }
+        &:hover { background: color-mix(in srgb, var(--tm-ink-1) 10%, transparent); }
 
-        &.is-danger { color: var(--tm-status-danger); }
+        &.is-danger {
+            background: var(--tm-status-danger-soft);
+            color: var(--tm-status-danger-dark);
+        }
     }
 
     &__file {

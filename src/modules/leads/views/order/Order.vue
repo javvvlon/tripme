@@ -1,7 +1,7 @@
 <template>
     <div class="tm-cms-order">
         <NuxtLink :to="backTo" class="tm-cms-order__back">
-            <Icon name="chevron-left" :size="16" />{{ t('cms.orders.back') }}
+            <Icon name="chevron-left" :size="18" />{{ t('cms.orders.back') }}
         </NuxtLink>
 
         <EditorSkeleton v-if="status === 'pending'" variant="form" />
@@ -10,10 +10,11 @@
 
         <template v-else>
             <header class="tm-cms-order__head">
-                <div>
+                <div class="tm-cms-order__heading">
                     <h1 class="tm-cms-order__number">{{ order.ref }}</h1>
                     <p class="tm-cms-order__sub">
-                        {{ t('cms.orders.createdOn', { date: fullDate(order.created_at) }) }}
+                        <strong v-if="order.traveller_name">{{ order.traveller_name }}</strong>
+                        <span>{{ t('cms.orders.createdOn', { date: fullDate(order.created_at) }) }}</span>
                     </p>
                 </div>
 
@@ -42,24 +43,27 @@
 
             <p v-if="saved" class="tm-cms-order__saved" role="status">{{ t('cms.saved') }}</p>
 
-            <section v-if="order.status === 'cancelled'" class="tm-cms-order__cancelled">
-                <strong>{{ t('cms.orders.cancel.done') }}</strong>
-                <span v-if="order.cancel_reason">{{ order.cancel_reason }}</span>
+            <section v-if="order.status === 'cancelled'" class="tm-cms-order__outcome" role="status">
+                <span class="tm-cms-order__outcome-glyph"><Icon name="close" :size="18" /></span>
+                <span class="tm-cms-order__outcome-text">
+                    <strong>{{ t('cms.orders.cancel.done') }}</strong>
+                    <span v-if="order.cancel_reason">{{ order.cancel_reason }}</span>
+                </span>
             </section>
 
             <section v-else-if="cancelling" class="tm-cms-order__cancel">
                 <label :for="cancelId" class="tm-cms-order__cancel-label">{{ t('cms.orders.cancel.reason') }}</label>
                 <textarea
                     :id="cancelId" v-model="cancelReason"
-                    class="tm-cms-order__cancel-input" rows="2" maxlength="500"
+                    class="tm-cms-order__textarea" rows="2" maxlength="500"
                     :placeholder="t('cms.orders.cancel.placeholder')"
                 />
                 <div class="tm-cms-order__cancel-actions">
-                    <Button size="sm" variant="danger" :disabled="saving || !cancelReason.trim()" @click="confirmCancel">
-                        {{ t('cms.orders.cancel.confirm') }}
-                    </Button>
                     <Button size="sm" variant="ghost" :disabled="saving" @click="cancelling = false">
                         {{ t('cms.orders.cancel.keep') }}
+                    </Button>
+                    <Button size="sm" variant="danger" :disabled="saving || !cancelReason.trim()" @click="confirmCancel">
+                        {{ t('cms.orders.cancel.confirm') }}
                     </Button>
                 </div>
             </section>
@@ -79,49 +83,44 @@
             <Tabs v-model="tab" :items="tabItems" variant="segment" :aria-label="order.ref" class="tm-cms-order__tabs" />
 
             <div v-show="tab === 'services'" class="tm-cms-order__pane">
-            <OrderItems
-                ref="itemsBlock"
-                :items="order.items ?? []"
-                :busy="rateBusy"
-                :locked="order.status === 'cancelled' || order.status === 'completed'"
-                :start="order.check_in"
-                :end="order.return_date"
-                class="tm-cms-order__card tm-cms-order__items"
-                @confirm="confirmService"
-                @save="saveService"
-                @remove="removeService"
-                @issue="issueService"
-            />
+                <OrderItems
+                    ref="itemsBlock"
+                    :items="order.items ?? []"
+                    :busy="rateBusy"
+                    :locked="order.status === 'cancelled' || order.status === 'completed'"
+                    :start="order.check_in"
+                    :end="order.return_date"
+                    @confirm="confirmService"
+                    @save="saveService"
+                    @remove="removeService"
+                    @issue="issueService"
+                />
 
-            <section v-if="links.search || links.booking || links.hotel" class="tm-cms-order__card">
-                <h2 class="tm-cms-order__card-title">{{ t('cms.leads.sections.offer') }}</h2>
+                <section v-if="links.search || links.booking || links.hotel" class="tm-cms-order__group">
+                    <header class="tm-cms-order__group-head">
+                        <h2>{{ t('cms.leads.sections.offer') }}</h2>
+                    </header>
 
-                <div class="tm-cms-order__offer-links">
-                    <Button
-                        v-if="links.search"
-                        size="sm" variant="secondary" icon="search"
-                        :to="links.search"
-                    >
-                        {{ t('cms.leads.offer.repeatSearch') }}
-                    </Button>
+                    <div class="tm-cms-order__list">
+                        <NuxtLink v-if="links.search" :to="links.search" class="tm-cms-order__item is-nav">
+                            <span class="tm-cms-order__glyph"><Icon name="search" :size="15" /></span>
+                            <span class="tm-cms-order__item-main">{{ t('cms.leads.offer.repeatSearch') }}</span>
+                            <Icon name="chevron-right" :size="16" class="tm-cms-order__chevron" />
+                        </NuxtLink>
 
-                    <Button
-                        v-if="links.booking"
-                        size="sm" variant="ghost" icon="arrow-right"
-                        :href="links.booking" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openAtOperator') }}
-                    </Button>
+                        <a v-if="links.booking" :href="links.booking" target="_blank" rel="noopener" class="tm-cms-order__item is-nav">
+                            <span class="tm-cms-order__glyph"><Icon name="briefcase" :size="15" /></span>
+                            <span class="tm-cms-order__item-main">{{ t('cms.leads.openAtOperator') }}</span>
+                            <Icon name="arrow-up-right" :size="15" class="tm-cms-order__chevron" />
+                        </a>
 
-                    <Button
-                        v-if="links.hotel"
-                        size="sm" variant="ghost" icon="bed"
-                        :href="links.hotel" target="_blank" rel="noopener"
-                    >
-                        {{ t('cms.leads.openHotelPage') }}
-                    </Button>
-                </div>
-            </section>
+                        <a v-if="links.hotel" :href="links.hotel" target="_blank" rel="noopener" class="tm-cms-order__item is-nav">
+                            <span class="tm-cms-order__glyph"><Icon name="bed" :size="15" /></span>
+                            <span class="tm-cms-order__item-main">{{ t('cms.leads.openHotelPage') }}</span>
+                            <Icon name="arrow-up-right" :size="15" class="tm-cms-order__chevron" />
+                        </a>
+                    </div>
+                </section>
             </div>
 
             <div v-show="tab === 'finance'" class="tm-cms-order__pane">
@@ -129,15 +128,14 @@
                     ref="financeBlock"
                     :order-id="order.uuid"
                     :version="financeVersion"
-                    class="tm-cms-order__card"
                     @changed="moneyChanged"
                 />
             </div>
 
-            <form v-show="tab === 'details'" class="tm-cms-order__form tm-cms-order__pane" novalidate @submit.prevent="submit">
-                <section class="tm-cms-order__card">
-                    <div class="tm-cms-order__card-head">
-                        <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.traveller') }}</h2>
+            <form v-show="tab === 'details'" class="tm-cms-order__pane" novalidate @submit.prevent="submit">
+                <section class="tm-cms-order__group">
+                    <header class="tm-cms-order__group-head">
+                        <h2>{{ t('cms.orders.sections.traveller') }}</h2>
                         <SelectMenu
                             v-if="savedTravellers.length"
                             :model-value="''"
@@ -146,139 +144,149 @@
                             size="sm" align="right"
                             @update:model-value="useTraveller"
                         />
-                    </div>
+                    </header>
 
-                    <div class="tm-cms-order__row">
-                        <Input v-model="draft.travellerName" :label="t('cms.orders.fields.traveller')" />
-                        <Input v-model="draft.passportId" :label="t('cms.orders.fields.passport')" placeholder="AA1234567" />
-                        <Input v-model="draft.passportExpiresAt" type="date" :label="t('cms.orders.fields.passportExpires')" />
-                    </div>
+                    <div class="tm-cms-order__panel">
+                        <div class="tm-cms-order__row">
+                            <Input v-model="draft.travellerName" :label="t('cms.orders.fields.traveller')" />
+                            <Input v-model="draft.passportId" :label="t('cms.orders.fields.passport')" placeholder="AA1234567" />
+                            <Input v-model="draft.passportExpiresAt" type="date" :label="t('cms.orders.fields.passportExpires')" />
+                        </div>
 
-                    <p v-if="passportWarning" class="tm-cms-order__warning">{{ passportWarning }}</p>
-                </section>
-
-                <section class="tm-cms-order__card">
-                    <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.trip') }}</h2>
-
-                    <div class="tm-cms-order__row">
-                        <Input v-model="draft.country" :label="t('cms.orders.fields.country')" />
-                        <Input v-model="draft.hotelName" :label="t('cms.orders.fields.hotel')" />
-                        <Input v-model="draft.supplierName" :label="t('cms.orders.fields.operator')" />
-                    </div>
-
-                    <div class="tm-cms-order__row is-four">
-                        <Input v-model="draft.checkIn" type="date" :label="t('cms.orders.fields.departure')" />
-                        <Input v-model="draft.returnDate" type="date" :label="t('cms.orders.fields.return')" />
-                        <Input v-model="draft.nights" type="number" :label="t('cms.orders.fields.nights')" />
-                        <Input v-model="draft.adults" type="number" :label="t('cms.orders.fields.adults')" />
-                    </div>
-
-                    <div class="tm-cms-order__row is-four">
-                        <Input v-model="draft.children" type="number" :label="t('cms.orders.fields.children')" />
-                        <PriceInput
-                            v-model="draft.priceAmount"
-                            :label="t('cms.orders.fields.price')"
-                            :currency="draft.priceCurrency"
-                        />
-                        <CurrencySelect v-model="draft.priceCurrency" :label="t('cms.orders.fields.currency')" />
-                        <Input v-model="draft.dealDate" type="date" :label="t('cms.orders.fields.dealDate')" />
+                        <p v-if="passportWarning" class="tm-cms-order__warning">
+                            <Icon name="shield" :size="15" />{{ passportWarning }}
+                        </p>
                     </div>
                 </section>
 
-                <section class="tm-cms-order__card">
-                    <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.booking') }}</h2>
+                <section class="tm-cms-order__group">
+                    <header class="tm-cms-order__group-head">
+                        <h2>{{ t('cms.orders.sections.trip') }}</h2>
+                    </header>
 
-                    <div class="tm-cms-order__row">
-                        <Input
-                            v-model="draft.supplierOrderId"
-                            :label="t('cms.orders.fields.supplierOrder')"
-                            :hint="t('cms.orders.fields.supplierOrderHint')"
-                        />
-                        <Input v-model="draft.branch" :label="t('cms.orders.fields.branch')" />
-                        <Combobox
-                            v-if="elevated"
-                            :model-value="order.manager_id ?? ''"
-                            variant="field"
-                            :label="t('cms.ownership.column')"
-                            :options="assignOptions"
-                            :placeholder="t('cms.ownership.assignPlaceholder')"
-                            :disabled="saving"
-                            @update:model-value="assignManager"
-                        />
-                        <div v-else class="tm-cms-order__owner">
-                            <span class="tm-cms-order__label">{{ t('cms.ownership.column') }}</span>
-                            <strong>{{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}</strong>
+                    <div class="tm-cms-order__panel">
+                        <div class="tm-cms-order__row">
+                            <Input v-model="draft.country" :label="t('cms.orders.fields.country')" />
+                            <Input v-model="draft.hotelName" :label="t('cms.orders.fields.hotel')" />
+                            <Input v-model="draft.supplierName" :label="t('cms.orders.fields.operator')" />
+                        </div>
+
+                        <div class="tm-cms-order__row is-four">
+                            <Input v-model="draft.checkIn" type="date" :label="t('cms.orders.fields.departure')" />
+                            <Input v-model="draft.returnDate" type="date" :label="t('cms.orders.fields.return')" />
+                            <Input v-model="draft.nights" type="number" :label="t('cms.orders.fields.nights')" />
+                            <Input v-model="draft.adults" type="number" :label="t('cms.orders.fields.adults')" />
+                        </div>
+
+                        <div class="tm-cms-order__row is-four">
+                            <Input v-model="draft.children" type="number" :label="t('cms.orders.fields.children')" />
+                            <PriceInput
+                                v-model="draft.priceAmount"
+                                :label="t('cms.orders.fields.price')"
+                                :currency="draft.priceCurrency"
+                            />
+                            <CurrencySelect v-model="draft.priceCurrency" :label="t('cms.orders.fields.currency')" />
+                            <Input v-model="draft.dealDate" type="date" :label="t('cms.orders.fields.dealDate')" />
                         </div>
                     </div>
+                </section>
 
-                    <div class="tm-cms-order__field">
-                        <label :for="noteId" class="tm-cms-order__label">{{ t('cms.orders.fields.note') }}</label>
-                        <textarea :id="noteId" v-model="draft.note" class="tm-cms-order__textarea" rows="3" />
+                <section class="tm-cms-order__group">
+                    <header class="tm-cms-order__group-head">
+                        <h2>{{ t('cms.orders.sections.booking') }}</h2>
+                    </header>
+
+                    <div class="tm-cms-order__panel">
+                        <div class="tm-cms-order__row">
+                            <Input
+                                v-model="draft.supplierOrderId"
+                                :label="t('cms.orders.fields.supplierOrder')"
+                                :hint="t('cms.orders.fields.supplierOrderHint')"
+                            />
+                            <Input v-model="draft.branch" :label="t('cms.orders.fields.branch')" />
+                            <Combobox
+                                v-if="elevated"
+                                :model-value="order.manager_id ?? ''"
+                                variant="field"
+                                :label="t('cms.ownership.column')"
+                                :options="assignOptions"
+                                :placeholder="t('cms.ownership.assignPlaceholder')"
+                                :disabled="saving"
+                                @update:model-value="assignManager"
+                            />
+                            <div v-else class="tm-cms-order__owner">
+                                <span class="tm-cms-order__label">{{ t('cms.ownership.column') }}</span>
+                                <strong>{{ order.manager_id === me ? t('cms.ownership.you') : order.manager_name || '—' }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="tm-cms-order__field">
+                            <label :for="noteId" class="tm-cms-order__label">{{ t('cms.orders.fields.note') }}</label>
+                            <textarea :id="noteId" v-model="draft.note" class="tm-cms-order__textarea" rows="3" />
+                        </div>
                     </div>
                 </section>
 
                 <footer class="tm-cms-order__foot">
-                    <Button type="submit" size="lg" :disabled="saving">
+                    <Button type="submit" :disabled="saving">
                         {{ saving ? t('cms.saving') : t('cms.save') }}
                     </Button>
                 </footer>
             </form>
 
-            <section v-show="tab === 'documents'" class="tm-cms-order__card tm-cms-order__pane">
-                <h2 class="tm-cms-order__card-title">{{ t('cms.orders.documents.title') }}</h2>
+            <section v-show="tab === 'documents'" class="tm-cms-order__group tm-cms-order__pane">
+                <header class="tm-cms-order__group-head">
+                    <h2>{{ t('cms.orders.documents.title') }}</h2>
 
-                <div class="tm-cms-order__doc-actions">
-                    <Button
-                        size="sm" variant="secondary" icon="doc"
-                        :disabled="Boolean(working)"
-                        @click="quoteOpen = true"
-                    >
-                        {{ t('cms.orders.documents.offer') }}
-                    </Button>
+                    <div class="tm-cms-order__group-actions">
+                        <Button
+                            size="sm" variant="tinted" icon="doc"
+                            :disabled="Boolean(working)"
+                            @click="quoteOpen = true"
+                        >
+                            {{ t('cms.orders.documents.offer') }}
+                        </Button>
 
-                    <Button
-                        size="sm" variant="ghost" icon="doc"
-                        :disabled="Boolean(working)"
-                        @click="generate('invoice')"
-                    >
-                        {{ working === 'invoice' ? t('cms.orders.documents.making') : t('cms.orders.documents.invoice') }}
-                    </Button>
+                        <Button
+                            size="sm" variant="ghost" icon="doc"
+                            :disabled="Boolean(working)"
+                            @click="generate('invoice')"
+                        >
+                            {{ working === 'invoice' ? t('cms.orders.documents.making') : t('cms.orders.documents.invoice') }}
+                        </Button>
 
-                    <Button
-                        size="sm" variant="ghost" icon="upload"
-                        :disabled="Boolean(working)"
-                        @click="file?.click()"
-                    >
-                        {{ working === 'attachment' ? t('cms.orders.documents.attaching') : t('cms.orders.documents.attach') }}
-                    </Button>
+                        <Button
+                            size="sm" variant="ghost" icon="upload"
+                            :disabled="Boolean(working)"
+                            @click="file?.click()"
+                        >
+                            {{ working === 'attachment' ? t('cms.orders.documents.attaching') : t('cms.orders.documents.attach') }}
+                        </Button>
 
-                    <input
-                        ref="file"
-                        type="file" class="tm-cms-order__doc-input"
-                        :accept="ACCEPTED_DOCUMENTS"
-                        @change="onFile"
-                    >
+                        <input
+                            ref="file"
+                            type="file" class="tm-cms-order__doc-input"
+                            :accept="ACCEPTED_DOCUMENTS"
+                            @change="onFile"
+                        >
+                    </div>
+                </header>
+
+                <div v-if="documentsLoading || !documents.length" class="tm-cms-order__list">
+                    <p class="tm-cms-order__item is-quiet">
+                        {{ documentsLoading ? t('cms.loading') : t('cms.orders.documents.empty') }}
+                    </p>
                 </div>
 
-                <p v-if="documentsLoading" class="tm-cms-order__doc-state">{{ t('cms.loading') }}</p>
+                <ul v-else class="tm-cms-order__list">
+                    <li v-for="document in documents" :key="document.id" class="tm-cms-order__item">
+                        <span class="tm-cms-order__glyph" :class="`is-${document.kind}`"><Icon name="doc" :size="15" /></span>
 
-                <p v-else-if="!documents.length" class="tm-cms-order__doc-state">
-                    {{ t('cms.orders.documents.empty') }}
-                </p>
-
-                <ul v-else class="tm-cms-order__docs">
-                    <li v-for="document in documents" :key="document.id" class="tm-cms-order__doc">
-                        <span class="tm-cms-order__doc-kind" :class="`is-${document.kind}`">
-                            {{ t(`cms.orders.documents.kinds.${document.kind}`) }}
-                        </span>
-
-                        <a
-                            class="tm-cms-order__doc-name"
-                            :href="document.url" target="_blank" rel="noopener"
-                        >{{ document.name }}</a>
-
-                        <span class="tm-cms-order__doc-meta">
-                            {{ weight(document.size) }} · {{ fullDate(document.created_at) }}
+                        <span class="tm-cms-order__item-main">
+                            <a class="tm-cms-order__doc-name" :href="document.url" target="_blank" rel="noopener">{{ document.name }}</a>
+                            <span class="tm-cms-order__item-sub">
+                                {{ t(`cms.orders.documents.kinds.${document.kind}`) }} · {{ weight(document.size) }} · {{ fullDate(document.created_at) }}
+                            </span>
                         </span>
 
                         <button
@@ -293,11 +301,13 @@
                 </ul>
             </section>
 
-            <section v-if="history.length" v-show="tab === 'history'" class="tm-cms-order__card tm-cms-order__history tm-cms-order__pane">
-                <h2 class="tm-cms-order__card-title">{{ t('cms.orders.sections.history') }}</h2>
+            <section v-if="history.length" v-show="tab === 'history'" class="tm-cms-order__group tm-cms-order__pane">
+                <header class="tm-cms-order__group-head">
+                    <h2>{{ t('cms.orders.sections.history') }}</h2>
+                </header>
 
-                <ol class="tm-cms-order__events">
-                    <li v-for="(event, i) in history" :key="i">
+                <ol class="tm-cms-order__list">
+                    <li v-for="(event, i) in history" :key="i" class="tm-cms-order__item is-event">
                         <span class="tm-cms-order__event-when">{{ fullDate(event.at) }}</span>
                         <span class="tm-cms-order__event-move">
                             <template v-if="event.from">{{ t(`cms.orders.status.${event.from}`) }} →</template>

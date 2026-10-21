@@ -1,46 +1,50 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-checklist {
+    --tm-checklist-hairline: color-mix(in srgb, var(--tm-ink-1) 11%, transparent);
+
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 16px 20px 18px;
-    border: 1px solid var(--tm-border-1);
-    border-radius: radius('md');
-    background: var(--tm-surface-1);
+    gap: 8px;
 
     &__head {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 8px 12px;
+        min-height: 32px;
+        padding: 0 2px 0 16px;
     }
 
     &__heading {
         display: flex;
         flex-wrap: wrap;
-        align-items: baseline;
+        align-items: center;
         gap: 10px;
     }
 
     &__title {
         margin: 0;
         color: var(--tm-ink-3);
-        font-size: size(12);
-        font-weight: 700;
-        letter-spacing: .04em;
+        font-size: size(13);
+        font-weight: 600;
+        letter-spacing: .03em;
         text-transform: uppercase;
     }
 
     &__count {
+        padding: 2px 9px;
+        border-radius: radius('pill');
+        background: color-mix(in srgb, var(--tm-ink-1) 6%, transparent);
         color: var(--tm-ink-2);
-        font-size: size(13);
+        font-size: size(12);
         font-weight: 700;
         font-variant-numeric: tabular-nums;
     }
 
     &__done {
-        padding: 3px 12px;
+        padding: 4px 12px;
         border-radius: radius('pill');
         background: var(--tm-status-success-soft);
         color: var(--tm-status-success-ink);
@@ -49,106 +53,115 @@
         white-space: nowrap;
     }
 
-    &__bar {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 4px;
-
-        span {
-            height: 4px;
-            border-radius: radius('pill');
-            background: var(--tm-surface-2);
-
-            &.is-ok { background: var(--tm-status-success); }
-            &.is-warning { background: var(--tm-status-warning); }
-            &.is-error { background: var(--tm-status-danger); }
-        }
-    }
+    &__bar { display: none; }
 
     &__list {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 4px;
         margin: 0;
         padding: 0;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         list-style: none;
     }
 
     &__row {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-        min-width: 0;
-        padding-right: 12px;
+        position: relative;
+        display: grid;
+        grid-template-areas: 'label gate action' 'detail gate action';
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 2px 12px;
+        min-height: 56px;
+        padding: 10px 16px;
+
+        & + &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 50px;
+            height: 1px;
+            background: var(--tm-checklist-hairline);
+            transform: scaleY(.5);
+        }
     }
 
     &__label {
         display: inline-flex;
+        grid-area: label;
         align-items: center;
-        gap: 6px;
+        gap: 12px;
         color: var(--tm-ink-1);
-        font-size: size(13);
-        font-weight: 700;
+        font-size: size(15);
+        font-weight: 600;
     }
 
     &__mark {
         display: inline-grid;
         flex: none;
         place-items: center;
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
     }
 
     &__bang {
-        font-size: size(11);
-        font-weight: 700;
+        font-size: size(12);
+        font-weight: 800;
         line-height: 1;
     }
 
     &__row.is-ok &__mark {
-        background: var(--tm-status-success-soft);
-        color: var(--tm-status-success-ink);
+        background: var(--tm-status-success);
+        color: var(--tm-common-white);
     }
 
     &__row.is-warning &__mark {
-        background: color-mix(in srgb, var(--tm-status-warning) 26%, transparent);
+        background: var(--tm-status-warning);
         color: var(--tm-ink-1);
     }
 
     &__row.is-error &__mark {
-        background: var(--tm-status-danger-soft);
-        color: var(--tm-status-danger-dark);
+        background: var(--tm-status-danger);
+        color: var(--tm-common-white);
     }
 
     &__detail {
+        grid-area: detail;
+        padding-left: 34px;
         color: var(--tm-ink-3);
-        font-size: size(12);
+        font-size: size(13);
         line-height: 1.4;
     }
 
     &__row.is-error &__detail { color: var(--tm-status-danger-dark); }
 
     &__gate {
-        padding: 1px 8px;
+        grid-area: gate;
+        padding: 3px 10px;
         border-radius: radius('pill');
         background: var(--tm-status-danger-soft);
         color: var(--tm-status-danger-dark);
-        font-size: size(11);
-        font-weight: 700;
+        font-size: size(12);
+        font-weight: 600;
+        white-space: nowrap;
     }
 
     &__action {
-        padding: 0;
+        grid-area: action;
+        padding: 7px 14px;
         border: 0;
-        background: none;
-        color: var(--tm-cms-accent);
-        font-size: size(12);
-        font-weight: 700;
+        border-radius: radius('pill');
+        background: var(--tm-cms-accent-soft, var(--tm-surface-2));
+        color: var(--tm-cms-accent, var(--tm-ink-1));
+        font-size: size(13);
+        font-weight: 600;
+        white-space: nowrap;
         cursor: pointer;
+        transition: filter .2s ease, transform .3s cubic-bezier(.32, .72, 0, 1);
 
-        &:hover { text-decoration: underline; }
+        &:hover { filter: brightness(.96); }
+        &:active:not(:disabled) { transform: scale(.97); }
         &:disabled { opacity: .5; cursor: default; }
     }
 
@@ -156,17 +169,22 @@
 
     &__hint {
         margin: 0;
+        padding: 0 16px;
         color: var(--tm-ink-3);
-        font-size: size(12);
+        font-size: size(13);
+        line-height: 1.45;
 
         &.is-gate { color: var(--tm-ink-2); }
     }
 }
 
-@media #{$until-lg} {
-    .tm-checklist__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 14px; }
-}
-
 @media #{$until-md} {
-    .tm-checklist__list { grid-template-columns: minmax(0, 1fr); }
+    .tm-checklist__row {
+        grid-template-areas: 'label label' 'detail detail' 'gate action';
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        row-gap: 6px;
+    }
+
+    .tm-checklist__action { justify-self: end; }
 }

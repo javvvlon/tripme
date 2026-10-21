@@ -1,35 +1,36 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-finance {
+    --tm-finance-hairline: color-mix(in srgb, var(--tm-ink-1) 11%, transparent);
+
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 20px;
-    border: 1px solid var(--tm-border-1);
-    border-radius: radius('md');
-    background: var(--tm-surface-1);
+    gap: 8px;
 
     &__head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        min-height: 32px;
+        padding: 0 2px 0 16px;
     }
 
-    &__title {
+    &__title,
+    &__subtitle {
         margin: 0;
         color: var(--tm-ink-3);
-        font-size: size(12);
-        font-weight: 700;
-        letter-spacing: .04em;
+        font-size: size(13);
+        font-weight: 600;
+        letter-spacing: .03em;
         text-transform: uppercase;
     }
 
     &__subtitle {
-        margin: 0 0 8px;
-        color: var(--tm-ink-2);
-        font-size: size(14);
-        font-weight: 700;
+        display: flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 16px;
     }
 
     &__muted {
@@ -41,23 +42,38 @@
     &__totals {
         display: flex;
         flex-direction: column;
-        gap: 8px;
         margin: 0;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         font-variant-numeric: tabular-nums;
 
         > div {
+            position: relative;
             display: flex;
+            align-items: center;
             justify-content: space-between;
             gap: 16px;
+            min-height: 48px;
+            padding: 10px 16px;
         }
 
-        > .is-split {
-            margin-top: 4px;
-            padding-top: 12px;
-            border-top: 1px solid var(--tm-border-1);
+        > div + div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 16px;
+            height: 1px;
+            background: var(--tm-finance-hairline);
+            transform: scaleY(.5);
         }
 
-        dt { color: var(--tm-ink-2); font-size: size(14); }
+        > .is-split { border-top: 8px solid var(--tm-hig-grouped, var(--tm-surface-2)); }
+
+        > .is-split::before { display: none; }
+
+        dt { color: var(--tm-ink-1); font-size: size(15); }
 
         dt small { display: block; color: var(--tm-ink-4); font-size: size(12); }
 
@@ -87,7 +103,12 @@
     &__deposit {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
     }
 
     &__deposit-row {
@@ -113,14 +134,14 @@
         overflow: hidden;
         height: 8px;
         border-radius: radius('pill');
-        background: var(--tm-surface-2);
+        background: color-mix(in srgb, var(--tm-ink-1) 8%, transparent);
 
         span {
             display: block;
             height: 100%;
             border-radius: inherit;
-            background: var(--tm-brand-primary);
-            transition: width .3s ease;
+            background: var(--tm-cms-accent, var(--tm-ink-1));
+            transition: width .5s cubic-bezier(.32, .72, 0, 1);
 
             &.is-met { background: var(--tm-status-success); }
         }
@@ -144,20 +165,32 @@
     &__list {
         display: flex;
         flex-direction: column;
-        gap: 8px;
         margin: 0;
         padding: 0;
+        border-radius: 14px;
+        background: var(--tm-surface-1);
+        box-shadow: var(--tm-shadow-sm);
         list-style: none;
     }
 
     &__payment {
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         gap: 8px 16px;
-        padding: 12px 14px;
-        border-radius: radius('sm');
-        background: var(--tm-surface-2);
+        padding: 12px 16px;
+
+        & + &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 16px;
+            height: 1px;
+            background: var(--tm-finance-hairline);
+            transform: scaleY(.5);
+        }
 
         &.is-reversed .tm-finance__payment-amount span:first-child { text-decoration: line-through; color: var(--tm-ink-3); }
         &.is-reversal { background: none; border: 1px dashed var(--tm-border-1); }
@@ -330,7 +363,25 @@
         gap: 12px;
     }
 
-    &__record { align-self: flex-start; }
+    &__payments {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 18px;
+
+        > .tm-finance__muted {
+            padding: 16px;
+            border-radius: 14px;
+            background: var(--tm-surface-1);
+            box-shadow: var(--tm-shadow-sm);
+            text-align: center;
+        }
+    }
+
+    &__record {
+        align-self: flex-start;
+        margin-top: 8px;
+    }
 }
 
 @media #{$until-md} {
