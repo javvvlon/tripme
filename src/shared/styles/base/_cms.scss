@@ -51,12 +51,10 @@ html.is-cms .tm-cms {
     background: var(--tm-hig-sidebar);
 
     &__main {
-        margin: 0;
-        border: 0;
-        border-left: 1px solid var(--tm-hig-hairline);
-        border-radius: 0;
+        border-color: var(--tm-hig-hairline);
+        border-radius: 22px 22px 0 0;
         background: var(--tm-hig-grouped);
-        box-shadow: none;
+        box-shadow: 0 1px 2px rgba(11, 25, 44, .04), 0 8px 28px rgba(11, 25, 44, .05);
     }
 }
 
