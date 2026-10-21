@@ -1339,7 +1339,8 @@
         "revenue": "Revenue",
         "average": "Average order",
         "response": "First answer (median)",
-        "withinSla": "{pct} within {n} minutes"
+        "withinSla": "{pct} within {n} minutes",
+        "conversionShort": "conversion {pct}"
       },
       "trendDaily": "Leads per day",
       "trendWeekly": "Leads per week",
@@ -1408,7 +1409,25 @@
       "noSales": "No paid orders in the period",
       "unknown": "Not set",
       "noCategory": "No category",
-      "footnote": "Revenue is the period’s paid orders without cancellations, in dollars at the Central Bank of Uzbekistan rate; the sum amount is approximate. Margin will appear once orders record their cost."
+      "footnote": "Revenue is the period’s paid orders without cancellations, in dollars at the Central Bank of Uzbekistan rate; the sum amount is approximate. Margin will appear once orders record their cost.",
+      "views": {
+        "overview": "Overview",
+        "sales": "Sales",
+        "team": "Team"
+      },
+      "metrics": {
+        "leads": "Leads",
+        "paid": "Payments",
+        "revenue": "Revenue",
+        "paidLong": "Paid orders"
+      },
+      "metricLabel": "Metric",
+      "mixTabs": {
+        "destinations": "Destinations",
+        "operators": "Operators",
+        "hotels": "Hotels",
+        "stars": "Categories"
+      }
     },
     "blocks": {
       "kinds": {

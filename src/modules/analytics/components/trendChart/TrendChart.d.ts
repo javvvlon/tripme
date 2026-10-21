@@ -11,4 +11,5 @@ export interface ITrendPoint {
 export interface ITrendChartProps {
   points: ITrendPoint[]
   caption: string
+  format?: (value: number) => string
 }

@@ -10,148 +10,175 @@
             <Tabs v-model="preset" :items="presetItems" variant="segment" :aria-label="t('cms.analytics.periodLabel')" class="tm-analytics__presets" />
         </header>
 
+        <Tabs v-model="view" :items="viewItems" variant="segment" :aria-label="t('cms.analytics.title')" class="tm-analytics__views" />
+
         <EditorSkeleton v-if="pending && !data" variant="rows" />
 
         <template v-else-if="data">
-            <section class="tm-analytics__kpis" :class="{ 'is-loading': pending }">
-                <article v-for="tile in tiles" :key="tile.key" class="tm-analytics__tile">
-                    <p class="tm-analytics__tile-label">{{ tile.label }}</p>
-                    <p class="tm-analytics__tile-value">{{ tile.value }}</p>
-                    <p v-if="tile.sub" class="tm-analytics__tile-sub">{{ tile.sub }}</p>
-                    <p v-if="tile.delta" class="tm-analytics__delta" :class="`is-${tile.delta.tone}`">
-                        {{ tile.delta.text }} <span>{{ t('cms.analytics.vsPrevious') }}</span>
-                    </p>
-                </article>
-            </section>
+            <div v-show="view === 'overview'" class="tm-analytics__pane" :class="{ 'is-loading': pending }">
+                <section class="tm-analytics__hero">
+                    <header class="tm-analytics__hero-head">
+                        <div class="tm-analytics__hero-text">
+                            <p class="tm-analytics__hero-label">{{ hero.label }}</p>
+                            <p class="tm-analytics__hero-value">{{ hero.value }}</p>
+                            <p class="tm-analytics__hero-meta">
+                                <span v-if="hero.delta" class="tm-analytics__delta" :class="`is-${hero.delta.tone}`">{{ hero.delta.text }}</span>
+                                <span>{{ t('cms.analytics.vsPrevious') }}</span>
+                                <span v-if="hero.sub" class="tm-analytics__hero-sub">{{ hero.sub }}</span>
+                            </p>
+                        </div>
 
-            <section class="tm-analytics__card">
-                <h2 class="tm-analytics__card-title">{{ t(data.period.bucket === 'week' ? 'cms.analytics.trendWeekly' : 'cms.analytics.trendDaily') }}</h2>
-                <TrendChart :points="trend" :caption="t('cms.analytics.trendDaily')" />
-            </section>
+                        <Tabs v-model="metric" :items="metricItems" variant="segment" :aria-label="t('cms.analytics.metricLabel')" class="tm-analytics__metric" />
+                    </header>
 
-            <div class="tm-analytics__split">
-                <section class="tm-analytics__card">
-                    <h2 class="tm-analytics__card-title">{{ t('cms.analytics.funnel.title') }}</h2>
-                    <BarList :rows="funnel" :empty="t('cms.analytics.empty')" />
-                    <p class="tm-analytics__note">{{ t('cms.analytics.funnel.note') }}</p>
+                    <TrendChart :points="trend" :caption="hero.label" :format="tick" />
                 </section>
 
-                <section class="tm-analytics__card">
-                    <h2 class="tm-analytics__card-title">{{ t('cms.analytics.attention.title') }}</h2>
-
-                    <p v-if="!attentionTotal" class="tm-analytics__calm">{{ t('cms.analytics.attention.calm') }}</p>
-
-                    <div v-for="block in attention" v-show="block.total" :key="block.key" class="tm-analytics__alert">
-                        <p class="tm-analytics__alert-head">
-                            <span>{{ block.title }}</span>
-                            <strong>{{ block.total }}</strong>
+                <section class="tm-analytics__stats">
+                    <article v-for="tile in stats" :key="tile.key" class="tm-analytics__stat">
+                        <p class="tm-analytics__stat-label">{{ tile.label }}</p>
+                        <p class="tm-analytics__stat-value">{{ tile.value }}</p>
+                        <p class="tm-analytics__stat-meta">
+                            <span v-if="tile.delta" class="tm-analytics__delta" :class="`is-${tile.delta.tone}`">{{ tile.delta.text }}</span>
+                            <span v-if="tile.sub">{{ tile.sub }}</span>
                         </p>
-                        <ul class="tm-analytics__alert-list">
-                            <li v-for="item in block.items" :key="item.id">
-                                <NuxtLink :to="localePath(item.to)" class="tm-analytics__alert-link">
-                                    <span class="tm-analytics__ref">{{ item.ref }}</span>
-                                    <span class="tm-analytics__alert-text">{{ item.text }}</span>
-                                    <span class="tm-analytics__alert-meta">{{ item.meta }}</span>
-                                </NuxtLink>
-                            </li>
-                        </ul>
+                    </article>
+                </section>
+
+                <div class="tm-analytics__split">
+                    <section class="tm-analytics__card">
+                        <h2 class="tm-analytics__card-title">{{ t('cms.analytics.funnel.title') }}</h2>
+                        <BarList :rows="funnel" :empty="t('cms.analytics.empty')" />
+                        <p class="tm-analytics__note">{{ t('cms.analytics.funnel.note') }}</p>
+                    </section>
+
+                    <section class="tm-analytics__card">
+                        <h2 class="tm-analytics__card-title">
+                            {{ t('cms.analytics.attention.title') }}
+                            <span v-if="attentionTotal" class="tm-analytics__count">{{ attentionTotal }}</span>
+                        </h2>
+
+                        <p v-if="!attentionTotal && !attention.some(block => block.total)" class="tm-analytics__calm">{{ t('cms.analytics.attention.calm') }}</p>
+
+                        <div class="tm-analytics__alerts">
+                            <details v-for="block in attention" v-show="block.total" :key="block.key" class="tm-analytics__alert">
+                                <summary class="tm-analytics__alert-head">
+                                    <span>{{ block.title }}</span>
+                                    <strong :class="{ 'is-quiet': block.key === 'cancellations' }">{{ block.total }}</strong>
+                                    <Icon name="chevron" :size="14" class="tm-analytics__alert-chevron" />
+                                </summary>
+
+                                <ul class="tm-analytics__alert-list">
+                                    <li v-for="item in block.items" :key="item.id">
+                                        <NuxtLink :to="localePath(item.to)" class="tm-analytics__alert-link">
+                                            <span class="tm-analytics__ref">{{ item.ref }}</span>
+                                            <span class="tm-analytics__alert-text">{{ item.text }}</span>
+                                            <span class="tm-analytics__alert-meta">{{ item.meta }}</span>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </details>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div v-show="view === 'sales'" class="tm-analytics__pane" :class="{ 'is-loading': pending }">
+                <section class="tm-analytics__card">
+                    <header class="tm-analytics__card-head">
+                        <h2 class="tm-analytics__card-title">{{ t('cms.analytics.mix.title') }}</h2>
+                        <Tabs v-model="mixKey" :items="mixItems" variant="segment" :aria-label="t('cms.analytics.mix.title')" />
+                    </header>
+
+                    <BarList :rows="currentMix" :empty="t('cms.analytics.noSales')" />
+                </section>
+
+                <div class="tm-analytics__split">
+                    <section class="tm-analytics__card">
+                        <h2 class="tm-analytics__card-title">{{ t('cms.analytics.channels.title') }}</h2>
+                        <table v-if="data.mix.channels.length" class="tm-analytics__table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ t('cms.analytics.channels.channel') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.channels.leads') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.channels.paid') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.channels.conversion') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="row in data.mix.channels" :key="row.channel">
+                                    <td>{{ channelLabel(row.channel) }}</td>
+                                    <td class="is-num">{{ row.leads }}</td>
+                                    <td class="is-num">{{ row.paid }}</td>
+                                    <td class="is-num">{{ percent(row.conversion) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p v-else class="tm-analytics__note">{{ t('cms.analytics.empty') }}</p>
+                    </section>
+
+                    <section class="tm-analytics__card">
+                        <h2 class="tm-analytics__card-title">{{ t('cms.analytics.rejections.title') }}</h2>
+                        <BarList :rows="rejections" :empty="t('cms.analytics.rejections.none')" />
+                    </section>
+                </div>
+            </div>
+
+            <div v-show="view === 'team'" class="tm-analytics__pane" :class="{ 'is-loading': pending }">
+                <section class="tm-analytics__card">
+                    <h2 class="tm-analytics__card-title">{{ t('cms.analytics.managers.title') }}</h2>
+                    <div class="tm-analytics__scroll">
+                        <table v-if="data.managers.length" class="tm-analytics__table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ t('cms.analytics.managers.name') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.managers.leads') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.leads.status.won') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.leads.status.rejected') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.managers.response') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.managers.conversion') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.managers.paid') }}</th>
+                                    <th scope="col" class="is-num">{{ t('cms.analytics.managers.revenue') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="row in data.managers" :key="row.id ?? 'none'">
+                                    <td>
+                                        <span class="tm-analytics__person">
+                                            <span class="tm-analytics__avatar" aria-hidden="true">{{ initials(row.name || t('cms.analytics.managers.unassigned')) }}</span>
+                                            {{ row.name || t('cms.analytics.managers.unassigned') }}
+                                        </span>
+                                    </td>
+                                    <td class="is-num">{{ row.leads }}</td>
+                                    <td class="is-num" :class="{ 'is-muted': !row.statuses.won }">{{ row.statuses.won }}</td>
+                                    <td class="is-num" :class="{ 'is-muted': !row.statuses.rejected }">{{ row.statuses.rejected }}</td>
+                                    <td class="is-num" :class="{ 'is-late': (row.responseMedianMinutes ?? 0) > RESPONSE_SLA_MINUTES }">
+                                        {{ row.responseMedianMinutes === null ? '—' : waitLabel(row.responseMedianMinutes, t) }}
+                                    </td>
+                                    <td class="is-num">{{ percent(row.conversion) }}</td>
+                                    <td class="is-num">{{ row.paidOrders }}</td>
+                                    <td class="is-num is-strong">{{ usd(row.revenueUsd) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p v-else class="tm-analytics__note">{{ t('cms.analytics.empty') }}</p>
                     </div>
                 </section>
             </div>
 
-            <h2 class="tm-analytics__section">{{ t('cms.analytics.mix.title') }}</h2>
-
-            <div class="tm-analytics__grid">
-                <section v-for="block in mix" :key="block.key" class="tm-analytics__card">
-                    <h3 class="tm-analytics__card-title">{{ block.title }}</h3>
-                    <BarList :rows="block.rows" :empty="t('cms.analytics.noSales')" />
-                </section>
-            </div>
-
-            <div class="tm-analytics__split">
-                <section class="tm-analytics__card">
-                    <h2 class="tm-analytics__card-title">{{ t('cms.analytics.channels.title') }}</h2>
-                    <table v-if="data.mix.channels.length" class="tm-analytics__table">
-                        <thead>
-                            <tr>
-                                <th scope="col">{{ t('cms.analytics.channels.channel') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.channels.leads') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.channels.paid') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.channels.conversion') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="row in data.mix.channels" :key="row.channel">
-                                <td>{{ channelLabel(row.channel) }}</td>
-                                <td class="is-num">{{ row.leads }}</td>
-                                <td class="is-num">{{ row.paid }}</td>
-                                <td class="is-num">{{ percent(row.conversion) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-else class="tm-analytics__note">{{ t('cms.analytics.empty') }}</p>
-                </section>
-
-                <section class="tm-analytics__card">
-                    <h2 class="tm-analytics__card-title">{{ t('cms.analytics.rejections.title') }}</h2>
-                    <BarList :rows="rejections" :empty="t('cms.analytics.rejections.none')" />
-                </section>
-            </div>
-
-            <section class="tm-analytics__card">
-                <h2 class="tm-analytics__card-title">{{ t('cms.analytics.managers.title') }}</h2>
-                <div class="tm-analytics__scroll">
-                    <table v-if="data.managers.length" class="tm-analytics__table">
-                        <thead>
-                            <tr>
-                                <th scope="col">{{ t('cms.analytics.managers.name') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.managers.leads') }}</th>
-                                <th v-for="column in STATUS_COLUMNS" :key="column.key" scope="col" class="is-num">
-                                    {{ t(`cms.leads.status.${column.status}`) }}
-                                </th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.managers.response') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.managers.conversion') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.managers.paid') }}</th>
-                                <th scope="col" class="is-num">{{ t('cms.analytics.managers.revenue') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="row in data.managers" :key="row.id ?? 'none'">
-                                <td>{{ row.name || t('cms.analytics.managers.unassigned') }}</td>
-                                <td class="is-num">{{ row.leads }}</td>
-                                <td
-                                    v-for="column in STATUS_COLUMNS" :key="column.key"
-                                    class="is-num" :class="{ 'is-muted': !row.statuses[column.key] }"
-                                >
-                                    {{ row.statuses[column.key] ?? 0 }}
-                                </td>
-                                <td class="is-num" :class="{ 'is-late': (row.responseMedianMinutes ?? 0) > RESPONSE_SLA_MINUTES }">
-                                    {{ row.responseMedianMinutes === null ? '—' : waitLabel(row.responseMedianMinutes, t) }}
-                                </td>
-                                <td class="is-num">{{ percent(row.conversion) }}</td>
-                                <td class="is-num">{{ row.paidOrders }}</td>
-                                <td class="is-num">{{ usd(row.revenueUsd) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-else class="tm-analytics__note">{{ t('cms.analytics.empty') }}</p>
-                </div>
-            </section>
-
-            <p class="tm-analytics__note">{{ t('cms.analytics.footnote') }}</p>
+            <p class="tm-analytics__footnote">{{ t('cms.analytics.footnote') }}</p>
         </template>
     </div>
 </template>
 
 <script setup lang="ts">
 import { isRejectReason } from '~/modules/leads/contracts/leads'
-import { STATUS_COLUMNS } from './Analytics.config'
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import BarList from '~/modules/analytics/components/barList/BarList.vue'
 import TrendChart from '~/modules/analytics/components/trendChart/TrendChart.vue'
 import { RESPONSE_SLA_MINUTES } from '~/modules/leads/contracts/leads'
 import { waitLabel } from '~/modules/leads/helpers/compliance'
-import { PRESETS, useAnalytics } from './Analytics.hooks'
+import { PRESETS, VIEWS, useAnalytics } from './Analytics.hooks'
 import type { IBarRow } from '~/modules/analytics/components/barList/BarList.d'
 import type { ITrendPoint } from '~/modules/analytics/components/trendChart/TrendChart.d'
 
@@ -159,7 +186,15 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { label } = useCatalogLabel()
 
-const { preset, data, pending, delta } = useAnalytics()
+const { preset, view, data, pending, delta } = useAnalytics()
+
+type HeroMetric = 'leads' | 'paid' | 'revenue'
+
+type MixKey = 'destinations' | 'operators' | 'hotels' | 'stars'
+
+const metric = ref<HeroMetric>('leads')
+
+const mixKey = ref<MixKey>('destinations')
 
 const day = (iso: string) =>
     new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`))
@@ -183,15 +218,41 @@ const percent = (value: number | null) => (value === null ? '—' : `${Math.roun
 
 const channelLabel = (channel: string) => t(`cms.leads.channels.${channel}`)
 
-const tiles = computed(() => {
+const viewItems = computed(() => VIEWS.map(value => ({ value, label: t(`cms.analytics.views.${value}`) })))
+
+const metricItems = computed(() => (['leads', 'paid', 'revenue'] as HeroMetric[]).map(value => ({ value, label: t(`cms.analytics.metrics.${value}`) })))
+
+const mixItems = computed(() => (['destinations', 'operators', 'hotels', 'stars'] as MixKey[]).map(value => ({ value, label: t(`cms.analytics.mixTabs.${value}`) })))
+
+const compact = (value: number) => (value >= 1000 ? `${Number((value / 1000).toFixed(1))}k` : String(value))
+
+const tick = (value: number) => (metric.value === 'revenue' ? `$${compact(value)}` : String(value))
+
+const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]!.toUpperCase()).join('')
+
+const hero = computed(() => {
+    const now = data.value?.kpis.current
+
+    if (!now) return { label: '', value: '', sub: '', delta: null }
+
+    if (metric.value === 'paid') {
+        return { label: t('cms.analytics.metrics.paidLong'), value: String(now.paidOrders), sub: t('cms.analytics.kpi.conversionShort', { pct: percent(now.conversion) }), delta: delta('paidOrders') }
+    }
+
+    if (metric.value === 'revenue') {
+        return { label: t('cms.analytics.kpi.revenue'), value: usd(now.revenueUsd), sub: sum(now.revenueUsd), delta: delta('revenueUsd') }
+    }
+
+    return { label: t('cms.analytics.kpi.leads'), value: String(now.leads), sub: '', delta: delta('leads') }
+})
+
+const stats = computed(() => {
     const now = data.value?.kpis.current
 
     if (!now) return []
 
     return [
-        { key: 'leads', label: t('cms.analytics.kpi.leads'), value: String(now.leads), sub: '', delta: delta('leads') },
         { key: 'conversion', label: t('cms.analytics.kpi.conversion'), value: percent(now.conversion), sub: t('cms.analytics.kpi.paidOrders', { n: now.paidOrders }), delta: delta('conversion') },
-        { key: 'revenue', label: t('cms.analytics.kpi.revenue'), value: usd(now.revenueUsd), sub: sum(now.revenueUsd), delta: delta('revenueUsd') },
         { key: 'average', label: t('cms.analytics.kpi.average'), value: usd(now.averageOrderUsd), sub: '', delta: delta('averageOrderUsd') },
         {
             key: 'response',
@@ -206,7 +267,7 @@ const tiles = computed(() => {
 const trend = computed<ITrendPoint[]>(() => (data.value?.trend ?? []).map(point => ({
     key: point.date,
     label: day(point.date),
-    value: point.leads,
+    value: metric.value === 'paid' ? point.paid : metric.value === 'revenue' ? point.revenueUsd : point.leads,
     tooltip: [
         data.value?.period.bucket === 'week' ? t('cms.analytics.weekOf', { date: day(point.date) }) : day(point.date),
         t('cms.analytics.tip.leads', { n: point.leads }),
@@ -256,17 +317,16 @@ const mixRows = (rows: Array<{ key: string, orders: number, revenueUsd: number }
         }))
 }
 
-const mix = computed(() => {
+const currentMix = computed<IBarRow[]>(() => {
     const m = data.value?.mix
 
     if (!m) return []
 
-    return [
-        { key: 'destinations', title: t('cms.analytics.mix.destinations'), rows: mixRows(m.destinations, key => (key ? label(key) || key : t('cms.analytics.unknown'))) },
-        { key: 'operators', title: t('cms.analytics.mix.operators'), rows: mixRows(m.operators, key => key || t('cms.analytics.unknown')) },
-        { key: 'stars', title: t('cms.analytics.mix.stars'), rows: mixRows(m.stars, key => (key ? `${key}★` : t('cms.analytics.noCategory'))) },
-        { key: 'hotels', title: t('cms.analytics.mix.hotels'), rows: mixRows(m.hotels, key => key || t('cms.analytics.unknown')) },
-    ]
+    if (mixKey.value === 'operators') return mixRows(m.operators, key => key || t('cms.analytics.unknown')).slice(0, 8)
+    if (mixKey.value === 'hotels') return mixRows(m.hotels, key => key || t('cms.analytics.unknown')).slice(0, 8)
+    if (mixKey.value === 'stars') return mixRows(m.stars, key => (key ? `${key}★` : t('cms.analytics.noCategory')))
+
+    return mixRows(m.destinations, key => (key ? label(key) || key : t('cms.analytics.unknown'))).slice(0, 8)
 })
 
 const rejections = computed<IBarRow[]>(() => (data.value?.rejections ?? []).map(row => ({

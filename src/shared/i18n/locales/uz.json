@@ -1339,7 +1339,8 @@
         "revenue": "Tushum",
         "average": "O‘rtacha chek",
         "response": "Birinchi javob (mediana)",
-        "withinSla": "{pct} — {n} daqiqa ichida"
+        "withinSla": "{pct} — {n} daqiqa ichida",
+        "conversionShort": "konversiya {pct}"
       },
       "trendDaily": "Kunlar bo‘yicha lidlar",
       "trendWeekly": "Haftalar bo‘yicha lidlar",
@@ -1408,7 +1409,25 @@
       "noSales": "Davrda to‘langan buyurtmalar yo‘q",
       "unknown": "Ko‘rsatilmagan",
       "noCategory": "Toifasiz",
-      "footnote": "Tushum — davrdagi bekor qilinmagan to‘langan buyurtmalar, O‘zR MB kursi bo‘yicha dollarda; so‘mdagi summa taxminiy. Marja buyurtmalarda tannarx paydo bo‘lganda ko‘rinadi."
+      "footnote": "Tushum — davrdagi bekor qilinmagan to‘langan buyurtmalar, O‘zR MB kursi bo‘yicha dollarda; so‘mdagi summa taxminiy. Marja buyurtmalarda tannarx paydo bo‘lganda ko‘rinadi.",
+      "views": {
+        "overview": "Umumiy",
+        "sales": "Savdo",
+        "team": "Jamoa"
+      },
+      "metrics": {
+        "leads": "Lidlar",
+        "paid": "To‘lovlar",
+        "revenue": "Tushum",
+        "paidLong": "To‘langan buyurtmalar"
+      },
+      "metricLabel": "Ko‘rsatkich",
+      "mixTabs": {
+        "destinations": "Yo‘nalishlar",
+        "operators": "Operatorlar",
+        "hotels": "Mehmonxonalar",
+        "stars": "Toifalar"
+      }
     },
     "blocks": {
       "kinds": {

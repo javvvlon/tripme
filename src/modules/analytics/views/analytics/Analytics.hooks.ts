@@ -6,6 +6,10 @@ import type { AnalyticsPreset, IAnalyticsKpis, IAnalyticsReport } from '~/module
  */
 export const PRESETS: AnalyticsPreset[] = ['7', '30', '90', '365']
 
+export const VIEWS = ['overview', 'sales', 'team'] as const
+
+export type AnalyticsView = typeof VIEWS[number]
+
 const DAY = 86_400_000
 
 const tashkentToday = (): string => new Date(Date.now() + 5 * 60 * 60 * 1000).toISOString().slice(0, 10)
@@ -30,6 +34,11 @@ export const useAnalytics = () => {
   const preset = computed<AnalyticsPreset>({
     get: () => (PRESETS.includes(route.query.days as AnalyticsPreset) ? route.query.days as AnalyticsPreset : '30'),
     set: (value) => { void router.replace({ query: { ...route.query, days: value } }) },
+  })
+
+  const view = computed<AnalyticsView>({
+    get: () => (VIEWS.includes(route.query.view as AnalyticsView) ? route.query.view as AnalyticsView : 'overview'),
+    set: (value) => { void router.replace({ query: { ...route.query, view: value === 'overview' ? undefined : value } }) },
   })
 
   const range = computed(() => {
@@ -75,5 +84,5 @@ export const useAnalytics = () => {
     return { text: `${rounded > 0 ? '+' : ''}${rounded}%`, tone: better ? 'good' : 'bad' }
   }
 
-  return { preset, range, data, pending, delta, reload: load }
+  return { preset, view, range, data, pending, delta, reload: load }
 }

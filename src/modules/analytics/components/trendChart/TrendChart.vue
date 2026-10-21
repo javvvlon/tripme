@@ -3,7 +3,7 @@
         <div class="tm-trend__plot">
             <div class="tm-trend__grid" aria-hidden="true">
                 <span v-for="tick in ticks" :key="tick" class="tm-trend__tick" :style="{ bottom: `${(tick / scale) * 100}%` }">
-                    <em>{{ tick }}</em>
+                    <em>{{ format ? format(tick) : tick }}</em>
                 </span>
             </div>
 
@@ -71,8 +71,8 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
 
     &__plot {
         position: relative;
-        height: 180px;
-        margin-left: 28px;
+        height: 200px;
+        margin-left: 40px;
     }
 
     &__grid { position: absolute; inset: 0; }
@@ -85,9 +85,9 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
 
         em {
             position: absolute;
-            left: -28px;
+            left: -40px;
             top: -8px;
-            width: 22px;
+            width: 32px;
             font-size: size(11);
             font-style: normal;
             font-variant-numeric: tabular-nums;
@@ -158,7 +158,7 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
     &__axis {
         display: flex;
         gap: 2px;
-        margin: 6px 0 0 28px;
+        margin: 6px 0 0 40px;
     }
 
     &__axis-label {
@@ -169,6 +169,14 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
         color: var(--tm-ink-4);
         text-align: center;
         white-space: nowrap;
+    }
+
+    @media #{$until-md} {
+        &__axis-label:not(:first-child, :last-child) { visibility: hidden; }
+
+        &__axis-label:first-child { text-align: left; }
+
+        &__axis-label:last-child { text-align: right; }
     }
 }
 </style>
