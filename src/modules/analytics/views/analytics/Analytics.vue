@@ -7,17 +7,7 @@
                 :sub="data ? t('cms.analytics.period', { from: day(data.period.from), to: day(data.period.to), prevFrom: day(data.period.previous.from), prevTo: day(data.period.previous.to) }) : ''"
             />
 
-            <div class="tm-analytics__presets" role="radiogroup" :aria-label="t('cms.analytics.periodLabel')">
-                <button
-                    v-for="value in PRESETS" :key="value"
-                    type="button" role="radio"
-                    class="tm-analytics__preset" :class="{ 'is-on': preset === value }"
-                    :aria-checked="preset === value"
-                    @click="preset = value"
-                >
-                    {{ t(`cms.analytics.presets.${value}`) }}
-                </button>
-            </div>
+            <Tabs v-model="preset" :items="presetItems" variant="segment" :aria-label="t('cms.analytics.periodLabel')" class="tm-analytics__presets" />
         </header>
 
         <EditorSkeleton v-if="pending && !data" variant="rows" />
@@ -186,6 +176,8 @@ const sum = (value: number | null) => {
         amount: new Intl.NumberFormat(locale.value, { maximumFractionDigits: 0 }).format(Math.round((value * rate) / 1_000_000) * 1_000_000),
     })
 }
+
+const presetItems = computed(() => PRESETS.map(value => ({ value, label: t(`cms.analytics.presets.${value}`) })))
 
 const percent = (value: number | null) => (value === null ? '—' : `${Math.round(value * 100)}%`)
 

@@ -387,28 +387,6 @@ html.is-cms {
     }
 }
 
-html.is-cms .tm-analytics__presets {
-    gap: 0;
-    padding: 2px;
-    border: 0;
-    border-radius: 9px;
-    background: var(--tm-hig-fill);
-
-    .tm-analytics__preset {
-        padding: 6px 14px;
-        border-radius: 7px;
-        color: var(--tm-ink-1);
-        transition: background .25s var(--tm-hig-spring), box-shadow .25s ease;
-
-        &.is-on {
-            background: var(--tm-surface-1);
-            box-shadow: var(--tm-hig-thumb);
-            color: var(--tm-ink-1);
-            font-weight: 700;
-        }
-    }
-}
-
 html.is-cms .tm-cms-operators__list {
     gap: 0;
     overflow: hidden;

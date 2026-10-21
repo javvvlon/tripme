@@ -51,14 +51,20 @@ const width = (value: number) => (top.value ? Math.max(2, (value / top.value) * 
         text-overflow: ellipsis;
     }
 
-    &__track { display: block; height: 10px; }
+    &__track {
+        display: block;
+        overflow: hidden;
+        height: 8px;
+        border-radius: radius('pill');
+        background: color-mix(in srgb, var(--tm-ink-1) 6%, transparent);
+    }
 
     &__bar {
         display: block;
         height: 100%;
-        border-radius: 0 4px 4px 0;
-        background: var(--tm-brand-secondary);
-        transition: width .3s ease;
+        border-radius: inherit;
+        background: var(--tm-cms-accent, var(--tm-ink-1));
+        transition: width .5s cubic-bezier(.32, .72, 0, 1), opacity .2s ease;
     }
 
     &__value {
@@ -75,9 +81,9 @@ const width = (value: number) => (top.value ? Math.max(2, (value / top.value) * 
         z-index: 5;
         right: 0;
         bottom: calc(100% + 4px);
-        padding: 6px 9px;
-        border-radius: radius('sm');
-        background: var(--tm-common-night);
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: var(--tm-cms-accent, var(--tm-common-night));
         color: var(--tm-common-white);
         font-size: size(12);
         white-space: nowrap;
@@ -87,7 +93,7 @@ const width = (value: number) => (top.value ? Math.max(2, (value / top.value) * 
     }
 
     &__row:hover &__hint { opacity: 1; }
-    &__row:hover &__bar { background: var(--tm-brand-secondary-dark); }
+    &__row:hover &__bar { opacity: .82; }
 
     &__empty {
         margin: 0;

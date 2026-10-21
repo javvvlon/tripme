@@ -81,7 +81,7 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
         position: absolute;
         left: 0;
         right: 0;
-        border-top: 1px solid var(--tm-border-2);
+        border-top: 1px solid color-mix(in srgb, var(--tm-ink-1) 8%, transparent);
 
         em {
             position: absolute;
@@ -114,16 +114,19 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
         min-width: 0;
         outline: none;
 
+        border-radius: 6px;
+
         &:hover,
-        &:focus-visible { background: var(--tm-surface-2); }
+        &:focus-visible { background: color-mix(in srgb, var(--tm-ink-1) 4%, transparent); }
     }
 
     &__column {
         display: block;
-        width: min(24px, 70%);
+        width: min(22px, 68%);
         min-height: 0;
-        border-radius: 4px 4px 0 0;
-        background: var(--tm-brand-secondary);
+        border-radius: 6px 6px 2px 2px;
+        background: var(--tm-cms-accent, var(--tm-ink-1));
+        transition: height .5s cubic-bezier(.32, .72, 0, 1), opacity .2s ease;
     }
 
     &__tip {
@@ -135,8 +138,8 @@ const showLabel = (index: number) => index % every.value === 0 || index === prop
         flex-direction: column;
         gap: 2px;
         padding: 7px 10px;
-        border-radius: radius('sm');
-        background: var(--tm-common-night);
+        border-radius: 8px;
+        background: var(--tm-cms-accent, var(--tm-common-night));
         color: var(--tm-common-white);
         font-size: size(12);
         white-space: nowrap;
