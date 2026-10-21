@@ -2636,7 +2636,9 @@
           "title": "Xuddi shu tarifni tanlang",
           "text": "Davlatni toping, tarifni tanlang va to‘lovda kodni kiriting. QR-kod darhol keladi."
         }
-      }
+      },
+      "qr": "Yoki telefon kamerasini yo‘naltiring — {partner} ilovasi ochiladi",
+      "qrAlt": "{partner} QR-kodi"
     },
     "tripOffer": {
       "title": "Sayohat uchun eSIM",

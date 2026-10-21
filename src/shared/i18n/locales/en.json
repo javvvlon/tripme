@@ -2636,7 +2636,9 @@
           "title": "Pick the same plan",
           "text": "Find the country, choose the plan and enter the code at checkout. The QR code arrives right away."
         }
-      }
+      },
+      "qr": "Or point your phone camera here to open the {partner} app",
+      "qrAlt": "{partner} QR code"
     },
     "tripOffer": {
       "title": "eSIM for the trip",

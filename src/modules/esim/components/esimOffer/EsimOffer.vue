@@ -8,6 +8,11 @@
             <span class="tm-esim-offer__promo">{{ t('esim.tripOffer.promo', { discount: offer.discount, code: offer.code }) }}</span>
         </div>
 
+        <figure v-if="!staff && offer.qr" class="tm-esim-offer__qr">
+            <img src="/partners/esimo-qr.jpg" width="72" height="72" loading="lazy" :alt="offer.qrAlt">
+            <figcaption>{{ offer.qr }}</figcaption>
+        </figure>
+
         <div class="tm-esim-offer__actions">
             <Button v-if="staff" type="button" size="sm" variant="tinted" :icon="copied ? 'check' : 'copy'" @click="copyMessage">
                 {{ copied ? t('esim.affiliate.copied') : t('esim.tripOffer.copy') }}
@@ -50,6 +55,8 @@ const offer = computed(() => {
         name: countryName(code, locale.value),
         price: usdOf(entry.from_usd, locale.value),
         link: localePath(`/esim/${code.toLowerCase()}`),
+        qr: t('esim.affiliate.qr', { partner: affiliate.value.partner }),
+        qrAlt: t('esim.affiliate.qrAlt', { partner: affiliate.value.partner }),
     }
 })
 

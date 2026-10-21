@@ -45,6 +45,31 @@
         font-weight: 600;
     }
 
+    &__qr {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 10px;
+        max-width: 230px;
+        margin: 0;
+
+        img {
+            flex: none;
+            border-radius: 8px;
+            background: var(--tm-common-white);
+        }
+
+        figcaption {
+            color: var(--tm-ink-3);
+            font-size: size(12);
+            line-height: 1.4;
+        }
+
+        @media (hover: none), #{$until-md} {
+            display: none;
+        }
+    }
+
     &__actions {
         display: flex;
         flex: none;

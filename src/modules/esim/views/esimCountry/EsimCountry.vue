@@ -83,6 +83,11 @@
                     {{ t('esim.affiliate.cta', { discount: affiliate.discount_percent }) }}
                 </Button>
 
+                <div class="tm-esim-qr">
+                    <img src="/partners/esimo-qr.jpg" width="88" height="88" loading="lazy" :alt="t('esim.affiliate.qrAlt', { partner: affiliate.partner })">
+                    <p>{{ t('esim.affiliate.qr', { partner: affiliate.partner }) }}</p>
+                </div>
+
                 <p class="tm-esim-checkout__legal">{{ t('esim.affiliate.legal', { partner: affiliate.partner }) }}</p>
             </aside>
 

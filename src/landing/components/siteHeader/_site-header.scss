@@ -161,6 +161,28 @@
 
         &__tools { gap: 8px; }
     }
+
+    @media #{$until-xs} {
+        &__row { gap: 6px; }
+
+        &__brand { gap: 8px; }
+
+        &__logo .tm-logo { width: 104px; }
+
+        &__tools {
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        &__burger { padding: 4px; }
+
+        .tm-lang-switcher {
+            gap: 4px;
+            padding-inline: 8px;
+
+            > svg:first-child { display: none; }
+        }
+    }
 }
 
 .is-planned {

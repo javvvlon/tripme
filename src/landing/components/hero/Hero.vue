@@ -78,7 +78,11 @@ const { data: esimCountryList } = useEsimCountries()
 
 const esimOpen = computed(() => esimCountryList.value.length > 0)
 
-const product = computed<HeroProduct>(() => (esimOpen.value && route.query.product === 'esim' ? 'esim' : 'tours'))
+const hydrated = ref(false)
+
+onMounted(() => { hydrated.value = true })
+
+const product = computed<HeroProduct>(() => (hydrated.value && esimOpen.value && route.query.product === 'esim' ? 'esim' : 'tours'))
 
 const products = computed(() => HERO_PRODUCTS.filter(item => item.value !== 'esim' || esimOpen.value).map(item => ({
     value: item.value,
