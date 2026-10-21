@@ -1,35 +1,34 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-checklist {
-    --tm-checklist-hairline: color-mix(in srgb, var(--tm-ink-1) 11%, transparent);
-
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 14px;
+    padding: 16px 20px 18px;
+    border-radius: 14px;
+    background: var(--tm-surface-1);
+    box-shadow: var(--tm-shadow-sm);
 
     &__head {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 8px 12px;
-        min-height: 32px;
-        padding: 0 2px 0 16px;
+        gap: 12px;
     }
 
     &__heading {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: baseline;
         gap: 10px;
     }
 
     &__title {
         margin: 0;
         color: var(--tm-ink-3);
-        font-size: size(13);
-        font-weight: 600;
-        letter-spacing: .03em;
+        font-size: size(12);
+        font-weight: 700;
+        letter-spacing: .04em;
         text-transform: uppercase;
     }
 
@@ -44,7 +43,7 @@
     }
 
     &__done {
-        padding: 4px 12px;
+        padding: 3px 12px;
         border-radius: radius('pill');
         background: var(--tm-status-success-soft);
         color: var(--tm-status-success-ink);
@@ -53,115 +52,106 @@
         white-space: nowrap;
     }
 
-    &__bar { display: none; }
+    &__bar {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 4px;
+
+        span {
+            height: 4px;
+            border-radius: radius('pill');
+            background: var(--tm-surface-2);
+
+            &.is-ok { background: var(--tm-status-success); }
+            &.is-warning { background: var(--tm-status-warning); }
+            &.is-error { background: var(--tm-status-danger); }
+        }
+    }
 
     &__list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 4px;
         margin: 0;
         padding: 0;
-        border-radius: 14px;
-        background: var(--tm-surface-1);
-        box-shadow: var(--tm-shadow-sm);
         list-style: none;
     }
 
     &__row {
-        position: relative;
-        display: grid;
-        grid-template-areas: 'label gate action' 'detail gate action';
-        grid-template-columns: minmax(0, 1fr) auto auto;
-        align-items: center;
-        gap: 2px 12px;
-        min-height: 56px;
-        padding: 10px 16px;
-
-        & + &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 50px;
-            height: 1px;
-            background: var(--tm-checklist-hairline);
-            transform: scaleY(.5);
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        min-width: 0;
+        padding-right: 12px;
     }
 
     &__label {
         display: inline-flex;
-        grid-area: label;
         align-items: center;
-        gap: 12px;
+        gap: 6px;
         color: var(--tm-ink-1);
-        font-size: size(15);
-        font-weight: 600;
+        font-size: size(13);
+        font-weight: 700;
     }
 
     &__mark {
         display: inline-grid;
         flex: none;
         place-items: center;
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
     }
 
     &__bang {
-        font-size: size(12);
-        font-weight: 800;
+        font-size: size(11);
+        font-weight: 700;
         line-height: 1;
     }
 
     &__row.is-ok &__mark {
-        background: var(--tm-status-success);
-        color: var(--tm-common-white);
+        background: var(--tm-status-success-soft);
+        color: var(--tm-status-success-ink);
     }
 
     &__row.is-warning &__mark {
-        background: var(--tm-status-warning);
+        background: color-mix(in srgb, var(--tm-status-warning) 26%, transparent);
         color: var(--tm-ink-1);
     }
 
     &__row.is-error &__mark {
-        background: var(--tm-status-danger);
-        color: var(--tm-common-white);
+        background: var(--tm-status-danger-soft);
+        color: var(--tm-status-danger-dark);
     }
 
     &__detail {
-        grid-area: detail;
-        padding-left: 34px;
         color: var(--tm-ink-3);
-        font-size: size(13);
+        font-size: size(12);
         line-height: 1.4;
     }
 
     &__row.is-error &__detail { color: var(--tm-status-danger-dark); }
 
     &__gate {
-        grid-area: gate;
-        padding: 3px 10px;
+        padding: 1px 8px;
         border-radius: radius('pill');
         background: var(--tm-status-danger-soft);
         color: var(--tm-status-danger-dark);
-        font-size: size(12);
-        font-weight: 600;
-        white-space: nowrap;
+        font-size: size(11);
+        font-weight: 700;
     }
 
     &__action {
-        grid-area: action;
-        padding: 7px 14px;
+        padding: 0;
         border: 0;
-        border-radius: radius('pill');
-        background: var(--tm-cms-accent-soft, var(--tm-surface-2));
-        color: var(--tm-cms-accent, var(--tm-ink-1));
-        font-size: size(13);
-        font-weight: 600;
-        white-space: nowrap;
+        background: none;
+        color: var(--tm-cms-accent);
+        font-size: size(12);
+        font-weight: 700;
         cursor: pointer;
-        transition: filter .2s ease, transform .3s cubic-bezier(.32, .72, 0, 1);
 
-        &:hover { filter: brightness(.96); }
-        &:active:not(:disabled) { transform: scale(.97); }
+        &:hover { text-decoration: underline; }
         &:disabled { opacity: .5; cursor: default; }
     }
 
@@ -169,22 +159,17 @@
 
     &__hint {
         margin: 0;
-        padding: 0 16px;
         color: var(--tm-ink-3);
-        font-size: size(13);
-        line-height: 1.45;
+        font-size: size(12);
 
         &.is-gate { color: var(--tm-ink-2); }
     }
 }
 
-@media #{$until-md} {
-    .tm-checklist__row {
-        grid-template-areas: 'label label' 'detail detail' 'gate action';
-        grid-template-columns: auto 1fr;
-        justify-items: start;
-        row-gap: 6px;
-    }
+@media #{$until-lg} {
+    .tm-checklist__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 14px; }
+}
 
-    .tm-checklist__action { justify-self: end; }
+@media #{$until-md} {
+    .tm-checklist__list { grid-template-columns: minmax(0, 1fr); }
 }
