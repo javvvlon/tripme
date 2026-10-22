@@ -2188,7 +2188,113 @@
       "addComment": "Izoh qo'shish…",
       "noComments": "Hozircha bo'sh",
       "details": "Ma'lumotlar",
-      "assignMe": "Menga biriktirish"
+      "assignMe": "Menga biriktirish",
+      "notes": {
+        "nav": "Qaydlar",
+        "eyebrow": "Jamoa reyestri",
+        "title": "Qaydlar, qarorlar va direktivalar",
+        "lead": "Qaror va direktivalar e'lon qilingandan keyin tahrirlanmaydi — ular yangisi bilan almashtiriladi, direktivani esa har kim shaxsan tasdiqlaydi.",
+        "create": "Yangi yozuv",
+        "search": "Reyestr bo'yicha qidiruv",
+        "searchPlaceholder": "Nomi, matni yoki DEC-… raqami",
+        "filters": {
+          "all": "Hammasi",
+          "note": "Qaydlar",
+          "decision": "Qarorlar",
+          "directive": "Direktivalar",
+          "archive": "Arxiv"
+        },
+        "kinds": {
+          "note": "Qayd",
+          "decision": "Qaror",
+          "directive": "Direktiva"
+        },
+        "kindHints": {
+          "note": "Ishchi yozuv — to'ldirish va tahrirlash mumkin",
+          "decision": "Nima va nega qaror qilindi. E'londan keyin o'zgarmaydi",
+          "directive": "Jamoa uchun qoida. Har kim o'qiganini tasdiqlaydi"
+        },
+        "onlyManagers": "Rahbar va administrator e'lon qiladi",
+        "columns": {
+          "key": "№",
+          "record": "Yozuv",
+          "author": "Muallif",
+          "date": "Sana",
+          "status": "Holat"
+        },
+        "empty": "Reyestr hozircha bo'sh — birinchi yozuvdan boshlang",
+        "emptyArchive": "Arxiv bo'sh",
+        "noMatches": "Hech narsa topilmadi",
+        "state": {
+          "active": "Amalda",
+          "superseded": "Almashtirilgan",
+          "archived": "Arxivda",
+          "pending": "Sizni kutmoqda",
+          "acknowledged": "Tasdiqlangan"
+        },
+        "composer": {
+          "title": "Yangi yozuv",
+          "subtitle": "Raqam e'lon qilinganda beriladi",
+          "kind": "Yozuv turi",
+          "locked": "E'londan keyin matnni o'zgartirib bo'lmaydi",
+          "replacingHint": "E'londan keyin {key} «Almashtirilgan» belgisini oladi."
+        },
+        "fields": {
+          "title": "Nomi",
+          "titlePlaceholder": "Mohiyati qisqacha",
+          "body": {
+            "note": "Matn",
+            "decision": "Qaror",
+            "directive": "Direktiva matni"
+          },
+          "bodyPlaceholder": {
+            "note": "Fikrlar, kelishuvlar, havolalar",
+            "decision": "Aynan nima qaror qilindi — bir-ikki jumlada",
+            "directive": "Jamoa nima qilishi shart va qachondan"
+          },
+          "rationale": "Nega shunday qaror qilindi",
+          "rationalePlaceholder": "Sabablar, muqobillar, nimaga tayanildi",
+          "audience": "Kimga",
+          "everyone": "Butun jamoa · {n}",
+          "people": "Xodimlar",
+          "peoplePlaceholder": "Xodimlarni tanlang",
+          "refs": "Asos",
+          "refsHint": "Hujjat va vazifa kodlari vergul bilan: TECH-SPEC-003, TM-12",
+          "refsExample": "TECH-SPEC-003, TM-12"
+        },
+        "meta": {
+          "from": "Kimdan",
+          "to": "Kimga",
+          "date": "Sana",
+          "basis": "Asos",
+          "status": "Holat",
+          "audience": "{names} va yana {n}"
+        },
+        "publish": "E'lon qilish",
+        "created": "{key} e'lon qilindi",
+        "replace": "Yangisi bilan almashtirish",
+        "replaces": "{key} o'rniga",
+        "replacedBy": "{key} bilan almashtirilgan",
+        "immutable": "Yozuv e'lon qilingan va tahrirlanmaydi. O'zgartirish uchun yangisini chiqaring — u buning o'rnini oladi.",
+        "editedAt": "O'zgartirilgan {date}",
+        "editBody": "Matnni o'zgartirish",
+        "addBody": "Matn qo'shing…",
+        "archivedBanner": "Yozuv arxivda",
+        "linkedTasks": "Bog'liq vazifalar",
+        "sheet": "Tanishuv varaqasi",
+        "sheetProgress": "{total} dan {done} tanishdi",
+        "waiting": "kutilmoqda",
+        "confirmLabel": "Direktivani o'qidim va bajaraman",
+        "confirm": "Tanishganimni tasdiqlash",
+        "confirmedAt": "Siz {date} da tasdiqladingiz",
+        "missing": "Yozuv topilmadi",
+        "banner": {
+          "label": "Direktiva",
+          "action": "O'qish va tasdiqlash",
+          "more": "va yana {n}"
+        },
+        "saved": "{key} saqlandi"
+      }
     }
   },
   "richEditor": {

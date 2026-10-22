@@ -19,9 +19,30 @@
                         <span v-if="item.view === 'mine' && summary.open" class="tm-jira__count">{{ summary.open }}</span>
                     </span>
                 </NuxtLink>
+                <NuxtLink
+                    :to="localePath('/app/tasks/notes')"
+                    class="tm-jira__link" :class="{ 'is-active': onNotes }"
+                    :aria-current="onNotes ? 'page' : undefined"
+                >
+                    <span class="tm-jira__link-inner">
+                        <Icon name="doc" :size="16" />
+                        {{ t('cms.tasks.notes.nav') }}
+                        <span v-if="pending.length" class="tm-jira__count is-alert">{{ pending.length }}</span>
+                    </span>
+                </NuxtLink>
+                <NuxtLink
+                    :to="{ path: localePath('/app/tasks'), query: { view: 'archive' } }"
+                    class="tm-jira__link" :class="{ 'is-active': current === 'archive' }"
+                    :aria-current="current === 'archive' ? 'page' : undefined"
+                >
+                    <span class="tm-jira__link-inner">
+                        <Icon name="folder" :size="16" />
+                        {{ t('cms.tasks.views.archive') }}
+                    </span>
+                </NuxtLink>
             </nav>
 
-            <Button icon="plus" size="sm" class="tm-jira__create" :title="t('cms.tasks.composer.shortcut')" @click="start()">
+            <Button icon="plus" size="sm" class="tm-jira__create" :title="t('cms.tasks.composer.shortcut')" @click="create">
                 {{ t('cms.tasks.create') }}
             </Button>
 
@@ -52,11 +73,24 @@
             </div>
         </header>
 
+        <NuxtLink
+            v-if="banner"
+            :to="localePath(`/app/tasks/notes/${banner.uuid}`)"
+            class="tm-jira__directive"
+        >
+            <span class="tm-jira__directive-label">{{ t('cms.tasks.notes.banner.label') }}</span>
+            <span class="tm-jira__directive-key">{{ banner.key }}</span>
+            <span class="tm-jira__directive-title">{{ banner.title }}</span>
+            <span v-if="pending.length > 1" class="tm-jira__directive-more">{{ t('cms.tasks.notes.banner.more', { n: pending.length - 1 }) }}</span>
+            <span class="tm-jira__directive-action">{{ t('cms.tasks.notes.banner.action') }}<Icon name="arrow-right" :size="14" /></span>
+        </NuxtLink>
+
         <main class="tm-jira__main">
             <slot />
         </main>
 
         <TaskComposer />
+        <NoteComposer />
         <ConfirmDialog />
         <ModalHost />
         <ToastHost />
@@ -66,18 +100,20 @@
 <script setup lang="ts">
 import TaskAvatar from '~/modules/tasks/components/taskAvatar/TaskAvatar.vue'
 import TaskComposer from '~/modules/tasks/components/taskComposer/TaskComposer.vue'
+import NoteComposer from '~/modules/tasks/components/noteComposer/NoteComposer.vue'
 import { BRAND_NAME } from '~/shared/config/brand'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useTaskComposer } from '~/modules/tasks/hooks/use-task-composer'
-import { useTasksRepository } from '~/modules/tasks/repositories'
+import { useNoteComposer } from '~/modules/tasks/hooks/use-note-composer'
+import { useNotesRepository, useTasksRepository } from '~/modules/tasks/repositories'
 import { TASK_VIEWS } from '~/modules/tasks/contracts/tasks'
 import type { ITaskSummary, TaskView } from '~/modules/tasks/contracts/tasks'
+import type { IPendingDirective } from '~/modules/tasks/contracts/notes'
 
 const NAV: { view: TaskView, icon: string }[] = [
     { view: 'board', icon: 'columns' },
     { view: 'list', icon: 'list' },
     { view: 'mine', icon: 'user' },
-    { view: 'archive', icon: 'folder' },
 ]
 
 const { t } = useI18n()
@@ -85,7 +121,13 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { user, logout } = useAuthSession()
 const { start } = useTaskComposer()
+const { start: startNote } = useNoteComposer()
 const { summary: loadSummary } = useTasksRepository()
+const { pending: loadPending } = useNotesRepository()
+
+const onNotes = computed(() => route.path.startsWith(localePath('/app/tasks/notes')))
+
+const create = () => (onNotes.value ? startNote() : start())
 
 const person = computed(() => (user.value ? { uuid: String(user.value.get('id')), name: user.value.fullName() } : null))
 
@@ -109,7 +151,18 @@ const { data: summary, refresh: refreshSummary } = useAsyncData(
     { default: (): ITaskSummary => ({ open: 0, overdue: 0, due_today: 0, review: 0 }) },
 )
 
-watch(() => route.fullPath, () => void refreshSummary())
+const { data: pending, refresh: refreshPending } = useAsyncData(
+    'notes:pending',
+    () => loadPending(),
+    { default: (): IPendingDirective[] => [] },
+)
+
+const banner = computed(() => pending.value.find(item => route.path !== localePath(`/app/tasks/notes/${item.uuid}`)) ?? null)
+
+watch(() => route.fullPath, () => {
+    void refreshSummary()
+    void refreshPending()
+})
 
 const menuOpen = ref(false)
 const menuRoot = useTemplateRef<HTMLElement>('menuRoot')
@@ -126,7 +179,7 @@ function onKey(event: KeyboardEvent) {
     if ((event.target as HTMLElement | null)?.closest('input, textarea, select, [contenteditable="true"]')) return
 
     event.preventDefault()
-    start()
+    create()
 }
 
 onMounted(() => {

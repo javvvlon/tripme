@@ -18,3 +18,17 @@ const AVATAR_TONES = 8
 
 export const avatarTone = (seed: string | null | undefined): number =>
   [...(seed ?? '')].reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) % 9973, 7) % AVATAR_TONES
+
+export const refsOf = (value: string): string[] =>
+  [...new Set(value.split(',').map(ref => ref.trim().toUpperCase()).filter(Boolean))]
+
+export const noteTone = (note: { kind: string, archived_at: string | null, superseded_by: unknown, acks: { mine: string | null } | null }) => {
+  if (note.archived_at) return 'archived' as const
+  if (note.superseded_by) return 'superseded' as const
+  if (note.acks?.mine === 'pending') return 'pending' as const
+
+  return note.kind === 'note' ? null : 'active' as const
+}
+
+export const registerDate = (iso: string, locale: string): string =>
+  new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Tashkent' }).format(new Date(iso))

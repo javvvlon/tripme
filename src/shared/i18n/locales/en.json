@@ -2188,7 +2188,113 @@
       "addComment": "Add a comment…",
       "noComments": "Nothing here yet",
       "details": "Details",
-      "assignMe": "Assign to me"
+      "assignMe": "Assign to me",
+      "notes": {
+        "nav": "Notes",
+        "eyebrow": "Team register",
+        "title": "Notes, decisions and directives",
+        "lead": "Decisions and directives cannot be edited once published — they are replaced by new ones, and everyone confirms a directive in person.",
+        "create": "New record",
+        "search": "Search the register",
+        "searchPlaceholder": "Title, text or number DEC-…",
+        "filters": {
+          "all": "All",
+          "note": "Notes",
+          "decision": "Decisions",
+          "directive": "Directives",
+          "archive": "Archive"
+        },
+        "kinds": {
+          "note": "Note",
+          "decision": "Decision",
+          "directive": "Directive"
+        },
+        "kindHints": {
+          "note": "A working record you can extend and edit",
+          "decision": "What was decided and why. Fixed once published",
+          "directive": "A rule for the team. Everyone confirms they read it"
+        },
+        "onlyManagers": "Published by a manager or an admin",
+        "columns": {
+          "key": "No.",
+          "record": "Record",
+          "author": "Author",
+          "date": "Date",
+          "status": "Status"
+        },
+        "empty": "The register is empty — start with the first record",
+        "emptyArchive": "The archive is empty",
+        "noMatches": "Nothing found",
+        "state": {
+          "active": "In force",
+          "superseded": "Replaced",
+          "archived": "Archived",
+          "pending": "Waiting for you",
+          "acknowledged": "Confirmed"
+        },
+        "composer": {
+          "title": "New record",
+          "subtitle": "The number is given on publishing",
+          "kind": "Type of record",
+          "locked": "The text cannot be changed after publishing",
+          "replacingHint": "{key} will be marked as replaced once this is published."
+        },
+        "fields": {
+          "title": "Title",
+          "titlePlaceholder": "The point in a few words",
+          "body": {
+            "note": "Text",
+            "decision": "Decision",
+            "directive": "Directive text"
+          },
+          "bodyPlaceholder": {
+            "note": "Thoughts, agreements, links",
+            "decision": "What exactly was decided, in a sentence or two",
+            "directive": "What the team must do, and from when"
+          },
+          "rationale": "Why we decided this",
+          "rationalePlaceholder": "Reasons, alternatives, what it rests on",
+          "audience": "To",
+          "everyone": "The whole team · {n}",
+          "people": "People",
+          "peoplePlaceholder": "Choose people",
+          "refs": "Basis",
+          "refsHint": "Document and task codes, comma-separated: TECH-SPEC-003, TM-12",
+          "refsExample": "TECH-SPEC-003, TM-12"
+        },
+        "meta": {
+          "from": "From",
+          "to": "To",
+          "date": "Date",
+          "basis": "Basis",
+          "status": "Status",
+          "audience": "{names} and {n} more"
+        },
+        "publish": "Publish",
+        "created": "{key} published",
+        "replace": "Replace with new",
+        "replaces": "Replaces {key}",
+        "replacedBy": "Replaced by {key}",
+        "immutable": "This record is published and cannot be edited. To change it, publish a new one that replaces it.",
+        "editedAt": "Edited {date}",
+        "editBody": "Edit text",
+        "addBody": "Add some text…",
+        "archivedBanner": "This record is archived",
+        "linkedTasks": "Linked tasks",
+        "sheet": "Sign-off sheet",
+        "sheetProgress": "{done} of {total} confirmed",
+        "waiting": "waiting",
+        "confirmLabel": "I have read this directive and will follow it",
+        "confirm": "Confirm I have read it",
+        "confirmedAt": "You confirmed on {date}",
+        "missing": "Record not found",
+        "banner": {
+          "label": "Directive",
+          "action": "Read and confirm",
+          "more": "and {n} more"
+        },
+        "saved": "{key} saved"
+      }
     }
   },
   "richEditor": {

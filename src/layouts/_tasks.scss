@@ -117,9 +117,89 @@
         text-align: center;
     }
 
+    &__count.is-alert {
+        background: #AE2E24;
+        color: #FFFFFF;
+    }
+
     &__create {
         flex: none;
         margin-left: 10px;
+    }
+
+    &__directive {
+        position: sticky;
+        top: 56px;
+        z-index: 35;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        padding: 8px 20px;
+        background: #0B192C;
+        color: #FFFFFF;
+        font-size: size(14);
+        text-decoration: none;
+
+        &:hover .tm-jira__directive-action { text-decoration: underline; }
+
+        &:focus-visible {
+            outline: 2px solid #D4AF37;
+            outline-offset: -4px;
+        }
+    }
+
+    &__directive-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: none;
+        color: #D4AF37;
+        font-family: var(--tm-font-display-primary);
+        font-size: size(11);
+        font-weight: 700;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+
+        &::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #D4AF37;
+            transform: rotate(45deg);
+        }
+    }
+
+    &__directive-key {
+        @include mono;
+
+        flex: none;
+        color: #D4AF37;
+        font-size: size(13);
+        font-weight: 700;
+    }
+
+    &__directive-title {
+        overflow: hidden;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__directive-more {
+        flex: none;
+        color: rgba(255, 255, 255, .6);
+        font-size: size(13);
+    }
+
+    &__directive-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        flex: none;
+        margin-left: auto;
+        font-weight: 700;
+        white-space: nowrap;
     }
 
     &__user {
@@ -287,5 +367,16 @@
         }
 
         &__main { padding: 16px 16px 40px; }
+
+        &__directive {
+            position: static;
+            flex-wrap: wrap;
+            padding-inline: 16px;
+            row-gap: 4px;
+        }
+
+        &__directive-title { flex-basis: 100%; order: 3; white-space: normal; }
+
+        &__directive-action { order: 2; }
     }
 }
