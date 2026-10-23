@@ -3,7 +3,9 @@
         <nav class="tm-issue__crumbs" :aria-label="t('common.breadcrumbs')">
             <NuxtLink :to="localePath('/app/tasks')">{{ t('cms.tasks.app') }}</NuxtLink>
             <span aria-hidden="true">/</span>
-            <span class="tm-issue__crumb-key">{{ task?.key ?? '…' }}</span>
+            <span class="tm-issue__crumb-key">
+                <span class="tm-issue__type" aria-hidden="true"><Icon name="check" :size="10" :stroke="3.2" /></span>{{ task?.key ?? '…' }}
+            </span>
         </nav>
 
         <EditorSkeleton v-if="status === 'pending' && !task" variant="form" />

@@ -1,25 +1,32 @@
 <template>
     <NuxtLink :to="localePath(`/app/tasks/${task.uuid}`)" class="tm-task-card" :class="{ 'is-done': task.status === 'done' }">
-        <span class="tm-task-card__title">
-            <PriorityIcon v-if="task.priority === 'urgent' || task.priority === 'high'" :priority="task.priority" class="tm-task-card__marks" />
-            {{ task.title }}
+        <span class="tm-task-card__title">{{ task.title }}</span>
+
+        <span v-if="task.labels.length" class="tm-task-card__labels">
+            <span v-for="label in task.labels" :key="label" class="tm-task-card__label">{{ label }}</span>
         </span>
 
-        <span class="tm-task-card__meta">
-            <span>{{ task.key }}</span>
-            <span v-if="task.due_on" :class="{ 'is-late': task.overdue }">{{ dueWord(task.due_on, locale, t) }}</span>
-            <span v-if="task.assignee" :title="task.assignee.name">{{ initialsOf(task.assignee.name) }}</span>
-            <span v-if="task.comments" class="tm-task-card__comments">
-                <Icon name="mail" :size="12" />{{ task.comments }}
+        <span v-if="task.due_on" class="tm-task-card__due" :class="{ 'is-late': task.overdue }">
+            <Icon name="calendar" :size="12" :stroke="2" />{{ dueLabel(task.due_on, locale) }}
+        </span>
+
+        <span class="tm-task-card__foot">
+            <span class="tm-task-card__type" aria-hidden="true"><Icon name="check" :size="10" :stroke="3.2" /></span>
+            <span class="tm-task-card__key">{{ task.key }}</span>
+            <span class="tm-task-card__spacer" />
+            <span v-if="task.comments" class="tm-task-card__comments" :title="t('cms.tasks.tabs.comments')">
+                <Icon name="mail" :size="13" />{{ task.comments }}
             </span>
-            <span v-for="label in task.labels" :key="label" class="tm-task-card__label">#{{ label }}</span>
+            <PriorityIcon :priority="task.priority" />
+            <TaskAvatar :person="task.assignee" size="sm" />
         </span>
     </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import PriorityIcon from '~/modules/tasks/components/priorityIcon/PriorityIcon.vue'
-import { dueWord, initialsOf } from '~/modules/tasks/helpers'
+import TaskAvatar from '~/modules/tasks/components/taskAvatar/TaskAvatar.vue'
+import { dueLabel } from '~/modules/tasks/helpers'
 import type { ITaskCardProps } from './TaskCard.d'
 
 defineProps<ITaskCardProps>()
@@ -34,17 +41,17 @@ const localePath = useLocalePath()
 .tm-task-card {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 11px 12px;
-    border: 1px solid #E1E5EB;
-    border-radius: 10px;
+    gap: 8px;
+    padding: 12px 12px 10px;
+    border-radius: 8px;
     background: #FFFFFF;
-    color: #0B192C;
+    box-shadow: 0 1px 1px rgba(11, 25, 44, .2), 0 0 1px rgba(11, 25, 44, .28);
+    color: var(--tm-ink-1);
     text-decoration: none;
     cursor: grab;
-    transition: border-color .15s ease;
+    transition: background .15s ease, box-shadow .15s ease;
 
-    &:hover { border-color: #B8BFCB; }
+    &:hover { background: #F7F8F9; }
 
     &:active { cursor: grabbing; }
 
@@ -59,44 +66,77 @@ const localePath = useLocalePath()
         overflow-wrap: anywhere;
     }
 
-    &__marks { margin-right: 4px; }
-
-    &__meta {
+    &__labels {
         display: flex;
         flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    &__label {
+        padding: 0 6px;
+        border-radius: 4px;
+        background: #EEF0F3;
+        color: #44546F;
+        font-size: size(11);
+        font-weight: 600;
+        line-height: 18px;
+    }
+
+    &__due {
+        display: inline-flex;
         align-items: center;
-        gap: 2px 0;
-        color: #6B7689;
+        align-self: flex-start;
+        gap: 4px;
+        padding: 0 6px;
+        border: 1px solid rgba(11, 25, 44, .14);
+        border-radius: 4px;
+        color: #44546F;
         font-size: size(12);
-        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        line-height: 20px;
 
-        > span + span::before {
-            content: '·';
-            margin: 0 6px;
-            color: #B8BFCB;
-        }
-
-        .is-late {
-            color: #C9372C;
-            font-weight: 600;
+        &.is-late {
+            border-color: transparent;
+            background: #FFECEB;
+            color: #AE2E24;
         }
     }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 24px;
+    }
+
+    &__type {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        background: #0B192C;
+        color: #FFFFFF;
+    }
+
+    &__key {
+        color: #44546F;
+        font-size: size(12);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    &.is-done &__key { text-decoration: line-through; }
+
+    &__spacer { flex: 1; }
 
     &__comments {
         display: inline-flex;
         align-items: center;
         gap: 3px;
-    }
-
-    &__label { color: #8590A2; }
-
-    &.is-done {
-        border-color: transparent;
-        background: transparent;
-
-        .tm-task-card__title { color: #8590A2; }
-
-        &:hover { border-color: #E1E5EB; }
+        color: #626F86;
+        font-size: size(12);
     }
 }
 </style>

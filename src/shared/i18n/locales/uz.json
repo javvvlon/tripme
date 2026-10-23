@@ -2121,18 +2121,16 @@
         "unassigned": "Ijrochisiz",
         "people": "Ijrochilar",
         "late": "Muddati o'tganlar",
-        "clear": "Filtrlarni tozalash",
-        "all": "Hammasi",
-        "mine": "Meniki",
-        "everyone": "Barcha ijrochilar",
-        "label": "Vazifalar filtri"
+        "clear": "Filtrlarni tozalash"
       },
       "columns": {
         "key": "Raqam",
         "task": "Vazifa",
         "status": "Holat",
+        "priority": "Muhimlik",
         "assignee": "Ijrochi",
-        "due": "Muddat"
+        "due": "Muddat",
+        "updated": "Yangilangan"
       },
       "empty": "Hozircha vazifalar yo‘q — birinchisini yarating",
       "noMatches": "Hech narsa topilmadi",
@@ -2171,6 +2169,12 @@
         "shortcut": "Yangi vazifa — C tugmasi"
       },
       "addHere": "Vazifa yaratish",
+      "stats": {
+        "open": "sizda ishda",
+        "overdue": "muddati o'tgan",
+        "due_today": "bugunga",
+        "review": "tekshiruvda"
+      },
       "emptyArchive": "Arxiv bo'sh",
       "emptyMine": "Hozircha sizda vazifa yo'q",
       "editDescription": "Tavsifni o'zgartirish",
@@ -2290,16 +2294,6 @@
           "more": "va yana {n}"
         },
         "saved": "{key} saqlandi"
-      },
-      "when": {
-        "today": "bugun",
-        "tomorrow": "ertaga",
-        "yesterday": "kecha"
-      },
-      "summary": {
-        "open": "{n} ta ochiq vazifa | {n} ta ochiq vazifa | {n} ta ochiq vazifa | {n} ta ochiq vazifa",
-        "late": "{n} ta muddati o‘tgan | {n} ta muddati o‘tgan | {n} ta muddati o‘tgan | {n} ta muddati o‘tgan",
-        "archived": "arxivda {n} ta vazifa | arxivda {n} ta vazifa | arxivda {n} ta vazifa | arxivda {n} ta vazifa"
       }
     }
   },

@@ -2121,18 +2121,16 @@
         "unassigned": "Unassigned",
         "people": "Assignees",
         "late": "Overdue",
-        "clear": "Clear filters",
-        "all": "All",
-        "mine": "Mine",
-        "everyone": "All assignees",
-        "label": "Task filter"
+        "clear": "Clear filters"
       },
       "columns": {
         "key": "Key",
         "task": "Task",
         "status": "Status",
+        "priority": "Priority",
         "assignee": "Assignee",
-        "due": "Due"
+        "due": "Due",
+        "updated": "Updated"
       },
       "empty": "No tasks yet — create the first one",
       "noMatches": "Nothing found",
@@ -2171,6 +2169,12 @@
         "shortcut": "New task — press C"
       },
       "addHere": "Create task",
+      "stats": {
+        "open": "open on you",
+        "overdue": "overdue",
+        "due_today": "due today",
+        "review": "in review"
+      },
       "emptyArchive": "The archive is empty",
       "emptyMine": "Nothing on you right now",
       "editDescription": "Edit description",
@@ -2290,16 +2294,6 @@
           "more": "and {n} more"
         },
         "saved": "{key} saved"
-      },
-      "when": {
-        "today": "today",
-        "tomorrow": "tomorrow",
-        "yesterday": "yesterday"
-      },
-      "summary": {
-        "open": "{n} open tasks | {n} open task | {n} open tasks | {n} open tasks",
-        "late": "{n} overdue | {n} overdue | {n} overdue | {n} overdue",
-        "archived": "{n} archived tasks | {n} archived task | {n} archived tasks | {n} archived tasks"
       }
     }
   },

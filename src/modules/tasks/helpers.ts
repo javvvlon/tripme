@@ -14,6 +14,11 @@ export const dueLabel = (due: string | null, locale: string): string =>
 export const labelsOf = (value: string): string[] =>
   [...new Set(value.split(',').map(label => label.trim().toLowerCase()).filter(Boolean))]
 
+const AVATAR_TONES = 8
+
+export const avatarTone = (seed: string | null | undefined): number =>
+  [...(seed ?? '')].reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) % 9973, 7) % AVATAR_TONES
+
 export const refsOf = (value: string): string[] =>
   [...new Set(value.split(',').map(ref => ref.trim().toUpperCase()).filter(Boolean))]
 
@@ -27,20 +32,3 @@ export const noteTone = (note: { kind: string, archived_at: string | null, super
 
 export const registerDate = (iso: string, locale: string): string =>
   new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Tashkent' }).format(new Date(iso))
-
-const TASHKENT_OFFSET_MS = 5 * 3_600_000
-
-const DAY_MS = 86_400_000
-
-export const tashkentToday = (): string => new Date(Date.now() + TASHKENT_OFFSET_MS).toISOString().slice(0, 10)
-
-export function dueWord(due: string, locale: string, t: (key: string) => string): string {
-  const today = Date.parse(`${tashkentToday()}T00:00:00Z`)
-  const days = Math.round((Date.parse(`${due}T00:00:00Z`) - today) / DAY_MS)
-
-  if (days === 0) return t('cms.tasks.when.today')
-  if (days === 1) return t('cms.tasks.when.tomorrow')
-  if (days === -1) return t('cms.tasks.when.yesterday')
-
-  return dueLabel(due, locale)
-}

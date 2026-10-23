@@ -1,5 +1,5 @@
 <template>
-    <span class="tm-status-dot" :class="`is-${status}`">{{ t(`cms.tasks.status.${status}`) }}</span>
+    <span class="tm-lozenge" :class="`is-${status}`">{{ t(`cms.tasks.status.${status}`) }}</span>
 </template>
 
 <script setup lang="ts">
@@ -13,28 +13,23 @@ const { t } = useI18n()
 <style lang="scss">
 @use '../../../../shared/styles/utils' as *;
 
-.tm-status-dot {
-    --tm-status: #C8CDD5;
-
+.tm-lozenge {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    color: var(--tm-ink-1);
-    font-size: size(13);
+    max-width: 100%;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #E4E7EC;
+    color: #44546F;
+    font-size: size(11);
+    font-weight: 700;
+    letter-spacing: .03em;
+    line-height: 16px;
+    text-transform: uppercase;
     white-space: nowrap;
 
-    &::before {
-        content: '';
-        flex: none;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--tm-status);
-    }
-
-    &.is-todo { --tm-status: #6B7689; }
-    &.is-in_progress { --tm-status: #0B192C; }
-    &.is-review { --tm-status: #C98A00; }
-    &.is-done { --tm-status: #1F6F78; color: #6B7689; }
+    &.is-in_progress { background: #DCE6F5; color: #0B3A75; }
+    &.is-review { background: #FCEBC6; color: #7A4B00; }
+    &.is-done { background: #DCFFF1; color: #216E4E; }
 }
 </style>
