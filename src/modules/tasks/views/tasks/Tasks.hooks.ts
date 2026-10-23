@@ -1,16 +1,21 @@
 import { useTasksRepository } from '~/modules/tasks/repositories'
 import { useManagers } from '~/modules/leads/hooks/use-managers'
 import { TASK_STATUSES, TASK_VIEWS } from '~/modules/tasks/contracts/tasks'
-import type { IPerson, ITask, TaskStatus, TaskView } from '~/modules/tasks/contracts/tasks'
+import type { ITask, TaskStatus, TaskView } from '~/modules/tasks/contracts/tasks'
 
 const SEARCH_DELAY_MS = 300
 
 const UNASSIGNED = 'none'
 
+export const TASK_FILTERS = ['all', 'mine', 'late'] as const
+
+export type TaskFilter = typeof TASK_FILTERS[number]
+
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useTasks = () => {
+  const { t } = useI18n()
   const route = useRoute()
   const router = useRouter()
   const { failed } = useToast()
@@ -27,14 +32,18 @@ export const useTasks = () => {
     return (TASK_VIEWS as readonly string[]).includes(value) ? value as TaskView : 'board'
   })
 
-  const selected = computed<string[]>({
-    get: () => String(route.query.assignee ?? '').split(',').filter(Boolean),
-    set: (value) => { write({ assignee: value.join(',') || undefined }) },
+  const filter = computed<TaskFilter>({
+    get: () => {
+      const value = String(route.query.filter ?? '')
+
+      return (TASK_FILTERS as readonly string[]).includes(value) ? value as TaskFilter : 'all'
+    },
+    set: (value) => { write({ filter: value === 'all' ? undefined : value }) },
   })
 
-  const lateOnly = computed<boolean>({
-    get: () => route.query.late === '1',
-    set: (value) => { write({ late: value ? '1' : undefined }) },
+  const assignee = computed<string>({
+    get: () => (typeof route.query.assignee === 'string' ? route.query.assignee : ''),
+    set: (value) => { write({ assignee: value || undefined }) },
   })
 
   const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
@@ -54,30 +63,31 @@ export const useTasks = () => {
   )
 
   const visible = computed(() => tasks.value.filter(task =>
-    (!selected.value.length || selected.value.includes(task.assignee?.uuid ?? UNASSIGNED))
-    && (!lateOnly.value || task.overdue)))
+    (filter.value !== 'mine' || task.assignee?.uuid === me.value)
+    && (filter.value !== 'late' || task.overdue)
+    && (!assignee.value || (assignee.value === UNASSIGNED ? !task.assignee : task.assignee?.uuid === assignee.value))))
 
   const columns = computed(() => TASK_STATUSES.map(value => ({
     status: value,
     items: visible.value.filter(task => task.status === value),
   })))
 
-  const team = computed<IPerson[]>(() => {
-    const everyone = (people.value ?? []).map(person => ({ uuid: person.uuid, name: person.name }))
+  const open = computed(() => tasks.value.filter(task => task.status !== 'done').length)
 
-    return [...everyone.filter(person => person.uuid === me.value), ...everyone.filter(person => person.uuid !== me.value)]
-  })
+  const late = computed(() => tasks.value.filter(task => task.overdue).length)
 
-  const toggle = (uuid: string) => {
-    selected.value = selected.value.includes(uuid) ? selected.value.filter(entry => entry !== uuid) : [...selected.value, uuid]
-  }
+  const personOptions = computed(() => [
+    { value: '', label: t('cms.tasks.filters.everyone') },
+    { value: UNASSIGNED, label: t('cms.tasks.filters.unassigned') },
+    ...(people.value ?? []).map(person => ({ value: person.uuid, label: person.name })),
+  ])
 
-  const filtered = computed(() => Boolean(selected.value.length || lateOnly.value || search.value))
+  const filtered = computed(() => Boolean(filter.value !== 'all' || assignee.value || search.value))
 
   const clear = () => {
     query.value = ''
     search.value = ''
-    write({ assignee: undefined, late: undefined })
+    write({ filter: undefined, assignee: undefined })
   }
 
   const replaceTask = (next: ITask) => {
@@ -98,5 +108,5 @@ export const useTasks = () => {
     }
   }
 
-  return { view, query, tasks, visible, status, columns, team, selected, lateOnly, toggle, filtered, clear, move, elevated, UNASSIGNED }
+  return { view, filter, assignee, query, tasks, visible, status, columns, open, late, personOptions, filtered, clear, move, elevated }
 }

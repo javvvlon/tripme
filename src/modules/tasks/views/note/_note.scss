@@ -500,6 +500,6 @@
 
         &__task { grid-template-columns: 60px minmax(0, 1fr); }
 
-        &__task .tm-lozenge { grid-column: 2; justify-self: start; }
+        &__task .tm-status-dot { grid-column: 2; justify-self: start; }
     }
 }

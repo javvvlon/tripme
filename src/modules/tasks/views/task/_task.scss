@@ -32,17 +32,6 @@
         font-weight: 600;
     }
 
-    &__type {
-        display: inline-grid;
-        flex: none;
-        place-items: center;
-        width: 16px;
-        height: 16px;
-        border-radius: 3px;
-        background: #0B192C;
-        color: #FFFFFF;
-    }
-
     &__missing {
         margin: 40px 0;
         color: var(--tm-issue-subtle);
@@ -308,7 +297,8 @@
 
     &__details {
         border: 1px solid var(--tm-issue-line);
-        border-radius: 8px;
+        border-radius: 12px;
+        background: #FFFFFF;
     }
 
     &__details-title {
