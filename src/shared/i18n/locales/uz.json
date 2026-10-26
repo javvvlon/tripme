@@ -1013,6 +1013,31 @@
         "title": "Rad etish sababi",
         "confirm": "Rad etilgan deb belgilash",
         "pick": "Sababni tanlang"
+      },
+      "ai": {
+        "read": "So'rov bo'yicha turlarni AI bilan tanlash",
+        "reading": "So'rovni o'qiyapman va katalogdan mehmonxonalarni qidiryapman…",
+        "understood": "AI so'rovni shunday tushundi",
+        "find": "Turlarni topish",
+        "openSearch": "Qidiruvni ochish",
+        "again": "Qayta o'qish",
+        "hide": "Yashirish",
+        "anywhere": "yo'nalish aniqlanmadi",
+        "noDestination": "Bu yo'nalish bizning reyslarimizda yo'q, uni qidiruvda tanlang",
+        "datesAssumed": "Sanalar aytilmagan, eng yaqin haftani qidiramiz",
+        "agesAssumed": "Bolalar yoshi aytilmagan, 7 yosh qo'yildi. Mijozdan aniqlang",
+        "crowded": "Bunday ko'p mehmon odatda bitta xonaga joylashtirilmaydi. Ehtimol, ikkita xona kerak",
+        "noHotels": "Mehmonxonalar katalogda topilmadi",
+        "missingHotels": "Katalogda yo'q: {names}",
+        "budget": {
+          "person": "{amount} bir kishi uchun",
+          "total": "{amount} hammaga"
+        },
+        "unavailable": "AI hozir ishlamayapti",
+        "empty": "So'rovda o'qiydigan narsa yo'q",
+        "failed": "AI javob bermadi. Qayta urinib ko'ring",
+        "room": "{n}-xona",
+        "split": "Bunday ko'p mehmon bitta xonaga joylashtirilmaydi. Quyida har bir xona uchun qidiring"
       }
     },
     "orders": {

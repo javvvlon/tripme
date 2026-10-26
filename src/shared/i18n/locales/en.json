@@ -1013,6 +1013,31 @@
         "title": "Reason for refusal",
         "confirm": "Mark as refused",
         "pick": "Choose a reason"
+      },
+      "ai": {
+        "read": "Find tours for this request with AI",
+        "reading": "Reading the request and looking up hotels…",
+        "understood": "How AI read the request",
+        "find": "Find tours",
+        "openSearch": "Open search",
+        "again": "Read again",
+        "hide": "Hide",
+        "anywhere": "destination unclear",
+        "noDestination": "We don't fly there, so pick a destination in search",
+        "datesAssumed": "No dates given, so we search the coming week",
+        "agesAssumed": "Children's ages not given, so we used 7. Check with the client",
+        "crowded": "That many guests rarely fit one room. Two rooms may be needed",
+        "noHotels": "Hotels not found in the catalogue",
+        "missingHotels": "Not in the catalogue: {names}",
+        "budget": {
+          "person": "{amount} per person",
+          "total": "{amount} in total"
+        },
+        "unavailable": "AI is unavailable right now",
+        "empty": "There is nothing in the request to read",
+        "failed": "AI didn't answer. Try again",
+        "room": "Room {n}",
+        "split": "That many guests don't fit one room. Search room by room below"
       }
     },
     "orders": {

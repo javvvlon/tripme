@@ -15,6 +15,7 @@ export const resource: IResource = {
     takeLead: { url: 'cms/leads/:id/take', method: 'POST' },
     newRequest: { url: 'cms/leads/:id/new-request', method: 'POST' },
     relatedLeads: { url: 'cms/leads/:id/related', method: 'GET' },
+    aiSearch: { url: 'cms/leads/:id/ai-search', method: 'POST' },
     staff: { url: 'cms/leads/staff', method: 'GET' },
     createLead: { url: 'cms/leads', method: 'POST' },
     patchLead: { url: 'cms/leads/:id', method: 'PATCH' },

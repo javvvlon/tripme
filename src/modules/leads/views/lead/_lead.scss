@@ -380,18 +380,6 @@
         font-weight: 700;
     }
 
-    &__quote {
-        max-width: 520px;
-        margin: 0 0 4px;
-        padding: 10px 14px;
-        border-radius: 12px;
-        background: var(--tm-lead-fill);
-        color: var(--tm-ink-2);
-        font-size: size(14);
-        text-align: left;
-        white-space: pre-line;
-    }
-
     &__inset { padding: 16px; }
 
     &__outcome {

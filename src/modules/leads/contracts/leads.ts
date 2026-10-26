@@ -80,6 +80,32 @@ export interface ILeadRelated {
   created_at: string
 }
 
+export interface ILeadSearchPlace {
+  slug: string
+  label: string
+}
+
+export interface ILeadSearchPlan {
+  from: ILeadSearchPlace | null
+  to: ILeadSearchPlace | null
+  country: string
+  resort: string
+  date_from: string
+  date_to: string
+  dates_assumed: boolean
+  nights: number | null
+  adults: number
+  kid_ages: number[]
+  ages_assumed: boolean
+  crowded: boolean
+  hotels: Array<{ key: string, name: string, stars: number | null }>
+  missing_hotels: string[]
+  stars: number[]
+  meals: string[]
+  budget: { amount: number, currency: string, basis: 'person' | 'total' | '' } | null
+  note: string
+}
+
 export interface ILeadRaw {
   uuid: string
   archived_at?: string | null

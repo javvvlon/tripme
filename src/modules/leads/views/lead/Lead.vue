@@ -137,7 +137,7 @@
                         <div v-else-if="!finished" class="tm-cms-lead__blank">
                             <span class="tm-cms-lead__glyph is-large"><Icon name="briefcase" :size="22" /></span>
                             <p class="tm-cms-lead__blank-title">{{ t('cms.leads.offer.empty') }}</p>
-                            <blockquote v-if="lead.comment" class="tm-cms-lead__quote">{{ lead.comment }}</blockquote>
+                            <AiRequest v-if="lead.comment" :lead="lead" />
                             <ServiceMenu :label="t('cms.leads.offer.add')" :esim="esimAvailable" @select="chooseService" />
                         </div>
                     </div>
@@ -367,6 +367,7 @@ import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
 import ServiceMenu from '~/modules/leads/components/serviceMenu/ServiceMenu.vue'
+import AiRequest from '~/modules/leads/components/aiRequest/AiRequest.vue'
 import EsimPicker from '~/modules/esim/components/esimPicker/EsimPicker.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { useEsimMode } from '~/modules/esim/hooks/use-esim-mode'

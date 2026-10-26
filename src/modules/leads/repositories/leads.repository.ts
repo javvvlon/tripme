@@ -1,6 +1,6 @@
 import { toE164 } from '~/shared/helpers/phone'
 import type {
-  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadRelated, ILeadTrip, IOrderDocument, IOrderEvent, IOrderItemBody, IOrderRaw,
+  ILeadDraft, ILeadEvent, ILeadManualDraft, ILeadRaw, ILeadRelated, ILeadSearchPlan, ILeadTrip, IOrderDocument, IOrderEvent, IOrderItemBody, IOrderRaw,
   IStaffMember, LeadSort, LeadStatus, ManagerFilter, OrderStatus, SortDirection,
 } from '../contracts/leads'
 import type { AnyObject } from '~/shared/contracts/data'
@@ -127,6 +127,12 @@ export const useLeadsRepository = () => {
     const response = await http.call<ILeadRelated[]>('Leads', 'relatedLeads', { id })
 
     return response.data ?? []
+  }
+
+  const aiSearch = async (id: string, locale: string): Promise<ILeadSearchPlan> => {
+    const response = await http.call<ILeadSearchPlan>('Leads', 'aiSearch', { id }, { locale })
+
+    return response.data
   }
 
   const staff = async (): Promise<IStaffMember[]> => {
@@ -314,7 +320,7 @@ export const useLeadsRepository = () => {
   const restoreOrder = async (id: string): Promise<IOrderRaw> => (await http.call<IOrderRaw>('Leads', 'restoreOrder', { id })).data
 
   return {
-    submit, all, page, one, history, take, newRequest, related, staff, create, patch, setStatus, archive, restore,
+    submit, all, page, one, history, take, newRequest, related, aiSearch, staff, create, patch, setStatus, archive, restore,
     orders, ordersPage, ordersFor, createOrder, order, orderHistory, patchOrder, archiveOrder, restoreOrder, orderTravellers,
     orderDocuments, generateDocument, attachDocument, removeDocument, uploadContract, confirmItem,
     addItem, updateItem, removeItem, issueItem,
