@@ -1,5 +1,5 @@
 import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
-import type { ILeadSearchPlan } from '~/modules/leads/contracts/leads'
+import type { ILeadSearchDestination, ILeadSearchPlan } from '~/modules/leads/contracts/leads'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -7,6 +7,11 @@ import type { ILeadSearchPlan } from '~/modules/leads/contracts/leads'
 export interface IPlanRoom {
   adults: number
   kidAges: number[]
+}
+
+export interface IPlanTarget {
+  destination?: ILeadSearchDestination
+  room?: IPlanRoom
 }
 
 export const ROOM_GUESTS = 4
@@ -24,13 +29,21 @@ export function roomsOf(adults: number, kidAges: number[], perRoom = ROOM_GUESTS
   return rooms
 }
 
-export function planQuery(plan: ILeadSearchPlan, leadId: string, room?: IPlanRoom): Record<string, string> {
+export function destinationsOf(plan: ILeadSearchPlan): ILeadSearchDestination[] {
+  if (plan.destinations?.length) return plan.destinations
+
+  return [{ to: plan.to, country: plan.country, resort: plan.resort, hotels: plan.hotels, missing_hotels: plan.missing_hotels, note: '' }]
+}
+
+export function planQuery(plan: ILeadSearchPlan, leadId: string, target: IPlanTarget = {}): Record<string, string> {
   const query: Record<string, string> = {}
-  const adults = room?.adults ?? plan.adults
-  const kidAges = room?.kidAges ?? plan.kid_ages
+  const destination = target.destination ?? destinationsOf(plan)[0]
+  const adults = target.room?.adults ?? plan.adults
+  const kidAges = target.room?.kidAges ?? plan.kid_ages
+  const hotels = destination?.hotels ?? []
 
   if (plan.from) query.from = plan.from.slug
-  if (plan.to) query.to = plan.to.slug
+  if (destination?.to) query.to = destination.to.slug
   if (plan.date_from) query.date = plan.date_from
   if (plan.date_from && plan.date_to > plan.date_from) query.dateTo = plan.date_to
 
@@ -38,7 +51,7 @@ export function planQuery(plan: ILeadSearchPlan, leadId: string, room?: IPlanRoo
   query.adults = String(adults)
 
   if (kidAges.length) query.kids = kidAges.join(',')
-  if (plan.hotels.length) query.hotels = plan.hotels.map(hotel => hotel.key).join(',')
+  if (hotels.length) query.hotels = hotels.map(hotel => hotel.key).join(',')
   else if (plan.stars.length) query.stars = plan.stars.join(',')
   if (plan.meals.length) query.meals = plan.meals.join(',')
 

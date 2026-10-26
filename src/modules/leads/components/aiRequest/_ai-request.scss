@@ -220,20 +220,40 @@
         }
     }
 
-    &__room-icon { color: #FF6B00; }
+    &__room-icon {
+        flex: none;
+        align-self: flex-start;
+        margin-top: 2px;
+        color: #FF6B00;
+    }
 
     &__room-main {
         display: flex;
         flex: 1;
-        flex-wrap: wrap;
-        gap: 2px 8px;
+        flex-direction: column;
+        gap: 2px;
         min-width: 0;
         font-size: size(14);
+        overflow-wrap: anywhere;
 
-        span { color: var(--tm-ink-2); }
+        strong { font-weight: 600; }
+
+        span { color: var(--tm-ink-2); font-size: size(13); }
+
+        .tm-ai-request__hint { color: var(--tm-ai-request-gold); font-size: size(12); }
     }
 
-    &__room-chevron { color: var(--tm-ink-3); }
+    &__caption {
+        margin: 0 0 -4px;
+        color: var(--tm-ink-3);
+        font-size: size(12);
+        font-weight: 600;
+    }
+
+    &__room-chevron {
+        flex: none;
+        color: var(--tm-ink-3);
+    }
 
     &__actions {
         display: flex;

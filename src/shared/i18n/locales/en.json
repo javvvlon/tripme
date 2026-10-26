@@ -1037,7 +1037,8 @@
         "empty": "There is nothing in the request to read",
         "failed": "AI didn't answer. Try again",
         "room": "Room {n}",
-        "split": "That many guests don't fit one room. Search room by room below"
+        "split": "That many guests don't fit one room. Search room by room below",
+        "choose": "The client is weighing several destinations. Search each one separately"
       }
     },
     "orders": {

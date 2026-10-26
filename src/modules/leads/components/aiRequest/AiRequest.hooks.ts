@@ -1,12 +1,12 @@
 import { useLeadsRepository } from '~/modules/leads/repositories'
-import { planQuery, roomsOf } from '~/modules/leads/helpers/ai-search'
-import type { IPlanRoom } from '~/modules/leads/helpers/ai-search'
+import { destinationsOf, planQuery, roomsOf } from '~/modules/leads/helpers/ai-search'
+import type { IPlanTarget } from '~/modules/leads/helpers/ai-search'
 import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
 import { formatMoney } from '~/shared/utils/format'
 import { useHotelLabels } from '~/shared/composables/useHotelLabels'
-import type { ILeadSearchPlan } from '~/modules/leads/contracts/leads'
+import type { ILeadSearchDestination, ILeadSearchPlan } from '~/modules/leads/contracts/leads'
 import type { Money } from '~/search_engine/contracts/search'
-import type { IAiRequestFact, IAiRequestProps, IAiRequestRoom } from './AiRequest.d'
+import type { IAiRequestFact, IAiRequestProps, IAiRequestSearch } from './AiRequest.d'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
@@ -66,32 +66,71 @@ export const useAiRequest = (props: IAiRequestProps) => {
     return parts.join(', ')
   }
 
-  const rooms = computed<IAiRequestRoom[]>(() => {
+  const destinations = computed(() => (plan.value ? destinationsOf(plan.value) : []))
+
+  const several = computed(() => destinations.value.length > 1)
+
+  const routeOf = (destination: ILeadSearchDestination): string => {
+    const place = [destination.to?.label || destination.country, destination.resort].filter(Boolean).join(' · ')
+
+    return [plan.value?.from?.label, place || t('cms.leads.ai.anywhere')].filter(Boolean).join(' → ')
+  }
+
+  const hotelsOf = (destination: ILeadSearchDestination): string[] =>
+    destination.hotels.map(hotel => (hotel.stars ? `${hotel.name} ${hotel.stars}★` : hotel.name))
+
+  const missingOf = (destination: ILeadSearchDestination): string[] =>
+    destination.missing_hotels.length ? [t('cms.leads.ai.missingHotels', { names: destination.missing_hotels.join(', ') })] : []
+
+  const rooms = computed(() => {
     const found = plan.value
+    const split = found?.crowded ? roomsOf(found.adults, found.kid_ages) : []
 
-    if (!found?.crowded) return []
+    return split.length > 1 ? split : []
+  })
 
-    const split = roomsOf(found.adults, found.kid_ages)
+  const searches = computed<IAiRequestSearch[]>(() => {
+    if (!several.value && !rooms.value.length) return []
 
-    return split.length > 1
-      ? split.map((room, index) => ({ label: t('cms.leads.ai.room', { n: index + 1 }), party: partyOf(room.adults, room.kidAges), room }))
-      : []
+    const parties = rooms.value.length ? rooms.value : [undefined]
+
+    return destinations.value.flatMap((destination, place) => parties.map((room, index) => {
+      const roomLine = room ? partyOf(room.adults, room.kidAges) : ''
+      const first = index === 0
+
+      if (!several.value) {
+        return { key: `${place}-${index}`, title: t('cms.leads.ai.room', { n: index + 1 }), lines: [roomLine], hints: [], destination, room }
+      }
+
+      return {
+        key: `${place}-${index}`,
+        title: routeOf(destination),
+        lines: [
+          ...(room ? [`${t('cms.leads.ai.room', { n: index + 1 })} · ${roomLine}`] : []),
+          ...(first ? hotelsOf(destination) : []),
+        ],
+        hints: first
+          ? [...(destination.note ? [destination.note] : []), ...missingOf(destination), ...(destination.to ? [] : [t('cms.leads.ai.noDestination')])]
+          : [],
+        destination,
+        room,
+      }
+    }))
   })
 
   const facts = computed<IAiRequestFact[]>(() => {
     const found = plan.value
+    const main = destinations.value[0]
 
-    if (!found) return []
+    if (!found || !main) return []
 
-    const place = [found.to?.label || found.country, found.resort].filter(Boolean).join(' · ')
+    const rows: IAiRequestFact[] = []
 
-    const rows: IAiRequestFact[] = [
-      {
-        key: 'route',
-        icon: 'plane',
-        lines: [[found.from?.label, place || t('cms.leads.ai.anywhere')].filter(Boolean).join(' → ')],
-        hints: found.to ? [] : [t('cms.leads.ai.noDestination')],
-      },
+    if (!several.value) {
+      rows.push({ key: 'route', icon: 'plane', lines: [routeOf(main)], hints: main.to ? [] : [t('cms.leads.ai.noDestination')] })
+    }
+
+    rows.push(
       {
         key: 'dates',
         icon: 'calendar',
@@ -107,20 +146,18 @@ export const useAiRequest = (props: IAiRequestProps) => {
           ...(found.crowded ? [t(rooms.value.length ? 'cms.leads.ai.split' : 'cms.leads.ai.crowded')] : []),
         ],
       },
-    ]
+    )
 
-    if (found.hotels.length || found.missing_hotels.length) {
+    if (!several.value && (main.hotels.length || main.missing_hotels.length)) {
       rows.push({
         key: 'hotels',
         icon: 'bed',
-        lines: found.hotels.length
-          ? found.hotels.map(hotel => (hotel.stars ? `${hotel.name} ${hotel.stars}★` : hotel.name))
-          : [t('cms.leads.ai.noHotels')],
-        hints: found.missing_hotels.length ? [t('cms.leads.ai.missingHotels', { names: found.missing_hotels.join(', ') })] : [],
+        lines: main.hotels.length ? hotelsOf(main) : [t('cms.leads.ai.noHotels')],
+        hints: missingOf(main),
       })
     }
 
-    if (!found.hotels.length && found.stars.length) {
+    if (!destinations.value.some(destination => destination.hotels.length) && found.stars.length) {
       rows.push({ key: 'stars', icon: 'star', lines: [found.stars.map(star => `${star}★`).join(', ')], hints: [] })
     }
 
@@ -142,21 +179,31 @@ export const useAiRequest = (props: IAiRequestProps) => {
     return rows
   })
 
-  const ready = computed(() => Boolean(plan.value?.to))
+  const notes = computed(() => {
+    const found = plan.value
 
-  const go = (room?: IPlanRoom) => {
+    if (!found) return []
+
+    const all = [found.note, ...(several.value ? [] : [destinations.value[0]?.note ?? ''])].map(note => note.trim()).filter(Boolean)
+
+    return [...new Set(all)]
+  })
+
+  const ready = computed(() => Boolean(destinations.value[0]?.to))
+
+  const go = (target: IPlanTarget = {}) => {
     const found = plan.value
 
     if (!found) return
 
-    for (const hotel of found.hotels) remember(hotel.key, hotel.name)
+    for (const hotel of (target.destination ?? destinations.value[0])?.hotels ?? []) remember(hotel.key, hotel.name)
 
-    void navigateTo({ path: localePath('/search'), query: planQuery(found, props.lead.uuid, room) })
+    void navigateTo({ path: localePath('/search'), query: planQuery(found, props.lead.uuid, target) })
   }
 
   const dismiss = () => {
     plan.value = null
   }
 
-  return { plan, reading, error, facts, rooms, ready, read, go, dismiss }
+  return { plan, reading, error, facts, notes, searches, several, ready, read, go, dismiss }
 }

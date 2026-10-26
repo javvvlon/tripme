@@ -41,15 +41,18 @@
                     </li>
                 </ul>
 
-                <p v-if="plan.note" class="tm-ai-request__note">{{ plan.note }}</p>
+                <p v-for="note in notes" :key="note" class="tm-ai-request__note">{{ note }}</p>
 
-                <ul v-if="rooms.length" class="tm-ai-request__rooms">
-                    <li v-for="entry in rooms" :key="entry.label">
-                        <button type="button" class="tm-ai-request__room" @click="go(entry.room)">
+                <p v-if="several" class="tm-ai-request__caption">{{ t('cms.leads.ai.choose') }}</p>
+
+                <ul v-if="searches.length" class="tm-ai-request__rooms">
+                    <li v-for="entry in searches" :key="entry.key">
+                        <button type="button" class="tm-ai-request__room" @click="go({ destination: entry.destination, room: entry.room })">
                             <Icon name="search" :size="15" class="tm-ai-request__room-icon" />
                             <span class="tm-ai-request__room-main">
-                                <strong>{{ entry.label }}</strong>
-                                <span>{{ entry.party }}</span>
+                                <strong>{{ entry.title }}</strong>
+                                <span v-for="line in entry.lines" :key="line">{{ line }}</span>
+                                <span v-for="hint in entry.hints" :key="hint" class="tm-ai-request__hint">{{ hint }}</span>
                             </span>
                             <Icon name="chevron-right" :size="16" class="tm-ai-request__room-chevron" />
                         </button>
@@ -57,7 +60,7 @@
                 </ul>
 
                 <footer class="tm-ai-request__actions">
-                    <Button v-if="!rooms.length" type="button" size="sm" icon="search" @click="go()">
+                    <Button v-if="!searches.length" type="button" size="sm" icon="search" @click="go()">
                         {{ ready ? t('cms.leads.ai.find') : t('cms.leads.ai.openSearch') }}
                     </Button>
                     <Button type="button" size="sm" variant="ghost" icon="sparkle" @click="read">{{ t('cms.leads.ai.again') }}</Button>
@@ -77,7 +80,7 @@ const props = defineProps<IAiRequestProps>()
 
 const { t } = useI18n()
 
-const { plan, reading, error, facts, rooms, ready, read, go, dismiss } = useAiRequest(props)
+const { plan, reading, error, facts, notes, searches, several, ready, read, go, dismiss } = useAiRequest(props)
 </script>
 
 <style lang="scss">

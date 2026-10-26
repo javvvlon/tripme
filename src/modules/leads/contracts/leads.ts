@@ -85,6 +85,15 @@ export interface ILeadSearchPlace {
   label: string
 }
 
+export interface ILeadSearchDestination {
+  to: ILeadSearchPlace | null
+  country: string
+  resort: string
+  hotels: Array<{ key: string, name: string, stars: number | null }>
+  missing_hotels: string[]
+  note: string
+}
+
 export interface ILeadSearchPlan {
   from: ILeadSearchPlace | null
   to: ILeadSearchPlace | null
@@ -104,6 +113,7 @@ export interface ILeadSearchPlan {
   meals: string[]
   budget: { amount: number, currency: string, basis: 'person' | 'total' | '' } | null
   note: string
+  destinations?: ILeadSearchDestination[]
 }
 
 export interface ILeadRaw {

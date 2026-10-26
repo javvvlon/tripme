@@ -1037,7 +1037,8 @@
         "empty": "So'rovda o'qiydigan narsa yo'q",
         "failed": "AI javob bermadi. Qayta urinib ko'ring",
         "room": "{n}-xona",
-        "split": "Bunday ko'p mehmon bitta xonaga joylashtirilmaydi. Quyida har bir xona uchun qidiring"
+        "split": "Bunday ko'p mehmon bitta xonaga joylashtirilmaydi. Quyida har bir xona uchun qidiring",
+        "choose": "Mijoz bir nechta yo'nalishni ko'rib chiqmoqda. Har birini alohida qidiring"
       }
     },
     "orders": {
