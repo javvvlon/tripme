@@ -35,6 +35,7 @@ export class SearchCriteriaIntention extends Intention<SearchRequest> {
       meals: list(filters?.meals),
       resorts: list(filters?.resorts),
       hotels: list(filters?.hotels),
+      areas: list(filters?.areas),
       suppliers: list(filters?.suppliers),
       priceMin: filters?.priceMin,
       priceMax: filters?.priceMax,

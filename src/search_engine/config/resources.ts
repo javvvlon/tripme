@@ -12,7 +12,7 @@ export const resource: IResource = {
       method: 'GET',
       params: ['from', 'to', 'date', 'dateTo', 'nights', 'nightsTo', 'adults',
                'children', 'currency', 'stars', 'meals', 'resorts', 'hotels',
-               'suppliers', 'priceMin', 'priceMax', 'page'],
+               'areas', 'suppliers', 'priceMin', 'priceMax', 'page'],
     },
     soonestDeparture: {
       url: 'soonest',

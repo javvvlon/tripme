@@ -86,11 +86,11 @@ export const useFilterPanel = (props: IFilterPanelProps, filters: Ref<SearchFilt
   const activeCount = computed(() => {
     const value = filters.value
 
-    return value.stars.length + value.meals.length + value.resorts.length + value.hotels.length + value.suppliers.length
+    return value.stars.length + value.meals.length + value.resorts.length + value.hotels.length + (value.areas.length ? 1 : 0) + value.suppliers.length
       + (value.priceMin !== undefined || value.priceMax !== undefined ? 1 : 0)
   })
 
-  const reset = () => { filters.value = { ...EMPTY_FILTERS, stars: [], meals: [], resorts: [], hotels: [], suppliers: [] } }
+  const reset = () => { filters.value = { ...EMPTY_FILTERS, stars: [], meals: [], resorts: [], hotels: [], areas: [], suppliers: [] } }
 
   return {
     groups, stars, meals, districts, suppliers, priceMin, priceMax, activeCount,

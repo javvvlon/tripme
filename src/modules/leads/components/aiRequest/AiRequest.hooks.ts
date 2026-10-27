@@ -82,6 +82,12 @@ export const useAiRequest = (props: IAiRequestProps) => {
   const missingOf = (destination: ILeadSearchDestination): string[] =>
     destination.missing_hotels.length ? [t('cms.leads.ai.missingHotels', { names: destination.missing_hotels.join(', ') })] : []
 
+  const placeHints = (destination: ILeadSearchDestination): string[] => {
+    if (!destination.to) return [t('cms.leads.ai.noDestination')]
+
+    return destination.resort && destination.areas && !destination.areas.length ? [t('cms.leads.ai.resortMissing', { resort: destination.resort })] : []
+  }
+
   const rooms = computed(() => {
     const found = plan.value
     const split = found?.crowded ? roomsOf(found.adults, found.kid_ages) : []
@@ -110,7 +116,7 @@ export const useAiRequest = (props: IAiRequestProps) => {
           ...(first ? hotelsOf(destination) : []),
         ],
         hints: first
-          ? [...(destination.note ? [destination.note] : []), ...missingOf(destination), ...(destination.to ? [] : [t('cms.leads.ai.noDestination')])]
+          ? [...(destination.note ? [destination.note] : []), ...missingOf(destination), ...placeHints(destination)]
           : [],
         destination,
         room,
@@ -127,7 +133,7 @@ export const useAiRequest = (props: IAiRequestProps) => {
     const rows: IAiRequestFact[] = []
 
     if (!several.value) {
-      rows.push({ key: 'route', icon: 'plane', lines: [routeOf(main)], hints: main.to ? [] : [t('cms.leads.ai.noDestination')] })
+      rows.push({ key: 'route', icon: 'plane', lines: [routeOf(main)], hints: placeHints(main) })
     }
 
     rows.push(

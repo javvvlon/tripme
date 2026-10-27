@@ -1038,7 +1038,8 @@
         "failed": "AI didn't answer. Try again",
         "room": "Room {n}",
         "split": "That many guests don't fit one room. Search room by room below",
-        "choose": "The client is weighing several destinations. Search each one separately"
+        "choose": "The client is weighing several destinations. Search each one separately",
+        "resortMissing": "Operators don't list «{resort}», so we search the whole country"
       }
     },
     "orders": {

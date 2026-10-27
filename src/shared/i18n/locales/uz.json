@@ -1038,7 +1038,8 @@
         "failed": "AI javob bermadi. Qayta urinib ko'ring",
         "room": "{n}-xona",
         "split": "Bunday ko'p mehmon bitta xonaga joylashtirilmaydi. Quyida har bir xona uchun qidiring",
-        "choose": "Mijoz bir nechta yo'nalishni ko'rib chiqmoqda. Har birini alohida qidiring"
+        "choose": "Mijoz bir nechta yo'nalishni ko'rib chiqmoqda. Har birini alohida qidiring",
+        "resortMissing": "«{resort}» kurorti operatorlar ro'yxatida topilmadi, butun mamlakat bo'yicha qidiramiz"
       }
     },
     "orders": {

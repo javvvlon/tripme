@@ -67,6 +67,8 @@ const chips = computed(() => {
     list.push({ key: `m${meal}`, label: mealLabel(t, option), remove: without('meals', meal) })
   }
 
+  if (value.areas.length) list.push({ key: 'areas', label: value.areas[0]!, remove: () => { filters.value = { ...filters.value, areas: [] } } })
+
   for (const resort of value.resorts) list.push({ key: `r${resort}`, label: labelOf(props.facets.districts, resort), remove: without('resorts', resort) })
   for (const hotel of value.hotels) list.push({ key: `h${hotel}`, label: hotelLabel(hotel), remove: without('hotels', hotel) })
   for (const supplier of value.suppliers) list.push({ key: `o${supplier}`, label: labelOf(props.facets.suppliers, supplier), remove: without('suppliers', supplier) })
@@ -74,7 +76,7 @@ const chips = computed(() => {
   return list
 })
 
-const clear = () => { filters.value = { ...EMPTY_FILTERS, stars: [], meals: [], resorts: [], hotels: [], suppliers: [] } }
+const clear = () => { filters.value = { ...EMPTY_FILTERS, stars: [], meals: [], resorts: [], hotels: [], areas: [], suppliers: [] } }
 </script>
 
 <style lang="scss">

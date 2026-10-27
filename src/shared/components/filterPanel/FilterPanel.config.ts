@@ -19,6 +19,7 @@ export const EMPTY_FILTERS = {
   meals: [] as string[],
   resorts: [] as string[],
   hotels: [] as string[],
+  areas: [] as string[],
   suppliers: [] as string[],
   priceMin: undefined as number | undefined,
   priceMax: undefined as number | undefined,

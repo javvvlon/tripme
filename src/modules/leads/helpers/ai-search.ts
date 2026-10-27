@@ -32,7 +32,13 @@ export function roomsOf(adults: number, kidAges: number[], perRoom = ROOM_GUESTS
 export function destinationsOf(plan: ILeadSearchPlan): ILeadSearchDestination[] {
   if (plan.destinations?.length) return plan.destinations
 
-  return [{ to: plan.to, country: plan.country, resort: plan.resort, hotels: plan.hotels, missing_hotels: plan.missing_hotels, note: '' }]
+  return [{ to: plan.to, country: plan.country, resort: plan.resort, areas: [], hotels: plan.hotels, missing_hotels: plan.missing_hotels, note: '' }]
+}
+
+export function areasOf(destination: ILeadSearchDestination | undefined): string[] {
+  if (!destination?.areas?.length) return []
+
+  return [...new Set([destination.resort, ...destination.areas].map(area => area.trim()).filter(Boolean))]
 }
 
 export function planQuery(plan: ILeadSearchPlan, leadId: string, target: IPlanTarget = {}): Record<string, string> {
@@ -51,6 +57,10 @@ export function planQuery(plan: ILeadSearchPlan, leadId: string, target: IPlanTa
   query.adults = String(adults)
 
   if (kidAges.length) query.kids = kidAges.join(',')
+
+  const areas = areasOf(destination)
+
+  if (areas.length) query.areas = areas.join(',')
   if (hotels.length) query.hotels = hotels.map(hotel => hotel.key).join(',')
   else if (plan.stars.length) query.stars = plan.stars.join(',')
   if (plan.meals.length) query.meals = plan.meals.join(',')

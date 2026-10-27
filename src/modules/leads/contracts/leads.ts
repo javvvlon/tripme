@@ -89,6 +89,7 @@ export interface ILeadSearchDestination {
   to: ILeadSearchPlace | null
   country: string
   resort: string
+  areas?: string[]
   hotels: Array<{ key: string, name: string, stars: number | null }>
   missing_hotels: string[]
   note: string
