@@ -30,11 +30,14 @@
         overflow-wrap: anywhere;
     }
 
-    &__spark {
+    &__glow > &__spark-tip {
         position: absolute;
         z-index: 4;
         top: 7px;
         right: 7px;
+    }
+
+    &__spark {
         display: inline-grid;
         place-items: center;
         width: 30px;

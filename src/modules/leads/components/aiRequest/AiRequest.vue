@@ -3,17 +3,18 @@
         <AiGlow :active="reading" class="tm-ai-request__glow">
             <blockquote class="tm-ai-request__quote">{{ lead.comment }}</blockquote>
 
-            <button
-                type="button"
-                class="tm-ai-request__spark"
-                :class="{ 'is-busy': reading }"
-                :disabled="reading"
-                :aria-label="t('cms.leads.ai.read')"
-                :title="t('cms.leads.ai.read')"
-                @click="read"
-            >
-                <Icon name="sparkle" :size="16" />
-            </button>
+            <Tooltip :text="t('cms.leads.ai.read')" align="end" :disabled="reading" class="tm-ai-request__spark-tip">
+                <button
+                    type="button"
+                    class="tm-ai-request__spark"
+                    :class="{ 'is-busy': reading }"
+                    :disabled="reading"
+                    :aria-label="t('cms.leads.ai.read')"
+                    @click="read"
+                >
+                    <Icon name="sparkle" :size="16" />
+                </button>
+            </Tooltip>
         </AiGlow>
 
         <p v-if="reading" class="tm-ai-request__status" role="status">
@@ -72,6 +73,7 @@
 
 <script setup lang="ts">
 import Button from '~/shared/components/button/Button.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import AiGlow from '~/modules/marketing/components/aiGlow/AiGlow.vue'
 import type { IAiRequestProps } from './AiRequest.d'
 import { useAiRequest } from './AiRequest.hooks'
