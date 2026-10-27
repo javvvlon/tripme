@@ -1,15 +1,19 @@
 <template>
     <div class="tm-lang-switch" role="tablist" :aria-label="label">
-        <button
-            v-for="code in CONTENT_LOCALES" :key="code"
-            type="button" role="tab" :aria-selected="model === code"
-            class="tm-lang-switch__tab" :class="{ 'is-active': model === code }"
-            :title="missing?.includes(code) ? missingHint : undefined"
-            @click="model = code"
+        <Tooltip
+            v-for="code in CONTENT_LOCALES" v-slot="{ tipId }" :key="code"
+            :text="missingHint ?? ''" :disabled="!missingHint || !missing?.includes(code)"
         >
-            {{ code.toUpperCase() }}
-            <span v-if="missing?.includes(code)" class="tm-lang-switch__dot" aria-hidden="true" />
-        </button>
+            <button
+                type="button" role="tab" :aria-selected="model === code"
+                class="tm-lang-switch__tab" :class="{ 'is-active': model === code }"
+                :aria-describedby="tipId"
+                @click="model = code"
+            >
+                {{ code.toUpperCase() }}
+                <span v-if="missing?.includes(code)" class="tm-lang-switch__dot" aria-hidden="true" />
+            </button>
+        </Tooltip>
     </div>
 </template>
 

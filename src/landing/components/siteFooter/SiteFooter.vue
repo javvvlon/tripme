@@ -37,13 +37,15 @@
 
                     <ul class="tm-site-footer__socials">
                         <li v-for="social in socials" :key="social.id">
-                            <a
-                                :href="social.href" class="tm-site-footer__social"
-                                target="_blank" rel="noopener"
-                                :aria-label="t(social.labelKey)" :title="t(social.labelKey)"
-                            >
-                                <Icon :name="social.icon" :size="18" />
-                            </a>
+                            <Tooltip :text="t(social.labelKey)">
+                                <a
+                                    :href="social.href" class="tm-site-footer__social"
+                                    target="_blank" rel="noopener"
+                                    :aria-label="t(social.labelKey)"
+                                >
+                                    <Icon :name="social.icon" :size="18" />
+                                </a>
+                            </Tooltip>
                         </li>
                     </ul>
                 </template>
@@ -83,10 +85,10 @@
                     <p class="tm-site-footer__note">{{ t('footer.payments.note') }}</p>
 
                     <ul class="tm-site-footer__marks">
-                        <li v-for="method in PAYMENT_METHODS" :key="method.id" class="tm-site-footer__mark">
-                            <img v-if="method.image" :src="method.image" :alt="method.label" :title="method.label" :style="{ height: `${method.height ?? 18}px` }" loading="lazy">
+                        <Tooltip v-for="method in PAYMENT_METHODS" :key="method.id" tag="li" :text="method.label" :disabled="!method.image" class="tm-site-footer__mark">
+                            <img v-if="method.image" :src="method.image" :alt="method.label" :style="{ height: `${method.height ?? 18}px` }" loading="lazy">
                             <span v-else>{{ method.label }}</span>
-                        </li>
+                        </Tooltip>
                     </ul>
                 </section>
             </div>

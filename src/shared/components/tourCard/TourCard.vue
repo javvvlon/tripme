@@ -32,9 +32,9 @@
             </h3>
 
             <ul class="tm-tour-card__facts">
-                <li v-if="meal" class="tm-tour-card__fact tm-tour-card__fact--meal" :title="tour.get('mealName') ?? undefined">
+                <Tooltip v-if="meal" tag="li" :text="tour.get('mealName') ?? ''" :disabled="!tour.get('mealName')" class="tm-tour-card__fact tm-tour-card__fact--meal">
                     <Icon name="check" :size="13" :stroke="2.4" />{{ meal }}
-                </li>
+                </Tooltip>
                 <li v-if="tour.get('roomName')" class="tm-tour-card__fact">
                     <Icon name="bed" :size="14" />{{ tour.get('roomName') }}
                 </li>
@@ -114,15 +114,16 @@
                         {{ inQuote ? t('quote.added') : t('quote.add') }}
                     </Button>
 
-                    <Button
-                        v-if="agentView && assignLabel"
-                        size="sm" variant="secondary" icon="check"
-                        :disabled="assigning"
-                        :title="assignTitle"
-                        @click="emit('assign', trip)"
-                    >
-                        {{ assigning ? t('results.assign.busy') : assignLabel }}
-                    </Button>
+                    <Tooltip v-if="agentView && assignLabel" v-slot="{ tipId }" :text="assignTitle ?? ''" :disabled="!assignTitle || assigning" class="tm-tour-card__assign-tip">
+                        <Button
+                            size="sm" variant="secondary" icon="check"
+                            :disabled="assigning"
+                            :aria-describedby="tipId"
+                            @click="emit('assign', trip)"
+                        >
+                            {{ assigning ? t('results.assign.busy') : assignLabel }}
+                        </Button>
+                    </Tooltip>
 
                     <Button
                         v-if="agentView && tour.canBook()"

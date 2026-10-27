@@ -32,9 +32,11 @@
             />
 
             <div class="tm-ai-input__bar">
-                <button v-if="images" type="button" class="tm-ai-input__tool" :disabled="busy" :aria-label="t('ai.input.attach')" :title="t('ai.input.attach')" @click="attach">
-                    <Icon name="image" :size="17" />
-                </button>
+                <Tooltip v-if="images" :text="t('ai.input.attach')" align="start">
+                    <button type="button" class="tm-ai-input__tool" :disabled="busy" :aria-label="t('ai.input.attach')" @click="attach">
+                        <Icon name="image" :size="17" />
+                    </button>
+                </Tooltip>
                 <input v-if="images" ref="picker" type="file" accept="image/png,image/jpeg,image/webp" hidden @change="pick">
 
                 <span class="tm-ai-input__hint">{{ t('ai.input.hint') }}</span>

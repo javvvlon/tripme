@@ -15,28 +15,33 @@
                 <img v-else class="tm-file-upload__preview" :src="shown" alt="" width="240" height="120" @error="broken = true">
 
                 <div class="tm-file-upload__actions">
-                    <button
-                        type="button" class="tm-file-upload__action"
-                        :aria-label="t('cms.upload.replace')" :title="t('cms.upload.replace')"
-                        @click="open"
-                    >
-                        <Icon name="upload" :size="16" />
-                    </button>
-                    <button
-                        v-if="library"
-                        type="button" class="tm-file-upload__action"
-                        :aria-label="t('cms.upload.library')" :title="t('cms.upload.library')"
-                        @click="browse"
-                    >
-                        <Icon name="image" :size="16" />
-                    </button>
-                    <button
-                        type="button" class="tm-file-upload__action tm-file-upload__action--danger"
-                        :aria-label="t('cms.upload.remove')" :title="t('cms.upload.remove')"
-                        @click="remove"
-                    >
-                        <Icon name="trash" :size="16" />
-                    </button>
+                    <Tooltip :text="t('cms.upload.replace')">
+                        <button
+                            type="button" class="tm-file-upload__action"
+                            :aria-label="t('cms.upload.replace')"
+                            @click="open"
+                        >
+                            <Icon name="upload" :size="16" />
+                        </button>
+                    </Tooltip>
+                    <Tooltip v-if="library" :text="t('cms.upload.library')">
+                        <button
+                            type="button" class="tm-file-upload__action"
+                            :aria-label="t('cms.upload.library')"
+                            @click="browse"
+                        >
+                            <Icon name="image" :size="16" />
+                        </button>
+                    </Tooltip>
+                    <Tooltip :text="t('cms.upload.remove')">
+                        <button
+                            type="button" class="tm-file-upload__action tm-file-upload__action--danger"
+                            :aria-label="t('cms.upload.remove')"
+                            @click="remove"
+                        >
+                            <Icon name="trash" :size="16" />
+                        </button>
+                    </Tooltip>
                 </div>
             </template>
 

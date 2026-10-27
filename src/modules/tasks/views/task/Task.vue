@@ -70,7 +70,7 @@
                     </div>
 
                     <div v-if="tab !== 'history' && !locked" class="tm-issue__composer">
-                        <TaskAvatar :person="mePerson" />
+                        <TaskAvatar :person="mePerson" class="tm-issue__composer-avatar" />
                         <div v-if="writing" class="tm-issue__composer-body" @keydown.meta.enter.prevent="submit" @keydown.ctrl.enter.prevent="submit">
                             <RichEditor v-model="draft" compact :placeholder="t('cms.tasks.commentPlaceholder')" class="tm-issue__editor is-comment" />
                             <div class="tm-issue__edit-actions">

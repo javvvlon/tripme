@@ -308,6 +308,8 @@
         text-align: center;
     }
 
+    &__assign-tip { display: grid; }
+
     &__details {
         padding-block: 4px;
         font-size: size(12);

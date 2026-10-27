@@ -137,6 +137,8 @@
         transform: translateY(-50%);
     }
 
+    &__site-tip { display: grid; }
+
     &__site {
         display: flex;
         align-items: center;

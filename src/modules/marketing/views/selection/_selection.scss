@@ -646,7 +646,7 @@
 
         .tm-ad-studio__thumb-name { text-align: left; }
 
-        .tm-icon-button { flex: none; }
+        .tm-tooltip { flex: none; }
     }
 
     &__swatches {
@@ -656,6 +656,8 @@
     }
 
     &__swatch-glow { border-radius: 14px; }
+
+    &__swatch-tip { display: grid; }
 
     &__swatch {
         display: flex;
@@ -1324,6 +1326,12 @@
 
             &:active { transform: scale(.97); }
         }
+    }
+
+    &__action-tip {
+        display: grid;
+        flex: 0 1 220px;
+        min-width: 0;
     }
 }
 

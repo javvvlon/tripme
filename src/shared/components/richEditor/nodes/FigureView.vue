@@ -8,25 +8,28 @@
         <img :src="node.attrs.src" :alt="node.attrs.caption" draggable="false">
 
         <div class="tm-rte-node__tools" contenteditable="false">
-            <button
-                v-for="option in ALIGN_OPTIONS" :key="option.value"
-                type="button" class="tm-rte-node__tool"
-                :class="{ 'is-active': node.attrs.align === option.value }"
-                :title="t(`richEditor.align.${option.key}`)" :aria-label="t(`richEditor.align.${option.key}`)"
-                @click="updateAttributes({ align: option.value })"
-            >
-                <Icon :name="option.icon" :size="16" />
-            </button>
+            <Tooltip v-for="option in ALIGN_OPTIONS" :key="option.value" :text="t(`richEditor.align.${option.key}`)" side="bottom">
+                <button
+                    type="button" class="tm-rte-node__tool"
+                    :class="{ 'is-active': node.attrs.align === option.value }"
+                    :aria-label="t(`richEditor.align.${option.key}`)"
+                    @click="updateAttributes({ align: option.value })"
+                >
+                    <Icon :name="option.icon" :size="16" />
+                </button>
+            </Tooltip>
 
             <span class="tm-rte-node__sep" aria-hidden="true" />
 
-            <button
-                type="button" class="tm-rte-node__tool is-danger"
-                :title="t('richEditor.remove')" :aria-label="t('richEditor.remove')"
-                @click="deleteNode()"
-            >
-                <Icon name="trash" :size="16" />
-            </button>
+            <Tooltip :text="t('richEditor.remove')" side="bottom">
+                <button
+                    type="button" class="tm-rte-node__tool is-danger"
+                    :aria-label="t('richEditor.remove')"
+                    @click="deleteNode()"
+                >
+                    <Icon name="trash" :size="16" />
+                </button>
+            </Tooltip>
         </div>
 
         <input

@@ -13,6 +13,12 @@
         padding: 8px 0;
     }
 
+    &__link-tip {
+        display: flex;
+        flex: 1;
+        min-width: 0;
+    }
+
     &__link {
         display: flex;
         flex: 1;

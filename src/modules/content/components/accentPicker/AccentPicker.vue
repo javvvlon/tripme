@@ -12,16 +12,17 @@
                 </button>
             </div>
             <div class="tm-accent-picker__words" :class="{ 'is-off': model === 'none' }" role="group" :aria-label="t('cms.sections.accent.words')">
-                <button
-                    v-for="(word, i) in words" :key="i"
-                    type="button" class="tm-accent-picker__word"
-                    :class="{ 'is-active': i >= range[0] && i <= range[1] }"
-                    :aria-pressed="i >= range[0] && i <= range[1]"
-                    :title="t('cms.sections.accent.wordTip')"
-                    @click="pickWord(i, $event.shiftKey)"
-                >
-                    {{ word }}
-                </button>
+                <Tooltip v-for="(word, i) in words" v-slot="{ tipId }" :key="i" :text="t('cms.sections.accent.wordTip')">
+                    <button
+                        type="button" class="tm-accent-picker__word"
+                        :class="{ 'is-active': i >= range[0] && i <= range[1] }"
+                        :aria-pressed="i >= range[0] && i <= range[1]"
+                        :aria-describedby="tipId"
+                        @click="pickWord(i, $event.shiftKey)"
+                    >
+                        {{ word }}
+                    </button>
+                </Tooltip>
             </div>
         </div>
 

@@ -14,9 +14,9 @@
             <span class="tm-task-card__type" aria-hidden="true"><Icon name="check" :size="10" :stroke="3.2" /></span>
             <span class="tm-task-card__key">{{ task.key }}</span>
             <span class="tm-task-card__spacer" />
-            <span v-if="task.comments" class="tm-task-card__comments" :title="t('cms.tasks.tabs.comments')">
+            <Tooltip v-if="task.comments" :text="t('cms.tasks.tabs.comments')" class="tm-task-card__comments">
                 <Icon name="mail" :size="13" />{{ task.comments }}
-            </span>
+            </Tooltip>
             <PriorityIcon :priority="task.priority" />
             <TaskAvatar :person="task.assignee" size="sm" />
         </span>
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import PriorityIcon from '~/modules/tasks/components/priorityIcon/PriorityIcon.vue'
 import TaskAvatar from '~/modules/tasks/components/taskAvatar/TaskAvatar.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { dueLabel } from '~/modules/tasks/helpers'
 import type { ITaskCardProps } from './TaskCard.d'
 

@@ -42,9 +42,11 @@
                 </NuxtLink>
             </nav>
 
-            <Button icon="plus" size="sm" class="tm-jira__create" :title="t('cms.tasks.composer.shortcut')" @click="create">
-                {{ t('cms.tasks.create') }}
-            </Button>
+            <Tooltip v-slot="{ tipId }" :text="t('cms.tasks.composer.shortcut')" side="bottom" class="tm-jira__create">
+                <Button icon="plus" size="sm" :aria-describedby="tipId" @click="create">
+                    {{ t('cms.tasks.create') }}
+                </Button>
+            </Tooltip>
 
             <div ref="menuRoot" class="tm-jira__user">
                 <button

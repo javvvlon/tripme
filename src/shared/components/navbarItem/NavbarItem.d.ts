@@ -9,4 +9,5 @@ export interface INavbarItemProps {
   disabled?: boolean
   badge?: string | number | null
   accent?: boolean
+  compact?: boolean
 }

@@ -148,6 +148,8 @@
         min-width: 0;
     }
 
+    &__thumb-tip { display: grid; }
+
     &__thumb {
         position: relative;
         display: block;

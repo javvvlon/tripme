@@ -7,13 +7,15 @@
 
             <span class="tm-rte-node__sep" aria-hidden="true" />
 
-            <button
-                type="button" class="tm-rte-node__tool is-danger"
-                :title="t('richEditor.remove')" :aria-label="t('richEditor.remove')"
-                @click="deleteNode()"
-            >
-                <Icon name="trash" :size="16" />
-            </button>
+            <Tooltip :text="t('richEditor.remove')" side="bottom">
+                <button
+                    type="button" class="tm-rte-node__tool is-danger"
+                    :aria-label="t('richEditor.remove')"
+                    @click="deleteNode()"
+                >
+                    <Icon name="trash" :size="16" />
+                </button>
+            </Tooltip>
         </div>
     </NodeViewWrapper>
 </template>

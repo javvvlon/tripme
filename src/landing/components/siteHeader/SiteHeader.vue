@@ -26,13 +26,15 @@
             <div class="tm-site-header__tools">
                 <LangSwitcher tone="onLight" />
                 <ThemeToggle />
-                <NuxtLink
-                    v-if="user"
-                    :to="localePath(user.homePath())" class="tm-site-header__account tm-site-header__account--user"
-                    :aria-label="user.isClient() ? t('common.account') : t('common.workspace')" :title="user.fullName()"
-                >
-                    {{ initials }}
-                </NuxtLink>
+                <Tooltip v-if="user" v-slot="{ tipId }" :text="user.fullName()" side="bottom" align="end">
+                    <NuxtLink
+                        :to="localePath(user.homePath())" class="tm-site-header__account tm-site-header__account--user"
+                        :aria-label="user.isClient() ? t('common.account') : t('common.workspace')"
+                        :aria-describedby="tipId"
+                    >
+                        {{ initials }}
+                    </NuxtLink>
+                </Tooltip>
                 <NuxtLink
                     v-else
                     :to="localePath('/auth')" class="tm-site-header__account"

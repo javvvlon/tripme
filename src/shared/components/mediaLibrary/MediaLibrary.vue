@@ -99,7 +99,6 @@
             <div v-if="focused" class="tm-media__stage">
                 <button
                     type="button" class="tm-media__back"
-                    :aria-label="t('media.back')" :title="t('media.back')"
                     @click="focused = null"
                 >
                     <Icon name="chevron-left" :size="14" />
@@ -150,22 +149,26 @@
                         {{ focused.url === current ? t('media.chosen') : t('media.choose') }}
                     </Button>
 
-                    <button
-                        type="button" class="tm-media__tool"
-                        :aria-label="t('media.rename')" :title="t('media.rename')"
-                        @click="startNaming"
-                    >
-                        <Icon name="pencil" :size="16" />
-                    </button>
+                    <Tooltip :text="t('media.rename')">
+                        <button
+                            type="button" class="tm-media__tool"
+                            :aria-label="t('media.rename')"
+                            @click="startNaming"
+                        >
+                            <Icon name="pencil" :size="16" />
+                        </button>
+                    </Tooltip>
 
-                    <button
-                        type="button" class="tm-media__tool tm-media__tool--danger"
-                        :aria-label="t('media.remove')" :title="t('media.remove')"
-                        :disabled="busy"
-                        @click="destroy"
-                    >
-                        <Icon name="trash" :size="16" />
-                    </button>
+                    <Tooltip :text="t('media.remove')" align="end">
+                        <button
+                            type="button" class="tm-media__tool tm-media__tool--danger"
+                            :aria-label="t('media.remove')"
+                            :disabled="busy"
+                            @click="destroy"
+                        >
+                            <Icon name="trash" :size="16" />
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
         </div>
@@ -184,6 +187,7 @@ import Modal from '~/shared/components/modal/Modal.vue'
 import Button from '~/shared/components/button/Button.vue'
 import Input from '~/shared/components/input/Input.vue'
 import Icon from '~/shared/components/icon/Icon.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { ModalSize } from '~/shared/components/modal/Modal.config'
 import type { IGalleryResult, IMediaFile, IMediaFolder, IMediaLibraryProps } from './MediaLibrary.d'
 

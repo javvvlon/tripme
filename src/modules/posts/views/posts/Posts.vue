@@ -76,20 +76,22 @@
                     <td class="is-date tm-cms-posts__muted">{{ post.published_at ? shortDate(post.published_at) : '—' }}</td>
                     <td class="is-date tm-cms-posts__muted">{{ shortDate(post.updated_at) }}</td>
                     <td class="is-langs">
-                        <span
+                        <Tooltip
                             v-for="language in languagesOf(post)" :key="language.locale"
+                            :text="language.filled ? t('cms.posts.translated') : t('cms.posts.notTranslated')"
                             class="tm-cms-posts__lang" :class="{ 'is-filled': language.filled }"
-                            :title="language.filled ? t('cms.posts.translated') : t('cms.posts.notTranslated')"
-                        >{{ language.locale.toUpperCase() }}</span>
+                        >{{ language.locale.toUpperCase() }}</Tooltip>
                     </td>
                     <td class="is-actions" @click.stop>
-                        <button
-                            type="button" class="tm-cms-posts__delete"
-                            :aria-label="t('cms.posts.delete')" :title="t('cms.posts.delete')"
-                            @click="remove(post.uuid, titleOf(post))"
-                        >
-                            <Icon name="trash" :size="16" />
-                        </button>
+                        <Tooltip :text="t('cms.posts.delete')" align="end">
+                            <button
+                                type="button" class="tm-cms-posts__delete"
+                                :aria-label="t('cms.posts.delete')"
+                                @click="remove(post.uuid, titleOf(post))"
+                            >
+                                <Icon name="trash" :size="16" />
+                            </button>
+                        </Tooltip>
                     </td>
                 </tr>
             </tbody>
@@ -135,6 +137,7 @@ import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSk
 import Modal from '~/shared/components/modal/Modal.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import Pagination from '~/shared/components/pagination/Pagination.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import { usePosts } from './Posts.hooks'
 import { LEGAL_PREFIX, POST_COLUMNS, POST_FILTERS } from './Posts.config'

@@ -69,13 +69,15 @@
                             <span v-else-if="note.refs.length" class="tm-memo__refs">
                                 <template v-for="ref in note.refs" :key="ref">
                                     <NuxtLink v-if="taskOf(ref)" :to="localePath(`/app/tasks/${taskOf(ref)!.uuid}`)" class="tm-memo__ref is-task">{{ ref }}</NuxtLink>
-                                    <NuxtLink
-                                        v-else-if="recordOf(ref)"
-                                        :to="localePath(`/app/tasks/notes/${recordOf(ref)!.uuid}`)"
-                                        class="tm-memo__ref is-record" :class="`is-${recordOf(ref)!.kind}`" :title="recordOf(ref)!.title"
-                                    >
-                                        {{ ref }}
-                                    </NuxtLink>
+                                    <Tooltip v-else-if="recordOf(ref)" v-slot="{ tipId }" :text="recordOf(ref)!.title">
+                                        <NuxtLink
+                                            :to="localePath(`/app/tasks/notes/${recordOf(ref)!.uuid}`)"
+                                            :aria-describedby="tipId"
+                                            class="tm-memo__ref is-record" :class="`is-${recordOf(ref)!.kind}`"
+                                        >
+                                            {{ ref }}
+                                        </NuxtLink>
+                                    </Tooltip>
                                     <span v-else class="tm-memo__ref">{{ ref }}</span>
                                 </template>
                             </span>
@@ -177,6 +179,7 @@ import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
 import RichText from '~/shared/components/richText/RichText.vue'
 import Checkbox from '~/shared/components/checkbox/Checkbox.vue'
 import TaskAvatar from '~/modules/tasks/components/taskAvatar/TaskAvatar.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import NoteStamp from '~/modules/tasks/components/noteStamp/NoteStamp.vue'
 import StatusLozenge from '~/modules/tasks/components/statusLozenge/StatusLozenge.vue'
 import { noteTone, refsOf } from '~/modules/tasks/helpers'

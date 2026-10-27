@@ -1,16 +1,18 @@
 <template>
-    <span
-        class="tm-task-avatar"
-        :class="[`is-${size ?? 'md'}`, person ? `is-tone-${avatarTone(person.uuid)}` : 'is-empty']"
-        :title="person?.name ?? t('cms.tasks.unassigned')"
-        aria-hidden="true"
-    >
-        <template v-if="person">{{ initialsOf(person.name) }}</template>
-        <Icon v-else name="user" :size="size === 'lg' ? 16 : 12" :stroke="2" />
-    </span>
+    <Tooltip :text="person?.name ?? t('cms.tasks.unassigned')">
+        <span
+            class="tm-task-avatar"
+            :class="[`is-${size ?? 'md'}`, person ? `is-tone-${avatarTone(person.uuid)}` : 'is-empty']"
+            aria-hidden="true"
+        >
+            <template v-if="person">{{ initialsOf(person.name) }}</template>
+            <Icon v-else name="user" :size="size === 'lg' ? 16 : 12" :stroke="2" />
+        </span>
+    </Tooltip>
 </template>
 
 <script setup lang="ts">
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { avatarTone, initialsOf } from '~/modules/tasks/helpers'
 import type { ITaskAvatarProps } from './TaskAvatar.d'
 

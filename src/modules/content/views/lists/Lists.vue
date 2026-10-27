@@ -38,13 +38,15 @@
                     {{ t('cms.lists.items', { count: list.items_count }) }}
                 </span>
 
-                <button
-                    type="button" class="tm-cms-lists__delete"
-                    :aria-label="t('cms.lists.delete')" :title="t('cms.lists.delete')"
-                    @click="remove(list.uuid, list.name)"
-                >
-                    <Icon name="close" :size="16" />
-                </button>
+                <Tooltip :text="t('cms.lists.delete')" align="end">
+                    <button
+                        type="button" class="tm-cms-lists__delete"
+                        :aria-label="t('cms.lists.delete')"
+                        @click="remove(list.uuid, list.name)"
+                    >
+                        <Icon name="close" :size="16" />
+                    </button>
+                </Tooltip>
             </li>
         </ul>
     </div>
@@ -54,6 +56,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import KindPicker from '~/modules/content/components/kindPicker/KindPicker.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { BLOCKS } from '~/modules/content/contracts/blocks'
 import { useLists } from './Lists.hooks'
 

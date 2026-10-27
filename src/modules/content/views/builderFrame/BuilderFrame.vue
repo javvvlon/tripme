@@ -37,24 +37,29 @@
                 </span>
 
                 <div class="tm-frame__tools">
-                    <span
-                        class="tm-frame__tool is-grip" :title="t('cms.sections.drag')"
+                    <Tooltip
+                        :text="t('cms.sections.drag')" side="bottom"
+                        class="tm-frame__tool is-grip"
                         @pointerdown="grabbed = block.key"
                         @pointerup="grabbed = null"
                     >
                         <Icon name="grip" :size="16" :stroke="2.4" />
-                    </span>
-                    <button
+                    </Tooltip>
+                    <Tooltip
                         v-for="tool in TOOLS.filter(item => item.action !== 'duplicate' || !SINGLE_KINDS.includes(block.kind))" :key="tool.action"
-                        type="button" class="tm-frame__tool"
-                        :class="{ 'is-danger': tool.action === 'remove' }"
-                        :disabled="(tool.action === 'up' && index === 0) || (tool.action === 'down' && index === blocks.length - 1)"
-                        :title="t(tool.action === 'toggle' && block.hidden ? 'cms.builder.actions.show' : `cms.builder.actions.${tool.action}`)"
-                        :aria-label="t(tool.action === 'toggle' && block.hidden ? 'cms.builder.actions.show' : `cms.builder.actions.${tool.action}`)"
-                        @click="act(block.key, tool.action)"
+                        :text="t(tool.action === 'toggle' && block.hidden ? 'cms.builder.actions.show' : `cms.builder.actions.${tool.action}`)"
+                        side="bottom"
                     >
-                        <Icon :name="tool.action === 'toggle' && block.hidden ? 'eye' : tool.icon" :size="16" :stroke="2" />
-                    </button>
+                        <button
+                            type="button" class="tm-frame__tool"
+                            :class="{ 'is-danger': tool.action === 'remove' }"
+                            :disabled="(tool.action === 'up' && index === 0) || (tool.action === 'down' && index === blocks.length - 1)"
+                            :aria-label="t(tool.action === 'toggle' && block.hidden ? 'cms.builder.actions.show' : `cms.builder.actions.${tool.action}`)"
+                            @click="act(block.key, tool.action)"
+                        >
+                            <Icon :name="tool.action === 'toggle' && block.hidden ? 'eye' : tool.icon" :size="16" :stroke="2" />
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
 

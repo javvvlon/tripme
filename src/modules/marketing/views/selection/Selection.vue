@@ -122,29 +122,33 @@
 
                     <div class="tm-ad-studio__actions">
                         <template v-if="panel === 'post'">
-                            <Button
-                                icon="telegram"
-                                :loading="busy === 'publish'"
-                                :disabled="!settings?.telegram.connected || Boolean(busy)"
-                                :title="settings?.telegram.connected ? undefined : t('cms.marketing.botOff')"
-                                @click="publish"
-                            >
-                                {{ t('cms.marketing.publish') }}
-                            </Button>
+                            <Tooltip v-slot="{ tipId }" :text="t('cms.marketing.botOff')" :disabled="settings?.telegram.connected" class="tm-ad-studio__action-tip">
+                                <Button
+                                    icon="telegram"
+                                    :loading="busy === 'publish'"
+                                    :disabled="!settings?.telegram.connected || Boolean(busy)"
+                                    :aria-describedby="tipId"
+                                    @click="publish"
+                                >
+                                    {{ t('cms.marketing.publish') }}
+                                </Button>
+                            </Tooltip>
                             <Button variant="tinted" icon="copy" :disabled="!post" @click="copy(post)">{{ t('cms.marketing.copyPost') }}</Button>
                         </template>
                         <template v-else-if="panel === 'video'">
                             <Button icon="upload" :loading="busy === 'video'" :disabled="!videoReady || Boolean(busy)" @click="renderThen(downloadVideo)">{{ t('cms.marketing.video.download') }}</Button>
-                            <Button
-                                variant="tinted"
-                                icon="telegram"
-                                :loading="busy === 'publish'"
-                                :disabled="!videoReady || !settings?.telegram.connected || Boolean(busy)"
-                                :title="settings?.telegram.connected ? undefined : t('cms.marketing.botOff')"
-                                @click="renderThen(publishVideo)"
-                            >
-                                {{ t('cms.marketing.video.publish') }}
-                            </Button>
+                            <Tooltip v-slot="{ tipId }" :text="t('cms.marketing.botOff')" :disabled="settings?.telegram.connected" class="tm-ad-studio__action-tip">
+                                <Button
+                                    variant="tinted"
+                                    icon="telegram"
+                                    :loading="busy === 'publish'"
+                                    :disabled="!videoReady || !settings?.telegram.connected || Boolean(busy)"
+                                    :aria-describedby="tipId"
+                                    @click="renderThen(publishVideo)"
+                                >
+                                    {{ t('cms.marketing.video.publish') }}
+                                </Button>
+                            </Tooltip>
                         </template>
                         <template v-else-if="panel === 'page'">
                             <Button :href="link" target="_blank" rel="noopener" icon="arrow-up-right">{{ t('cms.marketing.open') }}</Button>
@@ -175,15 +179,17 @@
                         <section class="tm-ad-studio__group">
                             <header class="tm-ad-studio__group-head">
                                 <h3>{{ t('cms.marketing.sections.templates') }}</h3>
-                                <Button
-                                    size="sm" variant="tinted" icon="sparkle"
-                                    :loading="busy === 'templates'"
-                                    :disabled="!selection.ai || Boolean(busy)"
-                                    :title="selection.ai ? undefined : t('cms.marketing.aiOff')"
-                                    @click="designTemplates"
-                                >
-                                    {{ busy === 'templates' ? t('cms.marketing.templates.designing') : t('cms.marketing.templates.generate') }}
-                                </Button>
+                                <Tooltip v-slot="{ tipId }" :text="t('cms.marketing.aiOff')" align="end" :disabled="selection.ai">
+                                    <Button
+                                        size="sm" variant="tinted" icon="sparkle"
+                                        :loading="busy === 'templates'"
+                                        :disabled="!selection.ai || Boolean(busy)"
+                                        :aria-describedby="tipId"
+                                        @click="designTemplates"
+                                    >
+                                        {{ busy === 'templates' ? t('cms.marketing.templates.designing') : t('cms.marketing.templates.generate') }}
+                                    </Button>
+                                </Tooltip>
                             </header>
 
                             <div class="tm-ad-studio__gallery">
@@ -266,17 +272,21 @@
                                     <span class="tm-ad-studio__swatch-name">{{ kind === 'scene' ? t(`cms.marketing.scenes.${sceneKind}`) : t(`cms.marketing.backdrops.${kind}`) }}</span>
                                 </button>
 
-                                <button
-                                    v-for="file in libraryPhotos" :key="file.url"
-                                    type="button"
-                                    class="tm-ad-studio__swatch"
-                                    :class="{ 'is-on': design.backdrop === 'photo' && selection.background?.url === file.url }"
-                                    :title="file.title"
-                                    @click="useBackground(file.url)"
+                                <Tooltip
+                                    v-for="file in libraryPhotos" v-slot="{ tipId }" :key="file.url"
+                                    :text="file.title" :disabled="!file.title" class="tm-ad-studio__swatch-tip"
                                 >
-                                    <span class="tm-ad-studio__swatch-art" :style="{ backgroundImage: `url(${file.url})` }" />
-                                    <span class="tm-ad-studio__swatch-name">{{ t('cms.marketing.backdrops.library') }}</span>
-                                </button>
+                                    <button
+                                        type="button"
+                                        class="tm-ad-studio__swatch"
+                                        :class="{ 'is-on': design.backdrop === 'photo' && selection.background?.url === file.url }"
+                                        :aria-describedby="tipId"
+                                        @click="useBackground(file.url)"
+                                    >
+                                        <span class="tm-ad-studio__swatch-art" :style="{ backgroundImage: `url(${file.url})` }" />
+                                        <span class="tm-ad-studio__swatch-name">{{ t('cms.marketing.backdrops.library') }}</span>
+                                    </button>
+                                </Tooltip>
 
                                 <button
                                     v-for="item in selection.backgrounds" :key="item.url"
@@ -538,8 +548,8 @@
                                 <div class="tm-ad-studio__tour-main">
                                     <strong class="tm-ad-studio__tour-name">
                                         {{ hotelOf(tour) }}
-                                        <span v-if="tour.source === 'post'" class="tm-ad-studio__tag" :title="t('cms.marketing.intake.postTip')">{{ t('cms.marketing.intake.postTag') }}</span>
-                                        <span v-else-if="tour.source === 'own'" class="tm-ad-studio__tag is-own" :title="t('cms.marketing.own.tip')">{{ t('cms.marketing.own.tag') }}</span>
+                                        <Tooltip v-if="tour.source === 'post'" :text="t('cms.marketing.intake.postTip')" class="tm-ad-studio__tag">{{ t('cms.marketing.intake.postTag') }}</Tooltip>
+                                        <Tooltip v-else-if="tour.source === 'own'" :text="t('cms.marketing.own.tip')" class="tm-ad-studio__tag is-own">{{ t('cms.marketing.own.tag') }}</Tooltip>
                                     </strong>
                                     <span class="tm-ad-studio__tour-meta">
                                         {{ day(tour.check_in) }} · {{ t('search.nights', tour.nights) }}<template v-if="tour.supplier_name"> · {{ tour.supplier_name }}</template>
@@ -599,6 +609,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import Tabs from '~/shared/components/tabs/Tabs.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import BannerCanvas from '~/modules/marketing/components/bannerCanvas/BannerCanvas.vue'
 import AiGlow from '~/modules/marketing/components/aiGlow/AiGlow.vue'
 import AiProgress from '~/modules/marketing/components/aiProgress/AiProgress.vue'

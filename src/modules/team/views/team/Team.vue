@@ -29,8 +29,8 @@
                     <span class="tm-team__role" :class="`is-${member.role.toLowerCase()}`">{{ t(`cms.ownership.roles.${member.role}`) }}</span>
 
                     <span class="tm-team__load">
-                        <span :title="t('cms.team.openLeads')"><Icon name="users" :size="14" />{{ member.open_leads }}</span>
-                        <span :title="t('cms.team.openOrders')"><Icon name="briefcase" :size="14" />{{ member.open_orders }}</span>
+                        <Tooltip :text="t('cms.team.openLeads')"><Icon name="users" :size="14" />{{ member.open_leads }}</Tooltip>
+                        <Tooltip :text="t('cms.team.openOrders')"><Icon name="briefcase" :size="14" />{{ member.open_orders }}</Tooltip>
                     </span>
 
                     <span class="tm-team__seen">{{ member.archived_at ? t('cms.team.archivedBadge') : lastSeen(member) }}</span>
@@ -142,6 +142,7 @@ import Button from '~/shared/components/button/Button.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { useTeam } from './Team.hooks'
 
 const { t } = useI18n()

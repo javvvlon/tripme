@@ -2,14 +2,16 @@
     <div class="tm-variants" :class="`is-${mode ?? 'banner'}`">
         <header class="tm-variants__head">
             <h3 class="tm-variants__title">{{ mode === 'post' ? t('cms.marketing.postVersions') : t('cms.marketing.versions') }}</h3>
-            <Button
-                size="sm" variant="tinted" icon="sparkle"
-                :loading="busy" :disabled="busy || !ai"
-                :title="ai ? undefined : t('cms.marketing.aiOff')"
-                @click="emit('generate')"
-            >
-                {{ busy ? t('cms.marketing.generating') : anyAi ? t('cms.marketing.regenerate') : t('cms.marketing.generate') }}
-            </Button>
+            <Tooltip v-slot="{ tipId }" :text="t('cms.marketing.aiOff')" align="end" :disabled="ai">
+                <Button
+                    size="sm" variant="tinted" icon="sparkle"
+                    :loading="busy" :disabled="busy || !ai"
+                    :aria-describedby="tipId"
+                    @click="emit('generate')"
+                >
+                    {{ busy ? t('cms.marketing.generating') : anyAi ? t('cms.marketing.regenerate') : t('cms.marketing.generate') }}
+                </Button>
+            </Tooltip>
         </header>
 
         <AiGlow :active="busy" :label="t('cms.marketing.writingVersions')" class="tm-variants__glow">

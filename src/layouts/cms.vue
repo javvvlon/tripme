@@ -9,15 +9,16 @@
             </template>
 
             <template #tools>
-                <button
-                    type="button" class="tm-cms__collapse"
-                    :aria-pressed="collapsed"
-                    :title="t(collapsed ? 'cms.nav.expand' : 'cms.nav.collapse')"
-                    :aria-label="t(collapsed ? 'cms.nav.expand' : 'cms.nav.collapse')"
-                    @click="toggleCollapsed"
-                >
-                    <Icon name="panel-left" :size="18" />
-                </button>
+                <Tooltip :text="t(collapsed ? 'cms.nav.expand' : 'cms.nav.collapse')" side="right">
+                    <button
+                        type="button" class="tm-cms__collapse"
+                        :aria-pressed="collapsed"
+                        :aria-label="t(collapsed ? 'cms.nav.expand' : 'cms.nav.collapse')"
+                        @click="toggleCollapsed"
+                    >
+                        <Icon name="panel-left" :size="18" />
+                    </button>
+                </Tooltip>
             </template>
 
             <div class="tm-cms__ai">
@@ -27,6 +28,7 @@
                     :icon="AI_NODE.icon"
                     :to="AI_NODE.to"
                     :active="aiActive"
+                    :compact="collapsed"
                 />
                 <kbd v-if="!collapsed" class="tm-cms__ai-key" aria-hidden="true">{{ shortcut }}</kbd>
             </div>
@@ -59,6 +61,7 @@
                         :active="isActive(node) && !subActive(node)"
                         :disabled="node.disabled"
                         :badge="badgeOf(node)"
+                        :compact="collapsed"
                         accent
                     />
 
@@ -77,17 +80,19 @@
             </section>
 
             <template #footer>
-                <NuxtLink :to="localePath('/')" class="tm-cms__site" :title="t('cms.nav.openSite')">
-                    <span class="tm-cms__site-icon"><Icon name="globe" :size="18" /></span>
-                    <span class="tm-cms__site-label">{{ t('cms.nav.openSite') }}</span>
-                    <span class="tm-cms__site-code">/{{ locale }}<Icon name="arrow-up-right" :size="13" :stroke="2.2" /></span>
-                </NuxtLink>
+                <Tooltip :text="t('cms.nav.openSite')" side="right" :disabled="!collapsed" class="tm-cms__site-tip">
+                    <NuxtLink :to="localePath('/')" class="tm-cms__site" :aria-label="collapsed ? t('cms.nav.openSite') : undefined">
+                        <span class="tm-cms__site-icon"><Icon name="globe" :size="18" /></span>
+                        <span class="tm-cms__site-label">{{ t('cms.nav.openSite') }}</span>
+                        <span class="tm-cms__site-code">/{{ locale }}<Icon name="arrow-up-right" :size="13" :stroke="2.2" /></span>
+                    </NuxtLink>
+                </Tooltip>
 
                 <UserCard
                     :name="user?.fullName() ?? ''"
                     :to="localePath('/app/profile')"
                     :role="roleLabel"
-                    :action-label="t('nav.logout')"
+                    :action-label="t('common.logout')"
                     :compact="collapsed"
                     @action="signOut"
                 />

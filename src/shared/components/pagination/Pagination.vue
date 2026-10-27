@@ -8,14 +8,16 @@
         </p>
 
         <div v-if="pages > 1" class="tm-pagination__pages">
-            <button
-                type="button" class="tm-pagination__step"
-                :disabled="page <= 1"
-                :aria-label="t('pagination.previous')" :title="t('pagination.previous')"
-                @click="emit('update:page', page - 1)"
-            >
-                <Icon name="chevron-left" :size="16" />
-            </button>
+            <Tooltip :text="t('pagination.previous')">
+                <button
+                    type="button" class="tm-pagination__step"
+                    :disabled="page <= 1"
+                    :aria-label="t('pagination.previous')"
+                    @click="emit('update:page', page - 1)"
+                >
+                    <Icon name="chevron-left" :size="16" />
+                </button>
+            </Tooltip>
 
             <template v-for="(slot, index) in slots" :key="`${slot}-${index}`">
                 <span v-if="slot === 'gap'" class="tm-pagination__gap" aria-hidden="true">…</span>
@@ -31,14 +33,16 @@
                 </button>
             </template>
 
-            <button
-                type="button" class="tm-pagination__step"
-                :disabled="page >= pages"
-                :aria-label="t('pagination.next')" :title="t('pagination.next')"
-                @click="emit('update:page', page + 1)"
-            >
-                <Icon name="chevron-right" :size="16" />
-            </button>
+            <Tooltip :text="t('pagination.next')">
+                <button
+                    type="button" class="tm-pagination__step"
+                    :disabled="page >= pages"
+                    :aria-label="t('pagination.next')"
+                    @click="emit('update:page', page + 1)"
+                >
+                    <Icon name="chevron-right" :size="16" />
+                </button>
+            </Tooltip>
         </div>
 
         <label class="tm-pagination__size">

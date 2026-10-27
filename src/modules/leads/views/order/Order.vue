@@ -291,14 +291,15 @@
                             </span>
                         </span>
 
-                        <button
-                            type="button" class="tm-cms-order__doc-drop"
-                            :aria-label="t('cms.orders.documents.remove')"
-                            :title="t('cms.orders.documents.remove')"
-                            @click="dropDocument(document)"
-                        >
-                            <Icon name="trash" :size="15" />
-                        </button>
+                        <Tooltip :text="t('cms.orders.documents.remove')" align="end">
+                            <button
+                                type="button" class="tm-cms-order__doc-drop"
+                                :aria-label="t('cms.orders.documents.remove')"
+                                @click="dropDocument(document)"
+                            >
+                                <Icon name="trash" :size="15" />
+                            </button>
+                        </Tooltip>
                     </li>
                 </ul>
             </section>
@@ -363,6 +364,7 @@ import { useManagers } from '~/modules/leads/hooks/use-managers'
 import Button from '~/shared/components/button/Button.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import Icon from '~/shared/components/icon/Icon.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'

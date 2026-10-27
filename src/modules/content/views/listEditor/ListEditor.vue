@@ -1,13 +1,15 @@
 <template>
     <div class="tm-list-studio">
         <header class="tm-list-studio__top">
-            <button
-                type="button" class="tm-list-studio__icon-button"
-                :title="t('cms.back')" :aria-label="t('cms.back')"
-                @click="back"
-            >
-                <Icon name="chevron-left" :size="18" />
-            </button>
+            <Tooltip :text="t('cms.back')" side="bottom" align="start">
+                <button
+                    type="button" class="tm-list-studio__icon-button"
+                    :aria-label="t('cms.back')"
+                    @click="back"
+                >
+                    <Icon name="chevron-left" :size="18" />
+                </button>
+            </Tooltip>
 
             <div class="tm-list-studio__title">
                 <h1>{{ name || t('cms.lists.untitled') }}</h1>
@@ -124,13 +126,15 @@
                     <header class="tm-list-studio__panel-head">
                         <span class="tm-list-studio__panel-index">{{ items.indexOf(current) + 1 }}</span>
                         <strong>{{ titleOf(current) }}</strong>
-                        <button
-                            type="button" class="tm-list-studio__icon-button is-small"
-                            :title="t('cms.builder.close')" :aria-label="t('cms.builder.close')"
-                            @click="select(null)"
-                        >
-                            <Icon name="close" :size="16" />
-                        </button>
+                        <Tooltip :text="t('cms.builder.close')" side="bottom" align="end">
+                            <button
+                                type="button" class="tm-list-studio__icon-button is-small"
+                                :aria-label="t('cms.builder.close')"
+                                @click="select(null)"
+                            >
+                                <Icon name="close" :size="16" />
+                            </button>
+                        </Tooltip>
                     </header>
 
                     <div class="tm-list-studio__fields">
@@ -179,14 +183,16 @@
                         <div v-if="fields.icon" class="tm-list-studio__field">
                             <span class="tm-list-studio__label">{{ t('cms.lists.itemIcon') }}</span>
                             <div class="tm-list-studio__icons" role="radiogroup" :aria-label="t('cms.lists.itemIcon')">
-                                <button
-                                    type="button" role="radio" class="tm-list-studio__icon-pick"
-                                    :class="{ 'is-active': !current.icon }"
-                                    :aria-checked="!current.icon" :title="t('cms.lists.badgeNone')"
-                                    @click="current!.icon = ''"
-                                >
-                                    <Icon name="close" :size="16" />
-                                </button>
+                                <Tooltip :text="t('cms.lists.badgeNone')" align="start">
+                                    <button
+                                        type="button" role="radio" class="tm-list-studio__icon-pick"
+                                        :class="{ 'is-active': !current.icon }"
+                                        :aria-checked="!current.icon" :aria-label="t('cms.lists.badgeNone')"
+                                        @click="current!.icon = ''"
+                                    >
+                                        <Icon name="close" :size="16" />
+                                    </button>
+                                </Tooltip>
                                 <button
                                     v-for="icon in FEATURE_ICONS" :key="icon"
                                     type="button" role="radio" class="tm-list-studio__icon-pick"
@@ -241,16 +247,17 @@
                                     >
                                         {{ t('cms.lists.badgeNone') }}
                                     </button>
-                                    <button
-                                        v-for="type in BADGE_TYPES" :key="type"
-                                        type="button" role="radio" class="tm-list-studio__chip"
-                                        :class="{ 'is-active': current.badgeType === type }"
-                                        :aria-checked="current.badgeType === type"
-                                        :title="t(`cms.lists.badgeTypes.${type}`)"
-                                        @click="current!.badgeType = type"
-                                    >
-                                        <Badge :tone="type">{{ current.translations[locale].badgeLabel.trim() || t(`cms.lists.badgeTypes.${type}`) }}</Badge>
-                                    </button>
+                                    <Tooltip v-for="type in BADGE_TYPES" v-slot="{ tipId }" :key="type" :text="t(`cms.lists.badgeTypes.${type}`)">
+                                        <button
+                                            type="button" role="radio" class="tm-list-studio__chip"
+                                            :class="{ 'is-active': current.badgeType === type }"
+                                            :aria-checked="current.badgeType === type"
+                                            :aria-describedby="tipId"
+                                            @click="current!.badgeType = type"
+                                        >
+                                            <Badge :tone="type">{{ current.translations[locale].badgeLabel.trim() || t(`cms.lists.badgeTypes.${type}`) }}</Badge>
+                                        </button>
+                                    </Tooltip>
                                 </div>
                             </div>
                             <p v-if="current.badgeType && !current.translations[locale].badgeLabel.trim()" class="tm-list-studio__note">
@@ -303,6 +310,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import LangSwitch from '~/modules/content/components/langSwitch/LangSwitch.vue'
 import Badge from '~/shared/components/badge/Badge.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import KindPicker from '~/modules/content/components/kindPicker/KindPicker.vue'
 import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
 import { markdownToText } from '~/shared/helpers/markdown'

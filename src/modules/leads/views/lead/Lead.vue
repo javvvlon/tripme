@@ -277,15 +277,17 @@
                     <header class="tm-cms-lead__group-head">
                         <h2>{{ t('cms.leads.sections.orders') }}</h2>
 
-                        <Button
-                            type="button" size="sm" variant="ghost" icon="plus"
-                            :disabled="!hasTour"
-                            :loading="creatingOrder"
-                            :title="hasTour ? undefined : t('cms.leads.orderNeedsTour')"
-                            @click="addOrder"
-                        >
-                            {{ t('cms.leads.addOrder') }}
-                        </Button>
+                        <Tooltip v-slot="{ tipId }" :text="t('cms.leads.orderNeedsTour')" align="end" :disabled="hasTour">
+                            <Button
+                                type="button" size="sm" variant="ghost" icon="plus"
+                                :disabled="!hasTour"
+                                :aria-describedby="tipId"
+                                :loading="creatingOrder"
+                                @click="addOrder"
+                            >
+                                {{ t('cms.leads.addOrder') }}
+                            </Button>
+                        </Tooltip>
                     </header>
 
                     <div v-if="!orders.length" class="tm-cms-lead__list">
@@ -362,6 +364,7 @@ import { useLead } from './Lead.hooks'
 import { LEAD_TABS } from './Lead.config'
 import type { LeadTab } from './Lead.config'
 import Button from '~/shared/components/button/Button.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'

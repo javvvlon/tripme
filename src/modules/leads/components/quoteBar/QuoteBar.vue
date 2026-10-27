@@ -18,14 +18,16 @@
                     >
                         {{ t('quote.toAds') }}
                     </Button>
-                    <Button
-                        size="sm" icon-right="arrow-right"
-                        :disabled="!quotable"
-                        :title="quotable ? undefined : t('quote.quoteLimit', { max: QUOTE_MAX })"
-                        @click="opened = true"
-                    >
-                        {{ t('quote.build') }}
-                    </Button>
+                    <Tooltip v-slot="{ tipId }" :text="t('quote.quoteLimit', { max: QUOTE_MAX })" align="end" :disabled="quotable">
+                        <Button
+                            size="sm" icon-right="arrow-right"
+                            :disabled="!quotable"
+                            :aria-describedby="tipId"
+                            @click="opened = true"
+                        >
+                            {{ t('quote.build') }}
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
         </div>

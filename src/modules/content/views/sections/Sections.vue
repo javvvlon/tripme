@@ -9,16 +9,17 @@
             </div>
 
             <div class="tm-builder__devices" role="radiogroup" :aria-label="t('cms.builder.device')">
-                <button
-                    v-for="(spec, kind) in DEVICES" :key="kind"
-                    type="button" role="radio" class="tm-builder__device"
-                    :class="{ 'is-active': device === kind }"
-                    :aria-checked="device === kind"
-                    :title="t(`cms.builder.devices.${kind}`)" :aria-label="t(`cms.builder.devices.${kind}`)"
-                    @click="device = kind"
-                >
-                    <Icon :name="spec.icon" :size="18" />
-                </button>
+                <Tooltip v-for="(spec, kind) in DEVICES" :key="kind" :text="t(`cms.builder.devices.${kind}`)" side="bottom">
+                    <button
+                        type="button" role="radio" class="tm-builder__device"
+                        :class="{ 'is-active': device === kind }"
+                        :aria-checked="device === kind"
+                        :aria-label="t(`cms.builder.devices.${kind}`)"
+                        @click="device = kind"
+                    >
+                        <Icon :name="spec.icon" :size="18" />
+                    </button>
+                </Tooltip>
             </div>
 
             <div class="tm-builder__actions">
@@ -29,21 +30,25 @@
                     :missing-hint="t('cms.sections.notFilled')"
                 />
 
-                <button
-                    type="button" class="tm-builder__icon-button"
-                    :class="{ 'is-active': clean }" :aria-pressed="clean"
-                    :title="t('cms.builder.clean')" :aria-label="t('cms.builder.clean')"
-                    @click="clean = !clean"
-                >
-                    <Icon :name="clean ? 'eye-off' : 'eye'" :size="18" />
-                </button>
+                <Tooltip :text="t('cms.builder.clean')" side="bottom">
+                    <button
+                        type="button" class="tm-builder__icon-button"
+                        :class="{ 'is-active': clean }" :aria-pressed="clean"
+                        :aria-label="t('cms.builder.clean')"
+                        @click="clean = !clean"
+                    >
+                        <Icon :name="clean ? 'eye-off' : 'eye'" :size="18" />
+                    </button>
+                </Tooltip>
 
-                <a
-                    :href="livePath" target="_blank" rel="noopener" class="tm-builder__icon-button"
-                    :title="t('cms.builder.openLive')" :aria-label="t('cms.builder.openLive')"
-                >
-                    <Icon name="arrow-right" :size="18" />
-                </a>
+                <Tooltip :text="t('cms.builder.openLive')" side="bottom">
+                    <a
+                        :href="livePath" target="_blank" rel="noopener" class="tm-builder__icon-button"
+                        :aria-label="t('cms.builder.openLive')"
+                    >
+                        <Icon name="arrow-right" :size="18" />
+                    </a>
+                </Tooltip>
 
                 <Button v-if="dirty" type="button" variant="ghost" size="md" :disabled="saving" @click="reset">
                     {{ t('cms.sections.discard') }}
@@ -89,18 +94,19 @@
                             @dragend="endDrag"
                             @drop.prevent="endDrag"
                         >
-                            <span
-                                class="tm-builder__grip" :title="t('cms.sections.drag')" aria-hidden="true"
+                            <Tooltip
+                                :text="t('cms.sections.drag')" align="start"
+                                class="tm-builder__grip" aria-hidden="true"
                                 @pointerdown="grabbed = section.key"
                                 @pointerup="grabbed = null"
                             >
                                 <Icon name="grip" :size="15" :stroke="2.6" />
-                            </span>
+                            </Tooltip>
                             <button type="button" class="tm-builder__layer-name" @click="focusBlock(section.key)">
                                 <Icon :name="BLOCKS[section.kind].icon" :size="16" />
                                 <span>{{ headingOf(section) }}</span>
                             </button>
-                            <span v-if="problems[section.key]" class="tm-builder__dot" :title="problems[section.key]" />
+                            <Tooltip v-if="problems[section.key]" :text="problems[section.key]!" class="tm-builder__dot" />
                             <Icon v-else-if="!section.isPublished" name="eye-off" :size="15" class="tm-builder__muted" />
                         </li>
                     </ol>
@@ -128,13 +134,15 @@
             <aside v-show="!clean" class="tm-builder__right">
                 <template v-if="current">
                     <div class="tm-builder__inspector-close">
-                        <button
-                            type="button" class="tm-builder__icon-button is-small"
-                            :title="t('cms.builder.close')" :aria-label="t('cms.builder.close')"
-                            @click="select(null)"
-                        >
-                            <Icon name="close" :size="16" />
-                        </button>
+                        <Tooltip :text="t('cms.builder.close')" side="bottom" align="end">
+                            <button
+                                type="button" class="tm-builder__icon-button is-small"
+                                :aria-label="t('cms.builder.close')"
+                                @click="select(null)"
+                            >
+                                <Icon name="close" :size="16" />
+                            </button>
+                        </Tooltip>
                     </div>
 
                     <p v-if="problems[current.key]" class="tm-builder__problem">{{ problems[current.key] }}</p>
@@ -412,6 +420,7 @@ import LangSwitch from '~/modules/content/components/langSwitch/LangSwitch.vue'
 import BlockPalette from '~/modules/content/components/blockPalette/BlockPalette.vue'
 import BuilderCanvas from '~/modules/content/components/builderCanvas/BuilderCanvas.vue'
 import RichEditor from '~/shared/components/richEditor/RichEditor.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import AccentPicker from '~/modules/content/components/accentPicker/AccentPicker.vue'
 import { plainHeadline } from '~/shared/helpers/headline'

@@ -1,19 +1,24 @@
 <template>
-    <button
-        type="button" class="tm-icon-button"
-        :class="{ 'is-pressed': pressed }"
-        :aria-label="badge ? `${label} · ${badge}` : label"
-        :title="label"
-        :aria-pressed="pressed === undefined ? undefined : pressed"
-        :disabled="disabled"
-    >
-        <Icon :name="icon" :size="18" />
-        <span v-if="badge" class="tm-icon-button__badge" aria-hidden="true">{{ badge > 99 ? '99+' : badge }}</span>
-    </button>
+    <Tooltip :text="label">
+        <button
+            v-bind="$attrs"
+            type="button" class="tm-icon-button"
+            :class="{ 'is-pressed': pressed }"
+            :aria-label="badge ? `${label} · ${badge}` : label"
+            :aria-pressed="pressed === undefined ? undefined : pressed"
+            :disabled="disabled"
+        >
+            <Icon :name="icon" :size="18" />
+            <span v-if="badge" class="tm-icon-button__badge" aria-hidden="true">{{ badge > 99 ? '99+' : badge }}</span>
+        </button>
+    </Tooltip>
 </template>
 
 <script setup lang="ts">
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import type { IIconButtonProps } from './IconButton.d'
+
+defineOptions({ inheritAttrs: false })
 
 defineProps<IIconButtonProps>()
 </script>

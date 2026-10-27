@@ -1,5 +1,7 @@
 @use '../../styles/utils' as *;
 
+.tm-navbar-item__tip { display: grid; }
+
 .tm-navbar-item {
     position: relative;
     display: flex;

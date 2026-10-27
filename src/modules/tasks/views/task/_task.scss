@@ -208,9 +208,9 @@
         align-items: flex-start;
         gap: 12px;
         margin-top: 4px;
-
-        > .tm-task-avatar { margin-top: 4px; }
     }
+
+    &__composer-avatar { margin-top: 4px; }
 
     &__composer-body { flex: 1; }
 

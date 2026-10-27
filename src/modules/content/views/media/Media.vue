@@ -94,15 +94,17 @@
                         class="tm-cms-media__tile"
                         :class="{ 'is-focused': focused?.path === item.path, 'is-picked': selected.includes(item.path) }"
                     >
-                        <button type="button" class="tm-cms-media__thumb" :title="nameOf(item)" @click="selecting ? toggle(item) : focus(item)">
-                            <img :src="item.url" :alt="nameOf(item)" loading="lazy" decoding="async">
-                            <span v-if="item.used" class="tm-cms-media__used">{{ t('cms.media.used', { n: item.used }) }}</span>
-                        </button>
+                        <Tooltip :text="nameOf(item)" class="tm-cms-media__thumb-tip">
+                            <button type="button" class="tm-cms-media__thumb" @click="selecting ? toggle(item) : focus(item)">
+                                <img :src="item.url" :alt="nameOf(item)" loading="lazy" decoding="async">
+                                <span v-if="item.used" class="tm-cms-media__used">{{ t('cms.media.used', { n: item.used }) }}</span>
+                            </button>
+                        </Tooltip>
 
-                        <label class="tm-cms-media__check" :title="t('cms.media.select')">
+                        <Tooltip tag="label" :text="t('cms.media.select')" align="start" class="tm-cms-media__check">
                             <input type="checkbox" :checked="selected.includes(item.path)" :aria-label="nameOf(item)" @change="toggle(item)">
                             <Icon name="check" :size="12" :stroke="2.5" />
-                        </label>
+                        </Tooltip>
 
                         <span class="tm-cms-media__name">{{ nameOf(item) }}</span>
                     </li>
@@ -221,6 +223,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import Modal from '~/shared/components/modal/Modal.vue'
 import MoreMenu from '~/shared/components/moreMenu/MoreMenu.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import type { IMediaFile } from '~/shared/components/mediaLibrary/MediaLibrary.d'
 import type { IMediaUseRaw } from '~/modules/content/contracts/blocks'
 import { useMediaPage } from './Media.hooks'

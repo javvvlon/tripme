@@ -5,40 +5,45 @@
                 <template v-for="(group, index) in groups" :key="index">
                     <span v-if="index" class="tm-rte__divider" aria-hidden="true" />
 
-                    <button
-                        v-for="tool in group" :key="tool.key"
-                        type="button" class="tm-rte__tool"
-                        :class="{ 'is-active': isActive(tool.key), 'is-text': tool.text }"
-                        :title="t(`richEditor.tools.${tool.key}`)" :aria-label="t(`richEditor.tools.${tool.key}`)"
-                        :aria-pressed="isActive(tool.key)"
-                        :disabled="disabled"
-                        @mousedown.prevent
-                        @click="run(tool.key)"
-                    >
-                        <Icon v-if="tool.icon" :name="tool.icon" :size="17" :stroke="2" />
-                        <template v-else>{{ tool.text }}</template>
-                    </button>
+                    <Tooltip v-for="tool in group" :key="tool.key" :text="t(`richEditor.tools.${tool.key}`)" side="bottom">
+                        <button
+                            type="button" class="tm-rte__tool"
+                            :class="{ 'is-active': isActive(tool.key), 'is-text': tool.text }"
+                            :aria-label="t(`richEditor.tools.${tool.key}`)"
+                            :aria-pressed="isActive(tool.key)"
+                            :disabled="disabled"
+                            @mousedown.prevent
+                            @click="run(tool.key)"
+                        >
+                            <Icon v-if="tool.icon" :name="tool.icon" :size="17" :stroke="2" />
+                            <template v-else>{{ tool.text }}</template>
+                        </button>
+                    </Tooltip>
                 </template>
             </div>
 
             <div class="tm-rte__history">
                 <span v-if="uploading" class="tm-rte__status">{{ t('richEditor.uploading') }}</span>
-                <button
-                    type="button" class="tm-rte__tool"
-                    :title="t('richEditor.tools.undo')" :aria-label="t('richEditor.tools.undo')"
-                    :disabled="disabled || !canUndo"
-                    @mousedown.prevent @click="run('undo')"
-                >
-                    <Icon name="undo" :size="17" :stroke="2" />
-                </button>
-                <button
-                    type="button" class="tm-rte__tool"
-                    :title="t('richEditor.tools.redo')" :aria-label="t('richEditor.tools.redo')"
-                    :disabled="disabled || !canRedo"
-                    @mousedown.prevent @click="run('redo')"
-                >
-                    <Icon name="redo" :size="17" :stroke="2" />
-                </button>
+                <Tooltip :text="t('richEditor.tools.undo')" side="bottom">
+                    <button
+                        type="button" class="tm-rte__tool"
+                        :aria-label="t('richEditor.tools.undo')"
+                        :disabled="disabled || !canUndo"
+                        @mousedown.prevent @click="run('undo')"
+                    >
+                        <Icon name="undo" :size="17" :stroke="2" />
+                    </button>
+                </Tooltip>
+                <Tooltip :text="t('richEditor.tools.redo')" side="bottom" align="end">
+                    <button
+                        type="button" class="tm-rte__tool"
+                        :aria-label="t('richEditor.tools.redo')"
+                        :disabled="disabled || !canRedo"
+                        @mousedown.prevent @click="run('redo')"
+                    >
+                        <Icon name="redo" :size="17" :stroke="2" />
+                    </button>
+                </Tooltip>
             </div>
         </div>
 

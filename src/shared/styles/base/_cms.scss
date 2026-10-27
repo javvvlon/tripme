@@ -513,7 +513,7 @@ html.is-cms .tm-travellers--field {
     }
 }
 
-html.is-cms .tm-more-menu > .tm-icon-button svg { stroke-width: 3.2; }
+html.is-cms .tm-more-menu > .tm-tooltip .tm-icon-button svg { stroke-width: 3.2; }
 
 html.is-cms .tm-select__control:is(.is-new, .is-in_progress, .is-quote_sent, .is-won, .is-rejected, .is-draft, .is-requested, .is-confirmed, .is-paid, .is-issued, .is-travelling, .is-completed, .is-cancelled, .is-task-backlog, .is-task-todo, .is-task-in_progress, .is-task-review, .is-task-done) {
     border-color: transparent;

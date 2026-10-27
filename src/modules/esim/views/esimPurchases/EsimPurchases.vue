@@ -48,9 +48,9 @@
                             <span class="is-muted">{{ row.phone }}</span>
                         </td>
                         <td>
-                            <span class="tm-cms-esim__status" :class="`is-${row.status}`" :title="row.issue_error || undefined">
+                            <Tooltip :text="row.issue_error ?? ''" :disabled="!row.issue_error" class="tm-cms-esim__status" :class="`is-${row.status}`">
                                 {{ t(`cms.esim.status.${row.status}`) }}
-                            </span>
+                            </Tooltip>
                             <button
                                 v-if="row.status === 'issue_failed'"
                                 type="button" class="tm-cms-esim__retry"
@@ -76,6 +76,7 @@
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import SelectMenu from '~/shared/components/selectMenu/SelectMenu.vue'
 import Pagination from '~/shared/components/pagination/Pagination.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import { countryName, flagOf, sumOf } from '~/modules/esim/helpers/esim'
 import { useEsimPurchases } from './EsimPurchases.hooks'
 

@@ -59,10 +59,10 @@
                 <span class="tm-register__date is-date">{{ registerDate(note.created_at, locale) }}</span>
                 <span class="tm-register__state is-state">
                     <template v-if="note.acks && !note.archived_at && !note.superseded_by">
-                        <span class="tm-register__acks" :title="t('cms.tasks.notes.sheetProgress', { done: note.acks.done, total: note.acks.total })">
+                        <Tooltip :text="t('cms.tasks.notes.sheetProgress', { done: note.acks.done, total: note.acks.total })" align="end" class="tm-register__acks">
                             <span class="tm-register__acks-bar"><span :style="{ width: `${share(note.acks)}%` }" /></span>
                             <span class="tm-register__acks-count">{{ note.acks.done }}/{{ note.acks.total }}</span>
-                        </span>
+                        </Tooltip>
                     </template>
                     <NoteStamp v-if="noteTone(note)" :tone="noteTone(note)!" />
                     <span v-else class="tm-register__dash">—</span>
@@ -75,6 +75,7 @@
 <script setup lang="ts">
 import EditorSkeleton from '~/modules/content/components/editorSkeleton/EditorSkeleton.vue'
 import TaskAvatar from '~/modules/tasks/components/taskAvatar/TaskAvatar.vue'
+import Tooltip from '~/shared/components/tooltip/Tooltip.vue'
 import NoteStamp from '~/modules/tasks/components/noteStamp/NoteStamp.vue'
 import { noteTone, registerDate } from '~/modules/tasks/helpers'
 import { useNoteComposer } from '~/modules/tasks/hooks/use-note-composer'
