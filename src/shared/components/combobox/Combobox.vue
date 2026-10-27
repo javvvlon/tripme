@@ -1,6 +1,6 @@
 <template>
     <div
-        class="tm-combobox" :class="`tm-combobox--${variant}`"
+        class="tm-combobox" :class="[`tm-combobox--${variant}`, { 'is-attention': attention }]"
         @mousedown="openFromAnywhere"
     >
         <label :for="id" class="tm-combobox__label">{{ label }}</label>
@@ -24,7 +24,7 @@
                 @blur="onBlur"
                 @keydown.down.prevent="move(1)"
                 @keydown.up.prevent="move(-1)"
-                @keydown.enter.prevent="choose(filtered[active])"
+                @keydown.enter.prevent="choose(items[active])"
                 @keydown.esc="close"
             >
             <Icon
@@ -44,38 +44,44 @@
 
         <p v-if="note" class="tm-combobox__note">{{ note }}</p>
 
-        <ul v-if="open" :id="`${id}-menu`" class="tm-combobox__menu" :class="{ 'is-end': menuAlign === 'end' }" role="listbox">
-            <li v-for="(option, i) in filtered" :key="option.value">
-                <span
-                    v-if="option.group && option.group !== filtered[i - 1]?.group"
-                    class="tm-combobox__group" role="presentation"
-                >{{ option.group }}</span>
-                <button
-                    type="button" role="option"
-                    class="tm-combobox__option"
-                    :class="{ 'is-active': i === active, 'is-selected': option.value === model }"
-                    :aria-selected="option.value === model"
-                    @mousedown.prevent="choose(option)"
-                >
-                    {{ option.label }}
-                    <span v-if="option.hint" class="tm-combobox__hint">{{ option.hint }}</span>
-                </button>
-            </li>
-            <li v-if="!filtered.length" class="tm-combobox__empty">
-                {{
-                    loading ? t('common.loading')
-                    : unavailable ? t('search.referencesUnavailable')
-                    : t('search.noMatches')
-                }}
-            </li>
-        </ul>
+        <Transition name="tm-combobox-menu">
+            <ul v-if="open" :id="`${id}-menu`" class="tm-combobox__menu" :class="{ 'is-end': menuAlign === 'end' }" role="listbox">
+                <li v-for="(option, i) in items" :key="option.value">
+                    <span
+                        v-if="option.group && option.group !== items[i - 1]?.group"
+                        class="tm-combobox__group" role="presentation"
+                    >{{ option.group }}</span>
+                    <button
+                        type="button" role="option"
+                        class="tm-combobox__option"
+                        :class="{ 'is-active': i === active, 'is-selected': option.value === model, 'is-pinned': option === pinned }"
+                        :aria-selected="option.value === model"
+                        @mousedown.prevent="choose(option)"
+                    >
+                        <Icon v-if="option === pinned" name="grid" :size="16" class="tm-combobox__pin-icon" />
+                        <span class="tm-combobox__text">
+                            {{ option.label }}
+                            <span v-if="option.hint" class="tm-combobox__hint">{{ option.hint }}</span>
+                        </span>
+                    </button>
+                </li>
+                <li v-if="!filtered.length" class="tm-combobox__empty">
+                    {{
+                        loading ? t('common.loading')
+                        : unavailable ? t('search.referencesUnavailable')
+                        : t('search.noMatches')
+                    }}
+                </li>
+            </ul>
+        </Transition>
     </div>
 </template>
 
 <script setup lang="ts">
-import type { IComboboxOption, IComboboxProps } from './Combobox.d'
+import type { IComboboxEmits, IComboboxOption, IComboboxProps } from './Combobox.d'
 
-const props = withDefaults(defineProps<IComboboxProps>(), { variant: 'panel' })
+const props = withDefaults(defineProps<IComboboxProps>(), { variant: 'panel', pinned: null })
+const emit = defineEmits<IComboboxEmits>()
 
 const model = defineModel<string>({ default: '' })
 
@@ -101,11 +107,26 @@ const filtered = computed(() => {
     o.label.toLowerCase().includes(needle) || o.value.toLowerCase().includes(needle))
 })
 
+const typing = computed(() => {
+  const needle = query.value.trim().toLowerCase()
+
+  return Boolean(needle) && needle !== selected.value?.label.toLowerCase()
+})
+
+const items = computed(() => (props.pinned && !typing.value ? [props.pinned, ...filtered.value] : filtered.value))
+
 const inputRef = useTemplateRef<HTMLInputElement>('input')
 
 function onFocus() {
   open.value = true
-  active.value = Math.max(0, filtered.value.findIndex(o => o.value === model.value))
+  active.value = Math.max(0, items.value.findIndex(o => o.value === model.value))
+}
+
+function openMenu() {
+  if (props.disabled) return
+
+  inputRef.value?.focus()
+  open.value = true
 }
 
 function openFromAnywhere(event: MouseEvent) {
@@ -129,13 +150,21 @@ function close() {
 
 function move(step: number) {
   if (!open.value) { open.value = true; return }
-  const count = filtered.value.length
+  const count = items.value.length
   if (!count) return
   active.value = (active.value + step + count) % count
 }
 
 function choose(option: IComboboxOption | undefined) {
   if (!option) return
+
+  if (option === props.pinned) {
+    open.value = false
+    query.value = selected.value?.label ?? ''
+    emit('pinned')
+    return
+  }
+
   model.value = option.value
   open.value = false
   query.value = option.label
@@ -146,6 +175,8 @@ function clear() {
   query.value = ''
   open.value = false
 }
+
+defineExpose({ openMenu })
 </script>
 
 <style lang="scss">

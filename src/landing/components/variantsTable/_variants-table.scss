@@ -1,0 +1,117 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-variants {
+    overflow-x: auto;
+    border: 1px solid var(--tm-border-1);
+    border-radius: radius('md');
+    background: var(--tm-surface-1);
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: size(13);
+
+        th {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--tm-border-1);
+            color: var(--tm-ink-3);
+            font-size: size(12);
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--tm-border-2);
+            color: var(--tm-ink-1);
+            vertical-align: middle;
+
+            span {
+                display: block;
+                color: var(--tm-ink-3);
+                font-size: size(12);
+            }
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+
+        tbody tr:hover td { background: var(--tm-surface-2); }
+
+        tr.is-stopped td { opacity: .6; }
+
+        .is-price {
+            text-align: right;
+            white-space: nowrap;
+
+            strong {
+                font-size: size(15);
+                font-variant-numeric: tabular-nums;
+            }
+        }
+
+        .is-action { width: 1%; text-align: right; }
+    }
+
+    &__hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+}
+
+@media #{$until-md} {
+    .tm-variants {
+        overflow: visible;
+        border: 0;
+        background: none;
+
+        &__table {
+            thead { display: none; }
+
+            tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            tr {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 12px;
+                padding: 12px;
+                border: 1px solid var(--tm-border-1);
+                border-radius: radius('md');
+                background: var(--tm-surface-1);
+            }
+
+            td {
+                padding: 0;
+                border: 0;
+
+                &::before {
+                    content: attr(data-label);
+                    display: block;
+                    color: var(--tm-ink-4);
+                    font-size: size(11);
+                }
+            }
+
+            tbody tr:hover td { background: none; }
+
+            .is-price { text-align: left; }
+
+            .is-action {
+                grid-column: 1 / -1;
+                width: auto;
+
+                &::before { content: none; }
+
+                .tm-button { width: 100%; }
+            }
+        }
+    }
+}

@@ -13,6 +13,7 @@ export interface ITourCardProps {
   assigning?: boolean
   twins?: Tour[]
   campaign?: string
+  hot?: boolean
 }
 
 export interface ITourCardEmits {

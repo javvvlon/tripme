@@ -75,6 +75,15 @@
                 </button>
             </div>
 
+            <label class="tm-tour-dates__flex">
+                <input v-model="flex" type="checkbox" role="switch" class="tm-tour-dates__flex-input">
+                <span class="tm-tour-dates__switch" aria-hidden="true" />
+                <span class="tm-tour-dates__flex-text">
+                    <strong>{{ t('search.dates.flex', { days: FLEX_DAYS }) }}</strong>
+                    <span>{{ t('search.dates.flexHint') }}</span>
+                </span>
+            </label>
+
             <p class="tm-tour-dates__hint" aria-live="polite">
                 <Icon name="calendar" :size="15" />
                 <span>{{ hint }}</span>
@@ -103,7 +112,7 @@
 
 <script setup lang="ts">
 import Icon from '~/shared/components/icon/Icon.vue'
-import { MAX_RANGE_DAYS } from '~/shared/composables/useSearchCriteria'
+import { FLEX_DAYS, MAX_RANGE_DAYS } from '~/shared/composables/useSearchCriteria'
 import { addDays } from '~/shared/helpers/dates'
 import { useCalendar } from './TourDates.hooks'
 import type { ITourDates, ITourDatesProps } from './TourDates.d'
@@ -118,7 +127,7 @@ const id = useId()
 const open = ref(false)
 const root = useTemplateRef<HTMLElement>('root')
 
-const { months, weekdays, canGoBack, canGoOn, shift } = useCalendar(
+const { months, weekdays, canGoBack, canGoOn, shift, earliest } = useCalendar(
     () => props.calendar,
     () => model.value.date,
 )
@@ -129,7 +138,9 @@ const chosen = computed(() => formatDayRange(model.value.date, model.value.dateT
 
 const latest = computed(() => (model.value.date ? addDays(model.value.date, MAX_RANGE_DAYS) : ''))
 
-const awaitingEnd = computed(() => Boolean(model.value.date && !model.value.dateTo))
+const flex = useState('search:flex', () => true)
+
+const awaitingEnd = computed(() => !flex.value && Boolean(model.value.date && !model.value.dateTo))
 
 const reachable = (iso: string): boolean =>
     awaitingEnd.value && iso > model.value.date && iso <= latest.value
@@ -151,6 +162,7 @@ const dayState = (iso: string) => {
         'is-ranged': Boolean(end) && iso === date,
         'is-preview': !model.value.dateTo && Boolean(end) && iso > date && iso <= end,
         'is-reachable': reachable(iso),
+        'is-center': flex.value && iso === center.value,
     }
 }
 
@@ -160,8 +172,32 @@ const span = computed(() => {
     return Math.round((Date.parse(model.value.dateTo) - Date.parse(model.value.date)) / 864e5) + 1
 })
 
+const center = computed(() => {
+    const { date, dateTo } = model.value
+
+    if (!date || !dateTo) return date
+
+    const end = addDays(dateTo, -FLEX_DAYS)
+
+    return end > date ? end : date
+})
+
+const around = (iso: string): Pick<ITourDates, 'date' | 'dateTo'> => {
+    const start = addDays(iso, -FLEX_DAYS)
+
+    return { date: start < earliest.value ? earliest.value : start, dateTo: addDays(iso, FLEX_DAYS) }
+}
+
+watch(flex, (on) => {
+    if (!model.value.date) return
+
+    model.value = on ? { ...model.value, ...around(center.value) } : { ...model.value, date: center.value, dateTo: '' }
+})
+
 const hint = computed(() => {
     if (!model.value.date) return t('search.dates.pickStart')
+
+    if (flex.value) return t('search.dates.flexChosen', { day: formatDayRange(center.value, '', locale.value), range: chosen.value })
 
     if (awaitingEnd.value) {
         return t('search.dates.pickEnd', {
@@ -174,6 +210,11 @@ const hint = computed(() => {
 })
 
 const pick = (iso: string) => {
+    if (flex.value) {
+        model.value = { ...model.value, ...around(iso) }
+        return
+    }
+
     if (reachable(iso)) {
         model.value = { ...model.value, dateTo: iso }
         return

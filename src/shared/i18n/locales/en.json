@@ -66,7 +66,10 @@
       "later": "Next month",
       "pickStart": "Choose a departure day",
       "pickEnd": "To search a range, tap the last departure day — no later than {latest}",
-      "rangeChosen": "{range}: {count} departure days — cheapest first | {range}: {count} departure day — cheapest first | {range}: {count} departure days — cheapest first | {range}: {count} departure days — cheapest first"
+      "rangeChosen": "{range}: {count} departure days — cheapest first | {range}: {count} departure day — cheapest first | {range}: {count} departure days — cheapest first | {range}: {count} departure days — cheapest first",
+      "flex": "±{days} days",
+      "flexHint": "We'll show prices for nearby departure days too",
+      "flexChosen": "Departure {day} ±2 days: {range}, cheapest first"
     },
     "travellers": {
       "adults": "Adults",
@@ -83,7 +86,11 @@
     "sheetDone": "Done",
     "edit": "Edit",
     "summaryEmpty": "Where to?",
-    "nightsRange": "{from}–{to} nights"
+    "nightsRange": "{from}–{to} nights",
+    "showcase": {
+      "all": "All available countries from {city}",
+      "hint": "Best-price showcase"
+    }
   },
   "home": {
     "hero": {
@@ -216,12 +223,13 @@
     "removeOne": "Remove filter \"{name}\"",
     "clearAll": "Clear all",
     "mealPlans": {
-      "RO": "Room only",
-      "BB": "Breakfast",
-      "HB": "Half board",
-      "FB": "Full board",
-      "AI": "All inclusive",
-      "UAI": "Ultra all inclusive",
+      "RO": "Room only (RO)",
+      "BB": "Breakfast only (BB)",
+      "HB": "Half board (HB)",
+      "FB": "Full board (FB)",
+      "FBT": "Sanatorium: meals + treatment (FBT)",
+      "AI": "All inclusive (AI)",
+      "UAI": "Ultra all inclusive (UAI)",
       "PROGRAM": "As per tour programme"
     },
     "hotels": "Hotel",
@@ -275,8 +283,8 @@
     "retry": "Search again",
     "sourcePrice": "{price} at the operator",
     "headlineBare": "Tours {destination}, {dates}",
-    "currencyNote": "Dollar prices are for reference. Payment is made in sum at the tour operator’s rate on the day of payment.",
-    "currencyRate": "Today 1 $ = {rate} UZS.",
+    "currencyNote": "USD prices are for reference. Payment is in the national currency (UZS) at the tour operator's rate on the day of payment.",
+    "currencyFull": "USD prices are for reference. Payment is in the national currency (UZS) at the tour operator's rate on the day of payment (today's estimated rate: 1 USD = {operator} UZS; official Central Bank of Uzbekistan rate: {cbu} UZS).",
     "assign": {
       "cta": "Pick for lead",
       "busy": "Attaching…",
@@ -295,7 +303,18 @@
     "hot": "Hot",
     "hotOnly": "Hot deals · {n}",
     "instantConfirm": "Instant confirmation",
-    "bestPrice": "Operator's best price"
+    "bestPrice": "Operator's best price",
+    "variants": {
+      "when": "Departure and nights",
+      "room": "Room",
+      "meal": "Meals",
+      "price": "Price",
+      "choose": "Choose"
+    },
+    "hotelKind": {
+      "boutique": "Boutique hotel",
+      "apart": "Apart-hotel"
+    }
   },
   "auth": {
     "mode": "Sign in or sign up",
@@ -3056,5 +3075,20 @@
     "placeholder": "Describe what you noticed and on which page",
     "submit": "Send",
     "sent": "Thank you! A manager will contact you about your bonus."
+  },
+  "showcase": {
+    "title": {
+      "all": "Best prices from {city}",
+      "beach": "Ocean and beaches from {city}",
+      "history": "Historic places from {city}",
+      "kids": "Kids will love it: departing {city}",
+      "discount": "On sale: departing {city}"
+    },
+    "searching": "Looking for the best prices | Looking for the best prices in {count} country | Looking for the best prices in {count} countries | Looking for the best prices in {count} countries",
+    "from": "from",
+    "offers": "No tours | {count} tour | {count} tours | {count} tours",
+    "discount": "−{percent}% operator discount",
+    "belowMedian": "−{percent}% vs average {stars}★",
+    "empty": "No tours for these dates. Try other dates."
   }
 }

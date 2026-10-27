@@ -20,4 +20,10 @@ export interface IComboboxProps {
   note?: string
   unavailable?: boolean
   menuAlign?: 'start' | 'end'
+  pinned?: IComboboxOption | null
+  attention?: boolean
+}
+
+export interface IComboboxEmits {
+  (event: 'pinned'): void
 }

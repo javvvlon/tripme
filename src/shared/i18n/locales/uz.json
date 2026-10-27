@@ -66,7 +66,10 @@
       "later": "Keyingi oy",
       "pickStart": "Jo‘nash kunini tanlang",
       "pickEnd": "Oraliq bo‘yicha qidirish uchun oxirgi jo‘nash kunini belgilang — {latest} dan kechiktirmay",
-      "rangeChosen": "{range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz"
+      "rangeChosen": "{range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz",
+      "flex": "±{days} kun",
+      "flexHint": "Qo'shni uchish kunlaridagi narxlarni ham ko'rsatamiz",
+      "flexChosen": "Uchish {day} ±2 kun: {range} — eng arzonlarini ko'rsatamiz"
     },
     "travellers": {
       "adults": "Kattalar",
@@ -83,7 +86,11 @@
     "sheetDone": "Tayyor",
     "edit": "O‘zgartirish",
     "summaryEmpty": "Qayerga uchamiz?",
-    "nightsRange": "{from}–{to} kecha"
+    "nightsRange": "{from}–{to} kecha",
+    "showcase": {
+      "all": "{city} shahridan barcha mavjud mamlakatlar",
+      "hint": "Eng yaxshi narxlar vitrinasi"
+    }
   },
   "home": {
     "hero": {
@@ -216,12 +223,13 @@
     "removeOne": "«{name}» filtrini olib tashlash",
     "clearAll": "Hammasini tozalash",
     "mealPlans": {
-      "RO": "Ovqatsiz",
-      "BB": "Nonushta",
-      "HB": "Yarim pansion",
-      "FB": "To'liq pansion",
-      "AI": "Hammasi kiritilgan",
-      "UAI": "Ultra hammasi kiritilgan",
+      "RO": "Ovqatsiz (RO)",
+      "BB": "Faqat nonushta (BB)",
+      "HB": "Yarim pansion (HB)",
+      "FB": "To'liq pansion (FB)",
+      "FBT": "Sanatoriy: ovqat + davolanish (FBT)",
+      "AI": "Hammasi kiritilgan (AI)",
+      "UAI": "Ultra hammasi kiritilgan (UAI)",
       "PROGRAM": "Tur dasturi bo'yicha"
     },
     "hotels": "Mehmonxona",
@@ -275,8 +283,8 @@
     "retry": "Qidiruvni takrorlash",
     "sourcePrice": "operatorda {price}",
     "headlineBare": "Turlar {destination}, {dates}",
-    "currencyNote": "Dollardagi narxlar ma’lumot uchun. To‘lov to‘lov kunidagi turoperator kursi bo‘yicha so‘mda amalga oshiriladi.",
-    "currencyRate": "Bugun 1 $ = {rate} so‘m.",
+    "currencyNote": "USD dagi narxlar ma'lumot uchun. To'lov milliy valyutada (UZS) to'lov kunidagi turoperator kursi bo'yicha.",
+    "currencyFull": "USD dagi narxlar ma'lumot uchun. To'lov milliy valyutada (UZS) to'lov kunidagi turoperator kursi bo'yicha (bugungi hisob kursi: 1 USD = {operator} UZS; O'zbekiston Respublikasi Markaziy banki rasmiy kursi: {cbu} UZS).",
     "assign": {
       "cta": "Lid uchun tanlash",
       "busy": "Biriktirilmoqda…",
@@ -295,7 +303,18 @@
     "hot": "Qaynoq",
     "hotOnly": "Qaynoq · {n}",
     "instantConfirm": "Darhol tasdiqlash",
-    "bestPrice": "Operatorning eng yaxshi narxi"
+    "bestPrice": "Operatorning eng yaxshi narxi",
+    "variants": {
+      "when": "Uchish va tunlar",
+      "room": "Xona",
+      "meal": "Ovqatlanish",
+      "price": "Narx",
+      "choose": "Tanlash"
+    },
+    "hotelKind": {
+      "boutique": "Butik-mehmonxona",
+      "apart": "Apart-mehmonxona"
+    }
   },
   "auth": {
     "mode": "Kirish yoki ro‘yxatdan o‘tish",
@@ -3056,5 +3075,20 @@
     "placeholder": "Nimani va qaysi sahifada sezganingizni yozing",
     "submit": "Yuborish",
     "sent": "Rahmat! Menejer Siz bilan bog‘lanib, bonus haqida aytib beradi."
+  },
+  "showcase": {
+    "title": {
+      "all": "{city} shahridan eng yaxshi narxlar",
+      "beach": "Okean va plyajlar: {city} shahridan",
+      "history": "Tarixiy joylar: {city} shahridan",
+      "kids": "Bolalarga yoqadi: {city} shahridan uchish",
+      "discount": "Chegirmali: {city} shahridan uchish"
+    },
+    "searching": "Eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz",
+    "from": "dan",
+    "offers": "Tur yo'q | {count} ta tur | {count} ta tur | {count} ta tur",
+    "discount": "−{percent}% operator chegirmasi",
+    "belowMedian": "{stars}★ o'rtachasidan −{percent}%",
+    "empty": "Bu sanalarga tur topilmadi. Boshqa sanalarni sinab ko'ring."
   }
 }

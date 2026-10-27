@@ -20,6 +20,8 @@ export const SEARCH_DEFAULTS: SearchCriteria = {
 
 export const MAX_RANGE_DAYS = 7
 
+export const FLEX_DAYS = 2
+
 export const HOME_DEPARTURE = 'tashkent'
 
 export const DEFAULT_KID_AGE = 7

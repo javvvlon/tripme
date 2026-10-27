@@ -128,6 +128,12 @@
         color: var(--tm-brand-on-gold);
     }
 
+    &__kind {
+        font-size: size(12);
+        font-weight: 600;
+        color: var(--tm-ink-2);
+    }
+
     &__place {
         display: inline-flex;
         align-items: center;

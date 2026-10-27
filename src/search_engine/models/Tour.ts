@@ -32,6 +32,7 @@ export interface ITourRaw {
   hotelName: string
   hotelKey?: string
   hotelStars: number | null
+  hotelKind?: 'boutique' | 'apart' | null
   hotelSupplierCode: string
   hotelSlug: string | null
   hotelUrl: string | null

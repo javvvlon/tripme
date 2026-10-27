@@ -1,5 +1,6 @@
 import { useToursRepository } from '~/search_engine/repositories/tours.repository'
 import { useHotelLabels } from '~/shared/composables/useHotelLabels'
+import { earliestDeparture, hotPicks } from '~/shared/helpers/hot'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
 import { SearchSort } from '~/search_engine/contracts/search'
@@ -150,7 +151,7 @@ export const useSearch = () => {
   const isSearchable = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
 
-  const today = useState('search-today', () => new Date().toISOString().slice(0, 10))
+  const today = useState('search-today', () => earliestDeparture())
 
   const settling = computed(() =>
     Boolean(criteria.value.from && criteria.value.to && !criteria.value.date))
@@ -360,11 +361,15 @@ export const useSearch = () => {
   const onDay = computed(() =>
     day.value ? sorted.value.filter(tour => tour.get('checkIn') === day.value) : sorted.value)
 
-  const hotCount = computed(() => new Set(onDay.value.filter(tour => tour.isHot()).map(tour => tour.groupKey())).size)
+  const hotIds = computed(() => hotPicks(offers.value))
+
+  const isHot = (tour: Tour): boolean => hotIds.value.has(tour.get('id'))
+
+  const hotCount = computed(() => new Set(onDay.value.filter(isHot).map(tour => tour.groupKey())).size)
 
   const hotUseful = computed(() => hotCount.value > 0 && hotCount.value < new Set(onDay.value.map(tour => tour.groupKey())).size)
 
-  const filtered = computed(() => (hotOnly.value ? onDay.value.filter(tour => tour.isHot()) : onDay.value))
+  const filtered = computed(() => (hotOnly.value ? onDay.value.filter(isHot) : onDay.value))
 
   watch(hotCount, (count) => { if (!count) hotOnly.value = false })
 
@@ -430,7 +435,7 @@ export const useSearch = () => {
   const total = computed(() => visible.value.length)
 
   return {
-    criteria, filters, sort, day, hotOnly, hotCount, hotUseful,
+    criteria, filters, sort, day, hotOnly, hotCount, hotUseful, isHot,
     tours, hotels, twins, facets, total, statuses, progress, settling, busy,
     streaming, finished, failed, waitingForFirst,
     isSearchable, remaining,

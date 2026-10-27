@@ -10,3 +10,5 @@ export const SEARCH_MODES = [
 export const NIGHTS_OPTIONS = [3, 5, 7, 8, 10, 12, 14] as const
 
 export const MAX_ADULTS = 6
+
+export const SHOWCASE_OPTION = '__showcase__'

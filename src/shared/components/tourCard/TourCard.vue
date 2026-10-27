@@ -21,6 +21,7 @@
             <div class="tm-tour-card__kicker">
                 <span v-if="hot" class="tm-tour-card__hot">{{ t('results.hot') }}</span>
                 <Rating v-if="tour.stars()" :value="tour.stars()" :max="tour.stars()" :size="12" />
+                <span v-else-if="tour.get('hotelKind')" class="tm-tour-card__kind">{{ t(`results.hotelKind.${tour.get('hotelKind')}`) }}</span>
                 <span v-if="tour.location()" class="tm-tour-card__place">
                     <Icon name="pin" :size="13" />{{ tour.location() }}
                 </span>
@@ -174,7 +175,7 @@ import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
 import type { ITourCardEmits, ITourCardProps } from './TourCard.d'
 
-const props = defineProps<ITourCardProps>()
+const props = withDefaults(defineProps<ITourCardProps>(), { hot: undefined })
 
 const emit = defineEmits<ITourCardEmits>()
 
@@ -193,7 +194,7 @@ const hotelPage = computed(() => {
 
 const price = computed(() => formatMoney(props.tour.get('comparablePrice'), locale.value))
 
-const hot = computed(() => props.tour.isHot())
+const hot = computed(() => props.hot ?? props.tour.isHot())
 
 const oldPrice = computed(() => {
   const old = props.tour.oldComparablePrice()

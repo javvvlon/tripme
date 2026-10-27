@@ -42,7 +42,7 @@
 
                 <ul class="tm-hero__quick">
                     <li v-for="item in QUICK_SEARCHES" :key="item.id">
-                        <Chip :to="item.to" :icon="item.icon" tone="onDark">{{ t(item.labelKey) }}</Chip>
+                        <Chip :to="presetLink(item.theme)" :icon="item.icon" tone="onDark">{{ t(item.labelKey) }}</Chip>
                     </li>
                 </ul>
             </template>
@@ -60,6 +60,7 @@
 
 <script setup lang="ts">
 import { HERO, HERO_PRODUCTS, QUICK_SEARCHES } from '~/landing/views/home/Home.config'
+import { useArenaPresets } from '~/shared/composables/useArenaPresets'
 import EsimSearch from '~/modules/esim/components/esimSearch/EsimSearch.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { countryName, flagOf } from '~/modules/esim/helpers/esim'
@@ -73,6 +74,8 @@ const props = defineProps<IHeroProps>()
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+
+const { presetLink } = useArenaPresets()
 
 const { data: esimCountryList } = useEsimCountries()
 

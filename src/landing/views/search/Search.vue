@@ -66,7 +66,7 @@
                     {{ t('results.hotOnly', { n: hotCount }) }}
                 </button>
 
-                <p v-if="isSearchable" class="tm-search-view__currency">
+                <p v-if="isSearchable || showcase" class="tm-search-view__currency">
                     {{ currencyNote }}
                 </p>
 
@@ -85,7 +85,7 @@
                 </div>
 
                 <DayPrices
-                    v-if="criteria.dateTo && !settling"
+                    v-if="isSearchable && criteria.dateTo && !settling"
                     v-model="day"
                     :from="criteria.date" :to="criteria.dateTo"
                     :days="facets.days" :loading="streaming"
@@ -116,15 +116,16 @@
 
                 <template v-else-if="tours.length">
                     <ul class="tm-search-view__list">
-                        <li v-for="group in hotels" :key="group.key" class="tm-search-view__item">
+                        <li v-for="group in hotels" :key="group.key" class="tm-search-view__item" :data-hotel="group.key">
                             <TourCard
-                                :tour="group.lead"
+                                :tour="shownOf(group)"
+                                :hot="isHot(shownOf(group))"
                                 :agent-view="isStaff"
-                                :twins="twins.get(group.lead.get('id'))"
+                                :twins="twins.get(shownOf(group).get('id'))"
                                 :route="cardRoute"
                                 :assign-label="assignLabel"
                                 :assign-title="assignTitle"
-                                :assigning="assigning === group.lead.get('id')"
+                                :assigning="assigning === shownOf(group).get('id')"
                                 @assign="assignTour"
                             />
 
@@ -138,20 +139,11 @@
                                     {{ variantsShown(group.key) ? t('results.group.hide') : variantsLabel(group) }}
                                 </button>
 
-                                <ul v-if="variantsShown(group.key)" class="tm-search-view__variants-list">
-                                    <li v-for="tour in group.others.slice(0, variantsShown(group.key))" :key="tour.get('id')">
-                                        <TourCard
-                                            :tour="tour"
-                                            :agent-view="isStaff"
-                                            :twins="twins.get(tour.get('id'))"
-                                            :route="cardRoute"
-                                            :assign-label="assignLabel"
-                                            :assign-title="assignTitle"
-                                            :assigning="assigning === tour.get('id')"
-                                            @assign="assignTour"
-                                        />
-                                    </li>
-                                </ul>
+                                <VariantsTable
+                                    v-if="variantsShown(group.key)"
+                                    :tours="restOf(group).slice(0, variantsShown(group.key))"
+                                    @choose="choose(group, $event)"
+                                />
 
                                 <Button
                                     v-if="variantsShown(group.key) && group.others.length > variantsShown(group.key)"
@@ -187,12 +179,16 @@
 
                 <p v-else-if="isSearchable" class="tm-search-view__status">{{ t('results.empty') }}</p>
 
+                <ClientOnly v-else-if="showcase">
+                    <Showcase />
+                </ClientOnly>
+
                 <div v-else class="tm-search-view__start">
                     <Icon name="plane" :size="28" class="tm-search-view__start-icon" />
                     <p>{{ t('results.chooseRoute') }}</p>
                     <ul class="tm-search-view__start-chips">
                         <li v-for="item in QUICK_SEARCHES" :key="item.id">
-                            <Chip :to="item.to" :icon="item.icon">{{ t(item.labelKey) }}</Chip>
+                            <Chip :to="presetLink(item.theme)" :icon="item.icon">{{ t(item.labelKey) }}</Chip>
                         </li>
                     </ul>
                 </div>
@@ -218,6 +214,13 @@ import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
 import ActiveFilters from '~/landing/components/activeFilters/ActiveFilters.vue'
 import { QUICK_SEARCHES } from '~/landing/views/home/Home.config'
+import Showcase from '~/landing/components/showcase/Showcase.vue'
+import VariantsTable from '~/landing/components/variantsTable/VariantsTable.vue'
+import type { Tour } from '~/search_engine/models/Tour'
+import { SHOWCASE_THEMES } from '~/search_engine/contracts/showcase'
+import type { ShowcaseTheme } from '~/search_engine/contracts/showcase'
+import { useArenaPresets } from '~/shared/composables/useArenaPresets'
+import { CBU_BUFFER } from '~/shared/helpers/money'
 import Spinner from '~/shared/components/spinner/Spinner.vue'
 import DayPrices from '~/landing/components/dayPrices/DayPrices.vue'
 import QuoteBar from '~/modules/leads/components/quoteBar/QuoteBar.vue'
@@ -233,11 +236,12 @@ import type { IHotelGroup } from './Search.hooks'
 
 const { t, locale } = useI18n()
 const { label } = useCatalogLabel()
+const { presetLink } = useArenaPresets()
 
 const { isStaff } = useAuthSession()
 
 const {
-  criteria, filters, sort, day, hotOnly, hotCount, hotUseful,
+  criteria, filters, sort, day, hotOnly, hotCount, hotUseful, isHot,
   tours, hotels, twins, facets, total, progress, isSearchable, busy, settling, streaming, finished, failed,
   remaining, hasMore, canLoadMore, loadingMore, loadMoreError, loadMore, refresh,
 } = useSearch()
@@ -267,6 +271,23 @@ const VARIANTS_STEP = 6
 const openVariants = ref<Record<string, number>>({})
 
 const variantsShown = (key: string): number => openVariants.value[key] ?? 0
+
+const chosen = ref<Record<string, string>>({})
+
+const shownOf = (group: IHotelGroup): Tour =>
+  [group.lead, ...group.others].find(tour => tour.get('id') === chosen.value[group.key]) ?? group.lead
+
+const restOf = (group: IHotelGroup): Tour[] => {
+  const shown = shownOf(group)
+
+  return [group.lead, ...group.others].filter(tour => tour !== shown)
+}
+
+const choose = (group: IHotelGroup, tour: Tour) => {
+  chosen.value = { ...chosen.value, [group.key]: tour.get('id') }
+
+  nextTick(() => document.querySelector(`[data-hotel="${CSS.escape(group.key)}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+}
 
 const toggleVariants = (key: string) => {
   openVariants.value = { ...openVariants.value, [key]: variantsShown(key) ? 0 : VARIANTS_STEP }
@@ -313,14 +334,48 @@ const assignLead = computed(() =>
 
 const { busy: assigning, label: assignLabel, title: assignTitle, assign: assignTour } = useAssignTour(assignLead)
 
-const { usdRate } = useUzsRates()
+const { rates } = useUzsRates()
 
-const currencyNote = computed(() =>
-  [t('results.currencyNote'), usdRate.value ? t('results.currencyRate', { rate: usdRate.value }) : '']
-    .filter(Boolean)
-    .join(' '))
+const operatorRate = computed(() => {
+  const seen = new Map<number, number>()
+
+  for (const tour of tours.value) {
+    const rate = tour.get('uzs')?.rate
+
+    if (tour.get('price').currency === 'USD' && rate) seen.set(Math.round(rate), (seen.get(Math.round(rate)) ?? 0) + 1)
+  }
+
+  const common = [...seen].sort((a, b) => b[1] - a[1])[0]?.[0]
+  const cbu = rates.value?.rates?.USD
+
+  return common ?? (cbu ? Math.round(cbu * (1 + CBU_BUFFER)) : 0)
+})
+
+const currencyNote = computed(() => {
+  const cbu = rates.value?.rates?.USD
+  const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 2 }).format(value)
+
+  return cbu && operatorRate.value
+    ? t('results.currencyFull', { operator: number(operatorRate.value), cbu: number(cbu) })
+    : t('results.currencyNote')
+})
+
+const showcase = computed(() => !isSearchable.value && Boolean(criteria.value.from) && !criteria.value.to)
+
+const { departures } = useDepartures()
+
+const departureLabel = computed(() =>
+  departures.value?.find(item => item.slug === criteria.value.from)?.label ?? label(criteria.value.from, 'city'))
+
+const showcaseTheme = computed<ShowcaseTheme>(() => {
+  const value = String(route.query.theme ?? '')
+
+  return SHOWCASE_THEMES.includes(value as ShowcaseTheme) ? value as ShowcaseTheme : 'all'
+})
 
 const headline = computed(() => {
+  if (showcase.value) return t(`showcase.title.${showcaseTheme.value}`, { city: departureLabel.value })
+
   if (!isSearchable.value) return t('results.prompt')
 
   const destination = label(criteria.value.to) || t('results.anywhere')
@@ -522,12 +577,6 @@ useSeoMeta({
         font-weight: 700;
 
         &:hover { text-decoration: underline; }
-    }
-
-    &__variants-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
     }
 
     &__variants-more { align-self: flex-start; }

@@ -27,7 +27,7 @@
             class="tm-search-widget__tabs"
         />
 
-        <form class="tm-search-widget__panel" @submit.prevent="submit">
+        <form class="tm-search-widget__panel" @submit.prevent="go">
             <Combobox
                 v-model="criteria.from"
                 :label="t('search.from')" :placeholder="t('search.fromPlaceholder')"
@@ -35,10 +35,13 @@
                 :unavailable="unavailable"
             />
             <Combobox
+                ref="toField"
                 v-model="criteria.to"
                 :label="t('search.to')" :placeholder="t('search.toPlaceholder')"
                 :options="countryOptions" :variant="fieldVariant" clearable
                 :unavailable="unavailable"
+                :pinned="showcaseOption" :attention="attention"
+                @pinned="openShowcase"
             />
             <TourDates
                 v-model="dates"
@@ -68,7 +71,10 @@ import type { SearchMode } from '~/search_engine/contracts/search'
 import type { ITourDates } from '~/shared/components/tourDates/TourDates.d'
 import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
 import type { ISearchWidgetProps } from './SearchWidget.d'
-import { SEARCH_MODES } from './SearchWidget.config'
+import { SEARCH_MODES, SHOWCASE_OPTION } from './SearchWidget.config'
+import Combobox from '~/shared/components/combobox/Combobox.vue'
+import type { IComboboxOption } from '~/shared/components/combobox/Combobox.d'
+import { useDeparture } from '~/shared/composables/useArenaPresets'
 
 const props = withDefaults(defineProps<ISearchWidgetProps>(), { variant: 'hero' })
 
@@ -123,6 +129,41 @@ watch(maxAdults, (max) => {
 })
 
 const fieldVariant = computed(() => (props.variant === 'bar' ? 'bar' : 'panel'))
+
+const departure = useDeparture()
+
+watch(() => criteria.from, (value) => {
+  if (value) departure.value = value
+}, { immediate: true })
+
+const toField = useTemplateRef<InstanceType<typeof Combobox>>('toField')
+
+const attention = ref(false)
+
+watch(() => criteria.to, (value) => {
+  if (value) attention.value = false
+})
+
+const showcaseOption = computed<IComboboxOption | null>(() => {
+  const city = departureOptions.value.find(option => option.value === criteria.from)?.label
+
+  return city ? { value: SHOWCASE_OPTION, label: t('search.showcase.all', { city }), hint: t('search.showcase.hint') } : null
+})
+
+const openShowcase = () => {
+  attention.value = false
+  criteria.to = ''
+  expanded.value = false
+  void submit()
+}
+
+const go = () => {
+  if (criteria.to) return void submit()
+
+  attention.value = true
+  if (props.variant === 'bar') expanded.value = true
+  nextTick(() => toField.value?.openMenu())
+}
 
 const labelOf = (options: Array<{ value: string, label: string }>, value: string) =>
   options.find(option => option.value === value)?.label ?? ''

@@ -1,3 +1,4 @@
+import type { ShowcaseTheme } from '~/search_engine/contracts/showcase'
 import type { IPhoto } from '~/shared/contracts/media'
 import type { Money } from '~/search_engine/contracts/search'
 
@@ -15,7 +16,7 @@ export interface IQuickSearch {
   id: string
   icon: string
   labelKey: string
-  to: string
+  theme: ShowcaseTheme
 }
 
 export type ExperienceSpan = 'wide' | 'normal'

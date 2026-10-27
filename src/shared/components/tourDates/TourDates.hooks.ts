@@ -1,5 +1,6 @@
 import { addMonths, fromIso, monthLength, monthOffset, startOfMonth, today } from '~/shared/helpers/dates'
 import type { ICalendarMask } from '~/search_engine/contracts/references'
+import { earliestDeparture } from '~/shared/helpers/hot'
 import type { ICalendarMonth } from './TourDates.d'
 
 /**
@@ -15,8 +16,9 @@ export const useCalendar = (
 
   const earliest = computed(() => {
     const start = calendar()?.start
+    const first = earliestDeparture()
 
-    return start && start > today() ? start : today()
+    return start && start > first ? start : first
   })
 
   const latest = computed(() => calendar()?.horizon ?? addMonths(today(), 12))
@@ -70,5 +72,5 @@ export const useCalendar = (
     cursor.value = next
   }
 
-  return { months, weekdays, canGoBack, canGoOn, shift }
+  return { months, weekdays, canGoBack, canGoOn, shift, earliest }
 }

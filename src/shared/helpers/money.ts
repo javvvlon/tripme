@@ -50,3 +50,5 @@ export const priceInput = (value: number | string | null | undefined): string =>
 
   return String(parsed)
 }
+
+export const CBU_BUFFER = 0.02
