@@ -27,7 +27,7 @@
             color: var(--tm-ink-1);
             vertical-align: middle;
 
-            span {
+            > span {
                 display: block;
                 color: var(--tm-ink-3);
                 font-size: size(12);
