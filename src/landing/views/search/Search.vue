@@ -352,7 +352,7 @@ const operatorRate = computed(() => {
 })
 
 const currencyNote = computed(() => {
-  const cbu = rates.value?.rates?.USD
+  const cbu = rates.value?.source === 'cbu' ? rates.value.rates?.USD : undefined
   const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 2 }).format(value)
 
   return cbu && operatorRate.value

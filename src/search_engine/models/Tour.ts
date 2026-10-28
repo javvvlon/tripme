@@ -12,7 +12,7 @@ export enum Availability {
   Unknown = 'unknown',
 }
 
-export type UzsBasis = 'operator' | 'cbu'
+export type UzsBasis = 'operator' | 'cbu' | 'market'
 
 export interface IUzsPrice {
   amount: number
