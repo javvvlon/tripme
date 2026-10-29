@@ -69,7 +69,9 @@
       "rangeChosen": "{range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz | {range}: {count} ta jo‘nash kuni — eng arzonlarini ko‘rsatamiz",
       "flex": "±{days} kun",
       "flexHint": "Qo'shni uchish kunlaridagi narxlarni ham ko'rsatamiz",
-      "flexChosen": "Uchish {day} ±2 kun: {range} — eng arzonlarini ko'rsatamiz"
+      "flexChosen": "Uchish {day} ±2 kun: {range} — eng arzonlarini ko'rsatamiz",
+      "hotels": "Joylashish sanalari",
+      "excursions": "Boshlanish sanalari"
     },
     "travellers": {
       "adults": "Kattalar",
@@ -90,6 +92,14 @@
     "showcase": {
       "all": "{city} shahridan barcha mavjud mamlakatlar",
       "hint": "Eng yaxshi narxlar vitrinasi"
+    },
+    "modeTitle": {
+      "hotels": "Mehmonxonalar: {place}",
+      "excursions": "Ekskursiyalar: {place}"
+    },
+    "submitModes": {
+      "hotels": "Mehmonxonalarni topish",
+      "excursions": "Ekskursiyalarni topish"
     }
   },
   "home": {
@@ -116,6 +126,8 @@
     "products": {
       "label": "Nima qidiryapsiz",
       "tours": "Turlar",
+      "hotels": "Mehmonxonalar",
+      "excursions": "Ekskursiyalar",
       "esim": "eSIM"
     }
   },
@@ -314,6 +326,39 @@
     "hotelKind": {
       "boutique": "Butik-mehmonxona",
       "apart": "Apart-mehmonxona"
+    },
+    "modes": {
+      "hotels": {
+        "headline": "Mehmonxonalar {destination}, {dates}, {price} dan",
+        "headlineBare": "Mehmonxonalar {destination}, {dates}",
+        "crumb": "Mehmonxonalar: {to}",
+        "seoTitle": "Mehmonxonalar — {destination} · TripMe",
+        "days": "Kirish kuni bo‘yicha narxlar"
+      },
+      "excursions": {
+        "headline": "Ekskursion turlar {destination}, {dates}, {price} dan",
+        "headlineBare": "Ekskursion turlar {destination}, {dates}",
+        "crumb": "Ekskursiyalar: {to}",
+        "seoTitle": "Ekskursiyalar — {destination} · TripMe",
+        "days": "Boshlanish kuni bo‘yicha narxlar"
+      }
+    },
+    "product": {
+      "hotel": {
+        "label": "Faqat yashash",
+        "start": "Kirish",
+        "end": "chiqish {date}",
+        "when": "Kirish va tunlar"
+      },
+      "excursion": {
+        "label": "Ekskursion tur",
+        "start": "Boshlanishi",
+        "end": "tugashi {date}",
+        "when": "Boshlanish va tunlar",
+        "withFlight": "Parvoz bilan",
+        "landOnly": "Parvozsiz",
+        "about": "Dastur haqida"
+      }
     }
   },
   "auth": {

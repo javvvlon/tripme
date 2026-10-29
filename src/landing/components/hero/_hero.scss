@@ -130,6 +130,22 @@
     }
 
     @media #{$until-sm} {
+        &__products {
+            max-width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar { display: none; }
+        }
+
+        &__product {
+            flex: none;
+            padding: 8px 12px;
+            font-size: size(14);
+
+            .tm-icon { display: none; }
+        }
+
         &__quick {
             flex-wrap: nowrap;
             justify-content: flex-start;

@@ -69,7 +69,9 @@
       "rangeChosen": "{range}: {count} departure days — cheapest first | {range}: {count} departure day — cheapest first | {range}: {count} departure days — cheapest first | {range}: {count} departure days — cheapest first",
       "flex": "±{days} days",
       "flexHint": "We'll show prices for nearby departure days too",
-      "flexChosen": "Departure {day} ±2 days: {range}, cheapest first"
+      "flexChosen": "Departure {day} ±2 days: {range}, cheapest first",
+      "hotels": "Check-in dates",
+      "excursions": "Start dates"
     },
     "travellers": {
       "adults": "Adults",
@@ -90,6 +92,14 @@
     "showcase": {
       "all": "All available countries from {city}",
       "hint": "Best-price showcase"
+    },
+    "modeTitle": {
+      "hotels": "Hotels: {place}",
+      "excursions": "Excursions: {place}"
+    },
+    "submitModes": {
+      "hotels": "Find hotels",
+      "excursions": "Find excursions"
     }
   },
   "home": {
@@ -116,6 +126,8 @@
     "products": {
       "label": "What are you looking for",
       "tours": "Tours",
+      "hotels": "Hotels",
+      "excursions": "Excursions",
       "esim": "eSIM"
     }
   },
@@ -314,6 +326,39 @@
     "hotelKind": {
       "boutique": "Boutique hotel",
       "apart": "Apart-hotel"
+    },
+    "modes": {
+      "hotels": {
+        "headline": "Hotels {destination}, {dates}, from {price}",
+        "headlineBare": "Hotels {destination}, {dates}",
+        "crumb": "Hotels: {to}",
+        "seoTitle": "Hotels — {destination} · TripMe",
+        "days": "Prices by check-in day"
+      },
+      "excursions": {
+        "headline": "Sightseeing tours {destination}, {dates}, from {price}",
+        "headlineBare": "Sightseeing tours {destination}, {dates}",
+        "crumb": "Excursions: {to}",
+        "seoTitle": "Excursions — {destination} · TripMe",
+        "days": "Prices by start day"
+      }
+    },
+    "product": {
+      "hotel": {
+        "label": "Accommodation only",
+        "start": "Check-in",
+        "end": "check-out {date}",
+        "when": "Check-in and nights"
+      },
+      "excursion": {
+        "label": "Sightseeing tour",
+        "start": "Starts",
+        "end": "ends {date}",
+        "when": "Start and nights",
+        "withFlight": "Flight included",
+        "landOnly": "No flight",
+        "about": "About the programme"
+      }
     }
   },
   "auth": {

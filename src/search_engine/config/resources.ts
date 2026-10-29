@@ -46,8 +46,8 @@ export const referencesResource: IResource = {
   prefix: 'references',
   resources: {
     fetchDepartures: { url: 'departures', method: 'GET' },
-    fetchCountries: { url: 'countries', method: 'GET', params: ['from'] },
-    fetchConstraints: { url: 'constraints', method: 'GET', params: ['from', 'to'] },
+    fetchCountries: { url: 'countries', method: 'GET', params: ['from', 'mode'] },
+    fetchConstraints: { url: 'constraints', method: 'GET', params: ['from', 'to', 'mode'] },
     fetchRates: { url: 'rates', method: 'GET' },
   },
 }

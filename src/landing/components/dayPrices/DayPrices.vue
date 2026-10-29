@@ -1,6 +1,6 @@
 <template>
-    <section class="tm-day-prices" :aria-label="t('results.daysTitle')">
-        <p class="tm-day-prices__title">{{ t('results.daysTitle') }}</p>
+    <section class="tm-day-prices" :aria-label="title || t('results.daysTitle')">
+        <p class="tm-day-prices__title">{{ title || t('results.daysTitle') }}</p>
 
         <div class="tm-day-prices__track" role="radiogroup">
             <button

@@ -9,4 +9,4 @@ export interface IHeroProps {
   accent?: HeroAccent
 }
 
-export type HeroProduct = 'tours' | 'esim'
+export type HeroProduct = 'tours' | 'hotels' | 'excursions' | 'esim'

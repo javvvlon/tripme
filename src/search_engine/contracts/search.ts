@@ -11,9 +11,16 @@ export enum DestinationKind {
 
 export enum SearchMode {
   Tours = 'tours',
-  Flights = 'flights',
   Hotels = 'hotels',
+  Excursions = 'excursions',
 }
+
+export type ProductMode = SearchMode.Hotels | SearchMode.Excursions
+
+export const PRODUCT_MODES: ProductMode[] = [SearchMode.Hotels, SearchMode.Excursions]
+
+export const isProductMode = (value: unknown): value is ProductMode =>
+  PRODUCT_MODES.includes(value as ProductMode)
 
 export type CurrencyCode = 'USD' | 'UZS' | 'EUR'
 

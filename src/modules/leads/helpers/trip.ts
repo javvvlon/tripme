@@ -35,6 +35,7 @@ export const tripFromTour = (tour: Tour, route?: ITripRoute): ILeadTrip => ({
   route_to: route?.to ?? '',
   route_to_label: route?.toLabel ?? '',
   kid_ages: (route?.kidAges ?? []).slice(0, tour.get('children')),
+  ...(tour.get('product') ? { product: tour.get('product'), flight_included: tour.get('flightIncluded') ?? false } : {}),
 })
 
 export const tripFromLead = (lead: { trip: Record<string, unknown>, hotel_name: string, supplier_name: string, check_in: string | null, nights: number, adults: number, children: number, price_amount: number | null, price_currency: string, destination: string }): ILeadTrip => ({

@@ -3,7 +3,7 @@ import { useHotelLabels } from '~/shared/composables/useHotelLabels'
 import { earliestDeparture, hotPicks } from '~/shared/helpers/hot'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { SearchCriteriaIntention } from '~/search_engine/intentions/search'
-import { SearchSort } from '~/search_engine/contracts/search'
+import { SearchSort, isProductMode } from '~/search_engine/contracts/search'
 import type { Tour } from '~/search_engine/models/Tour'
 import type { ISupplierStatus } from '~/search_engine/repositories/tours.repository'
 import type { FacetOption, SearchFacets, SearchRequest } from '~/search_engine/contracts/search'
@@ -148,13 +148,15 @@ export const useSearch = () => {
   const sort = ref<SearchSort>(SearchSort.PriceAsc)
   const day = ref('')
 
+  const hasStart = computed(() => Boolean(criteria.value.from) || isProductMode(criteria.value.mode))
+
   const isSearchable = computed(() =>
-    Boolean(criteria.value.from && criteria.value.to && criteria.value.date))
+    Boolean(hasStart.value && criteria.value.to && criteria.value.date))
 
   const today = useState('search-today', () => earliestDeparture())
 
   const settling = computed(() =>
-    Boolean(criteria.value.from && criteria.value.to && !criteria.value.date))
+    Boolean(hasStart.value && criteria.value.to && !criteria.value.date))
 
   const chosen = useState<IChosenDate | null>('search-chosen-date', () => null)
 
@@ -170,7 +172,7 @@ export const useSearch = () => {
   }
 
   watch(criteria, () => {
-    if (!criteria.value.from || !criteria.value.to || criteria.value.date) return
+    if (!hasStart.value || !criteria.value.to || criteria.value.date) return
 
     void useDate(today.value)
   }, { immediate: true })
@@ -230,7 +232,7 @@ export const useSearch = () => {
   const settle = async (forDate: string) => {
     if (offers.value.length || forDate !== criteria.value.date) return
 
-    if (!dateWasOurs.value || chosen.value?.asked || seeking.value) return
+    if (!dateWasOurs.value || chosen.value?.asked || seeking.value || isProductMode(criteria.value.mode)) return
 
     seeking.value = true
 

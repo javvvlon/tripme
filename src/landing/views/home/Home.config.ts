@@ -15,8 +15,15 @@ export const HERO: IHeroContent = {
 
 export const HERO_PRODUCTS = [
   { value: 'tours', labelKey: 'home.products.tours', icon: 'briefcase' },
+  { value: 'hotels', labelKey: 'home.products.hotels', icon: 'bed' },
+  { value: 'excursions', labelKey: 'home.products.excursions', icon: 'landmark' },
   { value: 'esim', labelKey: 'home.products.esim', icon: 'sim' },
 ] as const
+
+export const PRODUCT_PICKS = {
+  hotels: ['turkey', 'uae', 'egypt', 'thailand', 'georgia'],
+  excursions: ['uzbekistan', 'italy', 'china', 'turkey', 'india'],
+} as const
 
 export const QUICK_SEARCHES: IQuickSearch[] = [
   { id: 'beach', icon: 'wave', labelKey: 'home.quick.beach', theme: 'beach' },

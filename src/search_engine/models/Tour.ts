@@ -57,7 +57,11 @@ export interface ITourRaw {
   oldPrice?: number | null
   instantConfirm?: boolean
   bestPrice?: boolean
+  product?: TourProduct
+  flightIncluded?: boolean
 }
+
+export type TourProduct = 'hotel' | 'excursion'
 
 export interface ITour extends Omit<ITourRaw, 'price'> {
   price: Money

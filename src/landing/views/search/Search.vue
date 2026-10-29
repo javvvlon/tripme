@@ -89,6 +89,7 @@
                     v-model="day"
                     :from="criteria.date" :to="criteria.dateTo"
                     :days="facets.days" :loading="streaming"
+                    :title="product ? t(`results.modes.${product}.days`) : ''"
                 />
 
                 <div v-if="settling" class="tm-search-view__settling">
@@ -186,7 +187,7 @@
                 <div v-else class="tm-search-view__start">
                     <Icon name="plane" :size="28" class="tm-search-view__start-icon" />
                     <p>{{ t('results.chooseRoute') }}</p>
-                    <ul class="tm-search-view__start-chips">
+                    <ul v-if="!product" class="tm-search-view__start-chips">
                         <li v-for="item in QUICK_SEARCHES" :key="item.id">
                             <Chip :to="presetLink(item.theme)" :icon="item.icon">{{ t(item.labelKey) }}</Chip>
                         </li>
@@ -211,6 +212,8 @@
 
 <script setup lang="ts">
 import { FLEXIBLE_NIGHTS } from '~/search_engine/intentions/search'
+import { SearchMode, isProductMode } from '~/search_engine/contracts/search'
+import type { IRouteAnswer } from '~/search_engine/contracts/references'
 import ResultsHeader from '~/landing/components/resultsHeader/ResultsHeader.vue'
 import ActiveFilters from '~/landing/components/activeFilters/ActiveFilters.vue'
 import { QUICK_SEARCHES } from '~/landing/views/home/Home.config'
@@ -235,7 +238,7 @@ import { useSearch } from './Search.hooks'
 import type { IHotelGroup } from './Search.hooks'
 
 const { t, locale } = useI18n()
-const { label } = useCatalogLabel()
+const { label: catalogLabel } = useCatalogLabel()
 const { presetLink } = useArenaPresets()
 
 const { isStaff } = useAuthSession()
@@ -360,7 +363,21 @@ const currencyNote = computed(() => {
     : t('results.currencyNote')
 })
 
-const showcase = computed(() => !isSearchable.value && Boolean(criteria.value.from) && !criteria.value.to)
+const product = computed(() => (isProductMode(criteria.value.mode) ? criteria.value.mode : null))
+
+const { te } = useI18n()
+const { data: hotelPlaces } = useNuxtData<IRouteAnswer>(`references-countries-${SearchMode.Hotels}`)
+const { data: excursionPlaces } = useNuxtData<IRouteAnswer>(`references-countries-${SearchMode.Excursions}`)
+
+const label = (slug: string | null | undefined, kind?: 'country' | 'city'): string => {
+  if (!product.value || !slug || kind === 'city' || te(`country.${slug}`)) return catalogLabel(slug, kind)
+
+  const places = product.value === SearchMode.Hotels ? hotelPlaces.value : excursionPlaces.value
+
+  return places?.items.find(item => item.slug === slug)?.label ?? catalogLabel(slug, kind)
+}
+
+const showcase = computed(() => !product.value && !isSearchable.value && Boolean(criteria.value.from) && !criteria.value.to)
 
 const { departures } = useDepartures()
 
@@ -385,31 +402,36 @@ const headline = computed(() => {
   const day = (value: string) => new Intl.DateTimeFormat(locale.value, { day: '2-digit', month: '2-digit' }).format(new Date(value))
   const dates = !date
     ? ''
-    : dateTo
-      ? `${formatDayRange(date, dateTo, locale.value)}, ${nightsText}`
-      : flexible ? `${day(date)}, ${nightsText}` : formatDateRange(date, nights, locale.value)
+    : product.value === SearchMode.Excursions
+      ? formatDayRange(date, dateTo, locale.value)
+      : dateTo
+        ? `${formatDayRange(date, dateTo, locale.value)}, ${nightsText}`
+        : flexible ? `${day(date)}, ${nightsText}` : formatDateRange(date, nights, locale.value)
   const from = facets.value.priceFrom
   const cheapest = from
     ? formatMoney({ amount: from.amount, currency: from.currency as 'USD' | 'EUR' | 'UZS' }, locale.value)
     : ''
+  const prefix = product.value ? `results.modes.${product.value}` : 'results'
 
   return cheapest
-    ? t('results.headline', { destination, dates, price: cheapest })
-    : t('results.headlineBare', { destination, dates })
+    ? t(`${prefix}.headline`, { destination, dates, price: cheapest })
+    : t(`${prefix}.headlineBare`, { destination, dates })
 })
 
 const breadcrumbs = computed(() => [
   { label: t('nav.homeShort'), to: '/' },
-  { label: criteria.value.from && criteria.value.to
-    ? t('results.route', {
-        from: label(criteria.value.from, 'city'),
-        to: label(criteria.value.to),
-      })
-    : t('results.allTours') },
+  { label: product.value
+    ? t(`results.modes.${product.value}.crumb`, { to: label(criteria.value.to) || t('results.anywhere') })
+    : criteria.value.from && criteria.value.to
+      ? t('results.route', {
+          from: label(criteria.value.from, 'city'),
+          to: label(criteria.value.to),
+        })
+      : t('results.allTours') },
 ])
 
 useSeoMeta({
-  title: () => t('results.seoTitle', { destination: label(criteria.value.to) || t('results.anywhere') }),
+  title: () => t(product.value ? `results.modes.${product.value}.seoTitle` : 'results.seoTitle', { destination: label(criteria.value.to) || t('results.anywhere') }),
   description: () => t('results.seoDescription'),
   robots: 'noindex, follow',
 })

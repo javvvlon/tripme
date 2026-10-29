@@ -3,6 +3,7 @@
         class="tm-search-widget"
         :class="[`tm-search-widget--${variant}`, {
             'tm-search-widget--untabbed': !showTabs,
+            'tm-search-widget--stay': product,
             'is-collapsed': variant === 'bar' && !expanded,
         }]"
     >
@@ -29,6 +30,7 @@
 
         <form class="tm-search-widget__panel" @submit.prevent="go">
             <Combobox
+                v-if="!product"
                 v-model="criteria.from"
                 :label="t('search.from')" :placeholder="t('search.fromPlaceholder')"
                 :options="departureOptions" :variant="fieldVariant" clearable
@@ -40,13 +42,13 @@
                 :label="t('search.to')" :placeholder="t('search.toPlaceholder')"
                 :options="countryOptions" :variant="fieldVariant" clearable
                 :unavailable="unavailable"
-                :pinned="showcaseOption" :attention="attention"
+                :pinned="product ? null : showcaseOption" :attention="attention"
                 @pinned="openShowcase"
             />
             <TourDates
                 v-model="dates"
-                :label="t('search.dates.label')" :placeholder="t('search.datePlaceholder')"
-                :calendar="calendar" :nights-options="nightsOptions" :variant="fieldVariant"
+                :label="t(product ? `search.dates.${product}` : 'search.dates.label')" :placeholder="t('search.datePlaceholder')"
+                :calendar="calendar" :nights-options="product === SearchMode.Excursions ? [] : nightsOptions" :variant="fieldVariant"
             />
             <TravellersPicker
                 v-model="travellers"
@@ -58,7 +60,7 @@
                 type="submit" class="tm-search-widget__submit"
                 :size="variant === 'hero' ? 'lg' : 'md'"
             >
-                {{ t('search.submit') }}
+                {{ t(product ? `search.submitModes.${product}` : 'search.submit') }}
             </Button>
         </form>
     </div>
@@ -67,7 +69,7 @@
 <script setup lang="ts">
 import TourDates from '~/shared/components/tourDates/TourDates.vue'
 import TravellersPicker from '~/shared/components/travellersPicker/TravellersPicker.vue'
-import type { SearchMode } from '~/search_engine/contracts/search'
+import { SearchMode, isProductMode } from '~/search_engine/contracts/search'
 import type { ITourDates } from '~/shared/components/tourDates/TourDates.d'
 import type { ITravellers } from '~/shared/components/travellersPicker/TravellersPicker.d'
 import type { ISearchWidgetProps } from './SearchWidget.d'
@@ -90,6 +92,9 @@ watch(() => route.fullPath, () => { expanded.value = false })
 
 const from = computed(() => criteria.from)
 const to = computed(() => criteria.to)
+const searchMode = computed(() => props.mode ?? criteria.mode)
+
+const product = computed(() => (isProductMode(searchMode.value) ? searchMode.value : null))
 
 const {
   calendar,
@@ -98,7 +103,7 @@ const {
   departureOptions,
   maxAdults,
   nightsOptions,
-} = useSearchReferences(from, to)
+} = useSearchReferences(from, to, searchMode)
 
 const dates = computed<ITourDates>({
   get: () => ({ date: criteria.date, dateTo: criteria.dateTo, nights: criteria.nights }),
@@ -117,6 +122,16 @@ const travellers = computed<ITravellers>({
     criteria.kids = value.kidAges.length
   },
 })
+
+watch(countryOptions, (options) => {
+  if (product.value && criteria.to && options.length && !options.some(option => option.value === criteria.to)) criteria.to = ''
+})
+
+const send = () => {
+  criteria.mode = searchMode.value
+
+  return submit()
+}
 
 watch(nightsOptions, (options) => {
   if (options.length && !options.includes(criteria.nights)) {
@@ -154,11 +169,11 @@ const openShowcase = () => {
   attention.value = false
   criteria.to = ''
   expanded.value = false
-  void submit()
+  void send()
 }
 
 const go = () => {
-  if (criteria.to) return void submit()
+  if (criteria.to) return void send()
 
   attention.value = true
   if (props.variant === 'bar') expanded.value = true
@@ -174,6 +189,8 @@ const summaryWhere = computed(() => {
 
   if (!to) return t('search.summaryEmpty')
 
+  if (product.value) return t(`search.modeTitle.${product.value}`, { place: to })
+
   return from ? `${from} → ${to}` : to
 })
 
@@ -182,7 +199,9 @@ const summaryWhen = computed(() => {
 
   if (criteria.date) parts.push(formatDayRange(criteria.date, criteria.dateTo, locale.value))
 
-  parts.push(nightsLabel.value, travellersLabel.value)
+  if (product.value !== SearchMode.Excursions) parts.push(nightsLabel.value)
+
+  parts.push(travellersLabel.value)
 
   return parts.join(' · ')
 })

@@ -38,11 +38,17 @@
             </template>
 
             <template v-else>
-                <SearchWidget ref="widget" class="tm-hero__widget" />
+                <SearchWidget ref="widget" class="tm-hero__widget" :mode="widgetMode" />
 
-                <ul class="tm-hero__quick">
+                <ul v-if="product === 'tours'" class="tm-hero__quick">
                     <li v-for="item in QUICK_SEARCHES" :key="item.id">
                         <Chip :to="presetLink(item.theme)" :icon="item.icon" tone="onDark">{{ t(item.labelKey) }}</Chip>
+                    </li>
+                </ul>
+
+                <ul v-else-if="picks.length" class="tm-hero__quick">
+                    <li v-for="item in picks" :key="item.slug">
+                        <Chip :to="item.to" icon="pin" tone="onDark">{{ item.label }}</Chip>
                     </li>
                 </ul>
             </template>
@@ -50,7 +56,7 @@
 
         <Teleport to="body">
             <Transition name="tm-hero-dock">
-                <div v-if="docked && product === 'tours'" class="tm-hero__dock">
+                <div v-if="docked && product !== 'esim'" class="tm-hero__dock">
                     <Button block size="lg" icon="search" @click="back">{{ t('search.submit') }}</Button>
                 </div>
             </Transition>
@@ -59,7 +65,8 @@
 </template>
 
 <script setup lang="ts">
-import { HERO, HERO_PRODUCTS, QUICK_SEARCHES } from '~/landing/views/home/Home.config'
+import { HERO, HERO_PRODUCTS, PRODUCT_PICKS, QUICK_SEARCHES } from '~/landing/views/home/Home.config'
+import { SearchMode } from '~/search_engine/contracts/search'
 import { useArenaPresets } from '~/shared/composables/useArenaPresets'
 import EsimSearch from '~/modules/esim/components/esimSearch/EsimSearch.vue'
 import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
@@ -85,9 +92,42 @@ const hydrated = ref(false)
 
 onMounted(() => { hydrated.value = true })
 
-const product = computed<HeroProduct>(() => (hydrated.value && esimOpen.value && route.query.product === 'esim' ? 'esim' : 'tours'))
+const { data: hotelCountries } = useProductCountries(SearchMode.Hotels)
+const { data: excursionCountries } = useProductCountries(SearchMode.Excursions)
 
-const products = computed(() => HERO_PRODUCTS.filter(item => item.value !== 'esim' || esimOpen.value).map(item => ({
+const available = computed<Record<HeroProduct, boolean>>(() => ({
+    tours: true,
+    hotels: hotelCountries.value.length > 0,
+    excursions: excursionCountries.value.length > 0,
+    esim: esimOpen.value,
+}))
+
+const product = computed<HeroProduct>(() => {
+    const asked = String(route.query.product ?? '') as HeroProduct
+
+    return hydrated.value && available.value[asked] ? asked : 'tours'
+})
+
+const widgetMode = computed(() => {
+    if (product.value === 'hotels') return SearchMode.Hotels
+    if (product.value === 'excursions') return SearchMode.Excursions
+
+    return SearchMode.Tours
+})
+
+const picks = computed(() => {
+    if (product.value !== 'hotels' && product.value !== 'excursions') return []
+
+    const countries = product.value === 'hotels' ? hotelCountries.value : excursionCountries.value
+
+    return PRODUCT_PICKS[product.value].flatMap((slug) => {
+        const country = countries.find(item => item.slug === slug)
+
+        return country ? [{ slug, label: country.label, to: localePath({ path: '/search', query: { mode: widgetMode.value, to: slug } }) }] : []
+    })
+})
+
+const products = computed(() => HERO_PRODUCTS.filter(item => available.value[item.value]).map(item => ({
     value: item.value,
     label: t(item.labelKey),
     icon: item.icon,

@@ -1,27 +1,31 @@
 import { useReferencesRepository } from '~/search_engine/repositories/references.repository'
 import type { IReferenceItem, IRouteConstraints } from '~/search_engine/contracts/references'
+import { isProductMode } from '~/search_engine/contracts/search'
+import type { SearchMode } from '~/search_engine/contracts/search'
 
 /**
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
-export function useSearchReferences(from: Ref<string>, to: Ref<string>) {
+export function useSearchReferences(from: Ref<string>, to: Ref<string>, mode?: Ref<SearchMode>) {
   const { fetchConstraints, fetchCountries } = useReferencesRepository()
 
   const { departures, unavailable } = useDepartures()
 
+  const product = computed(() => (isProductMode(mode?.value) ? mode.value : undefined))
+
   const { data: countries } = useAsyncData(
-    () => `references-countries-${from.value}`,
-    () => fetchCountries(from.value).catch(() => {
+    () => (product.value ? `references-countries-${product.value}` : `references-countries-${from.value}`),
+    () => fetchCountries(from.value, product.value).catch(() => {
       unavailable.value = true
       return { items: [], from: null }
     }),
-    { watch: [from], default: () => ({ items: [], from: null }) },
+    { watch: [from, product], default: () => ({ items: [], from: null }) },
   )
 
   const { data: constraints } = useAsyncData<IRouteConstraints | null>(
-    () => `references-constraints-${from.value}-${to.value}`,
-    () => fetchConstraints(from.value, to.value).catch(() => null),
-    { watch: [from, to], default: () => null },
+    () => (product.value ? `references-constraints-${product.value}-${to.value}` : `references-constraints-${from.value}-${to.value}`),
+    () => fetchConstraints(from.value, to.value, product.value).catch(() => null),
+    { watch: [from, to, product], default: () => null },
   )
 
   const departureOptions = computed(() =>

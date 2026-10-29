@@ -89,9 +89,9 @@
                 <span>{{ hint }}</span>
             </p>
 
-            <p class="tm-tour-dates__section">{{ t('search.dates.duration') }}</p>
+            <p v-if="nightsOptions.length" class="tm-tour-dates__section">{{ t('search.dates.duration') }}</p>
 
-            <div class="tm-tour-dates__nights">
+            <div v-if="nightsOptions.length" class="tm-tour-dates__nights">
                 <button
                     v-for="n in nightsOptions" :key="n"
                     type="button" class="tm-tour-dates__night"

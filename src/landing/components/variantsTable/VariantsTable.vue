@@ -3,7 +3,7 @@
         <table class="tm-variants__table">
             <thead>
                 <tr>
-                    <th scope="col">{{ t('results.variants.when') }}</th>
+                    <th scope="col">{{ whenLabel }}</th>
                     <th scope="col">{{ t('results.variants.room') }}</th>
                     <th scope="col">{{ t('results.variants.meal') }}</th>
                     <th scope="col">{{ t('results.operator') }}</th>
@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <tr v-for="row in rows" :key="row.id" :class="{ 'is-stopped': row.stopped }">
-                    <td :data-label="t('results.variants.when')">
+                    <td :data-label="whenLabel">
                         <strong>{{ row.date }}</strong>
                         <span>{{ row.nights }}</span>
                     </td>
@@ -47,6 +47,12 @@ const { approxUzs, uzsLabel } = useUzsRates()
 
 const day = (iso: string): string =>
   new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short', weekday: 'short' }).format(new Date(`${iso}T00:00:00`))
+
+const whenLabel = computed(() => {
+  const product = props.tours[0]?.get('product')
+
+  return t(product ? `results.product.${product}.when` : 'results.variants.when')
+})
 
 const rows = computed(() => props.tours.map((tour) => {
   const uzs = tour.get('uzs')

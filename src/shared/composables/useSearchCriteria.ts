@@ -100,7 +100,7 @@ export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
   const query = computed<Record<string, string>>(() => {
     const q: Record<string, string> = {}
     if (criteria.mode !== SEARCH_DEFAULTS.mode) q.mode = criteria.mode
-    if (criteria.from) q.from = criteria.from
+    if (criteria.from && criteria.mode !== SearchMode.Hotels) q.from = criteria.from
     if (criteria.to) q.to = criteria.to
     if (criteria.date) q.date = criteria.date
     if (criteria.date && criteria.dateTo) q.dateTo = criteria.dateTo

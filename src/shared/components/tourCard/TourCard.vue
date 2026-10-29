@@ -2,7 +2,7 @@
     <article class="tm-tour-card" :class="{ 'is-stopped': agentView && tour.isStopped() }">
         <div class="tm-tour-card__stub">
             <span class="tm-tour-card__stub-label">
-                <Icon name="plane" :size="13" />{{ t('results.departure') }}
+                <Icon :name="stubIcon" :size="13" />{{ t(product ? `results.product.${product}.start` : 'results.departure') }}
             </span>
             <span class="tm-tour-card__stub-day">
                 <strong>{{ checkIn.day }}</strong>
@@ -13,7 +13,7 @@
             </span>
             <span class="tm-tour-card__stub-stay">
                 <span><Icon name="moon" :size="13" />{{ t('search.nights', tour.get('nights')) }}</span>
-                <span class="tm-tour-card__stub-back">{{ t('results.returnOn', { date: checkOut }) }}</span>
+                <span class="tm-tour-card__stub-back">{{ t(product ? `results.product.${product}.end` : 'results.returnOn', { date: checkOut }) }}</span>
             </span>
         </div>
 
@@ -22,8 +22,8 @@
                 <span v-if="hot" class="tm-tour-card__hot">{{ t('results.hot') }}</span>
                 <Rating v-if="tour.stars()" :value="tour.stars()" :max="tour.stars()" :size="12" />
                 <span v-else-if="tour.get('hotelKind')" class="tm-tour-card__kind">{{ t(`results.hotelKind.${tour.get('hotelKind')}`) }}</span>
-                <span v-if="tour.location()" class="tm-tour-card__place">
-                    <Icon name="pin" :size="13" />{{ tour.location() }}
+                <span v-if="place" class="tm-tour-card__place">
+                    <Icon name="pin" :size="13" />{{ place }}
                 </span>
             </div>
 
@@ -33,6 +33,12 @@
             </h3>
 
             <ul class="tm-tour-card__facts">
+                <li v-if="product" class="tm-tour-card__fact tm-tour-card__fact--product">
+                    <Icon :name="product === 'hotel' ? 'bed' : 'landmark'" :size="13" />{{ t(`results.product.${product}.label`) }}
+                </li>
+                <li v-if="product === 'excursion'" class="tm-tour-card__fact">
+                    <Icon :name="tour.get('flightIncluded') ? 'plane' : 'map'" :size="13" />{{ t(tour.get('flightIncluded') ? 'results.product.excursion.withFlight' : 'results.product.excursion.landOnly') }}
+                </li>
                 <Tooltip v-if="meal" tag="li" :text="tour.get('mealName') ?? ''" :disabled="!tour.get('mealName')" class="tm-tour-card__fact tm-tour-card__fact--meal">
                     <Icon name="check" :size="13" :stroke="2.4" />{{ meal }}
                 </Tooltip>
@@ -155,7 +161,7 @@
                     :href="tour.get('hotelUrl')!"
                     class="tm-tour-card__details"
                     target="_blank" rel="noopener noreferrer"
-                >{{ t('results.aboutHotel') }}</a>
+                >{{ t(product === 'excursion' ? 'results.product.excursion.about' : 'results.aboutHotel') }}</a>
             </div>
         </div>
 
@@ -182,6 +188,21 @@ const emit = defineEmits<ITourCardEmits>()
 const { t, locale } = useI18n()
 
 const meal = computed(() => mealText(t, props.tour.get('mealPlan'), props.tour.get('mealName')))
+
+const product = computed(() => props.tour.get('product') ?? null)
+
+const place = computed(() => {
+  const value = props.tour.location()
+
+  return product.value === 'excursion' && /экскурс/i.test(value ?? '') ? '' : value
+})
+
+const stubIcon = computed(() => {
+  if (product.value === 'hotel') return 'bed'
+  if (product.value === 'excursion') return 'landmark'
+
+  return 'plane'
+})
 const localePath = useLocalePath()
 
 const routeExists = useRouteExists()

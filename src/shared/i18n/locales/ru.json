@@ -69,7 +69,9 @@
       "rangeChosen": "{range}: {count} дней вылета — покажем самые дешёвые | {range}: {count} день вылета — покажем самые дешёвые | {range}: {count} дня вылета — покажем самые дешёвые | {range}: {count} дней вылета — покажем самые дешёвые",
       "flex": "±{days} дня",
       "flexHint": "Покажем цены на соседние дни вылета",
-      "flexChosen": "Вылет {day} ±2 дня: {range} — покажем самые дешёвые"
+      "flexChosen": "Вылет {day} ±2 дня: {range} — покажем самые дешёвые",
+      "hotels": "Даты заезда",
+      "excursions": "Даты начала"
     },
     "travellers": {
       "adults": "Взрослые",
@@ -90,6 +92,14 @@
     "showcase": {
       "all": "Все доступные страны из г. {city}",
       "hint": "Витрина лучших цен"
+    },
+    "modeTitle": {
+      "hotels": "Отели: {place}",
+      "excursions": "Экскурсии: {place}"
+    },
+    "submitModes": {
+      "hotels": "Найти отели",
+      "excursions": "Найти экскурсии"
     }
   },
   "home": {
@@ -116,6 +126,8 @@
     "products": {
       "label": "Что ищете",
       "tours": "Туры",
+      "hotels": "Отели",
+      "excursions": "Экскурсии",
       "esim": "eSIM"
     }
   },
@@ -314,6 +326,39 @@
     "hotelKind": {
       "boutique": "Бутик-отель",
       "apart": "Апарт-отель"
+    },
+    "modes": {
+      "hotels": {
+        "headline": "Отели {destination}, {dates}, от {price}",
+        "headlineBare": "Отели {destination}, {dates}",
+        "crumb": "Отели: {to}",
+        "seoTitle": "Отели — {destination} · TripMe",
+        "days": "Цены по дню заезда"
+      },
+      "excursions": {
+        "headline": "Экскурсионные туры {destination}, {dates}, от {price}",
+        "headlineBare": "Экскурсионные туры {destination}, {dates}",
+        "crumb": "Экскурсии: {to}",
+        "seoTitle": "Экскурсии — {destination} · TripMe",
+        "days": "Цены по дню начала"
+      }
+    },
+    "product": {
+      "hotel": {
+        "label": "Только проживание",
+        "start": "Заезд",
+        "end": "выезд {date}",
+        "when": "Заезд и ночи"
+      },
+      "excursion": {
+        "label": "Экскурсионный тур",
+        "start": "Начало",
+        "end": "окончание {date}",
+        "when": "Начало и ночи",
+        "withFlight": "С перелётом",
+        "landOnly": "Без перелёта",
+        "about": "О программе"
+      }
     }
   },
   "auth": {
