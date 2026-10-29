@@ -35,9 +35,9 @@
 
 button.tm-status-badge {
     cursor: pointer;
-    transition: border-color .2s, color .2s;
+    transition: border-color .15s, color .15s;
 
-    &:hover { border-color: var(--tm-badge-new-line); color: var(--tm-badge-beta-hover); }
+    &:hover { border-color: var(--tm-brand-primary); color: var(--tm-badge-beta-hover); }
 
     &:focus-visible { @include focus-ring; }
 }

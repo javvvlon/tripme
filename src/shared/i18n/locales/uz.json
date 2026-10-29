@@ -3070,11 +3070,25 @@
   },
   "betaFeedback": {
     "title": "TripMe beta-sinov rejimida",
-    "text": "Siz TripMe modulidan beta-sinov rejimida foydalanmoqdasiz. Agar biror noaniqlikni sezsangiz — bizga xabar bering va keyingi sayohatingiz uchun shaxsiy bonus oling.",
-    "message": "Nima noto‘g‘ri ishladi",
-    "placeholder": "Nimani va qaysi sahifada sezganingizni yozing",
+    "text": "Fikringizni bildiring yoki topilgan xatolik haqida xabar bering. Biz vitrinani doimiy yaxshilab boramiz.",
+    "category": "Fikr mavzusi",
+    "categories": {
+      "bug": "Texnik xatolik",
+      "inquiry": "Bron bo‘yicha savol",
+      "idea": "G‘oya / Taklif"
+    },
+    "message": {
+      "bug": "Nima noto‘g‘ri ishladi",
+      "inquiry": "Savolingiz",
+      "idea": "G‘oyangiz"
+    },
+    "placeholder": {
+      "bug": "Nimani va qaysi sahifada sezganingizni yozing",
+      "inquiry": "Masalan: parvoz sanalarini o‘zgartirish mumkinmi",
+      "idea": "TripMe’ni Siz uchun nima qulayroq qilardi"
+    },
     "submit": "Yuborish",
-    "sent": "Rahmat! Menejer Siz bilan bog‘lanib, bonus haqida aytib beradi."
+    "sent": "Rahmat! Fikringiz TripMe sifat nazorati xizmati tomonidan qabul qilindi."
   },
   "showcase": {
     "title": {

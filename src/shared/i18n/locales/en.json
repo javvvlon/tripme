@@ -3070,11 +3070,25 @@
   },
   "betaFeedback": {
     "title": "TripMe is in beta",
-    "text": "You are using a TripMe module in beta. If you notice an inaccuracy, let us know and get a personal bonus for your next trip.",
-    "message": "What went wrong",
-    "placeholder": "Describe what you noticed and on which page",
+    "text": "Share your thoughts or report a bug you found. We keep improving the storefront.",
+    "category": "Topic",
+    "categories": {
+      "bug": "Technical issue",
+      "inquiry": "Booking question",
+      "idea": "Idea / Suggestion"
+    },
+    "message": {
+      "bug": "What went wrong",
+      "inquiry": "Your question",
+      "idea": "Your idea"
+    },
+    "placeholder": {
+      "bug": "Describe what you noticed and on which page",
+      "inquiry": "For example: can I move my departure dates",
+      "idea": "What would make TripMe easier for you"
+    },
     "submit": "Send",
-    "sent": "Thank you! A manager will contact you about your bonus."
+    "sent": "Thank you! Your feedback has reached the TripMe quality team."
   },
   "showcase": {
     "title": {

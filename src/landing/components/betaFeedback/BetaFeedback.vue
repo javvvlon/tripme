@@ -31,13 +31,28 @@
             </div>
 
             <div class="tm-beta-feedback__field">
-                <label :for="messageId" class="tm-beta-feedback__label">{{ t('betaFeedback.message') }}</label>
+                <span :id="categoryId" class="tm-beta-feedback__label">{{ t('betaFeedback.category') }}</span>
+
+                <div class="tm-beta-feedback__categories" role="group" :aria-labelledby="categoryId">
+                    <Chip
+                        v-for="item in FEEDBACK_CATEGORIES" :key="item"
+                        :active="category === item"
+                        class="tm-beta-feedback__category" :class="`tm-beta-feedback__category--${item.toLowerCase()}`"
+                        @click="category = item"
+                    >
+                        {{ t(`betaFeedback.categories.${item.toLowerCase()}`) }}
+                    </Chip>
+                </div>
+            </div>
+
+            <div class="tm-beta-feedback__field">
+                <label :for="messageId" class="tm-beta-feedback__label">{{ t(`betaFeedback.message.${categoryKey}`) }}</label>
 
                 <textarea
                     :id="messageId" v-model="form.message"
                     class="tm-beta-feedback__textarea" rows="4"
                     :maxlength="MESSAGE_MAX"
-                    :placeholder="t('betaFeedback.placeholder')"
+                    :placeholder="t(`betaFeedback.placeholder.${categoryKey}`)"
                     @blur="validation.touch('message')"
                 />
                 <p v-if="touched.message && errors.message" class="tm-beta-feedback__error">{{ errors.message }}</p>
@@ -56,6 +71,8 @@
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
 import { MESSAGE_MAX } from '~/landing/components/contactPanel/ContactPanel.config'
 import { useContactForm } from '~/landing/components/contactPanel/ContactPanel.hooks'
+import { DEFAULT_CATEGORY, FEEDBACK_CATEGORIES } from './BetaFeedback.config'
+import type { FeedbackCategory } from './BetaFeedback.config'
 import type { IBetaFeedbackEmits } from './BetaFeedback.d'
 
 const emit = defineEmits<IBetaFeedbackEmits>()
@@ -67,8 +84,16 @@ const { saved } = useToast()
 
 const phoneId = useId()
 const messageId = useId()
+const categoryId = useId()
 
-const { form, validation, sending, sent, error, submit } = useContactForm({ topic: 'beta', messageRequired: true })
+const category = ref<FeedbackCategory>(DEFAULT_CATEGORY)
+const categoryKey = computed(() => category.value.toLowerCase())
+
+const { form, validation, sending, sent, error, submit } = useContactForm({
+    topic: 'beta',
+    messageRequired: true,
+    extra: () => ({ category: category.value }),
+})
 
 const { errors, touched } = validation
 
@@ -78,6 +103,7 @@ async function send() {
     if (!sent.value) return
 
     open.value = false
+    category.value = DEFAULT_CATEGORY
     saved(t('betaFeedback.sent'))
     emit('sent')
 }

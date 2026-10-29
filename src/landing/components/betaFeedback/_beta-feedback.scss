@@ -19,6 +19,27 @@
         min-width: 0;
     }
 
+    &__categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &__category {
+        padding: 7px 14px;
+        font-size: size(13);
+
+        &--bug.tm-chip--active {
+            border-color: var(--tm-status-warning);
+            background: color-mix(in srgb, var(--tm-status-warning) 14%, transparent);
+        }
+
+        &--inquiry.tm-chip--active {
+            border-color: var(--tm-status-success);
+            background: var(--tm-status-success-soft);
+        }
+    }
+
     &__label {
         color: var(--tm-ink-2);
         font-size: size(14);

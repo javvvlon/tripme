@@ -8,6 +8,7 @@ import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 export interface IContactFormOptions {
   topic?: 'beta'
   messageRequired?: boolean
+  extra?: () => Record<string, string>
 }
 
 export const useContactForm = (options: IContactFormOptions = {}) => {
@@ -52,6 +53,7 @@ export const useContactForm = (options: IContactFormOptions = {}) => {
         message: form.message,
         consent: form.consent,
         ...(options.topic ? { topic: options.topic } : {}),
+        ...options.extra?.(),
       })
 
       sent.value = true
