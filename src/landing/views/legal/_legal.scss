@@ -17,6 +17,7 @@
     }
 
     &__title {
+        color: var(--tm-ink-1);
         font-size: clamp(#{size(24)}, 3vw, #{size(32)});
         font-weight: 700;
         letter-spacing: -.02em;
@@ -39,6 +40,8 @@
         h3 { margin: 22px 0 8px; font-size: size(16); font-weight: 700; color: var(--tm-ink-1); }
         p, ul, ol { margin: 0 0 12px; }
         ul, ol { padding-left: 22px; }
+        ul { list-style: disc; }
+        ol { list-style: decimal; }
         li + li { margin-top: 4px; }
         a { color: var(--tm-brand-secondary); text-underline-offset: 3px; }
 
@@ -86,4 +89,10 @@
 
         &__sheet { padding: 22px 18px; }
     }
+}
+
+:root[data-theme='light'] .tm-legal {
+    --tm-ink-1: var(--tm-ink-graphite);
+    --tm-ink-2: var(--tm-ink-graphite);
+    --tm-ink-3: var(--tm-ink-graphite-muted);
 }
