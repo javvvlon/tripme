@@ -30,9 +30,18 @@ export interface IAiCard {
   label: string
 }
 
+export interface IAiPicture {
+  url: string
+  width: number
+  height: number
+  format: string
+  title: string
+}
+
 export interface IAiAnswer {
   text: string
   cards?: IAiCard[]
+  pictures?: IAiPicture[]
   suggestions?: string[]
   context?: Record<string, unknown>
   tone?: 'error'

@@ -41,7 +41,7 @@ export const BLOCK_VIEWS: Record<SectionKind, Component> = {
 }
 
 export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: boolean) => Record<string, unknown>> = {
-  hero: section => ({ title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl }),
+  hero: section => ({ title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl, imageUrlDark: section.imageUrlDark }),
   featured: section => ({ items: section.items }),
   cards: (section, eager) => ({ items: section.items, grid: section.grid, eager }),
   features: section => ({ items: section.items }),
@@ -54,6 +54,7 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
     ctaLabel: section.ctaLabel,
     link: section.link,
     imageUrl: section.imageUrl,
+    imageUrlDark: section.imageUrlDark,
     look: section.style,
     tone: section.tone,
     eager,
@@ -64,6 +65,7 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
     ctaLabel: section.ctaLabel,
     link: section.link,
     imageUrl: section.imageUrl,
+    imageUrlDark: section.imageUrlDark,
     side: section.imageSide,
     eager,
   }),
@@ -82,7 +84,17 @@ export const BLOCK_PROPS: Record<SectionKind, (section: IContentSection, eager: 
   }),
   text: section => ({ body: section.body }),
   spotlight: (section, eager) => ({ items: section.items, eager }),
-  search: section => ({ banner: { title: section.title, subtitle: section.subtitle, imageUrl: section.imageUrl }, accent: section.accent }),
+  search: section => ({
+    banner: {
+      title: section.title,
+      subtitle: section.subtitle,
+      imageUrl: section.imageUrl,
+      imageUrlDark: section.imageUrlDark,
+      overlay: section.overlay,
+      overlayDark: section.overlayDark,
+    },
+    accent: section.accent,
+  }),
   contact: () => ({}),
   carousel: (section, eager) => ({ items: section.items, eager }),
   reviews: section => ({ items: section.items, lead: section.subtitle }),

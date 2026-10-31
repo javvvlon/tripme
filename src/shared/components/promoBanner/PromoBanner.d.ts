@@ -10,6 +10,7 @@ export interface IPromoBannerProps {
   ctaLabel?: string | null
   link?: string | null
   imageUrl?: string | null
+  imageUrlDark?: string | null
   look?: BannerStyle
   tone?: BlockTone
   eager?: boolean

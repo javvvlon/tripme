@@ -5,4 +5,5 @@ export interface IBlogHeroProps {
   title?: string | null
   subtitle: string | null
   imageUrl: string | null
+  imageUrlDark?: string | null
 }

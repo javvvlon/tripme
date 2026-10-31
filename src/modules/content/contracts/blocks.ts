@@ -43,6 +43,10 @@ export type BlockTone = typeof BLOCK_TONES[number]
 
 export const IMAGE_SIDES = ['left', 'right'] as const
 
+export const THEME_IMAGE_KINDS = ['search', 'hero', 'banner', 'media'] as const
+
+export const HERO_OVERLAY = { light: 90, dark: 70 } as const
+
 export type ImageSide = typeof IMAGE_SIDES[number]
 
 export const HERO_ACCENTS = ['pill', 'none', 'color', 'underline', 'marker', 'shadow', 'frame', 'gold'] as const
@@ -302,6 +306,9 @@ export const SINGLE_KINDS: SectionKind[] = ['search', 'contact']
 
 export const defaultSettings = (kind?: SectionKind): ISectionSettings => ({
   imageUrl: '',
+  imageUrlDark: '',
+  overlay: null,
+  overlayDark: null,
   pageSize: 9,
   excludeFeatured: true,
   style: 'card',
@@ -354,6 +361,9 @@ export interface IContentLayoutRaw {
 
 export interface ISectionSettingsRaw {
   image_url?: string | null
+  image_url_dark?: string | null
+  overlay?: number | null
+  overlay_dark?: number | null
   page_size?: number
   exclude_featured?: boolean
   style?: BannerStyle
@@ -446,6 +456,9 @@ export interface IEditableSectionRaw extends IContentSectionRaw {
 
 export interface ISectionSettings {
   imageUrl: string
+  imageUrlDark: string
+  overlay: number | null
+  overlayDark: number | null
   pageSize: number
   excludeFeatured: boolean
   style: BannerStyle
@@ -479,6 +492,8 @@ export interface IPageMetaDraft {
 const LIST_FOR: Partial<Record<SectionKind, ListKind>> = { carousel: 'cards' }
 
 export const listKindFor = (kind: SectionKind): string => LIST_FOR[kind] ?? kind
+
+export const hasThemeImage = (kind: SectionKind): boolean => (THEME_IMAGE_KINDS as readonly string[]).includes(kind)
 
 export const needsTitle = (kind: SectionKind, imageUrl?: string | null): boolean =>
   BLOCKS[kind].titleRequired && !(BLOCKS[kind].image && imageUrl)

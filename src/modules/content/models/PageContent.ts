@@ -48,6 +48,9 @@ export interface IContentSection {
   imageSide: ImageSide
   accent: HeroAccent
   imageUrl: string | null
+  imageUrlDark: string | null
+  overlay: number | null
+  overlayDark: number | null
   pageSize: number
   link: string | null
   anchor: string | null
@@ -60,6 +63,9 @@ export interface IHomeBanner {
   title: string
   subtitle: string | null
   imageUrl: string | null
+  imageUrlDark?: string | null
+  overlay?: number | null
+  overlayDark?: number | null
 }
 
 export interface IPageSeo {
@@ -190,6 +196,9 @@ export class PageContent extends Model<IPageContent> {
           imageSide: section.settings?.image_side ?? 'left',
           accent: section.settings?.accent ?? 'pill',
           imageUrl: section.settings?.image_url ?? null,
+          imageUrlDark: section.settings?.image_url_dark ?? null,
+          overlay: section.settings?.overlay ?? null,
+          overlayDark: section.settings?.overlay_dark ?? null,
           pageSize: section.settings?.page_size ?? DEFAULT_PAGE_SIZE,
           link: block.link ? section.link : null,
           anchor: section.anchor,

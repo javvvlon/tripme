@@ -356,16 +356,16 @@ export const useSections = (page: ContentPage) => {
 
   let pendingUpload: Promise<unknown> = Promise.resolve()
 
-  async function pickImage(section: IDraftSection, file: File | null) {
+  async function pickImage(section: IDraftSection, file: File | null, field: 'imageUrl' | 'imageUrlDark' = 'imageUrl') {
     if (!file) return
 
-    uploading.value = section.key
+    uploading.value = field === 'imageUrlDark' ? `${section.key}:dark` : section.key
 
     let settle = () => {}
     pendingUpload = new Promise((resolve) => { settle = () => resolve(undefined) })
 
     try {
-      section.settings.imageUrl = await upload(file)
+      section.settings[field] = await upload(file)
     }
     catch {
       fail(t('cms.lists.uploadFailed'))

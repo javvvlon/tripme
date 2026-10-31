@@ -64,7 +64,7 @@ $colors: (
     ),
     'hero': (
         'bg': #F8F9FA,
-        'scrim': rgba(248, 249, 250, .9),
+        'scrim': (248 249 250),
         'ink': #111111,
         'ink-2': #5E5E5E,
         'glass': rgba(255, 255, 255, .8),
@@ -124,7 +124,7 @@ $colors-dark: (
     ),
     'hero': (
         'bg': #0A0A0A,
-        'scrim': rgba(10, 10, 10, .7),
+        'scrim': (10 10 10),
         'ink': #FFFFFF,
         'ink-2': #A1A1AA,
         'glass': rgba(17, 17, 17, .72),

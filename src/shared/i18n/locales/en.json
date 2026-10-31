@@ -758,7 +758,12 @@
         },
         "words": "Words to accent",
         "wordTip": "Click a word. Shift-click to select several in a row."
-      }
+      },
+      "imageLight": "Image for the light theme",
+      "imageDark": "Image for the dark theme",
+      "imageDarkHint": "Optional. Without it, the dark theme shows the light-theme image.",
+      "overlay": "Image overlay: {n}%",
+      "overlayDark": "Overlay in the dark theme: {n}%"
     },
     "builder": {
       "unsaved": "Unsaved changes",
@@ -794,6 +799,10 @@
         "step2": "Assembling the page…",
         "step3": "Fetching articles…",
         "step4": "Almost there…"
+      },
+      "themes": {
+        "light": "Preview: light theme",
+        "dark": "Preview: dark theme"
       }
     },
     "posts": {
@@ -2163,13 +2172,33 @@
     },
     "ai": {
       "title": "TripMe AI",
-      "sub": "One assistant for ads and the site: selections from operator posts, banners and Telegram posts, blog articles and advice.",
+      "sub": "One assistant for ads and the site: selections from operator posts, banners and Telegram posts, blog articles, TripMe-style images and advice.",
       "placeholder": "Paste an operator post or a t.me link, or describe the task…",
       "emptyText": "Could not answer — try putting it differently.",
       "thinking": {
         "read": "Reading your request…",
         "pick": "Choosing how to help…",
         "work": "Preparing the answer…"
+      },
+      "pictures": {
+        "open": "Open",
+        "copy": "Copy link",
+        "copied": "Copied",
+        "saved": "Saved to the media library, folder «TripMe AI».",
+        "ready": "Done: {n} image | Done: {n} image | Done: {n} images | Done: {n} images",
+        "failed": "All variants came out. | {n} variant did not come out — ask again. | {n} variants did not come out — ask again. | {n} variants did not come out — ask again."
+      },
+      "can": {
+        "image": {
+          "title": "Image in the TripMe style",
+          "text": "A background, cover or illustration at the size you need, saved to the media library.",
+          "prompt": "Generate a neutral background with palm leaves and soft light for the main screen, 1920×765"
+        },
+        "imageDark": {
+          "title": "Background for the dark theme",
+          "text": "The same style in deep evening tones, for the block’s second photo.",
+          "prompt": "Generate a background with monstera leaves in deep evening tones for the dark theme of the main screen, 1920×765"
+        }
       }
     },
     "tasks": {

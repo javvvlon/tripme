@@ -1,6 +1,8 @@
 @use '../../../shared/styles/utils' as *;
 
 .tm-hero {
+    --tm-hero-veil: var(--tm-hero-veil-light, .9);
+
     position: relative;
     min-height: max(60vh, 560px);
     display: flex;
@@ -26,7 +28,7 @@
         position: absolute;
         inset: 0;
         z-index: -2;
-        background: var(--tm-hero-scrim);
+        background: rgb(var(--tm-hero-scrim) / var(--tm-hero-veil));
     }
 
     &__glow {
@@ -219,6 +221,8 @@
     transform: translateY(100%);
     opacity: 0;
 }
+
+:root[data-theme='dark'] .tm-hero { --tm-hero-veil: var(--tm-hero-veil-dark, .7); }
 
 @keyframes tm-hero-product-pulse {
     0%, 100% { opacity: .35; }

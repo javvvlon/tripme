@@ -1,4 +1,4 @@
-import { BLOCKS } from '~/modules/content/contracts/blocks'
+import { BLOCKS, hasThemeImage } from '~/modules/content/contracts/blocks'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type {
   ContentPage,
@@ -83,6 +83,8 @@ export class SectionsIntention {
 
     return {
       ...(block.image ? { image_url: settings.imageUrl.trim() || null } : {}),
+      ...(block.image && hasThemeImage(section.kind) ? { image_url_dark: settings.imageUrlDark.trim() || null } : {}),
+      ...(section.kind === 'search' ? { overlay: settings.overlay, overlay_dark: settings.overlayDark } : {}),
       ...(block.options.includes('style') ? { style: settings.style } : {}),
       ...(block.options.includes('tone') ? { tone: settings.tone } : {}),
       ...(block.options.includes('imageSide') ? { image_side: settings.imageSide } : {}),

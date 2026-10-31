@@ -50,6 +50,9 @@ export class EditableSection extends Model<IEditableSection> {
       ctaLabels,
       settings: {
         imageUrl: raw.settings?.image_url ?? '',
+        imageUrlDark: raw.settings?.image_url_dark ?? '',
+        overlay: raw.settings?.overlay ?? null,
+        overlayDark: raw.settings?.overlay_dark ?? null,
         pageSize: raw.settings?.page_size ?? defaults.pageSize,
         excludeFeatured: raw.settings?.exclude_featured !== false,
         style: raw.settings?.style ?? defaults.style,

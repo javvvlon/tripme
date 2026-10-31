@@ -1,10 +1,17 @@
 <template>
-    <section class="tm-hero">
+    <section class="tm-hero" :style="veil">
         <img
-            class="tm-hero__image"
+            class="tm-hero__image" :class="{ 'tm-only-light': imageDark }"
             :src="image" :alt="HERO.imageAlt"
             width="1920" height="765"
             fetchpriority="high" decoding="async"
+        >
+        <img
+            v-if="imageDark"
+            class="tm-hero__image tm-only-dark"
+            :src="imageDark" :alt="HERO.imageAlt"
+            width="1920" height="765"
+            loading="lazy" decoding="async"
         >
         <div class="tm-hero__scrim" aria-hidden="true" />
         <div class="tm-hero__glow" aria-hidden="true" />
@@ -160,6 +167,17 @@ const esimCountries = computed(() => POPULAR_ESIM_COUNTRIES.slice(0, 5).map(code
 const title = computed(() => props.banner?.title || t(HERO.titleKey))
 const subtitle = computed(() => props.banner?.subtitle || t(HERO.subtitleKey))
 const image = computed(() => props.banner?.imageUrl || HERO.image)
+const imageDark = computed(() => props.banner?.imageUrlDark || null)
+
+const veil = computed(() => {
+    const style: Record<string, string> = {}
+    const { overlay, overlayDark } = props.banner ?? {}
+
+    if (typeof overlay === 'number') style['--tm-hero-veil-light'] = String(overlay / 100)
+    if (typeof overlayDark === 'number') style['--tm-hero-veil-dark'] = String(overlayDark / 100)
+
+    return style
+})
 
 const widget = ref<Element | null>(null)
 const { docked, back } = useSearchDock(widget)

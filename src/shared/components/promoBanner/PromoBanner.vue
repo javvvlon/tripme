@@ -5,7 +5,8 @@
         v-bind="link ? { to: link.trim() } : {}"
         class="tm-promo-picture"
     >
-        <img :src="imageUrl" alt="" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+        <img :src="imageUrl" alt="" :class="{ 'tm-only-light': imageUrlDark }" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+        <img v-if="imageUrlDark" :src="imageUrlDark" alt="" class="tm-only-dark" loading="lazy" decoding="async">
     </component>
 
     <article
@@ -15,8 +16,13 @@
     >
         <img
             v-if="imageUrl" :src="imageUrl" alt=""
-            class="tm-promo__image"
+            class="tm-promo__image" :class="{ 'tm-only-light': imageUrlDark }"
             :loading="eager ? 'eager' : 'lazy'" decoding="async"
+        >
+        <img
+            v-if="imageUrl && imageUrlDark" :src="imageUrlDark" alt=""
+            class="tm-promo__image tm-only-dark"
+            loading="lazy" decoding="async"
         >
 
         <div class="tm-promo__text">

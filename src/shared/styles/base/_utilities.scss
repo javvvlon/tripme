@@ -36,3 +36,7 @@
     inset: 0;
     @include photo-scrim;
 }
+
+:root[data-theme='dark'] .tm-only-light { display: none !important; }
+
+:root:not([data-theme='dark']) .tm-only-dark { display: none !important; }

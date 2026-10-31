@@ -17,6 +17,8 @@ export const DEVICES = {
 
 export type DeviceKind = keyof typeof DEVICES
 
+export type PreviewTheme = 'light' | 'dark'
+
 export type BlockAction = 'up' | 'down' | 'duplicate' | 'toggle' | 'remove'
 
 export interface IBuilderContext {
@@ -38,6 +40,7 @@ export type ParentMessage =
     problems: Record<string, string>
     clean: boolean
     zoom: number
+    theme: PreviewTheme
   }
   | { channel: typeof BUILDER_CHANNEL, type: 'reveal', key: string }
 

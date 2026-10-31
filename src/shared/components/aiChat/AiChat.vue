@@ -54,6 +54,21 @@
                                     <span class="tm-ai-chat__card-go">{{ card.label }}<Icon name="arrow-right" :size="14" /></span>
                                 </NuxtLink>
 
+                                <div v-if="message.pictures?.length" class="tm-ai-chat__gallery">
+                                    <figure v-for="picture in message.pictures" :key="picture.url" class="tm-ai-chat__picture" :style="frame(picture)">
+                                        <a :href="picture.url" target="_blank" rel="noopener" class="tm-ai-chat__picture-link">
+                                            <Photo :photo="{ src: picture.url, alt: picture.title }" :ratio="`${picture.width} / ${picture.height}`" />
+                                        </a>
+                                        <figcaption class="tm-ai-chat__picture-meta">
+                                            <span>{{ picture.width }} × {{ picture.height }} · {{ picture.format.toUpperCase() }}</span>
+                                            <span class="tm-ai-chat__picture-actions">
+                                                <a :href="picture.url" target="_blank" rel="noopener">{{ t('cms.ai.pictures.open') }}</a>
+                                                <button type="button" @click="copyLink(picture.url)">{{ copied === picture.url ? t('cms.ai.pictures.copied') : t('cms.ai.pictures.copy') }}</button>
+                                            </span>
+                                        </figcaption>
+                                    </figure>
+                                </div>
+
                                 <div v-if="message.suggestions?.length" class="tm-ai-chat__suggest">
                                     <button v-for="item in message.suggestions" :key="item" type="button" :disabled="busy" @click="ask(item)">{{ item }}</button>
                                 </div>
@@ -104,7 +119,7 @@ const props = defineProps<IAiChatProps>()
 
 const { t } = useI18n()
 
-const { input, thread, text, image, busy, step, messages, ask, use, reset, visible, done } = useAiChat(props)
+const { input, thread, text, image, busy, step, messages, ask, use, reset, visible, done, copied, frame, copyLink } = useAiChat(props)
 </script>
 
 <style lang="scss">

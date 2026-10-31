@@ -73,6 +73,7 @@ export const useBuilderFrame = (root: Ref<HTMLElement | null>) => {
       selected.value = message.selected
       clean.value = message.clean
       zoom.value = message.zoom
+      document.documentElement.setAttribute('data-theme', message.theme)
       ready.value = true
     }
     else if (message.type === 'reveal') {

@@ -1,4 +1,4 @@
-import type { IAiCapability, IAiChatProps, IAiMessage, IAiTurn } from './AiChat.d'
+import type { IAiCapability, IAiChatProps, IAiMessage, IAiPicture, IAiTurn } from './AiChat.d'
 import type { IAiInputExpose } from '../aiInput/AiInput.d'
 import { readFailure } from '~/shared/services/ui/failure'
 
@@ -10,6 +10,10 @@ const TYPE_STEP_MS = 16
 const TYPE_CHARS = 3
 
 const THINK_STEP_MS = 2600
+
+const PREVIEW_HEIGHT = 280
+
+const COPIED_MS = 1600
 
 export const useAiChat = (props: IAiChatProps) => {
   const { t } = useI18n()
@@ -134,5 +138,20 @@ export const useAiChat = (props: IAiChatProps) => {
     for (const url of urls) URL.revokeObjectURL(url)
   })
 
-  return { input, thread, text, image, busy, step, messages, ask, use, reset, visible, done }
+  const copied = ref('')
+
+  const frame = (picture: IAiPicture) => ({ width: `min(100%, ${Math.round(PREVIEW_HEIGHT * picture.width / picture.height)}px)` })
+
+  async function copyLink(url: string) {
+    try {
+      await navigator.clipboard.writeText(url)
+      copied.value = url
+      setTimeout(() => { if (copied.value === url) copied.value = '' }, COPIED_MS)
+    }
+    catch {
+      window.open(url, '_blank', 'noopener')
+    }
+  }
+
+  return { input, thread, text, image, busy, step, messages, ask, use, reset, visible, done, copied, frame, copyLink }
 }

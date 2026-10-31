@@ -758,7 +758,12 @@
         },
         "words": "Urg‘u uchun so‘zlar",
         "wordTip": "So‘zni bosing. Shift — ketma-ket bir nechtasini tanlash."
-      }
+      },
+      "imageLight": "Yorug‘ mavzu uchun rasm",
+      "imageDark": "Qorong‘i mavzu uchun rasm",
+      "imageDarkHint": "Ixtiyoriy. Tanlanmasa, qorong‘i mavzuda yorug‘ mavzu rasmi ko‘rsatiladi.",
+      "overlay": "Rasm qoraytirilishi: {n}%",
+      "overlayDark": "Qorong‘i mavzuda qoraytirish: {n}%"
     },
     "builder": {
       "unsaved": "Saqlanmagan oʻzgarishlar bor",
@@ -794,6 +799,10 @@
         "step2": "Sahifa yigʻilmoqda…",
         "step3": "Maqolalar olinmoqda…",
         "step4": "Deyarli tayyor…"
+      },
+      "themes": {
+        "light": "Ko‘rib chiqish: yorug‘ mavzu",
+        "dark": "Ko‘rib chiqish: qorong‘i mavzu"
       }
     },
     "posts": {
@@ -2163,13 +2172,33 @@
     },
     "ai": {
       "title": "TripMe AI",
-      "sub": "Reklama va sayt uchun yagona yordamchi: operator postlaridan tanlovlar, bannerlar va Telegram postlari, blog maqolalari va maslahatlar.",
+      "sub": "Reklama va sayt uchun yagona yordamchi: operator postlaridan tanlovlar, bannerlar va Telegram postlari, blog maqolalari, TripMe uslubidagi rasmlar va maslahatlar.",
       "placeholder": "Operator postini, t.me havolasini qo‘ying yoki vazifani yozing…",
       "emptyText": "Javob bera olmadim — boshqacha yozib ko‘ring.",
       "thinking": {
         "read": "So‘rovni o‘qiyapman…",
         "pick": "Qanday yordam berishni tanlayapman…",
         "work": "Javob tayyorlayapman…"
+      },
+      "pictures": {
+        "open": "Ochish",
+        "copy": "Havolani nusxalash",
+        "copied": "Nusxalandi",
+        "saved": "Mediatekaga, «TripMe AI» papkasiga saqlandi.",
+        "ready": "Tayyor: {n} ta rasm | Tayyor: {n} ta rasm | Tayyor: {n} ta rasm | Tayyor: {n} ta rasm",
+        "failed": "Barcha variantlar chiqdi. | {n} ta variant chiqmadi — yana so‘rang. | {n} ta variant chiqmadi — yana so‘rang. | {n} ta variant chiqmadi — yana so‘rang."
+      },
+      "can": {
+        "image": {
+          "title": "TripMe uslubidagi rasm",
+          "text": "Kerakli o‘lchamdagi fon, muqova yoki illyustratsiya. Mediatekaga saqlaymiz.",
+          "prompt": "Bosh ekran uchun palma barglari va yumshoq yorug‘likli neytral fon yarat, 1920×765"
+        },
+        "imageDark": {
+          "title": "Qorong‘i mavzu uchun fon",
+          "text": "Xuddi shu uslub, chuqur kechki ranglarda — blokning ikkinchi rasmi uchun.",
+          "prompt": "Bosh ekranning qorong‘i mavzusi uchun chuqur kechki ranglarda monstera barglari bilan fon yarat, 1920×765"
+        }
       }
     },
     "tasks": {

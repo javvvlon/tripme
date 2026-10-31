@@ -1,5 +1,5 @@
 import { useAiRepository } from '~/modules/ai/repositories'
-import type { ITripmeAnswer } from '~/modules/ai/contracts/ai'
+import type { IImageAnswer, ITripmeAnswer } from '~/modules/ai/contracts/ai'
 import type { IAssistantAnswer, IIntakeReport, ISelection } from '~/modules/marketing/contracts/marketing'
 import type { IBlogAssistantAnswer } from '~/modules/posts/contracts/posts'
 import type { IAiAnswer, IAiAsk, IAiCapability } from '~/shared/components/aiChat/AiChat.d'
@@ -72,9 +72,23 @@ export const useTripmeAi = () => {
     }
   }
 
+  function picture(answer: IImageAnswer): IAiAnswer {
+    return {
+      text: [
+        answer.reply || t('cms.ai.pictures.ready', { n: answer.images.length }, answer.images.length),
+        answer.failed ? t('cms.ai.pictures.failed', { n: answer.failed }, answer.failed) : '',
+        t('cms.ai.pictures.saved'),
+      ].filter(Boolean).join('\n\n'),
+      pictures: answer.images.map(image => ({ url: image.url, width: image.width, height: image.height, format: image.format, title: image.title })),
+      suggestions: answer.suggestions,
+      context: { domain: 'image', pending: '' },
+    }
+  }
+
   function answerOf(answer: ITripmeAnswer): IAiAnswer {
     if (answer.domain === 'marketing') return marketing(answer.marketing, answer.text)
     if (answer.domain === 'blog') return blog(answer.blog)
+    if (answer.domain === 'image') return picture(answer.image)
 
     return { text: answer.reply || t('cms.ai.emptyText'), suggestions: answer.suggestions, context: { domain: 'general', pending: '' } }
   }
@@ -88,6 +102,8 @@ export const useTripmeAi = () => {
     { key: 'shot', icon: 'image', title: t('cms.marketing.assistant.can.shot.title'), text: t('cms.marketing.assistant.can.shot.text'), attach: true },
     { key: 'own', icon: 'sparkle', title: t('cms.marketing.assistant.can.own.title'), text: t('cms.marketing.assistant.can.own.text'), prompt: t('cms.marketing.assistant.can.own.prompt') },
     { key: 'article', icon: 'pencil', title: t('cms.posts.assistant.can.article.title'), text: t('cms.posts.assistant.can.article.text'), prompt: t('cms.posts.assistant.can.article.prompt') },
+    { key: 'image', icon: 'image', title: t('cms.ai.can.image.title'), text: t('cms.ai.can.image.text'), prompt: t('cms.ai.can.image.prompt') },
+    { key: 'imageDark', icon: 'moon', title: t('cms.ai.can.imageDark.title'), text: t('cms.ai.can.imageDark.text'), prompt: t('cms.ai.can.imageDark.prompt') },
     { key: 'ideas', icon: 'layers', title: t('cms.posts.assistant.can.ideas.title'), text: t('cms.posts.assistant.can.ideas.text'), prompt: t('cms.posts.assistant.can.ideas.prompt') },
     { key: 'advice', icon: 'megaphone', title: t('cms.marketing.assistant.can.advice.title'), text: t('cms.marketing.assistant.can.advice.text'), prompt: t('cms.marketing.assistant.can.advice.prompt') },
   ])

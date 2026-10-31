@@ -9,6 +9,7 @@ export interface IMediaTextProps {
   ctaLabel?: string | null
   link?: string | null
   imageUrl?: string | null
+  imageUrlDark?: string | null
   side?: ImageSide
   eager?: boolean
 }

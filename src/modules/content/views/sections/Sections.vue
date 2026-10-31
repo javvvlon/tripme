@@ -20,6 +20,16 @@
                         <Icon :name="spec.icon" :size="18" />
                     </button>
                 </Tooltip>
+
+                <Tooltip :text="t(`cms.builder.themes.${previewTheme}`)" side="bottom">
+                    <button
+                        type="button" class="tm-builder__device"
+                        :aria-label="t(`cms.builder.themes.${previewTheme}`)"
+                        @click="previewTheme = previewTheme === 'light' ? 'dark' : 'light'"
+                    >
+                        <Icon :name="previewTheme === 'light' ? 'sun' : 'moon'" :size="18" />
+                    </button>
+                </Tooltip>
             </div>
 
             <div class="tm-builder__actions">
@@ -123,6 +133,7 @@
                 :problems="problems"
                 :device="device"
                 :clean="clean"
+                :theme="previewTheme"
                 :label="t('cms.builder.canvas')"
                 @select="select"
                 @action="onAction"
@@ -226,7 +237,7 @@
                         </div>
 
                         <div v-if="BLOCKS[current.kind].image" class="tm-builder__field">
-                            <span class="tm-builder__label">{{ fieldLabel(current, 'image') }}</span>
+                            <span class="tm-builder__label">{{ hasThemeImage(current.kind) ? t('cms.sections.imageLight') : fieldLabel(current, 'image') }}</span>
                             <FileUpload
                                 :accept="['image/png', 'image/jpeg', 'image/webp']"
                                 :max-size="8 * 1024 * 1024"
@@ -240,6 +251,39 @@
                                 @clear="current!.settings.imageUrl = ''"
                                 @discard="discardImage"
                             />
+                            <label v-if="current.kind === 'search'" class="tm-builder__range">
+                                <span>{{ t('cms.sections.overlay', { n: current.settings.overlay ?? HERO_OVERLAY.light }) }}</span>
+                                <input
+                                    type="range" min="0" max="100" step="5"
+                                    :value="current.settings.overlay ?? HERO_OVERLAY.light"
+                                    @input="current!.settings.overlay = Number(($event.target as HTMLInputElement).value)"
+                                >
+                            </label>
+                        </div>
+
+                        <div v-if="BLOCKS[current.kind].image && hasThemeImage(current.kind)" class="tm-builder__field">
+                            <span class="tm-builder__label">{{ t('cms.sections.imageDark') }}</span>
+                            <FileUpload
+                                :accept="['image/png', 'image/jpeg', 'image/webp']"
+                                :max-size="8 * 1024 * 1024"
+                                :current="current.settings.imageUrlDark || null"
+                                :hint="uploading === `${current.key}:dark` ? t('cms.lists.uploading') : t('cms.sections.imageDarkHint')"
+                                :disabled="uploading === `${current.key}:dark`"
+                                :library="mediaLibrary"
+                                override
+                                @update:model-value="file => file && pickImage(current!, file, 'imageUrlDark')"
+                                @pick="url => (current!.settings.imageUrlDark = url)"
+                                @clear="current!.settings.imageUrlDark = ''"
+                                @discard="discardImage"
+                            />
+                            <label v-if="current.kind === 'search'" class="tm-builder__range">
+                                <span>{{ t('cms.sections.overlayDark', { n: current.settings.overlayDark ?? HERO_OVERLAY.dark }) }}</span>
+                                <input
+                                    type="range" min="0" max="100" step="5"
+                                    :value="current.settings.overlayDark ?? HERO_OVERLAY.dark"
+                                    @input="current!.settings.overlayDark = Number(($event.target as HTMLInputElement).value)"
+                                >
+                            </label>
                         </div>
 
                         <Combobox
@@ -427,11 +471,11 @@ import { plainHeadline } from '~/shared/helpers/headline'
 import MultiSelect from '~/shared/components/multiSelect/MultiSelect.vue'
 import { CONTENT_LOCALES } from '~/modules/content/contracts/content'
 import type { ContentLocale } from '~/modules/content/contracts/content'
-import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, HERO_ACCENTS, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
+import { BANNER_STYLES, BLOCKS, BLOCK_TONES, FEED_PAGE_SIZES, HERO_ACCENTS, HERO_OVERLAY, IMAGE_SIDES, SINGLE_KINDS, SPOTLIGHT_SIZES, hasThemeImage, listKindFor, needsTitle } from '~/modules/content/contracts/blocks'
 import { excerptFrom } from '~/shared/helpers/markdown'
 import { DEVICES } from '~/modules/content/contracts/builder'
 import type { BlockField, BlockOption, ContentPage, SectionKind } from '~/modules/content/contracts/blocks'
-import type { BlockAction, DeviceKind } from '~/modules/content/contracts/builder'
+import type { BlockAction, DeviceKind, PreviewTheme } from '~/modules/content/contracts/builder'
 import { useSections } from './Sections.hooks'
 import type { IDraftSection } from './Sections.hooks'
 
@@ -459,6 +503,7 @@ const splashSteps = computed(() => [1, 2, 3, 4].map(n => t(`cms.builder.splash.s
 
 const device = ref<DeviceKind>('desktop')
 const clean = ref(false)
+const previewTheme = ref<PreviewTheme>('light')
 
 const paletteKinds = computed(() => kinds.filter(kind =>
   !SINGLE_KINDS.includes(kind) || !draft.value.some(section => section.kind === kind)))

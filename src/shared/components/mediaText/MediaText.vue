@@ -5,12 +5,14 @@
         v-bind="link ? { to: link.trim() } : {}"
         class="tm-media-text-picture"
     >
-        <img :src="imageUrl" alt="" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+        <img :src="imageUrl" alt="" :class="{ 'tm-only-light': imageUrlDark }" :loading="eager ? 'eager' : 'lazy'" decoding="async">
+        <img v-if="imageUrlDark" :src="imageUrlDark" alt="" class="tm-only-dark" loading="lazy" decoding="async">
     </component>
 
     <article v-else class="tm-media-text" :class="[`is-${side}`, { 'has-image': imageUrl }]">
         <figure v-if="imageUrl" class="tm-media-text__media">
-            <Photo :photo="{ src: imageUrl, alt: title ?? '' }" ratio="4 / 3" :eager="eager" sizes="(max-width: 900px) 100vw, 560px" />
+            <Photo :class="{ 'tm-only-light': imageUrlDark }" :photo="{ src: imageUrl, alt: title ?? '' }" ratio="4 / 3" :eager="eager" sizes="(max-width: 900px) 100vw, 560px" />
+            <Photo v-if="imageUrlDark" class="tm-only-dark" :photo="{ src: imageUrlDark, alt: title ?? '' }" ratio="4 / 3" sizes="(max-width: 900px) 100vw, 560px" />
         </figure>
 
         <div class="tm-media-text__text">

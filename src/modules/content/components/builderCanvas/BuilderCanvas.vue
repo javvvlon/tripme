@@ -53,6 +53,7 @@ const sendRender = () => post({
   problems: { ...props.problems },
   clean: props.clean,
   zoom: 1 / scale.value,
+  theme: props.theme,
 })
 
 let pending: ReturnType<typeof setTimeout> | null = null
@@ -68,7 +69,7 @@ const scheduleRender = () => {
 }
 
 watch(() => props.context, () => ready.value && sendContext())
-watch(() => [props.sections, props.locale, props.problems, props.clean, scale.value], scheduleRender, { deep: true })
+watch(() => [props.sections, props.locale, props.problems, props.clean, props.theme, scale.value], scheduleRender, { deep: true })
 watch(() => props.selected, () => ready.value && sendRender())
 
 const receive = (event: MessageEvent) => {

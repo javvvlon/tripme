@@ -340,6 +340,22 @@
         font-weight: 600;
     }
 
+    &__range {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 4px;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        font-variant-numeric: tabular-nums;
+
+        input {
+            width: 100%;
+            accent-color: var(--tm-brand-primary);
+            cursor: pointer;
+        }
+    }
+
     &__note {
         margin: 0;
         color: var(--tm-status-warning);
