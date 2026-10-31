@@ -19,6 +19,8 @@
         background: var(--tm-badge-beta-bg);
         border-color: var(--tm-badge-beta-line);
         color: var(--tm-badge-beta-ink);
+        font-family: var(--tm-font-body-primary);
+        font-size: size(11);
     }
 
     &--new {

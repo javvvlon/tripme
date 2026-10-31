@@ -5,8 +5,8 @@
     min-height: max(60vh, 560px);
     display: flex;
     align-items: center;
-    color: var(--tm-common-white);
-    background: var(--tm-night-bg);
+    color: var(--tm-hero-ink);
+    background: var(--tm-hero-bg);
     overflow: visible;
     isolation: isolate;
     margin-top: -77px;
@@ -26,7 +26,7 @@
         position: absolute;
         inset: 0;
         z-index: -2;
-        background: rgba(10, 10, 10, .7);
+        background: var(--tm-hero-scrim);
     }
 
     &__glow {
@@ -61,7 +61,7 @@
         margin: 0 auto;
         font-size: clamp(#{size(32)}, 5.4vw, #{size(72)});
         line-height: .95;
-        color: var(--tm-common-white);
+        color: var(--tm-hero-ink);
         text-wrap: balance;
     }
 
@@ -71,7 +71,7 @@
         margin: 24px auto 0;
         font-size: clamp(#{size(16)}, 1.6vw, #{size(19)});
         line-height: 1.6;
-        color: var(--tm-night-ink-2);
+        color: var(--tm-hero-ink-2);
     }
 
     &__products {
@@ -80,8 +80,8 @@
         margin-top: 32px;
         padding: 4px;
         border-radius: radius('pill');
-        background: var(--tm-night-glass);
-        border: 1px solid var(--tm-night-line);
+        background: var(--tm-hero-glass);
+        border: 1px solid var(--tm-hero-line);
         -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
     }
@@ -92,13 +92,13 @@
         gap: 8px;
         padding: 9px 20px;
         border-radius: radius('pill');
-        color: var(--tm-night-ink-2);
+        color: var(--tm-hero-tab);
         font-size: size(15);
         font-weight: 700;
         text-decoration: none;
         transition: background .2s ease, color .2s ease;
 
-        &:hover { color: var(--tm-common-white); }
+        &:hover { color: var(--tm-hero-tab-hover); }
 
         &:focus-visible {
             outline: 2px solid var(--tm-brand-primary);
@@ -109,6 +109,19 @@
             background: var(--tm-brand-primary);
             color: var(--tm-brand-on-primary);
         }
+
+        &.is-muted {
+            cursor: default;
+            opacity: .45;
+
+            &:hover { color: var(--tm-hero-tab); }
+        }
+
+        &.is-loading { animation: tm-hero-product-pulse 1.4s ease-in-out infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+            &.is-loading { animation: none; }
+        }
     }
 
     &__widget {
@@ -117,6 +130,14 @@
         max-width: 1184px;
         margin: 20px auto 0;
         text-align: left;
+    }
+
+    .tm-chip--onDark {
+        background: var(--tm-hero-glass);
+        border-color: var(--tm-hero-line);
+        color: var(--tm-hero-tab);
+
+        &:hover { color: var(--tm-hero-tab-hover); border-color: var(--tm-brand-primary); }
     }
 
     &__quick {
@@ -197,4 +218,9 @@
 .tm-hero-dock-leave-to {
     transform: translateY(100%);
     opacity: 0;
+}
+
+@keyframes tm-hero-product-pulse {
+    0%, 100% { opacity: .35; }
+    50% { opacity: .6; }
 }
