@@ -1,5 +1,5 @@
 import type { RouteLocationNormalized } from 'vue-router'
-import { CMS_CLASS, DEFAULT_THEME, LIGHT_ONLY_LAYOUTS, THEME_COLOR, THEME_KEY, THEMES } from '~/shared/config/theme'
+import { CMS_CLASS, DEFAULT_THEME, LIGHT_ONLY_LAYOUTS, THEME_COLOR, THEME_COOKIE_MAX_AGE, THEME_KEY, THEMES } from '~/shared/config/theme'
 import type { Theme } from '~/shared/config/theme'
 
 /**
@@ -8,15 +8,21 @@ import type { Theme } from '~/shared/config/theme'
 export const useTheme = () => {
   const preference = useState<Theme>('theme', () => DEFAULT_THEME)
 
-  const stored = (): Theme => {
-    try {
-      const value = localStorage.getItem(THEME_KEY)
+  const isTheme = (value: unknown): value is Theme => THEMES.includes(value as Theme)
 
-      return THEMES.includes(value as Theme) ? value as Theme : DEFAULT_THEME
+  const stored = (): Theme => {
+    let value: string | null = null
+
+    try {
+      value = localStorage.getItem(THEME_KEY)
     }
-    catch {
-      return DEFAULT_THEME
-    }
+    catch {}
+
+    if (isTheme(value)) return value
+
+    const cookie = new RegExp(`(?:^|; )${THEME_KEY}=([a-z]+)`).exec(document.cookie)?.[1]
+
+    return isTheme(cookie) ? cookie : DEFAULT_THEME
   }
 
   const paint = (theme: Theme): void => {
@@ -38,6 +44,8 @@ export const useTheme = () => {
       localStorage.setItem(THEME_KEY, theme)
     }
     catch {}
+
+    document.cookie = `${THEME_KEY}=${theme}; Max-Age=${THEME_COOKIE_MAX_AGE}; Path=/; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`
 
     paint(theme)
   }

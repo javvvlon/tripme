@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { AppBootstrap } from './src/shared/bootstrap/service'
 import { modules as appModules } from './src/modules'
 import { LOCALES } from './src/shared/config/locales'
-import { THEME_BOOT, THEME_COLOR } from './src/shared/config/theme'
+import { DEFAULT_THEME, THEME_BOOT, THEME_COLOR } from './src/shared/config/theme'
 
 const bootstrap = new AppBootstrap(appModules).bootSync()
 
@@ -101,8 +101,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: THEME_COLOR.dark },
-        { name: 'color-scheme', content: 'dark light' },
+        { name: 'theme-color', content: THEME_COLOR[DEFAULT_THEME] },
+        { name: 'color-scheme', content: 'light dark' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

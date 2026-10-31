@@ -5,8 +5,10 @@
             :aria-label="t('theme.toggle')"
             @click="toggle"
         >
-            <Icon class="tm-theme-toggle__sun" name="sun" :size="18" />
-            <Icon class="tm-theme-toggle__moon" name="moon" :size="18" />
+            <span class="tm-theme-toggle__icon">
+                <Icon class="tm-theme-toggle__sun" name="sun" :size="18" />
+                <Icon class="tm-theme-toggle__moon" name="moon" :size="18" />
+            </span>
         </button>
     </Tooltip>
 </template>

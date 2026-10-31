@@ -90,9 +90,3 @@
         &__sheet { padding: 22px 18px; }
     }
 }
-
-:root[data-theme='light'] .tm-legal {
-    --tm-ink-1: var(--tm-ink-graphite);
-    --tm-ink-2: var(--tm-ink-graphite);
-    --tm-ink-3: var(--tm-ink-graphite-muted);
-}

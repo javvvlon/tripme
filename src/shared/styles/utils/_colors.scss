@@ -35,12 +35,10 @@ $colors: (
         'glass': rgba(17, 17, 17, .72),
     ),
     'ink': (
-        '1': #0B192C,
-        '2': #334155,
-        '3': #5B6B80,
-        '4': #94A3B8,
-        'graphite': #111111,
-        'graphite-muted': #5E5E5E,
+        '1': #111111,
+        '2': #111111,
+        '3': #5E5E5E,
+        '4': #8C8C8C,
     ),
     'surface': (
         '1': #ffffff,
@@ -51,8 +49,8 @@ $colors: (
         'bar': rgba(248, 249, 250, .92),
     ),
     'border': (
-        '1': #EAE5D9,
-        '2': #F2EFE8,
+        '1': #E2E8F0,
+        '2': #EEF1F5,
     ),
     'cms': (
         'panel': #0F172A,
@@ -70,7 +68,7 @@ $colors: (
         'beta-ink': #A1A1AA,
         'beta-hover': #F8F9FA,
         'new-line': #FF6B00,
-        'new-ink': #0B192C,
+        'new-ink': #111111,
         'premium-bg': #0B192C,
         'premium-ink': #C5A880,
     ),

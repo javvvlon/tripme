@@ -1,6 +1,7 @@
 @use '../../styles/utils' as *;
 
 .tm-theme-toggle {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -16,10 +17,26 @@
         border-color: var(--tm-brand-primary);
     }
 
-    &__moon { display: none; }
+    &::after {
+        content: '';
+        position: absolute;
+        inset: -3px;
+    }
+
+    &__icon {
+        display: inline-flex;
+        transition: transform .2s ease-in-out;
+    }
+
+    &__sun { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        &__icon { transition: none; }
+    }
 }
 
-:root[data-theme='light'] .tm-theme-toggle {
-    &__sun { display: none; }
-    &__moon { display: block; }
+:root[data-theme='dark'] .tm-theme-toggle {
+    &__icon { transform: rotate(180deg); }
+    &__sun { display: block; }
+    &__moon { display: none; }
 }
