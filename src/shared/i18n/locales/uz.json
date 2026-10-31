@@ -128,7 +128,9 @@
       "tours": "Turlar",
       "hotels": "Mehmonxonalar",
       "excursions": "Ekskursiyalar",
-      "esim": "eSIM"
+      "esim": "eSIM",
+      "loading": "Yo‘nalishlar yuklanmoqda…",
+      "unavailable": "Hozircha mavjud emas"
     }
   },
   "footer": {

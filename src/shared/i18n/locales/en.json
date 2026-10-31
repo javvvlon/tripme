@@ -128,7 +128,9 @@
       "tours": "Tours",
       "hotels": "Hotels",
       "excursions": "Excursions",
-      "esim": "eSIM"
+      "esim": "eSIM",
+      "loading": "Loading destinations…",
+      "unavailable": "Not available right now"
     }
   },
   "footer": {

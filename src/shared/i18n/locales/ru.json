@@ -128,7 +128,9 @@
       "tours": "Туры",
       "hotels": "Отели",
       "excursions": "Экскурсии",
-      "esim": "eSIM"
+      "esim": "eSIM",
+      "loading": "Загружаем направления…",
+      "unavailable": "Сейчас недоступно"
     }
   },
   "footer": {

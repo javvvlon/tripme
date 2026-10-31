@@ -10,3 +10,5 @@ export interface IHeroProps {
 }
 
 export type HeroProduct = 'tours' | 'hotels' | 'excursions' | 'esim'
+
+export type ProductState = 'ready' | 'loading' | 'unavailable'

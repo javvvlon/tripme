@@ -16,15 +16,22 @@
             <p v-if="subtitle" class="tm-hero__subtitle">{{ subtitle }}</p>
 
             <nav v-if="products.length > 1" class="tm-hero__products" :aria-label="t('home.products.label')">
-                <NuxtLink
+                <Tooltip
                     v-for="item in products" :key="item.value"
-                    :to="item.to" replace
-                    class="tm-hero__product" :class="{ 'is-active': product === item.value }"
-                    :aria-current="product === item.value ? 'page' : undefined"
+                    :text="item.state === 'ready' ? '' : t(`home.products.${item.state}`)"
+                    :disabled="item.state === 'ready'" side="bottom"
                 >
-                    <Icon :name="item.icon" :size="18" />
-                    {{ item.label }}
-                </NuxtLink>
+                    <component
+                        :is="item.state === 'ready' ? NuxtLink : 'span'"
+                        v-bind="item.state === 'ready' ? { to: item.to, replace: true } : { 'role': 'link', 'aria-disabled': 'true', 'aria-busy': item.state === 'loading' }"
+                        class="tm-hero__product"
+                        :class="{ 'is-active': product === item.value, 'is-muted': item.state !== 'ready', 'is-loading': item.state === 'loading' }"
+                        :aria-current="item.state === 'ready' && product === item.value ? 'page' : undefined"
+                    >
+                        <Icon :name="item.icon" :size="18" />
+                        {{ item.label }}
+                    </component>
+                </Tooltip>
             </nav>
 
             <template v-if="product === 'esim'">
@@ -65,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import { HERO, HERO_PRODUCTS, PRODUCT_PICKS, QUICK_SEARCHES } from '~/landing/views/home/Home.config'
 import { SearchMode } from '~/search_engine/contracts/search'
 import { useArenaPresets } from '~/shared/composables/useArenaPresets'
@@ -73,7 +81,7 @@ import { useEsimCountries } from '~/modules/esim/hooks/use-esim-countries'
 import { countryName, flagOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
 import HeroHeadline from '~/shared/components/heroHeadline/HeroHeadline.vue'
-import type { HeroProduct, IHeroProps } from './Hero.d'
+import type { HeroProduct, IHeroProps, ProductState } from './Hero.d'
 import { useSearchDock } from './Hero.hooks'
 
 const props = defineProps<IHeroProps>()
@@ -92,20 +100,28 @@ const hydrated = ref(false)
 
 onMounted(() => { hydrated.value = true })
 
-const { data: hotelCountries } = useProductCountries(SearchMode.Hotels)
-const { data: excursionCountries } = useProductCountries(SearchMode.Excursions)
+const { data: hotelCountries, status: hotelStatus } = useProductCountries(SearchMode.Hotels)
+const { data: excursionCountries, status: excursionStatus } = useProductCountries(SearchMode.Excursions)
 
-const available = computed<Record<HeroProduct, boolean>>(() => ({
-    tours: true,
-    hotels: hotelCountries.value.length > 0,
-    excursions: excursionCountries.value.length > 0,
-    esim: esimOpen.value,
+const stateOf = (status: string, count: number): ProductState => {
+    if (status === 'idle' || status === 'pending') return 'loading'
+
+    return count > 0 ? 'ready' : 'unavailable'
+}
+
+const states = computed<Record<HeroProduct, ProductState>>(() => ({
+    tours: 'ready',
+    hotels: stateOf(hotelStatus.value, hotelCountries.value.length),
+    excursions: stateOf(excursionStatus.value, excursionCountries.value.length),
+    esim: esimOpen.value ? 'ready' : 'unavailable',
 }))
 
 const product = computed<HeroProduct>(() => {
     const asked = String(route.query.product ?? '') as HeroProduct
 
-    return hydrated.value && available.value[asked] ? asked : 'tours'
+    if (asked === 'esim') return hydrated.value && states.value.esim === 'ready' ? 'esim' : 'tours'
+
+    return asked in states.value && states.value[asked] !== 'unavailable' ? asked : 'tours'
 })
 
 const widgetMode = computed(() => {
@@ -127,10 +143,11 @@ const picks = computed(() => {
     })
 })
 
-const products = computed(() => HERO_PRODUCTS.filter(item => available.value[item.value]).map(item => ({
+const products = computed(() => HERO_PRODUCTS.filter(item => item.value !== 'esim' || esimOpen.value).map(item => ({
     value: item.value,
     label: t(item.labelKey),
     icon: item.icon,
+    state: states.value[item.value],
     to: localePath({ path: '/', query: item.value === 'tours' ? {} : { product: item.value } }),
 })))
 
