@@ -1,5 +1,5 @@
 <template>
-    <section class="tm-hero" :style="veil">
+    <section ref="section" class="tm-hero" :style="veil">
         <img
             class="tm-hero__image" :class="{ 'tm-only-light': imageDark }"
             :src="image" :alt="HERO.imageAlt"
@@ -89,7 +89,7 @@ import { countryName, flagOf } from '~/modules/esim/helpers/esim'
 import { POPULAR_ESIM_COUNTRIES } from '~/modules/esim/contracts/esim'
 import HeroHeadline from '~/shared/components/heroHeadline/HeroHeadline.vue'
 import type { HeroProduct, IHeroProps, ProductState } from './Hero.d'
-import { useSearchDock } from './Hero.hooks'
+import { useHeroUnderHeader, useSearchDock } from './Hero.hooks'
 
 const props = defineProps<IHeroProps>()
 
@@ -181,6 +181,9 @@ const veil = computed(() => {
 
 const widget = ref<Element | null>(null)
 const { docked, back } = useSearchDock(widget)
+
+const section = ref<Element | null>(null)
+useHeroUnderHeader(section)
 </script>
 
 <style lang="scss">

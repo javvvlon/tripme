@@ -5,6 +5,8 @@ import type { Ref } from 'vue'
  */
 export const HERO_SEARCH_IN_VIEW = 'hero:search-in-view'
 
+export const HERO_UNDER_HEADER = 'hero:under-header'
+
 const HEADER_OFFSET_PX = 80
 
 export const useSearchDock = (target: Ref<{ $el?: Element } | Element | null>) => {
@@ -51,4 +53,25 @@ export const useSearchDock = (target: Ref<{ $el?: Element } | Element | null>) =
   }
 
   return { docked, back }
+}
+
+export const useHeroUnderHeader = (target: Ref<Element | null>) => {
+  const under = useState<boolean>(HERO_UNDER_HEADER, () => true)
+
+  let observer: IntersectionObserver | null = null
+
+  onMounted(() => {
+    if (!target.value) return
+
+    observer = new IntersectionObserver(([entry]) => {
+      under.value = !!entry?.isIntersecting
+    }, { rootMargin: `-${HEADER_OFFSET_PX}px 0px 0px 0px` })
+
+    observer.observe(target.value)
+  })
+
+  onBeforeUnmount(() => {
+    observer?.disconnect()
+    under.value = false
+  })
 }

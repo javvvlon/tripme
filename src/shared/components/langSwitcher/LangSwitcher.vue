@@ -1,5 +1,16 @@
 <template>
-    <div ref="root" class="tm-lang-switcher" :class="[`tm-lang-switcher--${tone}`, { 'is-open': open }]">
+    <div v-if="variant === 'inline'" class="tm-lang-switcher tm-lang-switcher--inline" role="radiogroup" :aria-label="t('common.language')">
+        <NuxtLink
+            v-for="item in items" :key="item.code"
+            :to="item.to" role="radio" :aria-checked="item.active" :lang="item.language"
+            class="tm-lang-switcher__option" :class="{ 'is-active': item.active }"
+            @click="choose(item.code)"
+        >
+            {{ item.name }}
+        </NuxtLink>
+    </div>
+
+    <div v-else ref="root" class="tm-lang-switcher" :class="[`tm-lang-switcher--${tone}`, { 'is-open': open }]">
         <button
             type="button" class="tm-lang-switcher__control"
             :aria-label="t('common.language')" aria-haspopup="menu" :aria-expanded="open"
@@ -32,7 +43,7 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE } from './LangSwitcher.config'
 import type { ILangSwitcherProps } from './LangSwitcher.d'
 
-withDefaults(defineProps<ILangSwitcherProps>(), { tone: 'onDark' })
+withDefaults(defineProps<ILangSwitcherProps>(), { tone: 'onDark', variant: 'menu' })
 
 const { t, locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()

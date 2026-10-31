@@ -47,10 +47,14 @@ $colors: (
         'field': #ffffff,
         'glass': rgba(255, 255, 255, .95),
         'bar': rgba(248, 249, 250, .92),
+        'bar-clear': rgba(248, 249, 250, .6),
+        'chip-clear': rgba(255, 255, 255, .62),
     ),
     'border': (
         '1': #E2E8F0,
         '2': #EEF1F5,
+        'clear': rgba(255, 255, 255, .45),
+        'chip-clear': rgba(255, 255, 255, .85),
     ),
     'cms': (
         'panel': #0F172A,
@@ -117,10 +121,14 @@ $colors-dark: (
         'field': #1A1A1A,
         'glass': rgba(17, 17, 17, .78),
         'bar': rgba(10, 10, 10, .8),
+        'bar-clear': rgba(10, 10, 10, .5),
+        'chip-clear': rgba(255, 255, 255, .08),
     ),
     'border': (
         '1': #27272A,
         '2': #1C1C1F,
+        'clear': rgba(255, 255, 255, .08),
+        'chip-clear': rgba(255, 255, 255, .16),
     ),
     'hero': (
         'bg': #0A0A0A,

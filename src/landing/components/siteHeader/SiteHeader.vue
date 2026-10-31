@@ -1,5 +1,5 @@
 <template>
-    <header class="tm-site-header" :class="`tm-site-header--${variant}`">
+    <header class="tm-site-header" :class="[`tm-site-header--${variant}`, { 'is-clear': clear }]">
         <div class="container-wide tm-site-header__row">
             <div class="tm-site-header__brand">
                 <NuxtLink :to="localePath('/')" class="tm-site-header__logo" :aria-label="t('nav.home')">
@@ -21,12 +21,33 @@
                 >
                     {{ t(item.labelKey) }}
                 </component>
+
+                <div class="tm-site-header__menu-extra">
+                    <div class="tm-site-header__menu-group">
+                        <span class="tm-site-header__menu-label">{{ t('common.language') }}</span>
+                        <LangSwitcher variant="inline" />
+                    </div>
+
+                    <NuxtLink v-if="user" :to="localePath(user.homePath())" class="tm-site-header__menu-account">
+                        <span class="tm-site-header__menu-avatar">{{ initials }}</span>
+                        <span class="tm-site-header__menu-who">
+                            <strong>{{ user.fullName() }}</strong>
+                            <small>{{ user.isClient() ? t('common.account') : t('common.workspace') }}</small>
+                        </span>
+                        <Icon name="chevron-right" :size="16" />
+                    </NuxtLink>
+                    <NuxtLink v-else :to="localePath('/auth')" class="tm-site-header__menu-account">
+                        <span class="tm-site-header__menu-avatar"><Icon name="user" :size="18" /></span>
+                        <span class="tm-site-header__menu-who"><strong>{{ t('nav.account') }}</strong></span>
+                        <Icon name="chevron-right" :size="16" />
+                    </NuxtLink>
+                </div>
             </nav>
 
             <div class="tm-site-header__tools">
-                <LangSwitcher tone="onLight" />
+                <LangSwitcher tone="onLight" class="tm-site-header__wide-only" />
                 <ThemeToggle />
-                <Tooltip v-if="user" v-slot="{ tipId }" :text="user.fullName()" side="bottom" align="end">
+                <Tooltip v-if="user" v-slot="{ tipId }" :text="user.fullName()" side="bottom" align="end" class="tm-site-header__wide-only">
                     <NuxtLink
                         :to="localePath(user.homePath())" class="tm-site-header__account tm-site-header__account--user"
                         :aria-label="user.isClient() ? t('common.account') : t('common.workspace')"
@@ -37,7 +58,7 @@
                 </Tooltip>
                 <NuxtLink
                     v-else
-                    :to="localePath('/auth')" class="tm-site-header__account"
+                    :to="localePath('/auth')" class="tm-site-header__account tm-site-header__wide-only"
                     :aria-label="t('nav.account')"
                 >
                     <Icon name="user" :size="18" />
@@ -78,10 +99,10 @@ import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import type { ISiteHeaderProps } from './SiteHeader.d'
 import { NuxtLink } from '#components'
 import { HEADER_NAV } from './SiteHeader.config'
-import { HERO_SEARCH_IN_VIEW } from '~/landing/components/hero/Hero.hooks'
+import { HERO_SEARCH_IN_VIEW, HERO_UNDER_HEADER } from '~/landing/components/hero/Hero.hooks'
 import BetaFeedback from '~/landing/components/betaFeedback/BetaFeedback.vue'
 
-withDefaults(defineProps<ISiteHeaderProps>(), { variant: 'over' })
+const props = withDefaults(defineProps<ISiteHeaderProps>(), { variant: 'over' })
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -94,8 +115,16 @@ const heroSearchInView = useState<boolean>(HERO_SEARCH_IN_VIEW, () => true)
 
 const ctaHidden = computed(() => route.meta.heroSearch === true && heroSearchInView.value)
 
+const open = ref(false)
+watch(() => route.fullPath, () => { open.value = false })
+
+const heroUnderHeader = useState<boolean>(HERO_UNDER_HEADER, () => true)
+
+const clear = computed(() => props.variant === 'over' && heroUnderHeader.value && !open.value)
+
 onMounted(() => {
   if (route.meta.heroSearch === true && !document.querySelector('.tm-hero__widget')) heroSearchInView.value = false
+  if (props.variant === 'over' && !document.querySelector('.tm-hero')) heroUnderHeader.value = false
 })
 
 const initials = computed(() => {
@@ -111,8 +140,6 @@ const initials = computed(() => {
 const beta = computed(() => useRuntimeConfig().public.testMode && route.meta.payment !== true)
 const feedback = ref(false)
 
-const open = ref(false)
-watch(() => route.fullPath, () => { open.value = false })
 </script>
 
 <style lang="scss">
