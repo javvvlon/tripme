@@ -3274,7 +3274,7 @@
     "searching": "Looking for the best prices | Looking for the best prices in {count} country | Looking for the best prices in {count} countries | Looking for the best prices in {count} countries",
     "from": "from",
     "offers": "No tours | {count} tour | {count} tours | {count} tours",
-    "discount": "−{percent}% operator discount",
+    "discount": "Discount −{percent}%",
     "belowMedian": "−{percent}% vs average {stars}★",
     "empty": "No tours for these dates. Try other dates."
   }

@@ -3274,7 +3274,7 @@
     "searching": "Eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz | {count} ta mamlakatda eng yaxshi narxlarni qidiryapmiz",
     "from": "dan",
     "offers": "Tur yo'q | {count} ta tur | {count} ta tur | {count} ta tur",
-    "discount": "−{percent}% operator chegirmasi",
+    "discount": "Chegirma −{percent}%",
     "belowMedian": "{stars}★ o'rtachasidan −{percent}%",
     "empty": "Bu sanalarga tur topilmadi. Boshqa sanalarni sinab ko'ring."
   }
