@@ -81,6 +81,7 @@ export class Tour extends Model<ITour> {
   protected static override mapRaw(raw: ITourRaw): ITour {
     return {
       ...raw,
+      roomName: raw.roomName?.replace(/^[\s.,;:·\-–—]+/, '').trim() || null,
       price: raw.price.source,
       comparablePrice: raw.price.converted ?? raw.price.source,
       uzs: raw.price.uzs ?? null,

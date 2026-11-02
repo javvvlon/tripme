@@ -51,6 +51,12 @@ export const useRoutePage = async () => {
       : t('routes.headingBare', { route: arrow.value })
   })
 
+  const othersTitle = computed(() => {
+    const from = `routes.from.${page.value!.from.slug}`
+
+    return te(from) ? t('routes.others', { from: t(from) }) : t('routes.othersBare')
+  })
+
   const cheapest = computed(() => page.value!.cheapest)
 
   const price = computed(() => (cheapest.value ? formatMoney(cheapest.value.get('comparablePrice'), locale.value) : ''))
@@ -144,5 +150,5 @@ export const useRoutePage = async () => {
     throw createError({ statusCode: status && status !== 404 ? status : 404, statusMessage: 'Page not found', fatal: true })
   }
 
-  return { page, heading, lead, offers, cityName, searchLink, cardRoute, siblings, breadcrumbs, isStaff }
+  return { page, heading, lead, offers, othersTitle, searchLink, cardRoute, siblings, breadcrumbs, isStaff }
 }

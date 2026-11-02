@@ -6,13 +6,15 @@
     gap: 36px;
     padding-block: 24px 64px;
 
-    &__crumbs { margin-bottom: -18px; }
+    &__crumbs {
+        max-width: none;
+        margin: 0 0 -12px;
+    }
 
     &__head {
         display: flex;
         flex-direction: column;
         gap: 12px;
-        max-width: 760px;
     }
 
     &__title {
@@ -47,6 +49,13 @@
         grid-template-columns: minmax(0, 1fr) 300px;
         align-items: start;
         gap: 32px;
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+        min-width: 0;
     }
 
     &__others {
