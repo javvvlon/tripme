@@ -1,5 +1,5 @@
 import { LOCALES } from '~/shared/config/locales'
-import { PRIVATE_PATHS } from '~/shared/config/seo'
+import { CRAWL_CLOSED_PATHS } from '~/shared/config/seo'
 
 const HIDDEN_HOSTS = /(\.vercel\.app|^localhost|^127\.0\.0\.1)(:\d+)?$/
 
@@ -13,7 +13,7 @@ export default defineEventHandler((event) => {
 
   if (HIDDEN_HOSTS.test(host)) return 'User-agent: *\nDisallow: /\n'
 
-  const closed = LOCALES.flatMap(locale => PRIVATE_PATHS.map(path => `Disallow: /${locale}${path}`))
+  const closed = LOCALES.flatMap(locale => CRAWL_CLOSED_PATHS.map(path => `Disallow: /${locale}${path}`))
 
   return ['User-agent: *', 'Allow: /', ...closed, '', `Sitemap: https://${host}/sitemap.xml`, ''].join('\n')
 })
