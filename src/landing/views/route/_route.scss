@@ -1,0 +1,128 @@
+@use '../../../shared/styles/utils' as *;
+
+.tm-route-page {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: 24px 64px;
+
+    &__crumbs { margin-bottom: -18px; }
+
+    &__head {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 760px;
+    }
+
+    &__title {
+        @include display;
+
+        font-size: clamp(#{size(24)}, 3.4vw, #{size(38)});
+        line-height: 1.1;
+        text-wrap: balance;
+    }
+
+    &__lead {
+        color: var(--tm-ink-2);
+        font-size: size(17);
+        line-height: 1.5;
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 18px;
+        margin-top: 6px;
+    }
+
+    &__count {
+        color: var(--tm-ink-3);
+        font-size: size(14);
+    }
+
+    &__body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        align-items: start;
+        gap: 32px;
+    }
+
+    &__others {
+        position: sticky;
+        top: calc(var(--tm-site-header-h, 0px) + 24px);
+        padding: 20px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('lg');
+        background: var(--tm-surface-1);
+
+        .tm-route-page__subtitle { font-size: size(17); }
+    }
+
+    &__subtitle {
+        margin-bottom: 16px;
+        font-size: size(21);
+        font-weight: 700;
+        letter-spacing: -.02em;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    &__note {
+        margin-top: 14px;
+        color: var(--tm-ink-3);
+        font-size: size(13);
+        line-height: 1.5;
+    }
+
+    &__empty {
+        display: grid;
+        justify-items: start;
+        gap: 14px;
+        padding: 28px;
+        border-radius: radius('lg');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-2);
+
+        p { max-width: 60ch; }
+    }
+
+    &__chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    &__chip {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 8px;
+        padding: 9px 14px;
+        border: 1px solid var(--tm-border-1);
+        border-radius: radius('pill');
+        background: var(--tm-surface-1);
+        color: var(--tm-ink-1);
+        font-size: size(14);
+        font-weight: 600;
+        transition: border-color .2s;
+
+        small {
+            color: var(--tm-ink-3);
+            font-size: size(13);
+            font-weight: 500;
+        }
+
+        &:hover { border-color: var(--tm-brand-secondary); }
+    }
+
+    @media #{$until-lg} {
+        &__body { grid-template-columns: minmax(0, 1fr); }
+
+        &__others { position: static; }
+    }
+}

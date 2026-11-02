@@ -37,6 +37,8 @@ export const resource: IResource = {
       params: ['from', 'nights', 'limit'],
     },
     fetchHotOffers: { url: 'offers/hot/', method: 'GET', params: ['from', 'limit'] },
+    fetchRoutes: { url: 'routes', method: 'GET' },
+    fetchRoute: { url: 'routes/:from/:to', method: 'GET' },
     searchHotels: { url: 'hotels', method: 'GET', params: ['from', 'to', 'q'] },
   },
 }

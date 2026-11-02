@@ -1,10 +1,16 @@
 import { LOCALES } from '~/shared/config/locales'
 import { PUBLIC_PAGES } from '~/shared/config/seo'
+import { routePagePath } from '~/shared/config/route-pages'
 
 interface IPostRef {
   slug: string
   published_at: string | null
   translations: Array<{ locale: string }>
+}
+
+interface IRouteRef {
+  from: { slug: string }
+  to: { slug: string }
 }
 
 const escape = (value: string): string =>
@@ -17,6 +23,7 @@ export default defineCachedEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const site = String(config.public.siteUrl).replace(/\/+$/, '')
   const posts = await $fetch<IPostRef[]>(`${config.public.apiBase}/posts`, { timeout: 8000 }).catch(() => [])
+  const routes = await $fetch<{ items: IRouteRef[] }>(`${config.public.apiBase}/search/routes`, { timeout: 8000 }).catch(() => ({ items: [] }))
 
   const entry = (path: string, locales: readonly string[], lastmod?: string | null) => locales.map(locale => [
     '  <url>',
@@ -34,6 +41,7 @@ export default defineCachedEventHandler(async (event) => {
 
       return locales.length ? entry(`/blog/${post.slug}`, locales, post.published_at) : []
     }),
+    ...(Array.isArray(routes?.items) ? routes.items : []).flatMap(route => entry(routePagePath(route.from.slug, route.to.slug), LOCALES)),
   ]
 
   setHeader(event, 'content-type', 'application/xml; charset=utf-8')

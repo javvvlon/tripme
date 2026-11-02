@@ -18,6 +18,13 @@ export const routes: IModuleRoute[] = [
     meta: { header: 'solid', headerSearch: true },
   },
   {
+    name: 'landing-route',
+    path: '/tours/:route',
+    file: 'landing/views/route/Route.vue',
+    swr: 3600,
+    meta: { header: 'solid' },
+  },
+  {
     name: 'landing-legal',
     path: '/legal/:doc(offer|privacy|terms)',
     file: 'landing/views/legal/Legal.vue',

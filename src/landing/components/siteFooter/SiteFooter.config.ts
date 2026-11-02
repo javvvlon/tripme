@@ -30,20 +30,11 @@ export const FOOTER_COLUMNS: readonly IFooterColumn[] = [
   {
     titleKey: 'footer.countries',
     links: [
-      { to: '/tours/russia', labelKey: 'country.russia' },
-      { to: '/tours/uzbekistan', labelKey: 'country.uzbekistan' },
-      { to: '/tours/turkey', labelKey: 'country.turkey' },
+      { to: '/tours/tashkent-turkey', labelKey: 'country.turkey' },
+      { to: '/tours/tashkent-uae', labelKey: 'country.uae' },
+      { to: '/tours/tashkent-egypt', labelKey: 'country.egypt' },
     ],
     more: { to: '/search', labelKey: 'footer.allCountries' },
-  },
-  {
-    titleKey: 'footer.directions',
-    links: [
-      { to: '/tours/tashkent-moscow', labelKey: 'route.tashkentMoscow' },
-      { to: '/tours/tashkent-istanbul', labelKey: 'route.tashkentIstanbul' },
-      { to: '/tours/tashkent-kazan', labelKey: 'route.tashkentKazan' },
-    ],
-    more: { to: '/search', labelKey: 'footer.allDirections' },
   },
 ] as const
 
