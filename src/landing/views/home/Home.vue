@@ -17,11 +17,13 @@ import Hero from '~/landing/components/hero/Hero.vue'
 import ContactPanel from '~/landing/components/contactPanel/ContactPanel.vue'
 import { useHome } from './Home.hooks'
 import { useSiteUrl } from '~/shared/composables/useSiteUrl'
+import { useTravelAgencySchema } from '~/shared/composables/useTravelAgencySchema'
 import { OG_IMAGE, SITE_NAME } from '~/shared/config/seo'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { absolute } = useSiteUrl()
+const agency = useTravelAgencySchema()
 
 const { sections, seo } = await useHome()
 
@@ -49,20 +51,7 @@ useHead(() => ({
   script: [{
     type: 'application/ld+json',
     innerHTML: JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'TravelAgency',
-      'name': 'TripMe',
-      'url': home.value,
-      'logo': absolute('/tripme-logo.png'),
-      'areaServed': 'UZ',
-      'telephone': '+998936445555',
-      'openingHours': 'Mo-Sa 09:00-18:00',
-      'address': {
-        '@type': 'PostalAddress',
-        'streetAddress': t('contact.channels.officeValue'),
-        'addressLocality': t('footer.city'),
-        'addressCountry': 'UZ',
-      },
+      ...agency.value,
       'potentialAction': {
         '@type': 'SearchAction',
         'target': `${absolute(localePath('/search'))}?to={search_term_string}`,

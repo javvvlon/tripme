@@ -5,7 +5,7 @@
             <span class="tm-consent__box"><Icon name="check" :size="13" :stroke="2.6" /></span>
             <i18n-t keypath="consent.text" tag="span" class="tm-consent__text" scope="global">
                 <template #policy>
-                    <NuxtLink :to="localePath('/legal/privacy')" target="_blank" class="tm-consent__link">{{ t('consent.policy') }}</NuxtLink>
+                    <NuxtLink :to="localePath('/legal/privacy')" target="_blank" rel="noopener" class="tm-consent__link">{{ t('consent.policy') }}</NuxtLink>
                 </template>
             </i18n-t>
         </label>

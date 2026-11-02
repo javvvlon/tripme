@@ -19,3 +19,7 @@ export interface ITourCardProps {
 export interface ITourCardEmits {
   assign: [trip: ILeadTrip]
 }
+
+export interface ITourCardExpose {
+  request: () => Promise<void>
+}

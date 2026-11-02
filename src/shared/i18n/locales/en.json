@@ -378,7 +378,7 @@
     "errorFailed": "Could not sign in. Please try again.",
     "seoTitle": "Sign in — TripMe",
     "welcome": "Welcome to TripMe",
-    "lead": "Sign in to follow your orders. Staff land in the workspace.",
+    "lead": "Sign in to follow your orders and tickets.",
     "emailPlaceholder": "Enter email",
     "passwordPlaceholder": "Enter password",
     "errors": {
@@ -2762,6 +2762,12 @@
     "pending": "This document is being prepared for publication. If you need it now, write to us and we will send the current version.",
     "ask": "Contact us",
     "agentStatus": "TRIPME LLC acts as a travel agent: we select and book travel services of partner tour operators. The services in a tour are provided by the tour operator named in the contract."
+  },
+  "phone": {
+    "country": "Country code: {country}, +{code}",
+    "countries": "Countries",
+    "search": "Country or code",
+    "empty": "Nothing found"
   },
   "consent": {
     "text": "I agree to the processing of my personal data under the {policy}",

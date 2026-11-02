@@ -179,7 +179,7 @@ import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
 import { useQuote } from '~/modules/leads/hooks/use-quote'
 import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { ILeadTrip } from '~/modules/leads/contracts/leads'
-import type { ITourCardEmits, ITourCardProps } from './TourCard.d'
+import type { ITourCardEmits, ITourCardExpose, ITourCardProps } from './TourCard.d'
 
 const props = withDefaults(defineProps<ITourCardProps>(), { hot: undefined })
 
@@ -299,6 +299,10 @@ const trip = computed<ILeadTrip>(() => {
 })
 
 const { asking, sending, sent, request } = useTourRequest(() => trip.value)
+
+watch(() => props.tour.get('id'), () => { sent.value = false })
+
+defineExpose<ITourCardExpose>({ request })
 
 const stopReason = computed(() =>
   props.tour.isStopped() ? props.tour.get('availabilityNote') : null)

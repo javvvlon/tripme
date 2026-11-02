@@ -56,10 +56,27 @@
         font-weight: 600;
         color: var(--tm-ink-3);
 
-        > a { transition: color .2s; }
+        > a {
+            position: relative;
+            transition: color .2s;
+        }
 
-        > a:hover,
-        > a.router-link-active { color: var(--tm-ink-1); }
+        > a:hover { color: var(--tm-ink-1); }
+
+        > a.router-link-active {
+            color: var(--tm-brand-secondary);
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                bottom: -8px;
+                left: 0;
+                height: 2px;
+                border-radius: radius('pill');
+                background: var(--tm-brand-primary);
+            }
+        }
     }
 
     &__menu-extra { display: none; }
@@ -153,6 +170,11 @@
             border-color: var(--tm-brand-primary);
         }
 
+        &.router-link-active {
+            border-color: var(--tm-brand-primary);
+            box-shadow: 0 0 0 1px var(--tm-brand-primary);
+        }
+
         &--user {
             color: var(--tm-ink-1);
             font-size: size(13);
@@ -235,6 +257,8 @@
 
             > a,
             > span { padding: 14px 0; border-bottom: 1px solid var(--tm-border-1); }
+
+            > a.router-link-active::after { display: none; }
         }
 
         &__menu-extra {

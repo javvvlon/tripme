@@ -1,5 +1,5 @@
 <template>
-    <header class="tm-site-header" :class="[`tm-site-header--${variant}`, { 'is-clear': clear }]">
+    <header ref="root" class="tm-site-header" :class="[`tm-site-header--${variant}`, { 'is-clear': clear }]">
         <div class="container-wide tm-site-header__row">
             <div class="tm-site-header__brand">
                 <NuxtLink :to="localePath('/')" class="tm-site-header__logo" :aria-label="t('nav.home')">
@@ -101,6 +101,7 @@ import { NuxtLink } from '#components'
 import { HEADER_NAV } from './SiteHeader.config'
 import { HERO_SEARCH_IN_VIEW, HERO_UNDER_HEADER } from '~/landing/components/hero/Hero.hooks'
 import BetaFeedback from '~/landing/components/betaFeedback/BetaFeedback.vue'
+import { useHeaderHeight } from './SiteHeader.hooks'
 
 const props = withDefaults(defineProps<ISiteHeaderProps>(), { variant: 'over' })
 
@@ -110,6 +111,10 @@ const routeExists = useRouteExists()
 const route = useRoute()
 
 const { user } = useAuthSession()
+
+const root = useTemplateRef<HTMLElement>('root')
+
+useHeaderHeight(root)
 
 const heroSearchInView = useState<boolean>(HERO_SEARCH_IN_VIEW, () => true)
 

@@ -119,6 +119,7 @@
                     <ul class="tm-search-view__list">
                         <li v-for="group in hotels" :key="group.key" class="tm-search-view__item" :data-hotel="group.key">
                             <TourCard
+                                :ref="card => keepCard(group.key, card)"
                                 :tour="shownOf(group)"
                                 :hot="isHot(shownOf(group))"
                                 :agent-view="isStaff"
@@ -236,6 +237,7 @@ import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
 import type { IHotelGroup } from './Search.hooks'
+import type { ITourCardExpose } from '~/shared/components/tourCard/TourCard.d'
 
 const { t, locale } = useI18n()
 const { label: catalogLabel } = useCatalogLabel()
@@ -286,10 +288,21 @@ const restOf = (group: IHotelGroup): Tour[] => {
   return [group.lead, ...group.others].filter(tour => tour !== shown)
 }
 
+const cards = new Map<string, ITourCardExpose>()
+
+const keepCard = (key: string, card: unknown) => {
+  if (card) cards.set(key, card as ITourCardExpose)
+  else cards.delete(key)
+}
+
 const choose = (group: IHotelGroup, tour: Tour) => {
   chosen.value = { ...chosen.value, [group.key]: tour.get('id') }
 
-  nextTick(() => document.querySelector(`[data-hotel="${CSS.escape(group.key)}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  nextTick(() => {
+    document.querySelector(`[data-hotel="${CSS.escape(group.key)}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    if (!isStaff.value) void cards.get(group.key)?.request()
+  })
 }
 
 const toggleVariants = (key: string) => {
@@ -456,8 +469,8 @@ useSeoMeta({
 
     &__sheet {
         position: sticky;
-        top: 24px;
-        max-height: calc(100vh - 48px);
+        top: calc(var(--tm-site-header-h, 0px) + 24px);
+        max-height: calc(100vh - var(--tm-site-header-h, 0px) - 48px);
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-width: thin;
@@ -575,7 +588,10 @@ useSeoMeta({
 
     &__progress-text { min-width: 0; }
 
-    &__item { animation: tm-search-item-in .35s ease both; }
+    &__item {
+        scroll-margin-top: calc(var(--tm-site-header-h, 0px) + 16px);
+        animation: tm-search-item-in .35s ease both;
+    }
 
     &__variants {
         display: flex;

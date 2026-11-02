@@ -378,7 +378,7 @@
     "errorFailed": "Kirib bo‘lmadi. Yana urinib ko‘ring.",
     "seoTitle": "Kirish — TripMe",
     "welcome": "TripMe’ga xush kelibsiz",
-    "lead": "Buyurtmalaringizni kuzatish uchun kiring. Xodimlar ish o‘rniga o‘tadi.",
+    "lead": "Buyurtmalaringiz va chiptalaringizni kuzatish uchun kiring.",
     "emailPlaceholder": "Pochtani kiriting",
     "passwordPlaceholder": "Parolni kiriting",
     "errors": {
@@ -2762,6 +2762,12 @@
     "pending": "Hujjat nashrga tayyorlanmoqda. Hozir kerak bo‘lsa, bizga yozing — amaldagi tahririni yuboramiz.",
     "ask": "Biz bilan bog‘lanish",
     "agentStatus": "«TRIPME» MChJ turagent sifatida faoliyat yuritadi: biz hamkor turoperatorlarning turistik xizmatlarini tanlaymiz va bron qilamiz. Tur tarkibidagi xizmatlarni shartnomada ko‘rsatilgan turoperator ko‘rsatadi."
+  },
+  "phone": {
+    "country": "Mamlakat kodi: {country}, +{code}",
+    "countries": "Mamlakatlar",
+    "search": "Mamlakat yoki kod",
+    "empty": "Hech narsa topilmadi"
   },
   "consent": {
     "text": "Shaxsiy ma’lumotlarimni {policy} asosida qayta ishlashga roziman",
