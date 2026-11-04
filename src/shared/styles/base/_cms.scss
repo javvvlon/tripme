@@ -178,6 +178,12 @@ html.is-cms {
         &:active { background: map.get($cta, 'primary-dark'); }
     }
 
+    .tm-button.tm-button--disabled,
+    .tm-button.tm-button--disabled:hover {
+        background: var(--tm-control-disabled-bg);
+        color: var(--tm-control-disabled-ink);
+    }
+
     .tm-button {
         transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .3s var(--tm-hig-spring);
 

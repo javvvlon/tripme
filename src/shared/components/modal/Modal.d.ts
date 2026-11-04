@@ -9,6 +9,7 @@ export interface IModalProps {
   confirmLabel?: string
   cancelLabel?: string
   busy?: boolean
+  busyLabel?: string
   disabled?: boolean
   error?: string
   size?: ModalSizeValue

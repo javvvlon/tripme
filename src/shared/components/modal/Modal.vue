@@ -28,7 +28,7 @@
                         </button>
                     </header>
 
-                    <form class="tm-modal__body" novalidate @submit.prevent="emit('confirm')">
+                    <form class="tm-modal__body" novalidate @submit.prevent="confirm">
                         <slot />
 
                         <p v-if="error" class="tm-modal__error" role="alert">{{ error }}</p>
@@ -44,7 +44,7 @@
                                 :disabled="disabled"
                                 :loading="busy"
                             >
-                                {{ busy ? t('common.saving') : (confirmLabel ?? t('common.save')) }}
+                                {{ busy ? (busyLabel ?? t('common.saving')) : (confirmLabel ?? t('common.save')) }}
                             </Button>
                         </footer>
                     </form>
@@ -66,6 +66,12 @@ const { t } = useI18n()
 const id = useId()
 
 const panel = useTemplateRef<HTMLElement>('panel')
+
+function confirm() {
+    if (props.busy || props.disabled) return
+
+    emit('confirm')
+}
 
 function dismiss() {
     if (props.busy) return

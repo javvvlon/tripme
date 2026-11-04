@@ -15,10 +15,16 @@ export const useAuth = () => {
   const pending = ref(false)
   const error = ref('')
 
+  let attempt = 0
+
   async function submit() {
+    if (pending.value) return
+
     error.value = ''
 
     if (!form.validate()) return
+
+    const current = ++attempt
 
     pending.value = true
 
@@ -26,6 +32,8 @@ export const useAuth = () => {
       await authorize(await login({ ...form.values }))
     }
     catch (e) {
+      if (current !== attempt) return
+
       const response = e as { status?: number, data?: { code?: string } }
 
       if (response.data?.code === ACCOUNT_DEACTIVATED) error.value = t('auth.errors.deactivated')
@@ -33,7 +41,7 @@ export const useAuth = () => {
       else error.value = t('auth.errors.failed')
     }
     finally {
-      pending.value = false
+      if (current === attempt) pending.value = false
     }
   }
 

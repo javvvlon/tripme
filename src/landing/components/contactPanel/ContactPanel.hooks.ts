@@ -37,11 +37,17 @@ export const useContactForm = (options: IContactFormOptions = {}) => {
     consent: [custom(value => value === true, 'validation.consent')],
   })
 
+  let attempt = 0
+
   async function submit() {
+    if (sending.value) return
+
     error.value = ''
     sent.value = false
 
     if (!validation.validate()) return
+
+    const current = ++attempt
 
     sending.value = true
 
@@ -56,6 +62,8 @@ export const useContactForm = (options: IContactFormOptions = {}) => {
         ...options.extra?.(),
       })
 
+      if (current !== attempt) return
+
       sent.value = true
       prefill()
       form.message = ''
@@ -63,10 +71,10 @@ export const useContactForm = (options: IContactFormOptions = {}) => {
       validation.reset()
     }
     catch {
-      error.value = t('contact.error')
+      if (current === attempt) error.value = t('contact.error')
     }
     finally {
-      sending.value = false
+      if (current === attempt) sending.value = false
     }
   }
 

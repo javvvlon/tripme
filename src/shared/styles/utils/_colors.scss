@@ -5,14 +5,15 @@ $colors: (
         'night': #0A0A0A,
     ),
     'brand': (
-        'primary': #FF6500,
+        'primary': #FF6B00,
         'primary-light': #FF8433,
         'primary-dark': #CC5100,
         'primary-soft': #FFF1E6,
-        'primary-glow': rgba(255, 101, 0, .15),
-        'primary-ring': rgba(255, 101, 0, .2),
-        'primary-tint': rgba(255, 101, 0, .1),
+        'primary-glow': rgba(255, 107, 0, .15),
+        'primary-ring': rgba(255, 107, 0, .2),
+        'primary-tint': rgba(255, 107, 0, .1),
         'on-primary': #0A0A0A,
+        'wordmark': #0A0A0A,
         'secondary': #B84D00,
         'secondary-light': #CC5500,
         'secondary-dark': #8F3C00,
@@ -94,7 +95,13 @@ $colors: (
         'danger': #E5484D,
         'danger-dark': #C93A3F,
         'danger-soft': #FDECEC,
+        'danger-ink': #B91C1C,
         'warning': #F5B324,
+    ),
+    'control': (
+        'focus': #111111,
+        'disabled-bg': #E5E5E5,
+        'disabled-ink': #525252,
     ),
 );
 
@@ -107,6 +114,7 @@ $colors-dark: (
         'secondary-soft': #2A1709,
         'gold-ink': #C5A880,
         'gold-soft': #1F1A12,
+        'wordmark': #FFFFFF,
     ),
     'ink': (
         '1': #F8F9FA,
@@ -155,6 +163,12 @@ $colors-dark: (
         'danger': #F2555A,
         'danger-dark': #FF7A7E,
         'danger-soft': #2A1112,
+        'danger-ink': #FCA5A5,
         'warning': #F5B324,
+    ),
+    'control': (
+        'focus': #FFFFFF,
+        'disabled-bg': #262626,
+        'disabled-ink': #A3A3A3,
     ),
 );

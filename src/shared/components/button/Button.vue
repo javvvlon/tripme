@@ -5,7 +5,7 @@
         :href="href"
         :type="to || href ? undefined : type"
         :disabled="to || href ? undefined : disabled || loading"
-        :aria-disabled="(to || href) && disabled ? 'true' : undefined"
+        :aria-disabled="disabled ? 'true' : undefined"
         :aria-busy="loading ? 'true' : undefined"
         class="tm-button"
         :class="[
@@ -13,6 +13,7 @@
             `tm-button--${size}`,
             { 'tm-button--block': block, 'tm-button--disabled': disabled, 'tm-button--loading': loading },
         ]"
+        @keydown.space="pressLink"
     >
         <span v-if="loading" class="tm-button__spinner" aria-hidden="true" />
         <Icon v-else-if="icon" :name="icon" :size="size === 'lg' ? 20 : 18" />
@@ -33,6 +34,13 @@ const props = withDefaults(defineProps<IButtonProps>(), {
 const localePath = useLocalePath()
 
 const tag = computed(() => (props.to ? resolveComponent('NuxtLink') : props.href ? 'a' : 'button'))
+
+function pressLink(event: KeyboardEvent) {
+  if (!props.to && !props.href) return
+
+  event.preventDefault()
+  ;(event.currentTarget as HTMLElement).click()
+}
 </script>
 
 <style lang="scss">

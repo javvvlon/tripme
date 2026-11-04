@@ -15,10 +15,16 @@ export const useRegister = () => {
   const pending = ref(false)
   const error = ref('')
 
+  let attempt = 0
+
   async function submit() {
+    if (pending.value) return
+
     error.value = ''
 
     if (!form.validate()) return
+
+    const current = ++attempt
 
     pending.value = true
 
@@ -35,6 +41,8 @@ export const useRegister = () => {
       await authorize(tokens)
     }
     catch (e) {
+      if (current !== attempt) return
+
       const response = e as { status?: number }
 
       error.value = response.status === 409
@@ -42,7 +50,7 @@ export const useRegister = () => {
         : t('auth.errors.registerFailed')
     }
     finally {
-      pending.value = false
+      if (current === attempt) pending.value = false
     }
   }
 

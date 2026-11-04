@@ -5,6 +5,7 @@
         :description="t('betaFeedback.text')"
         :confirm-label="t('betaFeedback.submit')"
         :busy="sending"
+        :busy-label="t('contact.sending')"
         :error="error"
         size="md"
         @confirm="send"

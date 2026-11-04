@@ -31,7 +31,7 @@
         width: 100%;
     }
 
-    &__logo { width: 140px; align-self: start; color: var(--tm-ink-1); }
+    &__logo { width: 140px; align-self: start; color: var(--tm-brand-wordmark); }
 
     &__title {
         font-size: size(28);
@@ -58,7 +58,7 @@
         border-radius: radius('sm');
         background: var(--tm-status-danger-soft);
         border: 1px solid var(--tm-status-danger);
-        color: var(--tm-status-danger);
+        color: var(--tm-status-danger-ink);
         font-size: size(14);
     }
 

@@ -73,7 +73,7 @@
 
                         <p v-if="error" class="tm-auth__error" role="alert">{{ error }}</p>
 
-                        <Button type="submit" size="lg" block :disabled="pending">
+                        <Button type="submit" size="lg" block :loading="pending">
                             {{ pending ? t('auth.registering') : t('auth.signup') }}
                         </Button>
                     </form>
