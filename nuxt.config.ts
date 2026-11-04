@@ -4,6 +4,7 @@ import { AppBootstrap } from './src/shared/bootstrap/service'
 import { modules as appModules } from './src/modules'
 import { LOCALES } from './src/shared/config/locales'
 import { DEFAULT_THEME, THEME_BOOT, THEME_COLOR } from './src/shared/config/theme'
+import { FAVICON_VERSION } from './src/shared/config/brand'
 
 const bootstrap = new AppBootstrap(appModules).bootSync()
 
@@ -34,6 +35,8 @@ for (const route of bootstrap.routes) {
 }
 
 for (const locale of LOCALES) routeRules[`/${locale}/app`] = { redirect: `/${locale}/app/work` }
+
+routeRules['/favicon.ico'] = { redirect: { to: `/favicon-32x32.png?v=${FAVICON_VERSION}`, statusCode: 302 } }
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-01',
@@ -105,8 +108,9 @@ export default defineNuxtConfig({
         { name: 'color-scheme', content: 'light dark' },
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
+        { rel: 'icon', type: 'image/svg+xml', href: `/favicon.svg?v=${FAVICON_VERSION}` },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: `/favicon-32x32.png?v=${FAVICON_VERSION}` },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: `/favicon-16x16.png?v=${FAVICON_VERSION}` },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
       ],
       script: [{ innerHTML: THEME_BOOT, tagPosition: 'head' }],
