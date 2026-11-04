@@ -51,7 +51,7 @@ function hot(frame: IFrame, top: number): void {
   const pillWidth = ctx.measureText(label).width + height * 1.1
 
   track(ctx, 0)
-  pill(ctx, label, width - layout.pad - pillWidth, top + (layout.logo - height) / 2, height, { fill: BRAND.gold, ink: BRAND.bg, size: height * 0.4 })
+  pill(ctx, label, width - layout.pad - pillWidth, top + (layout.logo - height) / 2, height, { fill: BRAND.mark, ink: BRAND.bg, size: height * 0.4 })
 }
 
 function pillWidth(ctx: CanvasRenderingContext2D, label: string, height: number, size: number, arrow = false): number {
@@ -188,7 +188,7 @@ export function custom(frame: IFrame): void {
     ctx.fillRect(0, splitAt, width, height - splitAt)
 
     if (template.accent === 'line') {
-      ctx.fillStyle = BRAND.gold
+      ctx.fillStyle = BRAND.mark
       ctx.fillRect(center ? width / 2 - 60 : pad, splitAt - 2, 120, 4)
     }
   }
@@ -221,7 +221,7 @@ export function custom(frame: IFrame): void {
         draw: (top) => {
           ctx.font = font(800, size)
           track(ctx, size * 0.18)
-          ctx.fillStyle = BRAND.gold
+          ctx.fillStyle = BRAND.mark
           ctx.textAlign = center ? 'center' : 'left'
           ctx.fillText(label, x, top + size)
           ctx.textAlign = 'left'
@@ -239,7 +239,7 @@ export function custom(frame: IFrame): void {
       draw: (top) => {
         const w = pillWidth(ctx, label, pillHeight, size)
 
-        pill(ctx, label, center ? x - w / 2 : x, top, pillHeight, { stroke: BRAND.gold, ink: BRAND.gold, size })
+        pill(ctx, label, center ? x - w / 2 : x, top, pillHeight, { stroke: BRAND.mark, ink: BRAND.mark, size })
       },
     }
   }
@@ -256,7 +256,7 @@ export function custom(frame: IFrame): void {
       let y = top
 
       if (accentLine) {
-        ctx.fillStyle = BRAND.gold
+        ctx.fillStyle = BRAND.mark
         ctx.fillRect(center ? x - 60 : x, y, 120, 4)
         y += 34
       }
@@ -291,7 +291,7 @@ export function custom(frame: IFrame): void {
           ctx.textAlign = center ? 'center' : 'left'
           ctx.font = font(700, layout.sub * 0.62)
           track(ctx, layout.sub * 0.1)
-          ctx.fillStyle = BRAND.gold
+          ctx.fillStyle = BRAND.mark
           ctx.fillText(text.priceNote.toLocaleUpperCase(text.language), x, top + layout.sub * 0.6)
           track(ctx, 0)
           ctx.font = font(900, layout.headline * 0.62)

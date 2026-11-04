@@ -57,7 +57,7 @@
     }
 
     &--gold &__accent {
-        background: linear-gradient(105deg, color-mix(in srgb, var(--tm-brand-gold) 45%, var(--tm-common-white)) 0%, var(--tm-brand-gold) 48%, var(--tm-brand-gold-ink) 100%);
+        background: linear-gradient(105deg, var(--tm-ink-4) 0%, var(--tm-ink-2) 48%, var(--tm-ink-1) 100%);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;

@@ -9,6 +9,7 @@ export interface IDayPricesProps {
   days: DayPrice[]
   loading?: boolean
   title?: string
+  rate?: number
 }
 
 export interface IDayCell {

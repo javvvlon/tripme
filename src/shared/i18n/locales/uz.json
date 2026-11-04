@@ -105,7 +105,7 @@
   "home": {
     "hero": {
       "title": "Orzuingizdagi sayohatni yarating",
-      "subtitle": "Toshkentdan 40 davlatga turlar — barcha operatorlar narxini bir joyda taqqoslaymiz"
+      "subtitle": "Toshkentdan 40 davlatga turlar — parvoz, mehmonxona va transfer bitta narxda"
     },
     "quick": {
       "beach": "Okean va plyajlar",
@@ -288,13 +288,13 @@
     "sortPriceDesc": "Avval qimmat",
     "sortRating": "Avval yuqori reytingli",
     "priceFor": "{nights}, {guests} uchun narx",
-    "loading": "Barcha operatorlarda qidirilmoqda…",
+    "loading": "Turlar qidirilmoqda…",
     "empty": "Hech narsa topilmadi. Sanalarni o‘zgartiring yoki filtrlarni kamaytiring.",
     "seoTitle": "Turlar — {destination} · TripMe",
     "seoDescription": "TripMe’da O‘zbekistondan turlar, mehmonxonalar va ekskursiyalar: butun paket narxi va uchish sanalari.",
     "nonRefundable": "Qaytarilmaydigan",
     "prompt": "Qayerga uchamiz?",
-    "chooseRoute": "Uchish shahri, yo‘nalish va sanani tanlang — barcha operatorlardan so‘raymiz.",
+    "chooseRoute": "Uchish shahri, yo‘nalish va sanani tanlang — turlarni tanlab beramiz.",
     "loadMore": "Yana ko‘rsatish",
     "loadingMore": "Yana yuklanmoqda…",
     "end": "So‘rovingiz bo‘yicha barchasi {total} ta taklif",
@@ -305,9 +305,9 @@
     "fare": "Tarif",
     "filters": "Filtrlar",
     "settling": "Eng yaqin uchish sanasi tanlanmoqda…",
-    "progress": "{total} ta operatordan {done} tasi javob berdi",
+    "progress": "Takliflar yig‘ilmoqda: {done} / {total}",
     "progressWaiting": "Hali kutyapmiz: {names}",
-    "progressDone": "Barcha operatorlar javob berdi",
+    "progressDone": "Qidiruv yakunlandi",
     "daysTitle": "Jo‘nash kuni bo‘yicha narxlar",
     "daysAll": "Barcha sanalar",
     "daysCheapest": "Eng arzon",
@@ -781,7 +781,7 @@
           "marker": "Marker",
           "shadow": "Hajm",
           "frame": "Ramka",
-          "gold": "Oltin"
+          "gold": "Grafit"
         },
         "words": "Urg‘u uchun so‘zlar",
         "wordTip": "So‘zni bosing. Shift — ketma-ket bir nechtasini tanlash."
@@ -2782,7 +2782,9 @@
     }
   },
   "price": {
-    "uzsApprox": "≈ {amount} so‘m"
+    "uzsApprox": "≈ {amount} so‘m",
+    "sum": "{amount} so‘m",
+    "approx": "≈ {price}"
   },
   "legalPage": {
     "updated": "{date} tahriri",

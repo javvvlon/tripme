@@ -25,9 +25,9 @@
         background: radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, .55), transparent 60%);
     }
 
-    &--a { background: linear-gradient(135deg, var(--tm-brand-navy), #1E3A5F); }
-    &--b { background: linear-gradient(135deg, var(--tm-brand-gold), #8A6B3F); }
-    &--c { background: linear-gradient(135deg, var(--tm-brand-teal), #1F5050); }
+    &--a { background: linear-gradient(135deg, #0A0A0A, #262626); }
+    &--b { background: linear-gradient(135deg, #404040, #737373); }
+    &--c { background: linear-gradient(135deg, #1A1A1A, #525252); }
     &--d { background: linear-gradient(135deg, var(--tm-surface-3), var(--tm-border-1)); }
 }
 

@@ -38,8 +38,8 @@
         @include badge-type;
         padding: 6px 12px 5px;
         border-radius: radius('pill');
-        background: var(--tm-brand-gold);
-        color: var(--tm-brand-on-gold);
+        background: var(--tm-badge-fill);
+        color: var(--tm-badge-on-fill);
     }
 
     &__title {
@@ -110,17 +110,17 @@
 
             .tm-promo__title { color: var(--tm-common-white); }
             .tm-promo__lead { color: rgba(255, 255, 255, .85); }
-            .tm-promo__eyebrow { background: var(--tm-brand-gold); color: var(--tm-brand-on-gold); }
+            .tm-promo__eyebrow { background: var(--tm-badge-fill); color: var(--tm-badge-on-fill); }
         }
     }
 
     &.is-brand {
-        background: var(--tm-brand-navy);
-        border-color: var(--tm-brand-navy);
+        background: var(--tm-common-night);
+        border-color: var(--tm-common-night);
 
         .tm-promo__title { color: var(--tm-common-white); }
         .tm-promo__lead { color: rgba(255, 255, 255, .8); }
-        .tm-promo__eyebrow { background: var(--tm-brand-gold); color: var(--tm-brand-on-gold); }
+        .tm-promo__eyebrow { background: var(--tm-badge-fill); color: var(--tm-badge-on-fill); }
     }
 
     &.is-dark {
@@ -129,7 +129,7 @@
 
         .tm-promo__title { color: var(--tm-common-white); }
         .tm-promo__lead { color: var(--tm-night-ink-2); }
-        .tm-promo__eyebrow { background: transparent; border: 1px solid var(--tm-brand-gold); color: var(--tm-brand-gold); }
+        .tm-promo__eyebrow { background: transparent; border: 1px solid var(--tm-badge-fill); color: var(--tm-badge-fill); }
     }
 }
 

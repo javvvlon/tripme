@@ -25,7 +25,7 @@
         inset: -2px;
         padding: 2px;
         border-radius: inherit;
-        background: conic-gradient(from var(--tm-ai-angle), #C5A880, #FF6B00, #F3D9A8, #C5A880, #8F7247, #C5A880);
+        background: conic-gradient(from var(--tm-ai-angle), #FFA45C, #FF6B00, #FFD9BF, #FFA45C, #CC5100, #FFA45C);
         -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
         -webkit-mask-composite: xor;
         mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
@@ -83,7 +83,7 @@
 
     &__spark {
         position: absolute;
-        fill: #C5A880;
+        fill: #FFA45C;
         animation: tm-ai-twinkle 1.6s ease-in-out infinite;
 
         &:nth-child(1) { inset: 2px 4px 4px 2px; }

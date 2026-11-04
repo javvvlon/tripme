@@ -39,7 +39,7 @@
         height: 56px;
         margin-bottom: 8px;
         border-radius: 50%;
-        background: conic-gradient(from var(--tm-ring-angle), #C5A880, #FF6B00, #F3D9A8, #8F7247, #C5A880);
+        background: conic-gradient(from var(--tm-ring-angle), #FFA45C, #FF6B00, #FFD9BF, #CC5100, #FFA45C);
         animation: tm-ring-spin 1.8s linear infinite;
 
         &::after {
@@ -56,7 +56,7 @@
         z-index: 1;
         width: 22px;
         height: 22px;
-        fill: #C5A880;
+        fill: #FFA45C;
         animation: tm-ring-twinkle 1.4s ease-in-out infinite;
     }
 
@@ -104,7 +104,7 @@
         transition: background .3s ease, border-color .3s ease;
 
         .is-now & {
-            border-color: #C5A880;
+            border-color: #FFA45C;
             border-top-color: transparent;
             animation: tm-ring-spin-plain .8s linear infinite;
         }

@@ -161,7 +161,7 @@ export function motionFrame(ctx: Ctx, spec: IMotionSpec, t: number): void {
       ctx.translate(cx, cy)
       ctx.scale(pop, pop)
       ctx.translate(-cx, -cy)
-      pill(ctx, label, width - pad - w, pad + (layout.logo - pillHeight) / 2, pillHeight, { fill: BRAND.gold, ink: BRAND.bg, size: pillHeight * 0.4 })
+      pill(ctx, label, width - pad - w, pad + (layout.logo - pillHeight) / 2, pillHeight, { fill: BRAND.mark, ink: BRAND.bg, size: pillHeight * 0.4 })
       ctx.restore()
     }
   }
@@ -240,14 +240,14 @@ export function motionFrame(ctx: Ctx, spec: IMotionSpec, t: number): void {
         if (template.kicker === 'text') {
           ctx.font = font(800, layout.sub * 0.62)
           track(ctx, layout.sub * 0.11)
-          ctx.fillStyle = BRAND.gold
+          ctx.fillStyle = BRAND.mark
           ctx.textAlign = align
           ctx.fillText(kickerLabel, x, kickerTop + pillHeight * 0.7)
           ctx.textAlign = 'left'
           track(ctx, 0)
         }
         else {
-          pill(ctx, kickerLabel, left, kickerTop, pillHeight, { stroke: BRAND.gold, ink: BRAND.gold, size })
+          pill(ctx, kickerLabel, left, kickerTop, pillHeight, { stroke: BRAND.mark, ink: BRAND.mark, size })
         }
       })
     }
@@ -300,7 +300,7 @@ export function motionFrame(ctx: Ctx, spec: IMotionSpec, t: number): void {
       const sweep = inOutCubic(span(t, 2.7 + rows.length * 0.4 + 0.3, 0.7))
 
       if (sweep > 0) {
-        ctx.fillStyle = BRAND.gold
+        ctx.fillStyle = BRAND.mark
         ctx.fillRect(pad, listTop + layout.row - 3, (width - pad * 2) * sweep, 3)
       }
     }
@@ -322,7 +322,7 @@ export function motionFrame(ctx: Ctx, spec: IMotionSpec, t: number): void {
       ctx.textAlign = align
       ctx.font = font(800, layout.sub * 0.72)
       track(ctx, layout.sub * 0.12)
-      ctx.fillStyle = BRAND.gold
+      ctx.fillStyle = BRAND.mark
       ctx.fillText(text.priceNote.toLocaleUpperCase(text.language), x, mid - size * 0.95)
       track(ctx, 0)
 
@@ -367,7 +367,7 @@ export function motionFrame(ctx: Ctx, spec: IMotionSpec, t: number): void {
       if (text.copy.kicker && template.kicker !== 'none') {
         ctx.font = font(800, layout.sub * 0.72)
         track(ctx, layout.sub * 0.12)
-        ctx.fillStyle = BRAND.gold
+        ctx.fillStyle = BRAND.mark
         ctx.fillText(text.copy.kicker.toLocaleUpperCase(text.language), x, midY - fitted.lines.length * fitted.size - layout.sub * 0.2)
         track(ctx, 0)
       }

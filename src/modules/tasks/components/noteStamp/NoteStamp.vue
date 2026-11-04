@@ -20,7 +20,7 @@ const { t } = useI18n()
     border: 1px solid currentColor;
     border-radius: 3px;
     box-shadow: inset 0 0 0 2px #FFFFFF, inset 0 0 0 3px currentColor;
-    color: #0B192C;
+    color: #0A0A0A;
     font-family: var(--tm-font-display-primary);
     font-size: size(11);
     font-weight: 700;
@@ -36,7 +36,7 @@ const { t } = useI18n()
     }
 
     &.is-superseded,
-    &.is-archived { color: #8590A2; }
+    &.is-archived { color: #737373; }
 
     &.is-superseded { text-decoration: line-through; }
 

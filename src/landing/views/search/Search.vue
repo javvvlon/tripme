@@ -88,7 +88,7 @@
                     v-if="isSearchable && criteria.dateTo && !settling"
                     v-model="day"
                     :from="criteria.date" :to="criteria.dateTo"
-                    :days="facets.days" :loading="streaming"
+                    :days="facets.days" :loading="streaming" :rate="operatorRate"
                     :title="product ? t(`results.modes.${product}.days`) : ''"
                 />
 
@@ -236,6 +236,7 @@ import type { ILeadRaw } from '~/modules/leads/contracts/leads'
 import { RESULTS_PAGE_SIZE } from './Search.config'
 import { useAuthSession } from '~/modules/auth/hooks/use-auth-session'
 import { useSearch } from './Search.hooks'
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import type { IHotelGroup } from './Search.hooks'
 import type { ITourCardExpose } from '~/shared/components/tourCard/TourCard.d'
 
@@ -403,6 +404,8 @@ const showcaseTheme = computed<ShowcaseTheme>(() => {
   return SHOWCASE_THEMES.includes(value as ShowcaseTheme) ? value as ShowcaseTheme : 'all'
 })
 
+const tourPrice = useTourPrice()
+
 const headline = computed(() => {
   if (showcase.value) return t(`showcase.title.${showcaseTheme.value}`, { city: departureLabel.value })
 
@@ -421,9 +424,7 @@ const headline = computed(() => {
         ? `${formatDayRange(date, dateTo, locale.value)}, ${nightsText}`
         : flexible ? `${day(date)}, ${nightsText}` : formatDateRange(date, nights, locale.value)
   const from = facets.value.priceFrom
-  const cheapest = from
-    ? formatMoney({ amount: from.amount, currency: from.currency as 'USD' | 'EUR' | 'UZS' }, locale.value)
-    : ''
+  const cheapest = from ? tourPrice.moneySum(from, operatorRate.value) : ''
   const prefix = product.value ? `results.modes.${product.value}` : 'results'
 
   return cheapest
@@ -537,18 +538,18 @@ useSeoMeta({
         gap: 6px;
         margin: 4px 0 8px;
         padding: 8px 14px;
-        border: 1px solid var(--tm-brand-gold);
+        border: 1px solid var(--tm-badge-fill);
         border-radius: radius('pill');
         background: transparent;
-        color: var(--tm-brand-gold);
+        color: var(--tm-badge-fill);
         cursor: pointer;
         transition: background .2s ease, color .2s ease;
 
-        &:hover { background: color-mix(in srgb, var(--tm-brand-gold) 12%, transparent); }
+        &:hover { background: color-mix(in srgb, var(--tm-badge-fill) 12%, transparent); }
 
         &.is-on {
-            background: var(--tm-brand-gold);
-            color: var(--tm-brand-on-gold);
+            background: var(--tm-badge-fill);
+            color: var(--tm-badge-on-fill);
         }
     }
 

@@ -15,11 +15,13 @@ export const useUzsRates = () => {
   const { fetchRates } = useReferencesRepository()
   const { t, locale } = useI18n()
 
-  const { data: rates } = useAsyncData<IUzsRates | null>(
+  const ratesData = useAsyncData<IUzsRates | null>(
     'uzs-rates',
     () => fetchRates().catch(() => null),
     { default: () => null },
   )
+
+  const rates = ratesData.data
 
   const toUzs = (money: IMoneyLike): number | null => {
     if (money.currency === 'UZS') return money.amount
@@ -48,5 +50,5 @@ export const useUzsRates = () => {
 
   const uzsLabel = (value: number): string => t('price.uzsApprox', { amount: amount(value) })
 
-  return { rates, toUzs, approxUzs, uzsLabel, usdRate }
+  return { rates, ready: ratesData, toUzs, approxUzs, uzsLabel, usdRate }
 }

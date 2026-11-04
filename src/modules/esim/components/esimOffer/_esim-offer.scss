@@ -16,8 +16,8 @@
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: var(--tm-brand-gold-soft);
-        color: var(--tm-brand-gold-ink);
+        background: var(--tm-badge-soft);
+        color: var(--tm-badge-ink);
     }
 
     &__text {
@@ -40,7 +40,7 @@
     }
 
     &__promo {
-        color: var(--tm-brand-gold-ink);
+        color: var(--tm-badge-ink);
         font-size: size(13);
         font-weight: 600;
     }

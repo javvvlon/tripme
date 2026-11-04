@@ -25,7 +25,7 @@ export function sceneOf(texts: string[]): SceneKind {
   return RULES.find(([pattern]) => pattern.test(haystack))?.[1] ?? 'coast'
 }
 
-const gold = (alpha: number): string => `rgba(197, 168, 128, ${alpha})`
+const haze = (alpha: number): string => `rgba(250, 250, 250, ${alpha})`
 
 const warm = (alpha: number): string => `rgba(236, 212, 170, ${alpha})`
 
@@ -51,9 +51,9 @@ function sky(ctx: Ctx, width: number, height: number, horizon: number, glowX: nu
 
   const glow = ctx.createRadialGradient(glowX, horizon, 0, glowX, horizon, width * 0.75)
 
-  glow.addColorStop(0, gold(0.32))
-  glow.addColorStop(0.4, gold(0.08))
-  glow.addColorStop(1, gold(0))
+  glow.addColorStop(0, haze(0.32))
+  glow.addColorStop(0.4, haze(0.08))
+  glow.addColorStop(1, haze(0))
   ctx.fillStyle = glow
   ctx.fillRect(0, 0, width, height)
 }
@@ -71,7 +71,7 @@ function water(ctx: Ctx, width: number, horizon: number, from: number, span: num
     ctx.stroke()
   }
 
-  ctx.strokeStyle = gold(0.5)
+  ctx.strokeStyle = haze(0.5)
   ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(0, horizon)
@@ -79,7 +79,7 @@ function water(ctx: Ctx, width: number, horizon: number, from: number, span: num
   ctx.stroke()
 }
 
-function outline(ctx: Ctx, draw: () => void, fill = '#100E0C', stroke = gold(0.85), lineWidth = 3): void {
+function outline(ctx: Ctx, draw: () => void, fill = '#100E0C', stroke = haze(0.85), lineWidth = 3): void {
   ctx.beginPath()
   draw()
   ctx.fillStyle = fill
@@ -111,7 +111,7 @@ function skyline(ctx: Ctx, width: number, height: number, horizon: number): void
       ctx.lineTo(left + tw * 0.5, top)
       ctx.lineTo(left + tw, top + tw * 0.25)
       ctx.lineTo(left + tw, horizon)
-    }, '#0F0D0B', gold(0.45), 2)
+    }, '#0F0D0B', haze(0.45), 2)
 
     ctx.fillStyle = warm(0.5)
 
@@ -152,7 +152,7 @@ function skyline(ctx: Ctx, width: number, height: number, horizon: number): void
     for (const [x, y] of right.reverse()) ctx.lineTo(x, y)
 
     ctx.lineTo(cx + tiers[0][0] * s / 2, horizon)
-  }, '#12100D', gold(0.95), 3)
+  }, '#12100D', haze(0.95), 3)
 
   water(ctx, width, horizon, width * 0.6, width * 1.2)
 }
@@ -182,7 +182,7 @@ function mosque(ctx: Ctx, width: number, height: number, horizon: number): void 
     ctx.moveTo(cx - 6 * s, body - 170 * s)
     ctx.lineTo(cx, body - 230 * s)
     ctx.lineTo(cx + 6 * s, body - 170 * s)
-  }, gold(0.9), gold(0.9), 2)
+  }, haze(0.9), haze(0.9), 2)
 
   for (const dx of [-370, -330, 330, 370]) {
     const x = cx + dx * s
@@ -194,10 +194,10 @@ function mosque(ctx: Ctx, width: number, height: number, horizon: number): void 
       ctx.lineTo(x, top - 70 * s)
       ctx.lineTo(x + 11 * s, top)
       ctx.lineTo(x + 11 * s, horizon)
-    }, '#100E0C', gold(0.85), 2.5)
+    }, '#100E0C', haze(0.85), 2.5)
 
     for (const ring of [0.35, 0.6]) {
-      ctx.strokeStyle = gold(0.8)
+      ctx.strokeStyle = haze(0.8)
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.moveTo(x - 17 * s, horizon - (horizon - top) * ring)
@@ -206,7 +206,7 @@ function mosque(ctx: Ctx, width: number, height: number, horizon: number): void 
     }
   }
 
-  ctx.strokeStyle = gold(0.6)
+  ctx.strokeStyle = haze(0.6)
   ctx.lineWidth = 2
 
   for (const [x, y, w] of [[0.22, 0.2, 26], [0.27, 0.17, 18], [0.78, 0.24, 22]] as const) {
@@ -224,7 +224,7 @@ function palm(ctx: Ctx, x: number, base: number, size: number, lean: number): vo
   const topX = x + lean * size
   const topY = base - size
 
-  ctx.strokeStyle = gold(0.85)
+  ctx.strokeStyle = haze(0.85)
   ctx.lineWidth = Math.max(3, size * 0.03)
   ctx.lineCap = 'round'
   ctx.beginPath()
@@ -262,7 +262,7 @@ function coast(ctx: Ctx, width: number, height: number, horizon: number): void {
       }
 
       ctx.lineTo(width + 20, horizon)
-    }, `rgba(16, 14, 12, ${0.6 + layer * 0.15})`, gold(alpha), 2)
+    }, `rgba(16, 14, 12, ${0.6 + layer * 0.15})`, haze(alpha), 2)
   })
 
   ctx.fillStyle = warm(0.85)
@@ -298,12 +298,12 @@ function pyramids(ctx: Ctx, width: number, height: number, horizon: number): voi
     ctx.lineTo(cx + half * 0.25, horizon)
     ctx.lineTo(cx + half, horizon)
     ctx.closePath()
-    ctx.fillStyle = gold(0.16)
+    ctx.fillStyle = haze(0.16)
     ctx.fill()
   }
 
   for (let i = 0; i < 4; i++) {
-    ctx.strokeStyle = gold(0.3 - i * 0.05)
+    ctx.strokeStyle = haze(0.3 - i * 0.05)
     ctx.lineWidth = 2
     ctx.beginPath()
     ctx.moveTo(0, horizon + 30 + i * 34)
@@ -342,7 +342,7 @@ function pagoda(ctx: Ctx, width: number, height: number, horizon: number): void 
     ctx.moveTo(cx - 8 * s, base)
     ctx.lineTo(cx, base - 120 * s)
     ctx.lineTo(cx + 8 * s, base)
-  }, gold(0.9), gold(0.9), 2)
+  }, haze(0.9), haze(0.9), 2)
 
   palm(ctx, width * 0.12, horizon + 4, width * 0.3, 0.3)
   palm(ctx, width * 0.88, horizon + 4, width * 0.26, -0.3)
@@ -369,7 +369,7 @@ function atoll(ctx: Ctx, width: number, height: number, horizon: number): void {
   const s = width / 1080
   const pier = horizon + 40 * s
 
-  ctx.strokeStyle = gold(0.75)
+  ctx.strokeStyle = haze(0.75)
   ctx.lineWidth = 3
   ctx.beginPath()
   ctx.moveTo(width * 0.05, pier)
@@ -389,9 +389,9 @@ function atoll(ctx: Ctx, width: number, height: number, horizon: number): void {
       ctx.lineTo(x - 34 * s, pier)
       ctx.lineTo(x - 34 * s, roof + 18 * s)
       ctx.closePath()
-    }, '#100E0C', gold(0.85), 2.5)
+    }, '#100E0C', haze(0.85), 2.5)
 
-    ctx.strokeStyle = gold(0.5)
+    ctx.strokeStyle = haze(0.5)
     ctx.lineWidth = 2
 
     for (const dx of [-26, 26]) {
@@ -421,7 +421,7 @@ function mountains(ctx: Ctx, width: number, height: number, horizon: number): vo
     }
 
     ctx.lineTo(width + 20, horizon)
-  }, '#100E0C', gold(0.85), 3)
+  }, '#100E0C', haze(0.85), 3)
 
   for (const [x, h] of peaks) {
     ctx.beginPath()
@@ -435,7 +435,7 @@ function mountains(ctx: Ctx, width: number, height: number, horizon: number): vo
     ctx.fill()
   }
 
-  ctx.strokeStyle = gold(0.4)
+  ctx.strokeStyle = haze(0.4)
   ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(0, horizon)
@@ -483,7 +483,7 @@ export function lettering(ctx: Ctx, width: number, height: number, word: string)
     }
 
     track(ctx, size * 0.02)
-    ctx.strokeStyle = gold(index === 0 ? 0.55 : 0.22)
+    ctx.strokeStyle = haze(index === 0 ? 0.55 : 0.22)
     ctx.lineWidth = Math.max(2, size * 0.012)
     ctx.strokeText(line, index === 0 ? 0 : width * 0.12, (index - 0.5) * size * 0.95)
   })

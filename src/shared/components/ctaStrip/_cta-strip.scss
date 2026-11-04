@@ -52,8 +52,8 @@
     &__cta { flex: none; }
 
     &.is-brand {
-        background: var(--tm-brand-navy);
-        border-color: var(--tm-brand-navy);
+        background: var(--tm-common-night);
+        border-color: var(--tm-common-night);
         color: var(--tm-common-white);
 
         .tm-cta-strip__title { color: var(--tm-common-white); }

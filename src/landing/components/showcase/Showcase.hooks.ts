@@ -5,7 +5,8 @@ import { nightsRange } from '~/search_engine/intentions/search'
 import { readCriteria } from '~/shared/composables/useSearchCriteria'
 import { readFilters } from '~/shared/composables/useSearchFilters'
 import { useHotelLabels } from '~/shared/composables/useHotelLabels'
-import { formatDayRange, formatMoney } from '~/shared/utils/format'
+import { formatDayRange } from '~/shared/utils/format'
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import type { IShowcaseView } from './Showcase.d'
 
 /**
@@ -18,7 +19,7 @@ export const useShowcase = () => {
   const route = useRoute()
   const localePath = useLocalePath()
   const { stream } = useShowcaseRepository()
-  const { approxUzs, uzsLabel } = useUzsRates()
+  const tourPrice = useTourPrice()
   const { remember } = useHotelLabels()
 
   const theme = computed<ShowcaseTheme>(() => {
@@ -122,13 +123,12 @@ export const useShowcase = () => {
 
   const views = computed<IShowcaseView[]>(() => ordered.value.map((card) => {
     const tour = card.tour
-    const uzs = tour.get('uzs')
 
     return {
       ...card,
       link: linkOf(card),
-      price: formatMoney(tour.get('comparablePrice'), locale.value),
-      priceUzs: uzs ? uzsLabel(uzs.amount) : approxUzs(tour.get('comparablePrice')),
+      price: tourPrice.main(tour),
+      priceUzs: tourPrice.reference(tour),
       when: `${formatDayRange(tour.get('checkIn'), '', locale.value)} · ${t('search.nights', { n: tour.get('nights') }, tour.get('nights'))}`,
       saving: savingOf(card),
     }

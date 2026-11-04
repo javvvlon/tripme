@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import { addDays, fromIso } from '~/shared/helpers/dates'
 import type { IDayCell, IDayPricesProps } from './DayPrices.d'
 
@@ -44,8 +45,9 @@ const selected = defineModel<string>({ default: '' })
 
 const { t, locale } = useI18n()
 
-const money = (price: { amount: number, currency: string }) =>
-    formatMoney({ amount: price.amount, currency: price.currency as 'USD' }, locale.value)
+const { moneyCompact } = useTourPrice()
+
+const money = (price: { amount: number, currency: string }) => moneyCompact(price, props.rate)
 
 const capitalize = (text: string) => text.charAt(0).toLocaleUpperCase(locale.value) + text.slice(1)
 

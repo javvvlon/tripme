@@ -4,7 +4,8 @@ import type { IRouteSummary } from '~/search_engine/contracts/routes'
 import { parseRouteSlug, routePagePath } from '~/shared/config/route-pages'
 import { SITE_NAME } from '~/shared/config/seo'
 import { useSiteUrl } from '~/shared/composables/useSiteUrl'
-import { formatDayRange, formatMoney } from '~/shared/utils/format'
+import { formatDayRange } from '~/shared/utils/format'
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import { SIBLING_ROUTES } from './Route.config'
 
 /**
@@ -31,6 +32,7 @@ export const useRoutePage = async () => {
 
   const pageData = useAsyncData(`route-page-${slug}`, () => one(parsed.from, parsed.to))
   const routesData = useAsyncData('route-pages', () => list(), { default: () => [] as IRouteSummary[] })
+  const { ready: ratesReady } = useUzsRates()
   const page = pageData.data
   const routes = routesData.data
 
@@ -59,7 +61,9 @@ export const useRoutePage = async () => {
 
   const cheapest = computed(() => page.value!.cheapest)
 
-  const price = computed(() => (cheapest.value ? formatMoney(cheapest.value.get('comparablePrice'), locale.value) : ''))
+  const tourPrice = useTourPrice()
+
+  const price = computed(() => (cheapest.value ? tourPrice.main(cheapest.value) : ''))
 
   const nights = computed(() => {
     const count = cheapest.value?.get('nights') ?? page.value!.nights.from
@@ -93,7 +97,7 @@ export const useRoutePage = async () => {
     .map(item => ({
       to: routePagePath(item.from.slug, item.to.slug),
       label: known(`country.${item.to.slug}`, item.to.label),
-      price: item.cheapest ? formatMoney(item.cheapest.get('comparablePrice'), locale.value) : '',
+      price: item.cheapest ? tourPrice.main(item.cheapest) : '',
     })))
 
   const breadcrumbs = computed(() => [
@@ -131,8 +135,8 @@ export const useRoutePage = async () => {
           ? {
               offers: {
                 '@type': 'AggregateOffer',
-                'lowPrice': cheapest.value.get('comparablePrice').amount,
-                'priceCurrency': cheapest.value.get('comparablePrice').currency,
+                'lowPrice': tourPrice.uzsOf(cheapest.value) ?? cheapest.value.get('comparablePrice').amount,
+                'priceCurrency': tourPrice.uzsOf(cheapest.value) === null ? cheapest.value.get('comparablePrice').currency : 'UZS',
                 'offerCount': page.value!.offers,
                 'availability': 'https://schema.org/InStock',
               },
@@ -142,7 +146,7 @@ export const useRoutePage = async () => {
     }],
   }))
 
-  await Promise.all([pageData, routesData])
+  await Promise.all([pageData, routesData, ratesReady])
 
   if (pageData.error.value || !page.value) {
     const status = (pageData.error.value as { statusCode?: number } | null)?.statusCode

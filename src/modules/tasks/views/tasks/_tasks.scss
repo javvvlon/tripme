@@ -1,8 +1,8 @@
 @use '../../../../shared/styles/utils' as *;
 
 .tm-board {
-    --tm-board-line: rgba(11, 25, 44, .12);
-    --tm-board-subtle: #44546F;
+    --tm-board-line: rgba(10, 10, 10, .12);
+    --tm-board-subtle: #404040;
     --tm-board-sunken: #F4F5F7;
 
     display: flex;
@@ -48,17 +48,17 @@
         width: 260px;
         height: 36px;
         padding: 0 10px;
-        border: 1px solid rgba(11, 25, 44, .2);
+        border: 1px solid rgba(10, 10, 10, .2);
         border-radius: 6px;
         background: #FFFFFF;
         color: var(--tm-board-subtle);
         transition: border-color .15s ease, box-shadow .15s ease;
 
-        &:hover { border-color: rgba(11, 25, 44, .35); }
+        &:hover { border-color: rgba(10, 10, 10, .35); }
 
         &:focus-within {
-            border-color: #0B192C;
-            box-shadow: 0 0 0 1px #0B192C;
+            border-color: #0A0A0A;
+            box-shadow: 0 0 0 1px #0A0A0A;
         }
 
         input {
@@ -71,7 +71,7 @@
             font-size: size(14);
             outline: none;
 
-            &::placeholder { color: #8590A2; }
+            &::placeholder { color: #737373; }
         }
     }
 
@@ -98,12 +98,12 @@
 
         &.is-on {
             z-index: 2;
-            box-shadow: 0 0 0 2px #0B192C;
+            box-shadow: 0 0 0 2px #0A0A0A;
         }
 
         &:focus-visible {
             z-index: 3;
-            outline: 2px solid #0B192C;
+            outline: 2px solid #0A0A0A;
             outline-offset: 2px;
         }
 
@@ -126,10 +126,10 @@
         background: #F1F2F4;
         color: var(--tm-ink-1);
 
-        &:hover { background: #E4E7EC; }
+        &:hover { background: #E5E5E5; }
 
         &.is-on {
-            background: #0B192C;
+            background: #0A0A0A;
             color: #FFFFFF;
         }
     }
@@ -163,8 +163,8 @@
         transition: background .15s ease, box-shadow .15s ease;
 
         &.is-over {
-            background: #E9EDF3;
-            box-shadow: inset 0 0 0 2px rgba(11, 25, 44, .35);
+            background: #F0F0F0;
+            box-shadow: inset 0 0 0 2px rgba(10, 10, 10, .35);
         }
     }
 
@@ -223,7 +223,7 @@
         &:hover,
         &:focus-visible {
             outline: none;
-            background: rgba(11, 25, 44, .07);
+            background: rgba(10, 10, 10, .07);
             opacity: 1;
         }
     }
@@ -262,7 +262,7 @@
         align-items: center;
         gap: 12px;
         padding: 48px 16px;
-        border: 1px dashed rgba(11, 25, 44, .2);
+        border: 1px dashed rgba(10, 10, 10, .2);
         border-radius: 10px;
         color: var(--tm-board-subtle);
         text-align: center;
@@ -346,7 +346,7 @@
         width: 16px;
         height: 16px;
         border-radius: 3px;
-        background: #0B192C;
+        background: #0A0A0A;
         color: #FFFFFF;
     }
 

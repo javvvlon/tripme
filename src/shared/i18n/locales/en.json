@@ -105,7 +105,7 @@
   "home": {
     "hero": {
       "title": "Create the trip of your dreams",
-      "subtitle": "Tours from Tashkent to 40 countries — every operator's price, compared at once"
+      "subtitle": "Tours from Tashkent to 40 countries — flight, hotel and transfer in one price"
     },
     "quick": {
       "beach": "Ocean and beaches",
@@ -288,13 +288,13 @@
     "sortPriceDesc": "Most expensive first",
     "sortRating": "Highest rated first",
     "priceFor": "price for {nights}, {guests}",
-    "loading": "Searching every operator…",
+    "loading": "Searching for tours…",
     "empty": "Nothing found. Try different dates or remove some filters.",
     "seoTitle": "Tours — {destination} · TripMe",
     "seoDescription": "Tours, hotels and excursions from Uzbekistan on TripMe: whole-package prices and departure dates.",
     "nonRefundable": "Non-refundable",
     "prompt": "Where to?",
-    "chooseRoute": "Pick a departure city, a destination and a date — we will ask every operator.",
+    "chooseRoute": "Pick a departure city, a destination and a date — we will find the tours.",
     "loadMore": "Show more",
     "loadingMore": "Loading more…",
     "end": "That is all {total} offers for this search",
@@ -305,9 +305,9 @@
     "fare": "Fare code",
     "filters": "Filters",
     "settling": "Finding the soonest departure…",
-    "progress": "{done} of {total} operators answered",
+    "progress": "Collecting offers: {done} of {total}",
     "progressWaiting": "Still waiting for {names}",
-    "progressDone": "Every operator answered",
+    "progressDone": "Search complete",
     "daysTitle": "Prices by departure day",
     "daysAll": "All dates",
     "daysCheapest": "Cheapest",
@@ -781,7 +781,7 @@
           "marker": "Marker",
           "shadow": "Depth",
           "frame": "Frame",
-          "gold": "Gold"
+          "gold": "Graphite"
         },
         "words": "Words to accent",
         "wordTip": "Click a word. Shift-click to select several in a row."
@@ -2782,7 +2782,9 @@
     }
   },
   "price": {
-    "uzsApprox": "≈ {amount} UZS"
+    "uzsApprox": "≈ {amount} UZS",
+    "sum": "{amount} UZS",
+    "approx": "≈ {price}"
   },
   "legalPage": {
     "updated": "Version of {date}",

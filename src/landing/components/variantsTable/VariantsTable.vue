@@ -36,14 +36,14 @@
 <script setup lang="ts">
 import Button from '~/shared/components/button/Button.vue'
 import { mealText } from '~/shared/helpers/meal'
-import { formatMoney } from '~/shared/utils/format'
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import type { IVariantsTableEmits, IVariantsTableProps } from './VariantsTable.d'
 
 const props = defineProps<IVariantsTableProps>()
 const emit = defineEmits<IVariantsTableEmits>()
 
 const { t, locale } = useI18n()
-const { approxUzs, uzsLabel } = useUzsRates()
+const tourPrice = useTourPrice()
 
 const day = (iso: string): string =>
   new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short', weekday: 'short' }).format(new Date(`${iso}T00:00:00`))
@@ -55,8 +55,6 @@ const whenLabel = computed(() => {
 })
 
 const rows = computed(() => props.tours.map((tour) => {
-  const uzs = tour.get('uzs')
-
   return {
     id: tour.get('id'),
     tour,
@@ -66,8 +64,8 @@ const rows = computed(() => props.tours.map((tour) => {
     room: tour.get('roomName') || '—',
     meal: mealText(t, tour.get('mealPlan'), tour.get('mealName')) || '—',
     operator: tour.get('supplier').name,
-    price: formatMoney(tour.get('comparablePrice'), locale.value),
-    uzs: uzs ? uzsLabel(uzs.amount) : approxUzs(tour.get('comparablePrice')),
+    price: tourPrice.main(tour),
+    uzs: tourPrice.reference(tour),
   }
 }))
 </script>

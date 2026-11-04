@@ -19,7 +19,7 @@
         z-index: -1;
         inset: 0;
         border-radius: inherit;
-        background: conic-gradient(from var(--tm-ai-turn), #C5A880, #FF6B00, #F3D9A8, #8F7247, #C5A880);
+        background: conic-gradient(from var(--tm-ai-turn), #FFA45C, #FF6B00, #FFD9BF, #CC5100, #FFA45C);
         opacity: .55;
         transition: opacity .3s ease, filter .3s ease;
         animation: tm-ai-turn 8s linear infinite;
@@ -141,7 +141,7 @@
         height: 38px;
         border: 0;
         border-radius: 50%;
-        background: linear-gradient(135deg, #C5A880, #FF6B00);
+        background: linear-gradient(135deg, #FFA45C, #FF6B00);
         color: #fff;
         box-shadow: 0 4px 14px rgba(255, 107, 0, .3);
         cursor: pointer;

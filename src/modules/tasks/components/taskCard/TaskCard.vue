@@ -46,7 +46,7 @@ const localePath = useLocalePath()
     padding: 12px 12px 10px;
     border-radius: 8px;
     background: #FFFFFF;
-    box-shadow: 0 1px 1px rgba(11, 25, 44, .2), 0 0 1px rgba(11, 25, 44, .28);
+    box-shadow: 0 1px 1px rgba(10, 10, 10, .2), 0 0 1px rgba(10, 10, 10, .28);
     color: var(--tm-ink-1);
     text-decoration: none;
     cursor: grab;
@@ -57,7 +57,7 @@ const localePath = useLocalePath()
     &:active { cursor: grabbing; }
 
     &:focus-visible {
-        outline: 2px solid #0B192C;
+        outline: 2px solid #0A0A0A;
         outline-offset: 2px;
     }
 
@@ -77,7 +77,7 @@ const localePath = useLocalePath()
         padding: 0 6px;
         border-radius: 4px;
         background: #EEF0F3;
-        color: #44546F;
+        color: #404040;
         font-size: size(11);
         font-weight: 600;
         line-height: 18px;
@@ -89,9 +89,9 @@ const localePath = useLocalePath()
         align-self: flex-start;
         gap: 4px;
         padding: 0 6px;
-        border: 1px solid rgba(11, 25, 44, .14);
+        border: 1px solid rgba(10, 10, 10, .14);
         border-radius: 4px;
-        color: #44546F;
+        color: #404040;
         font-size: size(12);
         font-weight: 600;
         line-height: 20px;
@@ -117,12 +117,12 @@ const localePath = useLocalePath()
         width: 16px;
         height: 16px;
         border-radius: 3px;
-        background: #0B192C;
+        background: #0A0A0A;
         color: #FFFFFF;
     }
 
     &__key {
-        color: #44546F;
+        color: #404040;
         font-size: size(12);
         font-weight: 600;
         white-space: nowrap;
@@ -136,7 +136,7 @@ const localePath = useLocalePath()
         display: inline-flex;
         align-items: center;
         gap: 3px;
-        color: #626F86;
+        color: #525252;
         font-size: size(12);
     }
 }

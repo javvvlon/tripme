@@ -284,8 +284,8 @@
 
         &.is-contract,
         &.is-voucher {
-            background: color-mix(in srgb, var(--tm-brand-gold) 22%, var(--tm-surface-1));
-            color: var(--tm-brand-gold-ink);
+            background: color-mix(in srgb, var(--tm-badge-fill) 22%, var(--tm-surface-1));
+            color: var(--tm-badge-ink);
         }
 
         &.is-attachment,

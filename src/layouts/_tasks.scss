@@ -1,9 +1,9 @@
 @use '../shared/styles/utils' as *;
 
 .tm-jira {
-    --tm-jira-line: rgba(11, 25, 44, .12);
-    --tm-jira-hover: rgba(11, 25, 44, .06);
-    --tm-jira-subtle: #44546F;
+    --tm-jira-line: rgba(10, 10, 10, .12);
+    --tm-jira-hover: rgba(10, 10, 10, .06);
+    --tm-jira-subtle: #404040;
 
     display: flex;
     flex-direction: column;
@@ -84,15 +84,15 @@
         &:hover .tm-jira__link-inner { background: var(--tm-jira-hover); }
 
         &.is-active {
-            color: #0B192C;
+            color: #0A0A0A;
 
-            &::after { background: #0B192C; }
+            &::after { background: #0A0A0A; }
         }
 
         &:focus-visible {
             outline: none;
 
-            .tm-jira__link-inner { box-shadow: 0 0 0 2px #0B192C; }
+            .tm-jira__link-inner { box-shadow: 0 0 0 2px #0A0A0A; }
         }
     }
 
@@ -109,7 +109,7 @@
         min-width: 20px;
         padding: 0 6px;
         border-radius: 10px;
-        background: #E4E7EC;
+        background: #E5E5E5;
         color: var(--tm-ink-1);
         font-size: size(11);
         font-weight: 700;
@@ -136,7 +136,7 @@
         gap: 12px;
         min-height: 44px;
         padding: 8px 20px;
-        background: #0B192C;
+        background: #0A0A0A;
         color: #FFFFFF;
         font-size: size(14);
         text-decoration: none;
@@ -224,7 +224,7 @@
         &[aria-expanded='true'] { background: var(--tm-jira-hover); }
 
         &:focus-visible {
-            outline: 2px solid #0B192C;
+            outline: 2px solid #0A0A0A;
             outline-offset: 1px;
         }
     }
@@ -248,7 +248,7 @@
         padding: 6px;
         border-radius: 10px;
         background: #FFFFFF;
-        box-shadow: 0 8px 12px rgba(11, 25, 44, .15), 0 0 1px rgba(11, 25, 44, .31);
+        box-shadow: 0 8px 12px rgba(10, 10, 10, .15), 0 0 1px rgba(10, 10, 10, .31);
     }
 
     &__menu-head {
@@ -285,7 +285,7 @@
         margin-top: 4px;
         padding: 0 6px;
         border-radius: 4px;
-        background: #E4E7EC;
+        background: #E5E5E5;
         font-size: size(11) !important;
         font-weight: 700;
         letter-spacing: .03em;

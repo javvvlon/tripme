@@ -1,9 +1,9 @@
 @use '../../styles/utils' as *;
 
 .tm-ai-chat {
-    --tm-ai-gold: #C5A880;
+    --tm-ai-light: #FFA45C;
     --tm-ai-orange: #FF6B00;
-    --tm-ai-cream: #F3D9A8;
+    --tm-ai-cream: #FFD9BF;
 
     position: relative;
     display: flex;
@@ -52,7 +52,7 @@
         height: 64px;
         margin-bottom: 8px;
         border-radius: 22px;
-        background: linear-gradient(135deg, var(--tm-ai-gold), var(--tm-ai-orange) 60%, var(--tm-ai-cream));
+        background: linear-gradient(135deg, var(--tm-ai-light), var(--tm-ai-orange) 60%, var(--tm-ai-cream));
         background-size: 200% 200%;
         color: #fff;
         box-shadow: 0 14px 40px color-mix(in srgb, var(--tm-ai-orange) 35%, transparent);
@@ -72,7 +72,7 @@
 
     &__title {
         margin: 0;
-        background: linear-gradient(100deg, #8F7247, var(--tm-ai-gold) 30%, var(--tm-ai-orange) 65%, var(--tm-ai-gold));
+        background: linear-gradient(100deg, #CC5100, var(--tm-ai-light) 30%, var(--tm-ai-orange) 65%, var(--tm-ai-light));
         background-size: 200% 100%;
         background-clip: text;
         -webkit-background-clip: text;
@@ -180,7 +180,7 @@
         height: 28px;
         margin-top: 2px;
         border-radius: 9px;
-        background: linear-gradient(135deg, var(--tm-ai-gold), var(--tm-ai-orange));
+        background: linear-gradient(135deg, var(--tm-ai-light), var(--tm-ai-orange));
         color: #fff;
 
         &.is-spinning { animation: tm-ai-pulse 1.4s ease-in-out infinite; }
@@ -381,7 +381,7 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--tm-ai-gold), var(--tm-ai-orange));
+            background: linear-gradient(135deg, var(--tm-ai-light), var(--tm-ai-orange));
             animation: tm-ai-bounce 1.2s ease-in-out infinite;
 
             &:nth-child(2) { animation-delay: .15s; }

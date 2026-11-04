@@ -19,8 +19,8 @@ const { t } = useI18n()
     max-width: 100%;
     padding: 2px 6px;
     border-radius: 4px;
-    background: #E4E7EC;
-    color: #44546F;
+    background: #E5E5E5;
+    color: #404040;
     font-size: size(11);
     font-weight: 700;
     letter-spacing: .03em;
@@ -28,8 +28,8 @@ const { t } = useI18n()
     text-transform: uppercase;
     white-space: nowrap;
 
-    &.is-in_progress { background: #DCE6F5; color: #0B3A75; }
+    &.is-in_progress { background: #FFF1E6; color: #8F3C00; }
     &.is-review { background: #FCEBC6; color: #7A4B00; }
-    &.is-done { background: #DCFFF1; color: #216E4E; }
+    &.is-done { background: #F0FDF4; color: #166534; }
 }
 </style>

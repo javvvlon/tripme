@@ -324,7 +324,7 @@
         gap: 1px;
         color: var(--tm-border-1);
 
-        .is-on { color: var(--tm-brand-gold); fill: currentColor; }
+        .is-on { color: var(--tm-badge-fill); fill: currentColor; }
     }
 
     &__text.is-quote {
@@ -348,8 +348,8 @@
         height: 36px;
         overflow: hidden;
         border-radius: 50%;
-        background: var(--tm-brand-gold-soft);
-        color: var(--tm-brand-gold-ink);
+        background: var(--tm-badge-soft);
+        color: var(--tm-badge-ink);
         font-size: size(13);
         font-weight: 700;
 
@@ -392,7 +392,7 @@
         &:hover { transform: scale(1.1); }
 
         &.is-on {
-            color: var(--tm-brand-gold);
+            color: var(--tm-badge-fill);
 
             svg { fill: currentColor; }
         }

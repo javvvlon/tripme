@@ -40,7 +40,7 @@
         overflow: hidden;
         border-radius: 14px;
         background: var(--tm-surface-1);
-        box-shadow: 0 1px 2px rgba(11, 25, 44, .04);
+        box-shadow: 0 1px 2px rgba(10, 10, 10, .04);
     }
 
     &__row {
@@ -116,7 +116,7 @@
 
     &__kicker {
         overflow: hidden;
-        color: #8F7247;
+        color: #CC5100;
         font-size: size(11);
         font-weight: 700;
         letter-spacing: .05em;
@@ -193,7 +193,7 @@
         width: 100%;
         height: 10px;
         border-radius: 6px;
-        background: linear-gradient(90deg, var(--tm-surface-3) 0%, color-mix(in srgb, #C5A880 35%, var(--tm-surface-3)) 50%, var(--tm-surface-3) 100%);
+        background: linear-gradient(90deg, var(--tm-surface-3) 0%, color-mix(in srgb, #FFA45C 35%, var(--tm-surface-3)) 50%, var(--tm-surface-3) 100%);
         background-size: 200% 100%;
         animation: tm-variant-shimmer 1.4s linear infinite;
         animation-delay: var(--delay);

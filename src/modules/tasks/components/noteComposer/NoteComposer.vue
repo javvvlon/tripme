@@ -183,14 +183,14 @@ async function submit() {
     }
 
     &__kind {
-        --tm-kind: #5B6B82;
+        --tm-kind: #525252;
 
         position: relative;
         display: flex;
         flex-direction: column;
         gap: 4px;
         padding: 14px 14px 12px;
-        border: 1px solid rgba(11, 25, 44, .16);
+        border: 1px solid rgba(10, 10, 10, .16);
         border-radius: 6px;
         background: #FFFFFF;
         cursor: pointer;
@@ -208,10 +208,10 @@ async function submit() {
             opacity: .35;
         }
 
-        &.is-decision { --tm-kind: #0B192C; }
+        &.is-decision { --tm-kind: #0A0A0A; }
         &.is-directive { --tm-kind: #9A7414; }
 
-        &:hover:not(.is-locked) { border-color: rgba(11, 25, 44, .35); }
+        &:hover:not(.is-locked) { border-color: rgba(10, 10, 10, .35); }
 
         &.is-on {
             border-color: var(--tm-kind);
@@ -225,7 +225,7 @@ async function submit() {
             opacity: .5;
         }
 
-        &:focus-within { outline: 2px solid #0B192C; outline-offset: 2px; }
+        &:focus-within { outline: 2px solid #0A0A0A; outline-offset: 2px; }
     }
 
     &__kind-name {
@@ -236,7 +236,7 @@ async function submit() {
     }
 
     &__kind-hint {
-        color: #626F86;
+        color: #525252;
         font-size: size(12);
         line-height: 1.4;
     }
@@ -279,7 +279,7 @@ async function submit() {
     align-items: center;
     gap: 6px;
     margin: 0 auto 0 0;
-    color: #626F86;
+    color: #525252;
     font-size: size(12);
 }
 </style>

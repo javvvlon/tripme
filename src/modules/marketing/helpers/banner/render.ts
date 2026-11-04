@@ -71,7 +71,7 @@ function hotPill(frame: IFrame): void {
 
   track(ctx, 0)
   pill(ctx, label, width - layout.pad - pillWidth, layout.pad + (layout.logo - height) / 2, height, {
-    fill: BRAND.gold, ink: BRAND.bg, size: height * 0.4,
+    fill: BRAND.mark, ink: BRAND.bg, size: height * 0.4,
   })
 }
 
@@ -126,7 +126,7 @@ function callToAction(frame: IFrame, bottom: number): number {
   return top - 40
 }
 
-function kicker(frame: IFrame, label: string, bottom: number, color: string = BRAND.gold): number {
+function kicker(frame: IFrame, label: string, bottom: number, color: string = BRAND.mark): number {
   if (!label) return bottom
 
   const height = Math.round(frame.layout.sub * 1.5)
@@ -275,7 +275,7 @@ function board(frame: IFrame): void {
   else {
     ctx.font = font(800, layout.sub * 0.62)
     track(ctx, layout.sub * 0.14)
-    ctx.fillStyle = BRAND.gold
+    ctx.fillStyle = BRAND.mark
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
     ctx.fillText(labels.departures.toUpperCase(), width - layout.pad, layout.pad + layout.logo / 2)
@@ -291,7 +291,7 @@ function board(frame: IFrame): void {
   if (text.copy.kicker) {
     ctx.font = font(800, layout.sub * 0.78)
     track(ctx, layout.sub * 0.1)
-    ctx.fillStyle = BRAND.gold
+    ctx.fillStyle = BRAND.mark
     ctx.fillText(text.copy.kicker.toUpperCase(), layout.pad, y)
     track(ctx, 0)
     y += layout.sub * 1.3
@@ -312,7 +312,7 @@ function board(frame: IFrame): void {
 
   ctx.font = font(800, layout.sub * 0.52)
   track(ctx, layout.sub * 0.08)
-  ctx.fillStyle = BRAND.gold
+  ctx.fillStyle = BRAND.mark
   ctx.fillText(labels.date.toUpperCase(), columns.date, y)
   ctx.fillText(labels.hotel.toUpperCase(), columns.hotel, y)
   ctx.fillText(labels.nights.toUpperCase(), columns.nights, y)
@@ -417,7 +417,7 @@ function ticket(frame: IFrame): void {
   if (text.copy.kicker) {
     ctx.font = font(800, layout.sub * 0.62)
     track(ctx, layout.sub * 0.1)
-    ctx.fillStyle = BRAND.goldDeep
+    ctx.fillStyle = BRAND.markDeep
     ctx.fillText(clip(ctx, text.copy.kicker.toUpperCase(), mainWidth), cardLeft + inner, y)
     track(ctx, 0)
   }
@@ -463,7 +463,7 @@ function ticket(frame: IFrame): void {
     ctx.font = font(700, layout.sub * 0.62, BODY)
     ctx.fillStyle = BRAND.paperMute
     ctx.fillText(clip(ctx, first.hotel, stubWidth), stubLeft, cardTop + inner + layout.sub * 0.6 + priceSize * 1.15 + layout.sub)
-    if (text.design.stars) stars(ctx, first.stars, stubLeft, cardTop + inner + layout.sub * 0.6 + priceSize * 1.15 + layout.sub * 1.5, layout.sub * 0.5, BRAND.goldDeep)
+    if (text.design.stars) stars(ctx, first.stars, stubLeft, cardTop + inner + layout.sub * 0.6 + priceSize * 1.15 + layout.sub * 1.5, layout.sub * 0.5, BRAND.markDeep)
   }
 
   const markHeight = cardHeight * 0.22

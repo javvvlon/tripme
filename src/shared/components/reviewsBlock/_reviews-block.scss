@@ -50,7 +50,7 @@
         inset: 0 auto 0 0;
         width: var(--fill);
         overflow: hidden;
-        color: var(--tm-brand-gold);
+        color: var(--tm-badge-fill);
     }
 
     &__count {
@@ -84,8 +84,8 @@
         transition: border-color .15s ease, color .15s ease, opacity .15s ease;
 
         &:hover:not(:disabled) {
-            border-color: var(--tm-brand-gold);
-            color: var(--tm-brand-gold-ink);
+            border-color: var(--tm-badge-fill);
+            color: var(--tm-badge-ink);
         }
 
         &:disabled {
@@ -127,7 +127,7 @@
         transition: border-color .2s ease, transform .2s ease;
 
         &:hover {
-            border-color: color-mix(in srgb, var(--tm-brand-gold) 55%, var(--tm-border-1));
+            border-color: color-mix(in srgb, var(--tm-badge-fill) 55%, var(--tm-border-1));
             transform: translateY(-2px);
         }
     }
@@ -144,12 +144,12 @@
         gap: 2px;
         color: var(--tm-border-1);
 
-        .is-on { color: var(--tm-brand-gold); }
+        .is-on { color: var(--tm-badge-fill); }
     }
 
     &__mark {
         margin-left: auto;
-        color: var(--tm-brand-gold);
+        color: var(--tm-badge-fill);
         opacity: .55;
     }
 
@@ -178,8 +178,8 @@
         height: 44px;
         overflow: hidden;
         border-radius: 50%;
-        background: var(--tm-brand-gold-soft);
-        color: var(--tm-brand-gold-ink);
+        background: var(--tm-badge-soft);
+        color: var(--tm-badge-ink);
         font-family: var(--tm-font-display-primary);
         font-size: size(15);
         font-weight: 700;

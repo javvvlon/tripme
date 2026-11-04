@@ -221,7 +221,7 @@
         border-bottom: 0;
         border-radius: 20px 20px 0 0;
         background: var(--tm-surface-1);
-        box-shadow: 0 1px 3px rgba(20, 23, 28, .04);
+        box-shadow: 0 1px 3px rgba(10, 10, 10, .04);
     }
 
     &__crumbs {
@@ -299,6 +299,6 @@
     &.is-active {
         background: var(--tm-surface-1);
         color: var(--tm-ink-1);
-        box-shadow: var(--tm-shadow-sm, 0 1px 2px rgba(15, 23, 42, .06));
+        box-shadow: var(--tm-shadow-sm, 0 1px 2px rgba(10, 10, 10, .06));
     }
 }

@@ -13,8 +13,8 @@ export const BRAND = {
   mute: 'rgba(245, 243, 240, 0.64)',
   faint: 'rgba(245, 243, 240, 0.14)',
   orange: '#FF6B00',
-  gold: '#C5A880',
-  goldDeep: '#8F7247',
+  mark: '#FAFAFA',
+  markDeep: '#A3A3A3',
   paper: '#F5F3F0',
   paperInk: '#0A0A0A',
   paperMute: 'rgba(10, 10, 10, 0.58)',
@@ -209,7 +209,7 @@ export function mark(ctx: Ctx, x: number, y: number, height: number, color: stri
   ctx.restore()
 }
 
-export function stars(ctx: Ctx, count: number, x: number, y: number, size: number, color: string = BRAND.gold): number {
+export function stars(ctx: Ctx, count: number, x: number, y: number, size: number, color: string = BRAND.mark): number {
   const gap = size * 0.28
 
   ctx.fillStyle = color

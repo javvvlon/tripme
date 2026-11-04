@@ -173,6 +173,7 @@
 
 <script setup lang="ts">
 import { mealText } from '~/shared/helpers/meal'
+import { useTourPrice } from '~/shared/composables/useTourPrice'
 import LeadModal from '~/modules/leads/components/leadModal/LeadModal.vue'
 import { tripFromTour } from '~/modules/leads/helpers/trip'
 import { useTourRequest } from '~/modules/leads/hooks/use-tour-request'
@@ -213,14 +214,16 @@ const hotelPage = computed(() => {
   return routeExists(path) ? path : null
 })
 
-const price = computed(() => formatMoney(props.tour.get('comparablePrice'), locale.value))
+const tourPrice = useTourPrice()
+
+const price = computed(() => tourPrice.main(props.tour))
 
 const hot = computed(() => props.hot ?? props.tour.isHot())
 
 const oldPrice = computed(() => {
   const old = props.tour.oldComparablePrice()
 
-  return old ? formatMoney(old, locale.value) : ''
+  return old ? tourPrice.derived(props.tour, old) : ''
 })
 
 const { has: quoted, toggle: toggleQuote, full: quoteFull } = useQuote()
@@ -230,13 +233,7 @@ const inQuote = computed(() => quoted(props.tour))
 const programme = computed(() =>
   (props.tour.get('programme') ?? '').replace(/<[^>]*>?/g, ' ').replace(/\s+/g, ' ').trim())
 
-const { approxUzs, uzsLabel } = useUzsRates()
-
-const priceUzs = computed(() => {
-  const uzs = props.tour.get('uzs')
-
-  return uzs ? uzsLabel(uzs.amount) : approxUzs(props.tour.get('comparablePrice'))
-})
+const priceUzs = computed(() => tourPrice.reference(props.tour))
 
 const sourcePrice = computed(() => {
   const source = props.tour.get('price')
@@ -254,7 +251,7 @@ const perPerson = computed(() => {
   const { amount, currency } = props.tour.get('comparablePrice')
 
   return t('results.perPerson', {
-    price: formatMoney({ amount: amount / travellers.value, currency }, locale.value),
+    price: tourPrice.derived(props.tour, { amount: amount / travellers.value, currency }),
   })
 })
 

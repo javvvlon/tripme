@@ -75,8 +75,8 @@
         align-self: flex-start;
         padding: 5px 10px;
         border-radius: radius('pill');
-        background: var(--tm-brand-gold);
-        color: var(--tm-brand-on-gold);
+        background: var(--tm-badge-fill);
+        color: var(--tm-badge-on-fill);
         line-height: 1.2;
         text-transform: none;
         letter-spacing: 0;
@@ -92,7 +92,7 @@
 
     &__stars {
         margin-left: 4px;
-        color: var(--tm-brand-gold);
+        color: var(--tm-badge-fill);
         font-size: size(13);
         letter-spacing: 1px;
     }

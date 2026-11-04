@@ -34,6 +34,6 @@ const { t } = useI18n()
     &.is-urgent { color: #C9372C; }
     &.is-high { color: #E5534B; }
     &.is-medium { color: #C98A00; }
-    &.is-low { color: #5B7290; }
+    &.is-low { color: #737373; }
 }
 </style>
