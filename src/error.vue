@@ -64,7 +64,7 @@ const leave = (path: string) => clearError({ redirect: localePath(path) })
     &__logo {
         position: relative;
         margin-bottom: 24px;
-        color: var(--tm-ink-1);
+        color: var(--tm-brand-wordmark);
     }
 
     &__code {

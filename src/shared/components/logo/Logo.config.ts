@@ -13,6 +13,6 @@ export const LOGO_SUITCASE = [
 ]
 
 export const LOGO_BOX = {
-  full: { viewBox: '0 0 443.62 131.3', ratio: 443.62 / 131.3 },
-  mark: { viewBox: '0 0 67.62 131.3', ratio: 67.62 / 131.3 },
+  full: { viewBox: '0 0 443.62 134.37', ratio: 443.62 / 134.37 },
+  mark: { viewBox: '0 0 67.62 134.37', ratio: 67.62 / 134.37 },
 } as const

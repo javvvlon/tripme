@@ -76,15 +76,21 @@ import type { ISearchWidgetProps } from './SearchWidget.d'
 import { SEARCH_MODES, SHOWCASE_OPTION } from './SearchWidget.config'
 import Combobox from '~/shared/components/combobox/Combobox.vue'
 import type { IComboboxOption } from '~/shared/components/combobox/Combobox.d'
-import { useDeparture } from '~/shared/composables/useArenaPresets'
+import { storeDeparture, storedDeparture, useDeparture } from '~/shared/composables/useArenaPresets'
 
 const props = withDefaults(defineProps<ISearchWidgetProps>(), { variant: 'hero' })
 
 const { t, locale } = useI18n()
 
-const { criteria, submit, travellersLabel, nightsLabel } = useSearchCriteria()
-
 const route = useRoute()
+
+const departure = useDeparture()
+
+const queryFrom = (): string => (typeof route.query.from === 'string' ? route.query.from : '')
+
+if (queryFrom()) departure.value = queryFrom()
+
+const { criteria, submit, travellersLabel, nightsLabel } = useSearchCriteria(() => ({ from: departure.value }))
 
 const expanded = ref(false)
 
@@ -145,11 +151,30 @@ watch(maxAdults, (max) => {
 
 const fieldVariant = computed(() => (props.variant === 'bar' ? 'bar' : 'panel'))
 
-const departure = useDeparture()
-
 watch(() => criteria.from, (value) => {
-  if (value) departure.value = value
-}, { immediate: true })
+  if (!value) return
+
+  departure.value = value
+  storeDeparture(value)
+})
+
+const restoreDeparture = () => {
+  const stored = storedDeparture()
+
+  if (queryFrom()) storeDeparture(queryFrom())
+  else if (stored && stored !== criteria.from) criteria.from = stored
+}
+
+const onPageShow = (event: PageTransitionEvent) => {
+  if (event.persisted) restoreDeparture()
+}
+
+onMounted(() => {
+  restoreDeparture()
+  window.addEventListener('pageshow', onPageShow)
+})
+
+onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
 const toField = useTemplateRef<InstanceType<typeof Combobox>>('toField')
 

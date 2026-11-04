@@ -85,16 +85,18 @@ export function useAppliedCriteria(): ComputedRef<SearchCriteria> {
   return computed(() => readCriteria(route.query))
 }
 
-export function useSearchCriteria(seed: Partial<SearchCriteria> = {}) {
+export function useSearchCriteria(seed: Partial<SearchCriteria> | (() => Partial<SearchCriteria>) = {}) {
   const route = useRoute()
   const localePath = useLocalePath()
   const { t } = useI18n()
 
-  const criteria = reactive<SearchCriteria>(readCriteria(route.query, seed))
+  const seedOf = () => (typeof seed === 'function' ? seed() : seed)
+
+  const criteria = reactive<SearchCriteria>(readCriteria(route.query, seedOf()))
 
   watch(
     () => route.query,
-    query => Object.assign(criteria, readCriteria(query, seed)),
+    query => Object.assign(criteria, readCriteria(query, seedOf())),
   )
 
   const query = computed<Record<string, string>>(() => {

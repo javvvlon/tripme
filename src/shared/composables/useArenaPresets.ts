@@ -27,7 +27,27 @@ export function presetQuery(theme: ShowcaseTheme, from: string, today: string): 
   return query
 }
 
+export const DEPARTURE_STORAGE_KEY = 'tm_departure'
+
 export const useDeparture = () => useState<string>('search:departure', () => HOME_DEPARTURE)
+
+export function storedDeparture(): string | null {
+  try {
+    return sessionStorage.getItem(DEPARTURE_STORAGE_KEY)
+  }
+  catch {
+    return null
+  }
+}
+
+export function storeDeparture(slug: string): void {
+  try {
+    sessionStorage.setItem(DEPARTURE_STORAGE_KEY, slug)
+  }
+  catch {
+    return
+  }
+}
 
 export function useArenaPresets() {
   const departure = useDeparture()
