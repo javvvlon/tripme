@@ -36,10 +36,12 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
     validation.reset()
   }
 
-  async function submit() {
+  async function submit(): Promise<boolean> {
+    if (sending.value || sent.value) return false
+
     error.value = ''
 
-    if (!validation.validate()) return
+    if (!validation.validate()) return false
 
     sending.value = true
 
@@ -47,9 +49,13 @@ export const useLeadForm = (trip: () => ILeadTrip) => {
       await send(draft, trip(), locale.value)
 
       sent.value = true
+
+      return true
     }
     catch {
       error.value = t('lead.error')
+
+      return false
     }
     finally {
       sending.value = false

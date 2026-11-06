@@ -1076,6 +1076,8 @@
         "noFree": "No free leads — everyone is on it.",
         "kinds": {
           "tour": "Tour",
+          "hotel": "Hotel",
+          "excursion": "Excursion",
           "esim": "eSIM"
         }
       },
@@ -2532,6 +2534,10 @@
   "lead": {
     "cta": "Request this tour",
     "title": "Tour request",
+    "titles": {
+      "hotel": "Accommodation request",
+      "excursion": "Sightseeing programme request"
+    },
     "lead": "Leave your details and a manager will call to confirm them.",
     "submit": "Send request",
     "sent": "Thank you! We have your request — a manager will be in touch shortly.",

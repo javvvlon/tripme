@@ -43,7 +43,7 @@
         </div>
 
         <ClientOnly v-if="actionable">
-            <LeadModal v-model="asking" :trip="trip" :summary="summary" />
+            <LeadModal v-model="asking" :trip="trip" :summary="summary" @sent="done" />
         </ClientOnly>
     </section>
 </template>
@@ -57,7 +57,7 @@ const props = defineProps<ITourOfferProps>()
 
 const { t, locale } = useI18n()
 
-const { asking, sending, sent, request } = useTourRequest(() => props.trip)
+const { asking, sending, sent, request, done } = useTourRequest(() => props.trip)
 
 const dates = computed(() => {
     if (!props.trip.check_in) return ''

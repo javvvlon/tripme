@@ -38,6 +38,17 @@
         }
     }
 
+    &__sent {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    &__foot {
+        display: flex;
+        justify-content: flex-end;
+    }
+
     &__done {
         margin: 0;
         padding: 8px 0 4px;
@@ -49,4 +60,6 @@
 
 @media #{$until-md} {
     .tm-lead__names { grid-template-columns: minmax(0, 1fr); }
+
+    .tm-lead__foot .tm-button { width: 100%; }
 }

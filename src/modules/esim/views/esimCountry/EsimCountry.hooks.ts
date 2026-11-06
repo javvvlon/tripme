@@ -91,7 +91,7 @@ export const useEsimCountry = () => {
 
   const summary = computed(() => (plan.value ? `${flag.value} ${title.value} · ${plan.value.price}` : ''))
 
-  const { asking, sending: requesting, sent: requested, request } = useTourRequest(() => trip.value)
+  const { asking, sending: requesting, sent: requested, request, done: requestSent } = useTourRequest(() => trip.value)
 
   const methodOptions = computed(() => ESIM_PAYMENT_METHODS.map(value => ({
     value,
@@ -131,7 +131,7 @@ export const useEsimCountry = () => {
 
   return {
     code, name, flag, networks, cards, plan, selected, status, error,
-    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request,
+    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request, requestSent,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
   }
 }

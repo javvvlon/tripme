@@ -166,7 +166,7 @@
         </div>
 
         <ClientOnly>
-            <LeadModal v-if="!agentView" v-model="asking" :trip="trip" :summary="summary" />
+            <LeadModal v-if="!agentView" v-model="asking" :trip="trip" :summary="summary" @sent="done" />
         </ClientOnly>
     </article>
 </template>
@@ -295,9 +295,7 @@ const trip = computed<ILeadTrip>(() => {
   return props.campaign ? { ...base, campaign: props.campaign } : base
 })
 
-const { asking, sending, sent, request } = useTourRequest(() => trip.value)
-
-watch(() => props.tour.get('id'), () => { sent.value = false })
+const { asking, sending, sent, request, done } = useTourRequest(() => trip.value)
 
 defineExpose<ITourCardExpose>({ request })
 

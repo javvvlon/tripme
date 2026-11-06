@@ -1076,6 +1076,8 @@
         "noFree": "Bo‘sh lidlar yo‘q — hammasi ishda.",
         "kinds": {
           "tour": "Tur",
+          "hotel": "Mehmonxona",
+          "excursion": "Ekskursiya",
           "esim": "eSIM"
         }
       },
@@ -2532,6 +2534,10 @@
   "lead": {
     "cta": "Ariza qoldirish",
     "title": "Tur tanlash uchun ariza",
+    "titles": {
+      "hotel": "Yashash uchun ariza",
+      "excursion": "Ekskursion dastur uchun ariza"
+    },
     "lead": "Kontaktlaringizni qoldiring — menejer bogʻlanib, tafsilotlarni tasdiqlaydi.",
     "submit": "Arizani yuborish",
     "sent": "Rahmat! Ariza qabul qilindi, menejer tez orada bogʻlanadi.",

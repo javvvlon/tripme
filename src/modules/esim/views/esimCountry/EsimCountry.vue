@@ -116,6 +116,7 @@
                     <LeadModal
                         v-model="asking" :trip="trip" :summary="summary"
                         :title="t('esim.request.title')" :comment-placeholder="t('esim.request.comment')"
+                        @sent="requestSent"
                     />
                 </ClientOnly>
             </aside>
@@ -181,7 +182,7 @@ const localePath = useLocalePath()
 
 const {
     name, flag, networks, cards, plan, selected, status, error,
-    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request,
+    catalog, affiliate, copied, copyCode, trip, summary, asking, requesting, requested, request, requestSent,
     email, phone, method, methodOptions, emailError, phoneError, busy, pay,
 } = useEsimCountry()
 

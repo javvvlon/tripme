@@ -369,6 +369,7 @@ import { formatDate } from '~/shared/helpers/format-date'
 import PriceInput from '~/shared/components/priceInput/PriceInput.vue'
 import CurrencySelect from '~/shared/components/currencySelect/CurrencySelect.vue'
 import { offerLinks } from '~/modules/leads/helpers/offer'
+import { PRODUCT_ICONS, productOf } from '~/modules/leads/helpers/product'
 import ServiceMenu from '~/modules/leads/components/serviceMenu/ServiceMenu.vue'
 import AiRequest from '~/modules/leads/components/aiRequest/AiRequest.vue'
 import EsimPicker from '~/modules/esim/components/esimPicker/EsimPicker.vue'
@@ -513,22 +514,12 @@ const stars = computed(() => {
     return !named && Number.isInteger(value) && value > 0 && value <= 5 ? value : 0
 })
 
-const leadProduct = computed(() => {
-    const value = lead.value?.trip.product
+const leadProduct = computed(() => productOf(lead.value?.trip))
 
-    return value === 'hotel' || value === 'excursion' ? value : null
-})
-
-const tourIcon = computed(() => {
-    if (isEsim.value) return 'sim'
-    if (leadProduct.value === 'hotel') return 'bed'
-    if (leadProduct.value === 'excursion') return 'landmark'
-
-    return 'briefcase'
-})
+const tourIcon = computed(() => PRODUCT_ICONS[leadProduct.value])
 
 const tourMeta = computed(() =>
-    [leadProduct.value ? t(`results.product.${leadProduct.value}.label`) : '', lead.value?.supplier_name, lead.value?.trip.meal_name, lead.value?.trip.room_name]
+    [leadProduct.value === 'hotel' || leadProduct.value === 'excursion' ? t(`cms.leads.list.kinds.${leadProduct.value}`) : '', lead.value?.supplier_name, lead.value?.trip.meal_name, lead.value?.trip.room_name]
         .map(value => (typeof value === 'string' ? value.trim() : ''))
         .filter(Boolean)
         .join(' · '))
