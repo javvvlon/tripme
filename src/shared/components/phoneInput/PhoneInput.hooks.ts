@@ -58,10 +58,12 @@ export const usePhoneInput = (model: Ref<string>, elements: IPhoneElements) => {
     await nextTick()
 
     const element = elements.field.value
+    const formatted = display.value
+
+    if (element && element.value !== formatted) element.value = formatted
 
     if (!element || document.activeElement !== element) return
 
-    const formatted = display.value
     let seen = 0
     let position = formatted.length
 

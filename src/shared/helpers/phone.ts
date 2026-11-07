@@ -27,10 +27,16 @@ export const phoneCountry = (iso: string): IPhoneCountry =>
 export const isInternationalPhone = (value: string): boolean =>
   value.trim().startsWith('+') && digitsOf(value).length > 0 && !digitsOf(value).startsWith(PHONE_COUNTRY_CODE)
 
+const hasCountryCode = (value: string, digits: string): boolean =>
+  digits.startsWith(PHONE_COUNTRY_CODE)
+  && (value.trim().startsWith('+') || digits.length >= PHONE_COUNTRY_CODE.length + PHONE_NATIONAL_LENGTH)
+
 export const phoneDigits = (value: string): string => {
   if (isInternationalPhone(value)) return `+${digitsOf(value).slice(0, E164_MAX_DIGITS)}`
 
-  return digitsOf(value).replace(new RegExp(`^${PHONE_COUNTRY_CODE}`), '').slice(0, PHONE_NATIONAL_LENGTH)
+  const digits = digitsOf(value)
+
+  return (hasCountryCode(value, digits) ? digits.slice(PHONE_COUNTRY_CODE.length) : digits).slice(0, PHONE_NATIONAL_LENGTH)
 }
 
 export function splitPhone(value: string): IPhoneParts {
