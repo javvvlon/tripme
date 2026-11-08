@@ -251,6 +251,7 @@
     "any": "Any",
     "priceFrom": "from",
     "priceTo": "till",
+    "priceUnit": "UZS",
     "reset": "Clear all filters ({count})",
     "districts": "District",
     "suppliers": "Tour operator",

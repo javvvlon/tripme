@@ -251,6 +251,7 @@
     "any": "Любой",
     "priceFrom": "от",
     "priceTo": "до",
+    "priceUnit": "сум",
     "reset": "Сбросить фильтры ({count})",
     "districts": "Район",
     "suppliers": "Туроператор",

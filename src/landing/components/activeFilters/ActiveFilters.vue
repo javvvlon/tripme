@@ -17,13 +17,14 @@ import { EMPTY_FILTERS } from '~/shared/components/filterPanel/FilterPanel.confi
 import { mealLabel } from '~/shared/components/filterPanel/FilterPanel.hooks'
 import type { SearchFilters } from '~/search_engine/contracts/search'
 import { useHotelLabels } from '~/shared/composables/useHotelLabels'
+import { formatPrice } from '~/shared/helpers/money'
 import type { IActiveFiltersProps } from './ActiveFilters.d'
 
 const props = defineProps<IActiveFiltersProps>()
 
 const filters = defineModel<SearchFilters>({ required: true })
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const { labelOf: hotelLabel } = useHotelLabels()
 
 const without = <K extends keyof SearchFilters>(field: K, value: unknown) => () => {
@@ -32,16 +33,7 @@ const without = <K extends keyof SearchFilters>(field: K, value: unknown) => () 
   filters.value = { ...filters.value, [field]: current.filter(entry => entry !== value) }
 }
 
-const money = (value: number) => {
-  const currency = props.facets.currency ?? 'USD'
-
-  try {
-    return new Intl.NumberFormat(locale.value, { style: 'currency', currency, maximumFractionDigits: 0 }).format(value)
-  }
-  catch {
-    return String(value)
-  }
-}
+const money = (value: number) => t('price.sum', { amount: formatPrice(String(Math.round(value))) })
 
 const labelOf = (options: Array<{ value: string, label: string }> | undefined, value: string) =>
   options?.find(option => option.value === value)?.label ?? value

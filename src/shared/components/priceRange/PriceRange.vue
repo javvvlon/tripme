@@ -35,36 +35,42 @@
                 <input
                     :value="from === undefined ? '' : grouped(from)" inputmode="numeric"
                     :placeholder="hasRange ? grouped(min) : ''"
+                    @input="regroup"
                     @change="typed('from', $event)"
                 >
-                <small v-if="currency">{{ symbol }}</small>
+                <small v-if="currency">{{ unit }}</small>
             </label>
             <label class="tm-price-range__field">
                 <span>{{ toLabel }}</span>
                 <input
                     :value="to === undefined ? '' : grouped(to)" inputmode="numeric"
                     :placeholder="hasRange ? grouped(max) : ''"
+                    @input="regroup"
                     @change="typed('to', $event)"
                 >
-                <small v-if="currency">{{ symbol }}</small>
+                <small v-if="currency">{{ unit }}</small>
             </label>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { formatPrice } from '~/shared/helpers/money'
 import type { IPriceBucket, IPriceRangeProps } from './PriceRange.d'
+import { MAX_PRICE_DIGITS, SUM_CURRENCY, SUM_STEP_NARROW, SUM_STEP_WIDE, SUM_WIDE_RANGE } from './PriceRange.config'
 
 const props = defineProps<IPriceRangeProps>()
 
 const from = defineModel<number | undefined>('from')
 const to = defineModel<number | undefined>('to')
 
-const { locale } = useI18n()
+const { t } = useI18n()
 
-const SYMBOLS: Record<string, string> = { USD: '$', EUR: '€', UZS: 'сум' }
+const inSums = computed(() => props.currency === SUM_CURRENCY)
 
-const symbol = computed(() => SYMBOLS[props.currency ?? ''] ?? props.currency ?? '')
+const unit = computed(() => (inSums.value ? t('filters.priceUnit') : props.currency ?? ''))
+
+const sumStep = computed(() => (props.max - props.min > SUM_WIDE_RANGE ? SUM_STEP_WIDE : SUM_STEP_NARROW))
 
 const hasRange = computed(() => props.max > props.min)
 
@@ -82,7 +88,7 @@ function priceAt(position: number): number {
   const start = points[index]!
   const end = points[index + 1]!
   const value = start + (end - start) * (scaled - index)
-  const round = end - start > 2000 ? 10 : 1
+  const round = inSums.value ? sumStep.value : end - start > 2000 ? 10 : 1
 
   return Math.round(value / round) * round
 }
@@ -116,24 +122,50 @@ const height = (bucket: IPriceBucket) => (bucket.count ? Math.max(8, Math.round(
 
 const isActive = (bucket: IPriceBucket) => bucket.to >= low.value && bucket.from <= high.value
 
-const grouped = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 0 }).format(value)
+const grouped = (value: number) => formatPrice(String(Math.round(value)))
 
 function slideLow(event: Event) {
   const position = Number((event.target as HTMLInputElement).value)
-  const value = Math.min(priceAt(position), high.value)
+  const value = Math.max(props.min, Math.min(priceAt(position), high.value))
 
   from.value = position <= 0 ? undefined : value
 }
 
 function slideHigh(event: Event) {
   const position = Number((event.target as HTMLInputElement).value)
-  const value = Math.max(priceAt(position), low.value)
+  const value = Math.min(props.max, Math.max(priceAt(position), low.value))
 
   to.value = position >= 100 ? undefined : value
 }
 
+const digitsOf = (text: string): string => text.replace(/\D/g, '').slice(0, MAX_PRICE_DIGITS)
+
+function regroup(event: Event) {
+  const field = event.target as HTMLInputElement
+  const caret = field.selectionStart ?? field.value.length
+  const before = digitsOf(field.value.slice(0, caret)).length
+  const digits = digitsOf(field.value)
+  const formatted = digits ? grouped(Number(digits)) : ''
+
+  field.value = formatted
+
+  let seen = 0
+  let position = before ? formatted.length : 0
+
+  for (let index = 0; before && index < formatted.length; index += 1) {
+    if (/\d/.test(formatted[index]!)) seen += 1
+
+    if (seen === before) {
+      position = index + 1
+      break
+    }
+  }
+
+  field.setSelectionRange(position, position)
+}
+
 function typed(edge: 'from' | 'to', event: Event) {
-  const digits = (event.target as HTMLInputElement).value.replace(/\D/g, '')
+  const digits = digitsOf((event.target as HTMLInputElement).value)
   const value = digits ? Number(digits) : undefined
 
   if (edge === 'from') from.value = value

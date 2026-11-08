@@ -251,6 +251,7 @@
     "any": "Har qanday",
     "priceFrom": "dan",
     "priceTo": "gacha",
+    "priceUnit": "so‘m",
     "reset": "Filtrlarni tozalash ({count})",
     "districts": "Tuman",
     "suppliers": "Turoperator",
