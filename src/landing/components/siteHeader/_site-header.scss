@@ -70,23 +70,27 @@
         > a {
             position: relative;
             transition: color .2s;
+
+            &::after {
+                content: attr(data-label) / '';
+                display: block;
+                height: 0;
+                overflow: hidden;
+                font-weight: 700;
+                visibility: hidden;
+                pointer-events: none;
+            }
         }
 
         > a:hover { color: var(--tm-ink-1); }
 
         > a.router-link-active {
-            color: var(--tm-brand-secondary);
-
-            &::after {
-                content: '';
-                position: absolute;
-                right: 0;
-                bottom: -8px;
-                left: 0;
-                height: 2px;
-                border-radius: radius('pill');
-                background: var(--tm-brand-primary);
-            }
+            color: var(--tm-nav-active);
+            font-weight: 700;
+            text-decoration-line: underline;
+            text-decoration-color: var(--tm-brand-primary);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
         }
     }
 
@@ -268,8 +272,6 @@
 
             > a,
             > span { padding: 14px 0; border-bottom: 1px solid var(--tm-border-1); }
-
-            > a.router-link-active::after { display: none; }
         }
 
         &__menu-extra {

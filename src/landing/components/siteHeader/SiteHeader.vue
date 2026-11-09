@@ -18,6 +18,7 @@
                     v-for="item in HEADER_NAV" :key="item.to"
                     v-bind="routeExists(item.to) ? { to: localePath(item.to) } : {}"
                     :class="{ 'is-planned': !routeExists(item.to) }"
+                    :data-label="t(item.labelKey)"
                 >
                     {{ t(item.labelKey) }}
                 </component>
