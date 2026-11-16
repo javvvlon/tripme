@@ -15,9 +15,9 @@
                             <h3 class="tm-contact__channel-name">{{ t(`contact.channels.${channel.key}`) }}</h3>
 
                             <a v-if="channel.href" :href="channel.href" class="tm-contact__channel-value">
-                                {{ t(channel.valueKey) }}
+                                {{ valueOf(channel) }}
                             </a>
-                            <p v-else class="tm-contact__channel-value">{{ t(channel.valueKey) }}</p>
+                            <p v-else class="tm-contact__channel-value">{{ valueOf(channel) }}</p>
                             <p v-if="'hintKey' in channel" class="tm-contact__channel-hint">{{ t(channel.hintKey) }}</p>
                         </li>
                     </ul>
@@ -83,10 +83,14 @@
 
 <script setup lang="ts">
 import PhoneInput from '~/shared/components/phoneInput/PhoneInput.vue'
+import type { TLocale } from '~/shared/config/locales'
 import { CONTACT_CHANNELS, MESSAGE_MAX } from './ContactPanel.config'
 import { useContactForm } from './ContactPanel.hooks'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const valueOf = (channel: typeof CONTACT_CHANNELS[number]): string =>
+  'address' in channel ? channel.address[locale.value as TLocale] : t(channel.valueKey)
 
 const { form, validation, sending, sent, error, submit } = useContactForm()
 const { errors, touched } = validation

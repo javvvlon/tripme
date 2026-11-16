@@ -105,7 +105,7 @@
                 </a>
 
                 <p class="tm-site-footer__contact">
-                    <Icon name="pin" :size="16" />{{ t('contact.channels.officeValue') }}
+                    <Icon name="pin" :size="16" />{{ LEGAL_ADDRESS[locale as TLocale] }}
                 </p>
 
                 <p class="tm-site-footer__contact">
@@ -129,12 +129,13 @@
 
 <script setup lang="ts">
 import { NuxtLink } from '#components'
-import { BRAND_NAME } from '~/shared/config/brand'
+import { BRAND_NAME, LEGAL_ADDRESS } from '~/shared/config/brand'
+import type { TLocale } from '~/shared/config/locales'
 import {
   FOOTER_COLUMNS, FOOTER_COMPANY, FOOTER_LEGAL, FOOTER_SOCIALS, PAYMENT_METHODS,
 } from './SiteFooter.config'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const routeExists = useRouteExists()
 

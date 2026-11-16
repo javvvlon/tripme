@@ -1,4 +1,4 @@
-import { AGENCY_EMAIL, AGENCY_HOURS, AGENCY_PHONE } from '~/shared/config/brand'
+import { AGENCY_EMAIL, AGENCY_HOURS, AGENCY_PHONE, AGENCY_POSTAL_ADDRESS } from '~/shared/config/brand'
 import { LOCALES } from '~/shared/config/locales'
 import { OG_IMAGE, SITE_NAME } from '~/shared/config/seo'
 import { useSiteUrl } from './useSiteUrl'
@@ -7,7 +7,6 @@ import { useSiteUrl } from './useSiteUrl'
  * @author Javlon Khalimjonov <khalimjanov2000@gmail.com>
  */
 export const useTravelAgencySchema = () => {
-  const { t } = useI18n()
   const localePath = useLocalePath()
   const { absolute } = useSiteUrl()
 
@@ -23,12 +22,7 @@ export const useTravelAgencySchema = () => {
     'telephone': AGENCY_PHONE,
     'areaServed': 'UZ',
     'openingHours': AGENCY_HOURS,
-    'address': {
-      '@type': 'PostalAddress',
-      'streetAddress': t('contact.channels.officeValue'),
-      'addressLocality': t('footer.city'),
-      'addressCountry': 'UZ',
-    },
+    'address': { ...AGENCY_POSTAL_ADDRESS },
     'contactPoint': {
       '@type': 'ContactPoint',
       'contactType': 'customer service',
