@@ -66,10 +66,6 @@
                     {{ t('results.hotOnly', { n: hotCount }) }}
                 </button>
 
-                <p v-if="isSearchable || showcase" class="tm-search-view__currency">
-                    {{ currencyNote }}
-                </p>
-
                 <div v-if="streaming && progress.total" class="tm-search-view__progress" role="status">
                     <span class="tm-search-view__progress-bar" aria-hidden="true">
                         <span :style="{ width: `${Math.max(8, (progress.done / progress.total) * 100)}%` }" />
@@ -368,15 +364,6 @@ const operatorRate = computed(() => {
   return common ?? (cbu ? Math.round(cbu * (1 + CBU_BUFFER)) : 0)
 })
 
-const currencyNote = computed(() => {
-  const cbu = rates.value?.source === 'cbu' ? rates.value.rates?.USD : undefined
-  const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 2 }).format(value)
-
-  return cbu && operatorRate.value
-    ? t('results.currencyFull', { operator: number(operatorRate.value), cbu: number(cbu) })
-    : t('results.currencyNote')
-})
-
 const product = computed(() => (isProductMode(criteria.value.mode) ? criteria.value.mode : null))
 
 const { te } = useI18n()
@@ -551,13 +538,6 @@ useSeoMeta({
             background: var(--tm-badge-fill);
             color: var(--tm-badge-on-fill);
         }
-    }
-
-    &__currency {
-        margin: -6px 0 14px;
-        font-size: size(12);
-        line-height: 1.5;
-        color: var(--tm-ink-3);
     }
 
     &__progress {

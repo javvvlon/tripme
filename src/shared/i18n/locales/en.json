@@ -324,8 +324,6 @@
     "retry": "Search again",
     "sourcePrice": "{price} at the operator",
     "headlineBare": "Tours {destination}, {dates}",
-    "currencyNote": "USD prices are for reference. Payment is in the national currency (UZS) at the tour operator's rate on the day of payment.",
-    "currencyFull": "USD prices are for reference. Payment is in the national currency (UZS) at the tour operator's rate on the day of payment (today's estimated rate: 1 USD = {operator} UZS; official Central Bank of Uzbekistan rate: {cbu} UZS).",
     "assign": {
       "cta": "Pick for lead",
       "busy": "Attaching…",

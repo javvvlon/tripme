@@ -324,8 +324,6 @@
     "retry": "Qidiruvni takrorlash",
     "sourcePrice": "operatorda {price}",
     "headlineBare": "Turlar {destination}, {dates}",
-    "currencyNote": "USD dagi narxlar ma'lumot uchun. To'lov milliy valyutada (UZS) to'lov kunidagi turoperator kursi bo'yicha.",
-    "currencyFull": "USD dagi narxlar ma'lumot uchun. To'lov milliy valyutada (UZS) to'lov kunidagi turoperator kursi bo'yicha (bugungi hisob kursi: 1 USD = {operator} UZS; O'zbekiston Respublikasi Markaziy banki rasmiy kursi: {cbu} UZS).",
     "assign": {
       "cta": "Lid uchun tanlash",
       "busy": "Biriktirilmoqda…",
